@@ -46,6 +46,27 @@ app.include_router(public_router.router, prefix=API_V1_PREFIX)
 app.include_router(kyc_router.router, prefix=API_V1_PREFIX)
 
 
+# ═══════════════════════════════════════
+#              System endpoints
+# ═══════════════════════════════════════
+
+
+@app.get("/", tags=["system"])
+def root():
+    """Root endpoint — for uptime monitors and quick checks."""
+    return {
+        "app": settings.APP_NAME,
+        "status": "ok",
+        "docs": "/docs",
+        "health": "/health",
+    }
+
+
 @app.get("/health", tags=["system"])
 def health():
-    return {"status": "ok", "env": settings.APP_ENV, "app": settings.APP_NAME}
+    """Health check endpoint."""
+    return {
+        "status": "ok",
+        "env": settings.APP_ENV,
+        "app": settings.APP_NAME,
+    }
