@@ -4,7 +4,7 @@
 
 const CONFIG = {
   // آدرس API بکاند
-  API_BASE: 'http://127.0.0.1:8000/api/v1',
+  API_BASE: 'https://aryana-backend.onrender.com/api/v1',
 
   // کلیدهای localStorage
   STORAGE: {
