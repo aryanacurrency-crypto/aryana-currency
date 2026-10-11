@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Order detail — Aryana Currency Admin.">
+  <meta name="theme-color" content="#101b30">
+
+  <title>Order Detail | Admin — ARYANA CURRENCY</title>
+
+  <link rel="icon" type="image/png" href="../../assets/images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../assets/css/exchange.css">
+  <link rel="stylesheet" href="../../assets/css/order.css">
+  <link rel="stylesheet" href="../../assets/css/admin.css">
+  <link rel="stylesheet" href="../../assets/css/notifications.css">
+</head>
+<body>
+
+  <div class="admin-page">
+
+    <header class="admin-topbar">
+      <div class="container admin-topbar-inner">
+        <a href="index.html" class="admin-brand">
+          <img src="../../assets/images/logo.png" alt="ARYANA CURRENCY">
+          <div class="admin-brand-text">
+            ARYANA CURRENCY
+            <small>ADMIN PANEL</small>
+          </div>
+        </a>
+
+        <div class="admin-topbar-actions">
+          <select class="language-select" id="languageSelect" aria-label="Language" style="background:rgba(255,255,255,.08); color:#fff; border-color:rgba(255,255,255,.15);">
+            <option value="en">EN</option>
+            <option value="fa">دری</option>
+            <option value="ps">پښتو</option>
+          </select>
+          <button class="dash-icon-btn" id="themeToggle" aria-label="Toggle theme">☾</button>
+          <button class="dash-icon-btn" id="logoutBtn" title="Logout">⏻</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="admin-layout">
+
+      <aside class="admin-sidebar">
+        <ul class="admin-nav">
+          <li><a href="index.html"><span class="admin-nav-icon">◈</span><span class="admin-nav-text" data-i18n="adminNavDashboard">Dashboard</span></a></li>
+          <li><a href="orders.html" class="active"><span class="admin-nav-icon">⊞</span><span class="admin-nav-text" data-i18n="adminNavOrders">Orders</span></a></li>
+          <li><a href="kyc.html"><span class="admin-nav-icon">☑</span><span class="admin-nav-text" data-i18n="adminNavKyc">KYC</span></a></li>
+          <li><a href="rates.html"><span class="admin-nav-icon">₮</span><span class="admin-nav-text" data-i18n="adminNavRates">Rates</span></a></li>
+          <li><a href="users.html"><span class="admin-nav-icon">◯</span><span class="admin-nav-text" data-i18n="adminNavUsers">Users</span></a></li>
+          <li class="admin-nav-divider"></li>
+          <li><a href="../dashboard.html"><span class="admin-nav-icon">←</span><span class="admin-nav-text" data-i18n="adminNavBack">Back to site</span></a></li>
+        </ul>
+      </aside>
+
+      <main class="admin-main" style="padding: 25px 40px 60px;">
+
+        <div id="loadingBox" class="admin-empty">
+          <div class="spinner" style="width:24px; height:24px; border-width:3px; color:var(--gold);"></div>
+        </div>
+
+        <div id="contentBox" style="display:none;">
+
+          <div class="order-header" style="margin-bottom:20px;">
+            <div class="order-header-top">
+              <a href="orders.html" class="order-back">←</a>
+              <h1 id="orderTitle">Order #—</h1>
+            </div>
+            <div class="order-ref" id="orderRef">—</div>
+          </div>
+
+          <div class="order-status-banner" id="statusBanner">
+            <div class="status-banner-icon" id="statusIcon">⏳</div>
+            <div class="status-banner-text">
+              <strong id="statusTitle">—</strong>
+              <small id="statusText">—</small>
+            </div>
+          </div>
+
+          <div class="order-grid">
+
+            <div>
+              <div class="order-card">
+                <h2 data-i18n="adminUser">User</h2>
+                <div class="order-details">
+                  <div class="order-detail-row">
+                    <span data-i18n="thName">Name</span>
+                    <span id="userName">—</span>
+                  </div>
+                  <div class="order-detail-row">
+                    <span data-i18n="adminKycStatus">KYC Status</span>
+                    <span id="userKycStatus">—</span>
+                  </div>
+                  <div class="order-detail-row">
+                    <span data-i18n="thEmail">Email</span>
+                    <span id="userEmail">—</span>
+                  </div>
+                  <div class="order-detail-row">
+                    <span data-i18n="thPhone">Phone</span>
+                    <span id="userPhone">—</span>
+                  </div>
+                  <div class="order-detail-row">
+                    <span data-i18n="adminHesabPay">Hesab Pay</span>
+                    <span id="userHesabPay">—</span>
+                  </div>
+                  <div class="order-detail-row">
+                    <span data-i18n="adminWalletAddress">USDT Wallet</span>
+                    <span id="userWallet" style="font-family:monospace; font-size:11px;">—</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-card">
+                <h2 data-i18n="orderSummary">Order Summary</h2>
+                <div class="order-details">
+                  <div class="order-detail-row">
+                    <span data-i18n="orderSide">Type</span>
+                    <span id="detailSide">—</span>
+                  </div>
+                  <div class="order-detail-row">
+                    <span data-i18n="orderAmount">Amount</span>
+                    <span id="detailAmount">—</span>
+                  </div>
+                  <div class="order-detail-row">
+                    <span data-i18n="orderRate">Rate</span>
+                    <span id="detailRate">—</span>
+                  </div>
+                  <div class="order-detail-row">
+                    <span data-i18n="orderGross">Gross amount</span>
+                    <span id="detailGross">—</span>
+                  </div>
+                  <div class="order-detail-row">
+                    <span data-i18n="orderFee">Platform fee</span>
+                    <span id="detailFee">—</span>
+                  </div>
+                  <div class="order-detail-row total">
+                    <span id="detailTotalLabel">Total</span>
+                    <span id="detailTotal">—</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-card" id="userRefBox" style="display:none;">
+                <h2 data-i18n="adminUserRef">User-submitted Payment Reference</h2>
+                <div class="payment-value" style="background:var(--bg); color:var(--text); border-color:var(--border);">
+                  <span id="userRefValue" style="font-family:monospace;">—</span>
+                </div>
+                <div class="order-details" style="margin-top:12px;">
+                  <div class="order-detail-row" id="userNoteRow" style="display:none;">
+                    <span data-i18n="adminUserNote">User note</span>
+                    <span id="userNoteValue">—</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-card" id="actionsCard" style="display:none;">
+                <h2 data-i18n="adminActions">Admin Actions</h2>
+
+                <div id="completeFormBox">
+                  <div class="field-group">
+                    <label class="field-label" for="platformRef">
+                      <span data-i18n="adminPlatformRef" id="platformRefLabel">Platform Payment Reference</span>
+                    </label>
+                    <input type="text" id="platformRef" class="field-input" placeholder="TXID / Hesab Pay ref">
+                  </div>
+
+                  <div class="field-group">
+                    <label class="field-label" for="adminNote" data-i18n="adminNoteLabel">Admin note (optional)</label>
+                    <textarea id="adminNote" class="field-input" rows="2"></textarea>
+                  </div>
+
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+                    <button class="btn btn-gold" id="completeBtn" style="padding:12px;">
+                      <span data-i18n="adminComplete">Complete Order</span>
+                    </button>
+                    <button class="btn btn-danger" id="rejectBtn" style="padding:12px;">
+                      <span data-i18n="adminReject">Reject Order</span>
+                    </button>
+                  </div>
+
+                  <p style="font-size:11px; color:var(--muted); margin-top:12px; line-height:1.7;" data-i18n="adminCompleteWarning">
+                    ⚠ Completing the order will update the user's balance and record ledger entries. This action cannot be undone.
+                  </p>
+                </div>
+              </div>
+
+              <div class="order-card" id="adminNoteBox" style="display:none;">
+                <h2 data-i18n="orderAdminNote">Admin Note</h2>
+                <p id="adminNoteText" style="font-size:13px; line-height:1.7; color:var(--muted);">—</p>
+              </div>
+            </div>
+
+            <aside class="order-card">
+              <h2 data-i18n="orderTimeline">Status Timeline</h2>
+              <ul class="order-timeline" id="timeline">
+                <li data-step="PENDING">
+                  <strong data-i18n="timelinePending">Order created</strong>
+                  <small data-i18n="timelinePendingText">Waiting for payment</small>
+                </li>
+                <li data-step="AWAITING_REVIEW">
+                  <strong data-i18n="timelineReview">Payment submitted</strong>
+                  <small data-i18n="timelineReviewText">Awaiting verification</small>
+                </li>
+                <li data-step="PROCESSING">
+                  <strong data-i18n="timelineProcessing">Processing</strong>
+                  <small data-i18n="timelineProcessingText">Team is sending funds</small>
+                </li>
+                <li data-step="COMPLETED">
+                  <strong data-i18n="timelineCompleted">Completed</strong>
+                  <small data-i18n="timelineCompletedText">Funds delivered</small>
+                </li>
+              </ul>
+            </aside>
+
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="../../assets/js/config.js"></script>
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/theme.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/api.js"></script>
+  <script src="../../assets/js/notifications.js"></script>
+  <script src="../../assets/js/animations.js"></script>
+  <script src="../../assets/js/admin/order-detail.js"></script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Order details — Aryana Currency.">
+  <meta name="theme-color" content="#101b30">
+
+  <title>Order | ARYANA CURRENCY</title>
+
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/notifications.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+  <link rel="stylesheet" href="../assets/css/order.css">
+</head>
+<body>
+
+  <div class="order-page">
+
+    <!-- Header -->
+    <header class="dash-header">
+      <div class="container dash-header-inner">
+        <a href="dashboard.html" class="brand">
+          <img src="../assets/images/logo.png" alt="ARYANA CURRENCY" class="brand-logo" width="40" height="40">
+          <div>
+            <div class="brand-name">ARYANA CURRENCY</div>
+            <div class="brand-subtitle" data-i18n="brandSubtitle">DIGITAL EXCHANGE</div>
+          </div>
+        </a>
+
+        <div class="dash-actions">
+          <select class="language-select" id="languageSelect" aria-label="Select language">
+            <option value="en">EN</option>
+            <option value="fa">دری</option>
+            <option value="ps">پښتو</option>
+          </select>
+          <button class="dash-icon-btn" id="themeToggle" aria-label="Toggle theme">☾</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container order-main">
+
+      <!-- Header -->
+      <div class="order-header">
+        <div class="order-header-top">
+          <a href="dashboard.html" class="order-back">←</a>
+          <h1 id="orderTitle" data-i18n="orderTitle">Order Details</h1>
+        </div>
+        <div class="order-ref" id="orderRef">—</div>
+      </div>
+
+      <!-- Loading -->
+      <div id="loadingBox" class="card" style="text-align:center; padding:50px;">
+        <div class="spinner" style="width:30px; height:30px; border-width:3px; color: var(--gold);"></div>
+        <p style="margin-top:15px; color:var(--muted); font-size:13px;">
+          <span data-i18n="orderLoading">Loading order…</span>
+        </p>
+      </div>
+
+      <!-- Content -->
+      <div id="orderContent" style="display:none;">
+
+        <!-- Status banner -->
+        <div class="order-status-banner" id="statusBanner">
+          <div class="status-banner-icon" id="statusIcon">⏳</div>
+          <div class="status-banner-text">
+            <strong id="statusTitle">—</strong>
+            <small id="statusText">—</small>
+          </div>
+        </div>
+
+        <div class="order-grid">
+
+          <!-- LEFT -->
+          <div>
+            <!-- Order details -->
+            <div class="order-card">
+              <h2 data-i18n="orderSummary">Order Summary</h2>
+              <div class="order-details">
+                <div class="order-detail-row">
+                  <span data-i18n="orderSide">Type</span>
+                  <span id="detailSide">—</span>
+                </div>
+                <div class="order-detail-row">
+                  <span data-i18n="orderAmount">Amount</span>
+                  <span id="detailAmount">—</span>
+                </div>
+                <div class="order-detail-row">
+                  <span data-i18n="orderRate">Rate</span>
+                  <span id="detailRate">—</span>
+                </div>
+                <div class="order-detail-row">
+                  <span data-i18n="orderGross">Gross amount</span>
+                  <span id="detailGross">—</span>
+                </div>
+                <div class="order-detail-row">
+                  <span data-i18n="orderFee">Platform fee</span>
+                  <span id="detailFee">—</span>
+                </div>
+                <div class="order-detail-row total">
+                  <span id="detailTotalLabel" data-i18n="orderTotal">Total</span>
+                  <span id="detailTotal">—</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Payment instructions -->
+            <div class="payment-instructions" id="paymentBox" style="display:none;">
+              <h3 data-i18n="orderPaymentInstructions">Payment Instructions</h3>
+              <div class="payment-info">
+                <div id="paymentUsdtBox" style="display:none;">
+                  <div class="payment-field">
+                    <label data-i18n="orderSendUsdtTo">Send USDT (TRC20) to this address</label>
+                    <div class="payment-value">
+                      <span id="platformWalletAddress">—</span>
+                      <button type="button" class="copy-btn" id="copyWallet" data-i18n="orderCopy">COPY</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="paymentAfnBox" style="display:none;">
+                  <div class="payment-field">
+                    <label data-i18n="orderSendAfnTo">Send AFN via Hesab Pay to</label>
+                    <div class="payment-value">
+                      <span id="platformHesabPay">—</span>
+                      <button type="button" class="copy-btn" id="copyHesab" data-i18n="orderCopy">COPY</button>
+                    </div>
+                  </div>
+                  <div class="payment-field">
+                    <label data-i18n="orderExactAmount">Exact amount to send</label>
+                    <div class="payment-value">
+                      <span id="platformAmount">—</span>
+                      <button type="button" class="copy-btn" id="copyAmount" data-i18n="orderCopy">COPY</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="payment-warning">
+                  <span id="paymentWarning">—</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit payment form -->
+            <div class="order-card" id="submitBox" style="display:none;">
+              <h2 data-i18n="orderSubmitTitle">Submit Payment Reference</h2>
+              <form class="order-form" id="submitForm">
+                <div class="field-group">
+                  <label class="field-label" for="paymentRef" id="paymentRefLabel">
+                    <span data-i18n="orderReferenceLabel">Transaction reference</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="paymentRef"
+                    class="field-input"
+                    placeholder="TXID or Hesab Pay ref"
+                    required
+                  >
+                </div>
+                <div class="field-group">
+                  <label class="field-label" for="paymentNote" data-i18n="orderNoteLabel">Note (optional)</label>
+                  <textarea
+                    id="paymentNote"
+                    class="field-input"
+                    rows="3"
+                    placeholder="Any extra info"
+                  ></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-gold" id="submitPaymentBtn" style="width:100%; padding:13px;">
+                  <span data-i18n="orderSubmitBtn">Submit reference</span>
+                </button>
+              </form>
+            </div>
+
+            <!-- Admin note -->
+            <div class="order-card" id="adminNoteBox" style="display:none;">
+              <h2 data-i18n="orderAdminNote">Admin Note</h2>
+              <p id="adminNoteText" style="font-size:13px; line-height:1.7; color:var(--muted);">—</p>
+            </div>
+
+            <!-- Cancel button -->
+            <div class="order-actions" id="actionsBox" style="display:none;">
+              <button class="btn btn-outline-dark" id="cancelOrderBtn">
+                <span data-i18n="orderCancel">Cancel order</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- RIGHT: Timeline -->
+          <aside class="order-card">
+            <h2 data-i18n="orderTimeline">Status Timeline</h2>
+            <ul class="order-timeline" id="timeline">
+              <li data-step="PENDING">
+                <strong data-i18n="timelinePending">Order created</strong>
+                <small data-i18n="timelinePendingText">Waiting for payment</small>
+              </li>
+              <li data-step="AWAITING_REVIEW">
+                <strong data-i18n="timelineReview">Payment submitted</strong>
+                <small data-i18n="timelineReviewText">Awaiting verification</small>
+              </li>
+              <li data-step="PROCESSING">
+                <strong data-i18n="timelineProcessing">Processing</strong>
+                <small data-i18n="timelineProcessingText">Team is sending funds</small>
+              </li>
+              <li data-step="COMPLETED">
+                <strong data-i18n="timelineCompleted">Completed</strong>
+                <small data-i18n="timelineCompletedText">Funds delivered</small>
+              </li>
+            </ul>
+          </aside>
+
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div class="alert alert-error" id="errorBox" style="display:none;"></div>
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/notifications.js"></script>
+  <script src="../assets/js/animations.js"></script>
+  <script src="../assets/js/order.js"></script>
+</body>
+</html>

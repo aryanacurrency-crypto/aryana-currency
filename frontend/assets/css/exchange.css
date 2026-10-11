@@ -1,0 +1,315 @@
+/* ═══════════════════════════════════════
+   ARYANA CURRENCY — Exchange Page
+   Buy/Sell USDT
+   ═══════════════════════════════════════ */
+
+.exchange-page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.exchange-main {
+  padding-block: 40px 60px;
+}
+
+.exchange-header {
+  margin-bottom: 30px;
+}
+
+.exchange-header h1 {
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 800;
+  letter-spacing: -.6px;
+  margin-bottom: 6px;
+}
+
+.exchange-header p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+body[dir="rtl"] .exchange-header h1 {
+  letter-spacing: 0;
+}
+
+/* --- Tabs --- */
+.exchange-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 25px;
+  max-width: 400px;
+}
+
+.exchange-tab {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.exchange-tab:hover {
+  color: var(--text);
+}
+
+.exchange-tab.active {
+  background: var(--navy);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(16, 27, 48, .15);
+}
+
+.exchange-tab.active.buy {
+  background: linear-gradient(135deg, #138568, #0e6b52);
+}
+
+.exchange-tab.active.sell {
+  background: linear-gradient(135deg, #c45b5b, #a04545);
+}
+
+/* --- Layout --- */
+.exchange-grid {
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: 25px;
+  align-items: start;
+}
+
+/* --- Form card --- */
+.exchange-form-card {
+  padding: 30px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.exchange-form-card h2 {
+  font-family: "Manrope", sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  margin-bottom: 22px;
+}
+
+.exchange-form .field-group {
+  margin-bottom: 20px;
+}
+
+.exchange-amount-input {
+  position: relative;
+}
+
+.exchange-amount-input input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 90px 18px 18px;
+  font-size: 24px;
+  font-weight: 700;
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+  transition: border-color .2s;
+}
+
+body.dark .exchange-amount-input input {
+  background: #0d1524;
+}
+
+.exchange-amount-input input:focus {
+  border-color: var(--gold);
+}
+
+.exchange-amount-input .currency-tag {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 14px;
+  background: var(--surface);
+  padding: 6px 12px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+}
+
+body[dir="rtl"] .exchange-amount-input .currency-tag {
+  right: auto;
+  left: 18px;
+}
+
+body[dir="rtl"] .exchange-amount-input input {
+  padding: 18px 18px 18px 90px;
+}
+
+/* --- Summary box --- */
+.exchange-summary {
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 20px;
+  margin-block: 22px;
+  border: 1px dashed var(--border);
+}
+
+body.dark .exchange-summary {
+  background: #0d1524;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-block: 10px;
+  font-size: 13px;
+}
+
+.summary-row:not(:last-child) {
+  border-bottom: 1px solid var(--border);
+}
+
+.summary-row span:first-child {
+  color: var(--muted);
+}
+
+.summary-row span:last-child {
+  font-weight: 700;
+}
+
+.summary-row.total {
+  padding-top: 15px;
+  margin-top: 5px;
+  border-top: 2px solid var(--gold);
+  font-size: 16px;
+}
+
+.summary-row.total span:last-child {
+  font-family: "Manrope", sans-serif;
+  color: var(--gold);
+  font-size: 20px;
+}
+
+/* --- Side: Instructions --- */
+.instructions-card {
+  padding: 25px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  position: sticky;
+  top: 100px;
+}
+
+.instructions-card h3 {
+  font-family: "Manrope", sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.instructions-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: rgba(198, 165, 104, .15);
+  color: #a3864c;
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+}
+
+.instructions-list {
+  list-style: none;
+  counter-reset: step;
+}
+
+.instructions-list li {
+  counter-increment: step;
+  display: flex;
+  gap: 14px;
+  padding-block: 12px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.instructions-list li:not(:last-child) {
+  border-bottom: 1px solid var(--border);
+}
+
+.instructions-list li::before {
+  content: counter(step);
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: var(--gold-light);
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 800;
+  font-family: "Manrope", sans-serif;
+}
+
+.instructions-empty {
+  padding: 30px 10px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* --- Min order note --- */
+.min-order-note {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: rgba(198, 165, 104, .08);
+  border-radius: 8px;
+  border-inline-start: 3px solid var(--gold);
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  .exchange-grid {
+    grid-template-columns: 1fr;
+  }
+  .instructions-card {
+    position: static;
+  }
+  .exchange-form-card {
+    padding: 22px;
+  }
+  .exchange-amount-input input {
+    font-size: 20px;
+    padding: 15px 80px 15px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .exchange-form-card {
+    padding: 18px;
+  }
+  .exchange-main {
+    padding-block: 25px 40px;
+  }
+  .exchange-tabs {
+    max-width: 100%;
+  }
+  .exchange-tab {
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+}

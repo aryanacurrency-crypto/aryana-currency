@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="KYC Management — Aryana Currency Admin.">
+  <meta name="theme-color" content="#101b30">
+
+  <title>KYC | Admin — ARYANA CURRENCY</title>
+
+  <link rel="icon" type="image/png" href="../../assets/images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../assets/css/order.css">
+  <link rel="stylesheet" href="../../assets/css/admin.css">
+  <link rel="stylesheet" href="../../assets/css/notifications.css">
+</head>
+<body>
+
+  <div class="admin-page">
+
+    <header class="admin-topbar">
+      <div class="container admin-topbar-inner">
+        <a href="index.html" class="admin-brand">
+          <img src="../../assets/images/logo.png" alt="ARYANA CURRENCY">
+          <div class="admin-brand-text">
+            ARYANA CURRENCY
+            <small>ADMIN PANEL</small>
+          </div>
+        </a>
+
+        <div class="admin-topbar-actions">
+          <select class="language-select" id="languageSelect" aria-label="Language" style="background:rgba(255,255,255,.08); color:#fff; border-color:rgba(255,255,255,.15);">
+            <option value="en">EN</option>
+            <option value="fa">دری</option>
+            <option value="ps">پښتو</option>
+          </select>
+          <button class="dash-icon-btn" id="themeToggle" aria-label="Toggle theme">☾</button>
+          <button class="dash-icon-btn" id="logoutBtn" title="Logout">⏻</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="admin-layout">
+
+      <aside class="admin-sidebar">
+        <ul class="admin-nav">
+          <li><a href="index.html"><span class="admin-nav-icon">◈</span><span class="admin-nav-text" data-i18n="adminNavDashboard">Dashboard</span></a></li>
+          <li><a href="orders.html"><span class="admin-nav-icon">⊞</span><span class="admin-nav-text" data-i18n="adminNavOrders">Orders</span></a></li>
+          <li><a href="kyc.html" class="active"><span class="admin-nav-icon">☑</span><span class="admin-nav-text" data-i18n="adminNavKyc">KYC</span></a></li>
+          <li><a href="rates.html"><span class="admin-nav-icon">₮</span><span class="admin-nav-text" data-i18n="adminNavRates">Rates</span></a></li>
+          <li><a href="users.html"><span class="admin-nav-icon">◯</span><span class="admin-nav-text" data-i18n="adminNavUsers">Users</span></a></li>
+          <li class="admin-nav-divider"></li>
+          <li><a href="../dashboard.html"><span class="admin-nav-icon">←</span><span class="admin-nav-text" data-i18n="adminNavBack">Back to site</span></a></li>
+        </ul>
+      </aside>
+
+      <main class="admin-main">
+
+        <div class="admin-header">
+          <h1 data-i18n="adminKycTitle">KYC Verification</h1>
+          <p data-i18n="adminKycSubtitle">Review and approve identity verification requests.</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+          <div class="stat-card">
+            <div class="stat-label" data-i18n="kycStatTotal">Total Users</div>
+            <div class="stat-value" id="statTotal">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label" data-i18n="kycStatVerified">Verified</div>
+            <div class="stat-value" id="statVerified" style="color: var(--green);">—</div>
+          </div>
+          <div class="stat-card alert">
+            <div class="stat-label" data-i18n="kycStatPending">Pending Docs</div>
+            <div class="stat-value" id="statPending">—</div>
+          </div>
+        </div>
+
+        <!-- Loading -->
+        <div id="loadingBox" class="admin-empty">
+          <div class="spinner" style="width:24px; height:24px; border-width:3px; color:var(--gold);"></div>
+        </div>
+
+        <!-- Pending list -->
+        <section class="admin-section" id="pendingSection" style="display:none;">
+          <div class="admin-section-head">
+            <h2 data-i18n="adminKycPending">Pending Requests</h2>
+          </div>
+
+          <div id="pendingContainer"></div>
+
+          <div class="admin-empty" id="emptyBox" style="display:none;">
+            <div class="admin-empty-icon">✓</div>
+            <p data-i18n="adminKycNoPending">No pending KYC requests. All caught up!</p>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="../../assets/js/config.js"></script>
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/theme.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/api.js"></script>
+  <script src="../../assets/js/notifications.js"></script>
+  <script src="../../assets/js/animations.js"></script>
+  <script src="../../assets/js/admin/kyc.js"></script>
+</body>
+</html>

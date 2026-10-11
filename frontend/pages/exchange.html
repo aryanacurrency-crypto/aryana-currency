@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Exchange USDT with clear rates — Aryana Currency.">
+  <meta name="theme-color" content="#101b30">
+
+  <title>Exchange | ARYANA CURRENCY</title>
+
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/notifications.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+  <link rel="stylesheet" href="../assets/css/exchange.css">
+</head>
+<body>
+
+  <div class="exchange-page">
+
+    <!-- Header (same as dashboard) -->
+    <header class="dash-header">
+      <div class="container dash-header-inner">
+        <a href="dashboard.html" class="brand">
+          <img src="../assets/images/logo.png" alt="ARYANA CURRENCY" class="brand-logo" width="40" height="40">
+          <div>
+            <div class="brand-name">ARYANA CURRENCY</div>
+            <div class="brand-subtitle" data-i18n="brandSubtitle">DIGITAL EXCHANGE</div>
+          </div>
+        </a>
+
+        <div class="dash-actions">
+          <a href="dashboard.html" class="dash-icon-btn" title="Dashboard">←</a>
+          <select class="language-select" id="languageSelect" aria-label="Select language">
+            <option value="en">EN</option>
+            <option value="fa">دری</option>
+            <option value="ps">پښتو</option>
+          </select>
+          <button class="dash-icon-btn" id="themeToggle" aria-label="Toggle theme">☾</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="container exchange-main">
+
+      <div class="exchange-header">
+        <h1 data-i18n="exchangeTitle">Exchange USDT</h1>
+        <p data-i18n="exchangeSubtitle">Buy or sell USDT with clear, live rates.</p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="exchange-tabs">
+        <button class="exchange-tab buy active" data-side="BUY" id="tabBuy">
+          <span data-i18n="exchangeTabBuy">Buy USDT</span>
+        </button>
+        <button class="exchange-tab sell" data-side="SELL" id="tabSell">
+          <span data-i18n="exchangeTabSell">Sell USDT</span>
+        </button>
+      </div>
+
+      <div class="alert alert-error" id="errorBox" style="display:none;"></div>
+
+      <div class="exchange-grid">
+
+        <!-- Form -->
+        <div class="exchange-form-card">
+          <h2 id="formTitle" data-i18n="exchangeFormTitleBuy">Buy USDT</h2>
+
+          <form class="exchange-form" id="exchangeForm">
+            <div class="field-group">
+              <label class="field-label" for="amountUsdt" data-i18n="exchangeAmountLabel">Amount (USDT)</label>
+              <div class="exchange-amount-input">
+                <input
+                  type="number"
+                  id="amountUsdt"
+                  step="0.01"
+                  min="10"
+                  placeholder="10.00"
+                  inputmode="decimal"
+                  required
+                >
+                <span class="currency-tag">USDT</span>
+              </div>
+              <div class="min-order-note">
+                <span data-i18n="exchangeMinOrder">Minimum order:</span>
+                <strong>10 USDT</strong>
+              </div>
+            </div>
+
+            <!-- Quick amounts -->
+            <div style="display:flex; gap:8px; margin-bottom:20px;">
+              <button type="button" class="btn btn-outline-dark" style="flex:1; padding:8px 6px; font-size:11px;" data-quick="10">10</button>
+              <button type="button" class="btn btn-outline-dark" style="flex:1; padding:8px 6px; font-size:11px;" data-quick="50">50</button>
+              <button type="button" class="btn btn-outline-dark" style="flex:1; padding:8px 6px; font-size:11px;" data-quick="100">100</button>
+              <button type="button" class="btn btn-outline-dark" style="flex:1; padding:8px 6px; font-size:11px;" data-quick="500">500</button>
+            </div>
+
+            <!-- Summary -->
+            <div class="exchange-summary" id="summaryBox">
+              <div class="summary-row">
+                <span data-i18n="exchangeRate">Rate</span>
+                <span id="sumRate">—</span>
+              </div>
+              <div class="summary-row">
+                <span data-i18n="exchangeGross">Gross amount</span>
+                <span id="sumGross">—</span>
+              </div>
+              <div class="summary-row">
+                <span data-i18n="exchangeFee">Platform fee (1.5%)</span>
+                <span id="sumFee">—</span>
+              </div>
+              <div class="summary-row total">
+                <span id="sumTotalLabel" data-i18n="exchangeYouPay">You pay</span>
+                <span id="sumTotal">—</span>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-gold" id="submitBtn" style="width:100%; padding:14px; font-size:14px;">
+              <span data-i18n="exchangeSubmitBtn">Continue</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Instructions -->
+        <aside class="instructions-card">
+          <h3>
+            <span class="instructions-icon">?</span>
+            <span id="instructionsTitle" data-i18n="exchangeHowToBuy">How to buy</span>
+          </h3>
+
+          <ul class="instructions-list" id="instructionsList">
+            <li data-i18n="exchangeStep1Buy">Enter the amount of USDT you want to buy.</li>
+            <li data-i18n="exchangeStep2Buy">Review the rate and total amount to pay in AFN.</li>
+            <li data-i18n="exchangeStep3Buy">Submit the order to see payment instructions.</li>
+            <li data-i18n="exchangeStep4Buy">Transfer the AFN via Hesab Pay and submit the reference.</li>
+            <li data-i18n="exchangeStep5Buy">Our team verifies and sends USDT to your wallet.</li>
+          </ul>
+        </aside>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/notifications.js"></script>
+  <script src="../assets/js/animations.js"></script>
+  <script src="../assets/js/exchange.js"></script>
+</body>
+</html>

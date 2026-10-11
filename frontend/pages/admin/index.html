@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Admin panel — Aryana Currency.">
+  <meta name="theme-color" content="#101b30">
+
+  <title>Admin | ARYANA CURRENCY</title>
+
+  <link rel="icon" type="image/png" href="../../assets/images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../assets/css/admin.css">
+  <link rel="stylesheet" href="../../assets/css/notifications.css">
+</head>
+<body>
+
+  <div class="admin-page">
+
+    <header class="admin-topbar">
+      <div class="container admin-topbar-inner">
+        <a href="../dashboard.html" class="admin-brand">
+          <img src="../../assets/images/logo.png" alt="ARYANA CURRENCY">
+          <div class="admin-brand-text">
+            ARYANA CURRENCY
+            <small>ADMIN PANEL</small>
+          </div>
+        </a>
+
+        <div class="admin-topbar-actions">
+          <select class="language-select" id="languageSelect" aria-label="Language" style="background:rgba(255,255,255,.08); color:#fff; border-color:rgba(255,255,255,.15);">
+            <option value="en">EN</option>
+            <option value="fa">دری</option>
+            <option value="ps">پښتو</option>
+          </select>
+          <button class="dash-icon-btn" id="themeToggle" aria-label="Toggle theme">☾</button>
+          <button class="dash-icon-btn" id="logoutBtn" title="Logout">⏻</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="admin-layout">
+
+      <aside class="admin-sidebar">
+        <ul class="admin-nav">
+          <li><a href="index.html" class="active"><span class="admin-nav-icon">◈</span><span class="admin-nav-text" data-i18n="adminNavDashboard">Dashboard</span></a></li>
+          <li><a href="orders.html"><span class="admin-nav-icon">⊞</span><span class="admin-nav-text" data-i18n="adminNavOrders">Orders</span></a></li>
+          <li><a href="kyc.html"><span class="admin-nav-icon">☑</span><span class="admin-nav-text" data-i18n="adminNavKyc">KYC</span></a></li>
+          <li><a href="rates.html"><span class="admin-nav-icon">₮</span><span class="admin-nav-text" data-i18n="adminNavRates">Rates</span></a></li>
+          <li><a href="users.html"><span class="admin-nav-icon">◯</span><span class="admin-nav-text" data-i18n="adminNavUsers">Users</span></a></li>
+          <li class="admin-nav-divider"></li>
+          <li><a href="../dashboard.html"><span class="admin-nav-icon">←</span><span class="admin-nav-text" data-i18n="adminNavBack">Back to site</span></a></li>
+        </ul>
+      </aside>
+
+      <main class="admin-main">
+
+        <div class="admin-header">
+          <h1 data-i18n="adminDashboardTitle">Dashboard</h1>
+          <p data-i18n="adminDashboardSubtitle">Overview of your platform.</p>
+        </div>
+
+        <div id="loadingBox" class="card" style="text-align:center; padding:50px;">
+          <div class="spinner" style="width:30px; height:30px; border-width:3px; color: var(--gold);"></div>
+        </div>
+
+        <div id="contentBox" style="display:none;">
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-label" data-i18n="statTotalUsers">Total Users</div>
+              <div class="stat-value" id="statUsers">—</div>
+            </div>
+
+            <div class="stat-card alert">
+              <div class="stat-label" data-i18n="statPendingOrders">Pending Review</div>
+              <div class="stat-value" id="statPending">—</div>
+              <div class="stat-sub" data-i18n="statPendingSub">Needs action</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-label" data-i18n="statCompleted">Completed Orders</div>
+              <div class="stat-value" id="statCompleted">—</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-label" data-i18n="statFees">Total Fees (AFN)</div>
+              <div class="stat-value" id="statFees">—</div>
+            </div>
+          </div>
+
+          <section class="admin-section">
+            <div class="admin-section-head">
+              <h2 data-i18n="adminPendingOrders">Orders Awaiting Review</h2>
+              <a href="orders.html" data-i18n="adminViewAll">View all →</a>
+            </div>
+
+            <div id="pendingWrap">
+              <div class="admin-empty" id="pendingEmpty" style="display:none;">
+                <div class="admin-empty-icon">◇</div>
+                <p data-i18n="adminNoPending">No pending orders. All caught up!</p>
+              </div>
+
+              <div class="orders-table-wrap" id="pendingTableWrap" style="display:none;">
+                <table class="orders-table">
+                  <thead>
+                    <tr>
+                      <th data-i18n="thReference">Reference</th>
+                      <th data-i18n="thSide">Type</th>
+                      <th data-i18n="thAmount">Amount</th>
+                      <th data-i18n="thStatus">Status</th>
+                      <th data-i18n="thDate">Date</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="pendingBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="admin-section">
+            <div class="admin-section-head">
+              <h2 data-i18n="adminQuickActions">Quick Actions</h2>
+            </div>
+            <div class="quick-actions">
+              <a href="rates.html" class="action-card">
+                <div class="action-icon" style="background: rgba(198,165,104,.15); color:#a3864c;">₮</div>
+                <div>
+                  <strong data-i18n="adminNavRates">Rates</strong>
+                  <small data-i18n="adminSetRatesText">Set today's USDT rate</small>
+                </div>
+              </a>
+              <a href="users.html" class="action-card">
+                <div class="action-icon" style="background: rgba(19,133,104,.12); color: var(--green);">◯</div>
+                <div>
+                  <strong data-i18n="adminNavUsers">Users</strong>
+                  <small data-i18n="adminManageUsersText">Manage user accounts</small>
+                </div>
+              </a>
+            </div>
+          </section>
+
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="../../assets/js/config.js"></script>
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/theme.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/api.js"></script>
+  <script src="../../assets/js/notifications.js"></script>
+  <script src="../../assets/js/animations.js"></script>
+  <script src="../../assets/js/admin/dashboard.js"></script>
+</body>
+</html>

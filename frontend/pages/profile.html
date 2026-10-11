@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Your profile — Aryana Currency.">
+  <meta name="theme-color" content="#101b30">
+
+  <title>Profile | ARYANA CURRENCY</title>
+
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+  <link rel="stylesheet" href="../assets/css/profile.css">
+  <link rel="stylesheet" href="../assets/css/notifications.css">
+</head>
+<body>
+
+  <div class="profile-page">
+
+    <!-- Header -->
+    <header class="dash-header">
+      <div class="container dash-header-inner">
+        <a href="dashboard.html" class="brand">
+          <img src="../assets/images/logo.png" alt="ARYANA CURRENCY" class="brand-logo" width="40" height="40">
+          <div>
+            <div class="brand-name">ARYANA CURRENCY</div>
+            <div class="brand-subtitle" data-i18n="brandSubtitle">DIGITAL EXCHANGE</div>
+          </div>
+        </a>
+
+        <div class="dash-actions">
+          <select class="language-select" id="languageSelect" aria-label="Language">
+            <option value="en">EN</option>
+            <option value="fa">دری</option>
+            <option value="ps">پښتو</option>
+          </select>
+          <button class="dash-icon-btn" id="themeToggle" aria-label="Toggle theme">☾</button>
+          <a href="dashboard.html" class="dash-icon-btn" title="Back">←</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container profile-main">
+
+      <!-- Profile header card -->
+      <div class="profile-header-card">
+        <div class="profile-avatar" id="avatar">A</div>
+        <div class="profile-header-info">
+          <h1 id="headerName">—</h1>
+          <div class="profile-email" id="headerEmail">—</div>
+          <div class="profile-badges" id="badges">
+            <span class="profile-badge gray" id="badgeRole">USER</span>
+            <span class="profile-badge gray" id="badgeKyc">KYC PENDING</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alerts -->
+      <div class="alert alert-success" id="successBox" style="display:none;"></div>
+      <div class="alert alert-error" id="errorBox" style="display:none;"></div>
+
+      <!-- Tabs -->
+      <div class="profile-tabs">
+        <button class="profile-tab active" data-tab="personal">
+          <span data-i18n="profileTabPersonal">Personal Info</span>
+        </button>
+        <button class="profile-tab" data-tab="payment">
+          <span data-i18n="profileTabPayment">Payment Details</span>
+        </button>
+        <button class="profile-tab" data-tab="kyc">
+          <span data-i18n="profileTabKyc">Verification</span>
+        </button>
+        <button class="profile-tab" data-tab="security">
+          <span data-i18n="profileTabSecurity">Security</span>
+        </button>
+        <button class="profile-tab" data-tab="account">
+          <span data-i18n="profileTabAccount">Account</span>
+        </button>
+      </div>
+
+      <!-- TAB: Personal -->
+      <section class="profile-tab-content active" data-tab-content="personal">
+        <div class="profile-card">
+          <h2 data-i18n="profilePersonalTitle">Personal Information</h2>
+          <p data-i18n="profilePersonalText">Update your display name and phone number.</p>
+
+          <form class="profile-form" id="personalForm">
+            <div class="profile-form-row">
+              <div class="field-group">
+                <label class="field-label" for="fullName" data-i18n="registerFullNameLabel">Full name</label>
+                <input type="text" id="fullName" class="field-input" placeholder="Ahmad Rahimi">
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="phone" data-i18n="registerPhoneLabel">Phone</label>
+                <input type="tel" id="phone" class="field-input" placeholder="+93 700 000 000">
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="emailDisplay" data-i18n="profileEmailLabel">Email</label>
+              <input type="email" id="emailDisplay" class="field-input" disabled>
+              <div class="field-hint" data-i18n="profileEmailHint">
+                Email cannot be changed. Contact support if needed.
+              </div>
+            </div>
+
+            <div class="profile-save-bar">
+              <button type="submit" class="btn btn-gold" id="savePersonalBtn">
+                <span data-i18n="profileSave">Save Changes</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- TAB: Payment -->
+      <section class="profile-tab-content" data-tab-content="payment">
+        <div class="profile-card">
+          <h2 data-i18n="profileHesabTitle">Hesab Pay Details</h2>
+          <p data-i18n="profileHesabText">
+            This is where we send AFN when you sell USDT. Make sure the number and name match your account.
+          </p>
+
+          <form class="profile-form" id="paymentForm">
+            <div class="profile-form-row">
+              <div class="field-group">
+                <label class="field-label" for="hesabPay" data-i18n="registerHesabPayLabel">Hesab Pay number</label>
+                <input type="text" id="hesabPay" class="field-input" placeholder="07XX XXX XXX">
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="hesabHolder" data-i18n="profileHesabHolder">Account holder name</label>
+                <input type="text" id="hesabHolder" class="field-input" placeholder="Ahmad Rahimi">
+              </div>
+            </div>
+
+            <div class="field-group" style="margin-top:20px;">
+              <label class="field-label" for="usdtWallet" data-i18n="registerWalletLabel">USDT wallet address (TRC20)</label>
+              <input type="text" id="usdtWallet" class="field-input" placeholder="T...">
+              <div class="field-hint" data-i18n="profileWalletHint">
+                This is where we send USDT when you buy. Must be a TRC20 (Tron) address.
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="usdtNetwork" data-i18n="profileNetworkLabel">Network</label>
+              <select id="usdtNetwork" class="field-input">
+                <option value="TRC20">TRC20 (Tron)</option>
+                <option value="BEP20">BEP20 (BNB Chain)</option>
+                <option value="ERC20">ERC20 (Ethereum)</option>
+              </select>
+              <div class="field-hint" data-i18n="profileNetworkHint">
+                ⚠ Make sure this matches your wallet. Wrong network = lost funds.
+              </div>
+            </div>
+
+            <div class="profile-save-bar">
+              <button type="submit" class="btn btn-gold" id="savePaymentBtn">
+                <span data-i18n="profileSave">Save Changes</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- TAB: KYC -->
+      <section class="profile-tab-content" data-tab-content="kyc">
+        <div class="profile-card">
+          <h2 data-i18n="kycTitle">Identity Verification (KYC)</h2>
+          <p data-i18n="kycText">
+            To comply with financial regulations, we may require you to verify your identity. Upload a clear photo of your ID document and a selfie.
+          </p>
+
+          <!-- Status banner -->
+          <div class="kyc-status-banner not-submitted" id="kycStatusBanner">
+            <div class="kyc-status-icon" id="kycStatusIcon">⏳</div>
+            <div class="kyc-status-text">
+              <strong id="kycStatusTitle">Not submitted</strong>
+              <small id="kycStatusText">Please upload your documents to verify your identity.</small>
+            </div>
+          </div>
+
+          <!-- Existing documents -->
+          <div id="kycDocuments" style="margin-top:20px;"></div>
+
+          <!-- Upload sections -->
+          <div class="kyc-upload-grid" id="kycUploadBox">
+            <!-- National ID -->
+            <div class="kyc-upload-card">
+              <div class="kyc-upload-icon">◫</div>
+              <h3 data-i18n="kycIdTitle">National ID (Tazkira)</h3>
+              <p data-i18n="kycIdText">Clear photo of the front side.</p>
+              <input type="file" id="fileNationalId" accept="image/*,application/pdf" hidden>
+              <button type="button" class="btn btn-outline-dark btn-full" data-upload="national_id">
+                <span data-i18n="kycChooseFile">Choose file</span>
+              </button>
+              <small class="kyc-file-name" id="nameNationalId" style="display:none;"></small>
+            </div>
+
+            <!-- Passport -->
+            <div class="kyc-upload-card">
+              <div class="kyc-upload-icon">◈</div>
+              <h3 data-i18n="kycPassportTitle">Passport</h3>
+              <p data-i18n="kycPassportText">Clear photo of the main page.</p>
+              <input type="file" id="filePassport" accept="image/*,application/pdf" hidden>
+              <button type="button" class="btn btn-outline-dark btn-full" data-upload="passport">
+                <span data-i18n="kycChooseFile">Choose file</span>
+              </button>
+              <small class="kyc-file-name" id="namePassport" style="display:none;"></small>
+            </div>
+
+            <!-- Selfie -->
+            <div class="kyc-upload-card">
+              <div class="kyc-upload-icon">☺</div>
+              <h3 data-i18n="kycSelfieTitle">Selfie</h3>
+              <p data-i18n="kycSelfieText">Photo of yourself holding your ID.</p>
+              <input type="file" id="fileSelfie" accept="image/*" hidden>
+              <button type="button" class="btn btn-outline-dark btn-full" data-upload="selfie">
+                <span data-i18n="kycChooseFile">Choose file</span>
+              </button>
+              <small class="kyc-file-name" id="nameSelfie" style="display:none;"></small>
+            </div>
+          </div>
+
+          <!-- Upload button -->
+          <div class="profile-save-bar" id="kycUploadBar" style="display:none;">
+            <button type="button" class="btn btn-outline-dark" id="kycClearBtn">
+              <span data-i18n="kycClear">Clear</span>
+            </button>
+            <button type="button" class="btn btn-gold" id="kycSubmitBtn">
+              <span data-i18n="kycUploadBtn">Upload Selected File</span>
+            </button>
+          </div>
+
+          <div class="content-box gold" style="margin-top:20px;">
+            <strong data-i18n="kycNoteTitle">Why we ask</strong>
+            <span data-i18n="kycNoteText">
+              Identity verification is a legal requirement for all financial platforms. Your documents are stored securely and never shared with third parties except when required by law.
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Security -->
+      <section class="profile-tab-content" data-tab-content="security">
+        <div class="profile-card">
+          <h2 data-i18n="profileSecurityTitle">Change Password</h2>
+          <p data-i18n="profileSecurityText">Use a strong password. At least 8 characters.</p>
+
+          <form class="profile-form" id="passwordForm">
+            <div class="field-group">
+              <label class="field-label" for="currentPassword" data-i18n="profileCurrentPassword">Current password</label>
+              <input type="password" id="currentPassword" class="field-input" autocomplete="current-password" required>
+            </div>
+
+            <div class="profile-form-row">
+              <div class="field-group">
+                <label class="field-label" for="newPassword" data-i18n="profileNewPassword">New password</label>
+                <input type="password" id="newPassword" class="field-input" autocomplete="new-password" minlength="8" required>
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="confirmPassword" data-i18n="profileConfirmPassword">Confirm new password</label>
+                <input type="password" id="confirmPassword" class="field-input" autocomplete="new-password" minlength="8" required>
+              </div>
+            </div>
+
+            <div class="profile-save-bar">
+              <button type="submit" class="btn btn-gold" id="changePasswordBtn">
+                <span data-i18n="profileChangePassword">Change Password</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- TAB: Account -->
+      <section class="profile-tab-content" data-tab-content="account">
+        <div class="profile-card">
+          <h2 data-i18n="profileAccountTitle">Account Information</h2>
+          <p data-i18n="profileAccountText">Read-only information about your account.</p>
+
+          <div class="profile-info-row">
+            <span data-i18n="profileUserId">User ID</span>
+            <span id="infoId">—</span>
+          </div>
+          <div class="profile-info-row">
+            <span data-i18n="profileJoinDate">Member since</span>
+            <span id="infoCreated">—</span>
+          </div>
+          <div class="profile-info-row">
+            <span data-i18n="profileRole">Role</span>
+            <span id="infoRole">—</span>
+          </div>
+          <div class="profile-info-row">
+            <span data-i18n="profileKycStatus">KYC status</span>
+            <span id="infoKyc">—</span>
+          </div>
+          <div class="profile-info-row">
+            <span data-i18n="profileStatus">Account status</span>
+            <span id="infoStatus">—</span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/notifications.js"></script>
+  <script src="../assets/js/animations.js"></script>
+  <script src="../assets/js/profile.js"></script>
+</body>
+</html>

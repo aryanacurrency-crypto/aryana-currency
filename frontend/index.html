@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Aryana Currency — Modern digital currency exchange. Buy and sell USDT with clear rates.">
+  <meta name="theme-color" content="#101b30">
+
+  <title>ARYANA CURRENCY | Digital Exchange</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/home.css">
+  <link rel="stylesheet" href="assets/css/notifications.css">
+</head>
+<body>
+
+  <!-- Announcement -->
+  <div class="announcement">
+    <span data-i18n="announcement">A smarter way to manage currency exchange.</span>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="container navbar">
+      <a href="#home" class="brand" aria-label="ARYANA CURRENCY home">
+        <img src="assets/images/logo.png" alt="ARYANA CURRENCY" class="brand-logo" width="43" height="43">
+        <div>
+          <div class="brand-name">ARYANA CURRENCY</div>
+          <div class="brand-subtitle" data-i18n="brandSubtitle">DIGITAL EXCHANGE</div>
+        </div>
+      </a>
+
+      <nav id="mainNav">
+        <a href="#home" data-i18n="navHome">Home</a>
+        <a href="#rates" data-i18n="navRates">Exchange Rates</a>
+        <a href="#how" data-i18n="navHow">How It Works</a>
+        <a href="pages/about.html" data-i18n="navAbout">About Us</a>
+        <a href="pages/contact.html" data-i18n="navContact">Contact</a>
+      </nav>
+
+      <div class="nav-actions">
+        <select class="language-select" id="languageSelect" aria-label="Select language">
+          <option value="en">English</option>
+          <option value="fa">دری</option>
+          <option value="ps">پښتو</option>
+        </select>
+
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme">☾</button>
+
+        <a href="pages/login.html" class="btn btn-gold" data-i18n="navLogin">Login</a>
+
+        <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow" data-i18n="heroEyebrow">A NEW STANDARD IN EXCHANGE</div>
+          <h1 data-i18n="heroTitle">Currency exchange,<br><span>made simpler.</span></h1>
+          <p class="hero-description" data-i18n="heroDescription">
+            A modern platform designed to make currency exchange clear, convenient and accessible. Know your rate before you make your move.
+          </p>
+
+          <div class="hero-buttons">
+            <a href="pages/register.html" class="btn btn-gold">
+              <span data-i18n="startExchange">Start Exchanging</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+            <a href="#rates" class="btn btn-outline" data-i18n="viewRates">View Exchange Rates</a>
+          </div>
+
+          <p class="hero-note">
+            <span>✦</span>
+            <span data-i18n="heroNote">Clear rates. Thoughtful design. A simpler experience.</span>
+          </p>
+        </div>
+
+        <!-- Live Rate Card -->
+        <div class="exchange-card" id="liveRateCard">
+          <div class="exchange-card-header">
+            <h2 data-i18n="converterTitle">Live USDT Rate</h2>
+            <span class="sample-badge" id="rateStatusBadge" data-i18n="liveBadge">LIVE</span>
+          </div>
+
+          <div class="exchange-body">
+            <div class="exchange-result" style="margin-bottom:16px;">
+              <div>
+                <small data-i18n="weSell">You buy 1 USDT at</small>
+                <strong id="liveSellPrice">— AFN</strong>
+              </div>
+              <span class="result-currency">USDT</span>
+            </div>
+
+            <div class="exchange-result" style="margin-bottom:16px; background:#f0f7f4;">
+              <div>
+                <small data-i18n="weBuy">You sell 1 USDT at</small>
+                <strong id="liveBuyPrice">— AFN</strong>
+              </div>
+              <span class="result-currency">USDT</span>
+            </div>
+
+            <p class="rate-disclaimer" data-i18n="liveDisclaimer">
+              Rates update in real-time. The final rate is locked when you place an order.
+            </p>
+
+            <a href="pages/register.html" class="btn btn-gold exchange-submit" data-i18n="startNow">Start Now</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rates -->
+    <section class="section rates-section" id="rates">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <div class="section-kicker" data-i18n="ratesKicker">MARKET OVERVIEW</div>
+            <h2 data-i18n="ratesTitle">Exchange rates at a glance</h2>
+            <p data-i18n="ratesDescription">Live rates for USDT/AFN, updated by our team.</p>
+          </div>
+        </div>
+
+        <div class="rates-grid">
+          <!-- USDT Buy -->
+          <article class="rate-card">
+            <div class="rate-top">
+              <div class="currency-icon">₮</div>
+              <div>
+                <div class="currency-name" data-i18n="buyUsdt">Buy USDT</div>
+                <div class="currency-code">USDT / AFN</div>
+              </div>
+            </div>
+            <div class="rate-price" id="rateSellCard">— AFN</div>
+            <div class="rate-unit" data-i18n="perUsdt">per 1 USDT</div>
+            <div class="rate-divider"></div>
+            <div class="rate-bottom">
+              <span data-i18n="feeLabel">Platform fee</span>
+              <strong data-i18n="feeValue">1.5%</strong>
+            </div>
+          </article>
+
+          <!-- USDT Sell -->
+          <article class="rate-card">
+            <div class="rate-top">
+              <div class="currency-icon">₮</div>
+              <div>
+                <div class="currency-name" data-i18n="sellUsdt">Sell USDT</div>
+                <div class="currency-code">USDT / AFN</div>
+              </div>
+            </div>
+            <div class="rate-price" id="rateBuyCard">— AFN</div>
+            <div class="rate-unit" data-i18n="perUsdt">per 1 USDT</div>
+            <div class="rate-divider"></div>
+            <div class="rate-bottom">
+              <span data-i18n="feeLabel">Platform fee</span>
+              <strong data-i18n="feeValue">1.5%</strong>
+            </div>
+          </article>
+
+          <!-- Min order -->
+          <article class="rate-card">
+            <div class="rate-top">
+              <div class="currency-icon">⌁</div>
+              <div>
+                <div class="currency-name" data-i18n="minOrderTitle">Minimum order</div>
+                <div class="currency-code" data-i18n="minOrderCode">PER TRANSACTION</div>
+              </div>
+            </div>
+            <div class="rate-price">10 USDT</div>
+            <div class="rate-unit" data-i18n="minOrderUnit">≈ $10 USD</div>
+            <div class="rate-divider"></div>
+            <div class="rate-bottom">
+              <span data-i18n="noMaxLabel">No maximum</span>
+              <strong data-i18n="noMaxValue">Flexible</strong>
+            </div>
+          </article>
+
+          <!-- Network -->
+          <article class="rate-card">
+            <div class="rate-top">
+              <div class="currency-icon">◇</div>
+              <div>
+                <div class="currency-name" data-i18n="networkTitle">Network</div>
+                <div class="currency-code" data-i18n="networkCode">USDT TRANSFER</div>
+              </div>
+            </div>
+            <div class="rate-price">TRC20</div>
+            <div class="rate-unit" data-i18n="networkUnit">Fast & low-cost</div>
+            <div class="rate-divider"></div>
+            <div class="rate-bottom">
+              <span data-i18n="supportLabel">Support</span>
+              <strong data-i18n="supportValue">24/7</strong>
+            </div>
+          </article>
+        </div>
+
+        <p class="rates-footnote" id="rateUpdatedAt" data-i18n="ratesFootnote">
+          Rates are live. Last update: —
+        </p>
+      </div>
+    </section>
+
+    <!-- Trust strip -->
+    <div class="trust-strip">
+      <div class="container trust-grid">
+        <div class="trust-item">
+          <div class="trust-icon">◇</div>
+          <div>
+            <strong data-i18n="trustOneTitle">Transparent pricing</strong>
+            <p data-i18n="trustOneText">See the applicable rate before confirming.</p>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">⌁</div>
+          <div>
+            <strong data-i18n="trustTwoTitle">Licensed operation</strong>
+            <p data-i18n="trustTwoText">Operating under a valid official license.</p>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">◎</div>
+          <div>
+            <strong data-i18n="trustThreeTitle">Manual verification</strong>
+            <p data-i18n="trustThreeText">Every payment is verified by our team.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- How it works -->
+    <section class="section" id="how">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <div class="section-kicker" data-i18n="howKicker">HOW IT WORKS</div>
+            <h2 data-i18n="howTitle">A clearer way to exchange</h2>
+            <p data-i18n="howDescription">The customer journey, designed to be simple and understandable.</p>
+          </div>
+        </div>
+
+        <div class="steps-grid">
+          <article class="step-card">
+            <div class="step-number">01</div>
+            <h3 data-i18n="stepOneTitle">Create your account</h3>
+            <p data-i18n="stepOneText">Register and complete the required verification before using eligible services.</p>
+          </article>
+          <article class="step-card">
+            <div class="step-number">02</div>
+            <h3 data-i18n="stepTwoTitle">Place your order</h3>
+            <p data-i18n="stepTwoText">Choose buy or sell, enter the amount, and review the locked rate and fees.</p>
+          </article>
+          <article class="step-card">
+            <div class="step-number">03</div>
+            <h3 data-i18n="stepThreeTitle">Track your transaction</h3>
+            <p data-i18n="stepThreeText">Transfer the funds, submit the reference, and track progress in your history.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section cta-section" id="about">
+      <div class="container">
+        <div class="cta-box">
+          <div class="cta-content">
+            <div class="section-kicker" data-i18n="ctaKicker">ARYANA CURRENCY</div>
+            <h2 data-i18n="ctaTitle">Exchange with greater clarity.</h2>
+            <p data-i18n="ctaText">A licensed digital currency exchange built for trust.</p>
+          </div>
+          <a href="pages/register.html" class="btn btn-gold" data-i18n="getStartedBtn">Get Started</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-main">
+      <div>
+        <a href="#home" class="brand">
+          <img src="assets/images/logo.png" alt="ARYANA CURRENCY" class="brand-logo" width="43" height="43">
+          <div>
+            <div class="brand-name">ARYANA CURRENCY</div>
+            <div class="brand-subtitle" data-i18n="brandSubtitle">DIGITAL EXCHANGE</div>
+          </div>
+        </a>
+        <p class="footer-description" data-i18n="footerDescription">
+          A licensed digital currency exchange focused on clarity, security, and a straightforward customer experience.
+        </p>
+      </div>
+
+      <div class="footer-column">
+        <h3 data-i18n="footerPlatform">Platform</h3>
+        <a href="#rates" data-i18n="navRates">Exchange Rates</a>
+        <a href="#how" data-i18n="navHow">How It Works</a>
+        <a href="pages/register.html" data-i18n="navRegister">Register</a>
+        <a href="pages/login.html" data-i18n="navLogin">Login</a>
+      </div>
+
+      <div class="footer-column">
+        <h3 data-i18n="footerCompany">Company</h3>
+        <a href="pages/about.html" data-i18n="navAbout">About Us</a>
+        <a href="pages/contact.html" data-i18n="navContact">Contact</a>
+      </div>
+
+      <div class="footer-column">
+        <h3 data-i18n="footerLegal">Information</h3>
+        <a href="pages/privacy.html" data-i18n="footerPrivacy">Privacy Policy</a>
+        <a href="pages/terms.html" data-i18n="footerTerms">Terms of Service</a>
+        <a href="pages/risk.html" data-i18n="footerRisk">Risk Disclosure</a>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <span>© <span id="currentYear"></span> <strong>ARYANA CURRENCY</strong>. <span data-i18n="rights">All rights reserved.</span></span>
+      <span data-i18n="footerTagline">Clarity in every exchange.</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/notifications.js"></script>
+  <script src="assets/js/animations.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

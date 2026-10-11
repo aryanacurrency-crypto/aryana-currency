@@ -1,0 +1,407 @@
+/* ═══════════════════════════════════════
+   ARYANA CURRENCY — Components
+   Buttons, Cards, Forms, Common UI
+   ═══════════════════════════════════════ */
+
+/* --- Buttons --- */
+.btn {
+  border: 1px solid transparent;
+  border-radius: 9px;
+  padding: 11px 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  transition: transform .2s, background .2s, border-color .2s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-gold {
+  background: var(--gold);
+  color: #142035;
+}
+
+.btn-gold:hover {
+  background: var(--gold-light);
+}
+
+.btn-outline {
+  background: transparent;
+  border-color: rgba(255, 255, 255, .28);
+  color: white;
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, .06);
+}
+
+.btn-outline-dark {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.btn-outline-dark:hover {
+  background: var(--bg);
+}
+
+.btn-danger {
+  background: transparent;
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.btn-danger:hover {
+  background: rgba(196, 91, 91, .08);
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.btn-lg {
+  padding: 14px 24px;
+  font-size: 14px;
+}
+
+/* --- Form fields --- */
+.field-label {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 9px;
+}
+
+.field-input,
+.field-textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color .2s;
+}
+
+.field-input:focus,
+.field-textarea:focus {
+  border-color: var(--gold);
+}
+
+.field-input::placeholder,
+.field-textarea::placeholder {
+  color: var(--muted);
+}
+
+.field-group {
+  margin-bottom: 18px;
+}
+
+.field-error {
+  color: var(--red);
+  font-size: 11px;
+  margin-top: 6px;
+}
+
+/* --- Amount field (with currency select) --- */
+.amount-field {
+  border: 1px solid #e2e6ed;
+  border-radius: 10px;
+  padding: 13px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  transition: border-color .2s;
+  background: var(--surface);
+}
+
+body.dark .amount-field {
+  border-color: var(--border);
+}
+
+.amount-field:focus-within {
+  border-color: var(--gold);
+}
+
+.amount-field input {
+  border: 0;
+  outline: 0;
+  min-width: 0;
+  width: 100%;
+  background: transparent;
+  color: var(--text);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.currency-select {
+  background: #f4f6f9;
+  color: var(--text);
+  border: 0;
+  padding: 8px;
+  border-radius: 7px;
+  font-weight: 700;
+  outline: 0;
+  max-width: 130px;
+}
+
+body.dark .currency-select {
+  background: #223045;
+}
+
+/* --- Cards --- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 21px;
+  transition: transform .2s, box-shadow .2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+
+.card-no-hover:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* --- Badge --- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .3px;
+}
+
+.badge-gold {
+  background: #f5ecd9;
+  color: #8a6b30;
+}
+
+.badge-green {
+  background: rgba(19, 133, 104, .12);
+  color: var(--green);
+}
+
+.badge-red {
+  background: rgba(196, 91, 91, .12);
+  color: var(--red);
+}
+
+.badge-muted {
+  background: var(--bg);
+  color: var(--muted);
+}
+
+body.dark .badge-gold {
+  background: rgba(198, 165, 104, .18);
+  color: var(--gold-light);
+}
+
+body.dark .badge-muted {
+  background: #223045;
+}
+
+/* --- Empty state --- */
+.empty-state {
+  text-align: center;
+  padding: 50px 20px;
+  color: var(--muted);
+}
+
+.empty-state-icon {
+  font-size: 40px;
+  margin-bottom: 15px;
+  opacity: .4;
+}
+
+.empty-state h3 {
+  color: var(--text);
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.empty-state p {
+  font-size: 12px;
+}
+
+/* --- Loader / Spinner --- */
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin .6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* --- Alert --- */
+.alert {
+  padding: 12px 15px;
+  border-radius: 9px;
+  font-size: 12px;
+  margin-bottom: 15px;
+  border: 1px solid transparent;
+}
+
+.alert-success {
+  background: rgba(19, 133, 104, .08);
+  border-color: rgba(19, 133, 104, .25);
+  color: var(--green);
+}
+
+.alert-error {
+  background: rgba(196, 91, 91, .08);
+  border-color: rgba(196, 91, 91, .25);
+  color: var(--red);
+}
+
+.alert-info {
+  background: rgba(198, 165, 104, .08);
+  border-color: rgba(198, 165, 104, .25);
+  color: #8a6b30;
+}
+
+body.dark .alert-info {
+  color: var(--gold-light);
+}
+
+/* --- Table --- */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table th {
+  text-align: start;
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.table td {
+  padding: 14px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tr:hover td {
+  background: var(--bg);
+}
+
+/* --- Divider --- */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 18px 0;
+}
+
+/* --- Trust strip --- */
+.trust-strip {
+  background: var(--surface);
+  border-block: 1px solid var(--border);
+}
+
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  padding-block: 28px;
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.trust-icon {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: rgba(198, 165, 104, .12);
+  color: #a3864c;
+  font-size: 19px;
+}
+
+.trust-item strong {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 3px;
+}
+
+.trust-item p {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+@media (max-width: 760px) {
+  .trust-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding-block: 24px;
+  }
+}
+
+/* ═══════════════════════════════════════
+   Scroll animations
+   ═══════════════════════════════════════ */
+
+.animate-in {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .55s cubic-bezier(.2, .8, .2, 1),
+              transform .55s cubic-bezier(.2, .8, .2, 1);
+  will-change: opacity, transform;
+}
+
+.animate-in.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* اگه کاربر reduced motion داره، همه چیز رو فوری نشون بده */
+@media (prefers-reduced-motion: reduce) {
+  .animate-in {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

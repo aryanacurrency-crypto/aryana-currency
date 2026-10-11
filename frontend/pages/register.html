@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Create your Aryana Currency account.">
+  <meta name="theme-color" content="#101b30">
+
+  <title>Register | ARYANA CURRENCY</title>
+
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/auth.css">
+  <link rel="stylesheet" href="../assets/css/notifications.css">
+</head>
+<body>
+
+  <div class="auth-page">
+
+    <!-- Left: Brand panel -->
+    <aside class="auth-brand">
+      <a href="../index.html" class="auth-brand-logo">
+        <img src="../assets/images/logo.png" alt="ARYANA CURRENCY">
+        <div class="auth-brand-logo-text">
+          ARYANA CURRENCY
+          <small data-i18n="brandSubtitle">DIGITAL EXCHANGE</small>
+        </div>
+      </a>
+
+      <div class="auth-brand-content">
+        <h2 data-i18n="registerBrandTitle">Join the trusted<br><span>digital exchange.</span></h2>
+        <p data-i18n="registerBrandText">
+          Create your account in a minute. Exchange USDT with clear rates, licensed security, and manual-verified payments.
+        </p>
+
+        <ul class="auth-brand-points">
+          <li data-i18n="registerPoint1">Free to register</li>
+          <li data-i18n="registerPoint2">Minimum order only $10</li>
+          <li data-i18n="registerPoint3">24/7 support</li>
+        </ul>
+      </div>
+
+      <div class="auth-brand-footer">
+        © <span id="currentYear"></span> ARYANA CURRENCY
+      </div>
+    </aside>
+
+    <!-- Right: Form -->
+    <main class="auth-form-wrap">
+      <div class="auth-form-container">
+        <div class="auth-form-header">
+          <div class="section-kicker" data-i18n="registerKicker">CREATE ACCOUNT</div>
+          <h1 data-i18n="registerTitle">Sign up</h1>
+          <p>
+            <span data-i18n="registerHaveAccount">Already have an account?</span>
+            <a href="login.html" data-i18n="navLogin">Login</a>
+          </p>
+        </div>
+
+        <div class="alert alert-error" id="errorBox" style="display:none;"></div>
+        <div class="alert alert-success" id="successBox" style="display:none;"></div>
+
+        <form class="auth-form" id="registerForm">
+          <div class="field-group">
+            <label class="field-label" for="fullName" data-i18n="registerFullNameLabel">Full name</label>
+            <input
+              type="text"
+              id="fullName"
+              class="field-input"
+              placeholder="Ahmad Rahimi"
+              autocomplete="name"
+              required
+            >
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="email" data-i18n="registerEmailLabel">Email</label>
+            <input
+              type="email"
+              id="email"
+              class="field-input"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            >
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="phone" data-i18n="registerPhoneLabel">Phone (optional)</label>
+            <input
+              type="tel"
+              id="phone"
+              class="field-input"
+              placeholder="+93 700 000 000"
+              autocomplete="tel"
+            >
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="password" data-i18n="registerPasswordLabel">Password</label>
+            <input
+              type="password"
+              id="password"
+              class="field-input"
+              placeholder="At least 8 characters"
+              autocomplete="new-password"
+              minlength="8"
+              required
+            >
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="passwordConfirm" data-i18n="registerPasswordConfirmLabel">Confirm password</label>
+            <input
+              type="password"
+              id="passwordConfirm"
+              class="field-input"
+              placeholder="Repeat password"
+              autocomplete="new-password"
+              minlength="8"
+              required
+            >
+          </div>
+
+          <div class="auth-optional-section">
+            <h3 data-i18n="registerOptionalTitle">Optional — set up now</h3>
+            <p data-i18n="registerOptionalText">
+              You can add these later from your dashboard.
+            </p>
+
+            <div class="field-group">
+              <label class="field-label" for="hesabPay" data-i18n="registerHesabPayLabel">Hesab Pay number</label>
+              <input
+                type="text"
+                id="hesabPay"
+                class="field-input"
+                placeholder="07XX XXX XXX"
+              >
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="usdtWallet" data-i18n="registerWalletLabel">USDT wallet address (TRC20)</label>
+              <input
+                type="text"
+                id="usdtWallet"
+                class="field-input"
+                placeholder="T..."
+              >
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-gold" id="submitBtn">
+            <span data-i18n="registerBtn">Create account</span>
+          </button>
+        </form>
+
+        <p class="auth-terms">
+          <span data-i18n="registerTerms">By registering, you agree to our</span>
+          <a href="terms.html" data-i18n="footerTerms">Terms of Service</a>
+          <span data-i18n="loginAnd">and</span>
+          <a href="privacy.html" data-i18n="footerPrivacy">Privacy Policy</a>.
+        </p>
+      </div>
+    </main>
+
+  </div>
+
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/notifications.js"></script>
+  <script src="../assets/js/register.js"></script>
+</body>
+</html>

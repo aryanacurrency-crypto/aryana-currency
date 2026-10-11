@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="My orders — Aryana Currency.">
+  <meta name="theme-color" content="#101b30">
+
+  <title>My Orders | ARYANA CURRENCY</title>
+
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/notifications.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+  <link rel="stylesheet" href="../assets/css/exchange.css">
+</head>
+<body>
+
+  <div class="dashboard-page">
+
+    <!-- Header -->
+    <header class="dash-header">
+      <div class="container dash-header-inner">
+        <a href="dashboard.html" class="brand">
+          <img src="../assets/images/logo.png" alt="ARYANA CURRENCY" class="brand-logo" width="40" height="40">
+          <div>
+            <div class="brand-name">ARYANA CURRENCY</div>
+            <div class="brand-subtitle" data-i18n="brandSubtitle">DIGITAL EXCHANGE</div>
+          </div>
+        </a>
+
+        <div class="dash-actions">
+          <select class="language-select" id="languageSelect" aria-label="Select language">
+            <option value="en">EN</option>
+            <option value="fa">دری</option>
+            <option value="ps">پښتو</option>
+          </select>
+          <button class="dash-icon-btn" id="themeToggle" aria-label="Toggle theme">☾</button>
+          <button class="btn btn-outline-dark dash-logout" id="logoutBtn">
+            <span data-i18n="logoutBtn">Logout</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container dash-main">
+
+      <!-- Header + New Order -->
+      <div class="dash-welcome" style="display:flex; justify-content:space-between; align-items:end; flex-wrap:wrap; gap:15px;">
+        <div>
+          <h1 data-i18n="ordersTitle">My Orders</h1>
+          <p data-i18n="ordersSubtitle">All your transactions in one place.</p>
+        </div>
+        <a href="exchange.html" class="btn btn-gold" data-i18n="ordersNewOrder">+ New Order</a>
+      </div>
+
+      <!-- Filters -->
+      <div class="exchange-tabs" style="max-width:640px;">
+        <button class="exchange-tab active" data-filter=""> <span data-i18n="filterAll">All</span> </button>
+        <button class="exchange-tab" data-filter="PENDING"> <span data-i18n="filterPending">Pending</span> </button>
+        <button class="exchange-tab" data-filter="AWAITING_REVIEW"> <span data-i18n="filterReview">In Review</span> </button>
+        <button class="exchange-tab" data-filter="COMPLETED"> <span data-i18n="filterCompleted">Completed</span> </button>
+        <button class="exchange-tab" data-filter="CANCELLED"> <span data-i18n="filterCancelled">Cancelled</span> </button>
+      </div>
+
+      <!-- Loading -->
+      <div id="loadingBox" class="card" style="text-align:center; padding:50px;">
+        <div class="spinner" style="width:30px; height:30px; border-width:3px; color: var(--gold);"></div>
+      </div>
+
+      <!-- Orders -->
+      <section class="dash-section" id="ordersSection" style="display:none;">
+        <div class="orders-table-wrap">
+          <div class="empty-state" id="emptyBox" style="display:none;">
+            <div class="empty-state-icon">◇</div>
+            <h3 data-i18n="dashNoOrders">No orders yet</h3>
+            <p data-i18n="dashNoOrdersText">Your transactions will appear here.</p>
+          </div>
+
+          <table class="orders-table" id="ordersTable" style="display:none;">
+            <thead>
+              <tr>
+                <th data-i18n="thReference">Reference</th>
+                <th data-i18n="thSide">Type</th>
+                <th data-i18n="thAmount">Amount</th>
+                <th data-i18n="thStatus">Status</th>
+                <th data-i18n="thDate">Date</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="ordersBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/notifications.js"></script>
+  <script src="../assets/js/animations.js"></script>
+  <script src="../assets/js/orders.js"></script>
+</body>
+</html>

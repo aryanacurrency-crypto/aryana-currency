@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Login to your Aryana Currency account.">
+  <meta name="theme-color" content="#101b30">
+
+  <title>Login | ARYANA CURRENCY</title>
+
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/auth.css">
+  <link rel="stylesheet" href="../assets/css/notifications.css">
+</head>
+<body>
+
+  <div class="auth-page">
+
+    <!-- Left: Brand panel -->
+    <aside class="auth-brand">
+      <a href="../index.html" class="auth-brand-logo">
+        <img src="../assets/images/logo.png" alt="ARYANA CURRENCY">
+        <div class="auth-brand-logo-text">
+          ARYANA CURRENCY
+          <small data-i18n="brandSubtitle">DIGITAL EXCHANGE</small>
+        </div>
+      </a>
+
+      <div class="auth-brand-content">
+        <h2 data-i18n="loginBrandTitle">Welcome back to<br><span>the trusted exchange.</span></h2>
+        <p data-i18n="loginBrandText">
+          Sign in to access your account, manage your wallet, and exchange USDT with clear, live rates.
+        </p>
+
+        <ul class="auth-brand-points">
+          <li data-i18n="loginPoint1">Live USDT rates</li>
+          <li data-i18n="loginPoint2">Manual-verified payments</li>
+          <li data-i18n="loginPoint3">Licensed & secure platform</li>
+        </ul>
+      </div>
+
+      <div class="auth-brand-footer">
+        © <span id="currentYear"></span> ARYANA CURRENCY
+      </div>
+    </aside>
+
+    <!-- Right: Form -->
+    <main class="auth-form-wrap">
+      <div class="auth-form-container">
+        <div class="auth-form-header">
+          <div class="section-kicker" data-i18n="loginKicker">WELCOME BACK</div>
+          <h1 data-i18n="loginTitle">Sign in</h1>
+          <p>
+            <span data-i18n="loginNoAccount">Don't have an account?</span>
+            <a href="register.html" data-i18n="navRegister">Register</a>
+          </p>
+        </div>
+
+        <div class="alert alert-error" id="errorBox" style="display:none;"></div>
+
+        <form class="auth-form" id="loginForm">
+          <div class="field-group">
+            <label class="field-label" for="email" data-i18n="loginEmailLabel">Email</label>
+            <input
+              type="email"
+              id="email"
+              class="field-input"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            >
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="password">
+              <span data-i18n="loginPasswordLabel">Password</span>
+              <a href="#" data-i18n="loginForgot">Forgot?</a>
+            </label>
+            <input
+              type="password"
+              id="password"
+              class="field-input"
+              placeholder="••••••••"
+              autocomplete="current-password"
+              minlength="8"
+              required
+            >
+          </div>
+
+          <button type="submit" class="btn btn-gold" id="submitBtn">
+            <span data-i18n="loginBtn">Sign in</span>
+          </button>
+        </form>
+
+        <p class="auth-terms">
+          <span data-i18n="loginTerms">By signing in, you agree to our</span>
+          <a href="terms.html" data-i18n="footerTerms">Terms of Service</a>
+          <span data-i18n="loginAnd">and</span>
+          <a href="privacy.html" data-i18n="footerPrivacy">Privacy Policy</a>.
+        </p>
+      </div>
+    </main>
+
+  </div>
+
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/notifications.js"></script>
+  <script src="../assets/js/login.js"></script>
+</body>
+</html>

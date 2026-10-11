@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Manage rates — Aryana Currency Admin.">
+  <meta name="theme-color" content="#101b30">
+
+  <title>Rates | Admin — ARYANA CURRENCY</title>
+
+  <link rel="icon" type="image/png" href="../../assets/images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../assets/css/admin.css">
+  <link rel="stylesheet" href="../../assets/css/notifications.css">
+</head>
+<body>
+
+  <div class="admin-page">
+
+    <header class="admin-topbar">
+      <div class="container admin-topbar-inner">
+        <a href="index.html" class="admin-brand">
+          <img src="../../assets/images/logo.png" alt="ARYANA CURRENCY">
+          <div class="admin-brand-text">
+            ARYANA CURRENCY
+            <small>ADMIN PANEL</small>
+          </div>
+        </a>
+
+        <div class="admin-topbar-actions">
+          <select class="language-select" id="languageSelect" aria-label="Language" style="background:rgba(255,255,255,.08); color:#fff; border-color:rgba(255,255,255,.15);">
+            <option value="en">EN</option>
+            <option value="fa">دری</option>
+            <option value="ps">پښتو</option>
+          </select>
+          <button class="dash-icon-btn" id="themeToggle" aria-label="Toggle theme">☾</button>
+          <button class="dash-icon-btn" id="logoutBtn" title="Logout">⏻</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="admin-layout">
+
+      <aside class="admin-sidebar">
+        <ul class="admin-nav">
+          <li><a href="index.html"><span class="admin-nav-icon">◈</span><span class="admin-nav-text" data-i18n="adminNavDashboard">Dashboard</span></a></li>
+          <li><a href="orders.html"><span class="admin-nav-icon">⊞</span><span class="admin-nav-text" data-i18n="adminNavOrders">Orders</span></a></li>
+          <li><a href="kyc.html"><span class="admin-nav-icon">☑</span><span class="admin-nav-text" data-i18n="adminNavKyc">KYC</span></a></li>
+          <li><a href="rates.html" class="active"><span class="admin-nav-icon">₮</span><span class="admin-nav-text" data-i18n="adminNavRates">Rates</span></a></li>
+          <li><a href="users.html"><span class="admin-nav-icon">◯</span><span class="admin-nav-text" data-i18n="adminNavUsers">Users</span></a></li>
+          <li class="admin-nav-divider"></li>
+          <li><a href="../dashboard.html"><span class="admin-nav-icon">←</span><span class="admin-nav-text" data-i18n="adminNavBack">Back to site</span></a></li>
+        </ul>
+      </aside>
+
+      <main class="admin-main">
+
+        <div class="admin-header">
+          <h1 data-i18n="adminRatesTitle">Exchange Rates</h1>
+          <p data-i18n="adminRatesSubtitle">Set the current USDT/AFN rate. The old rate will be deactivated automatically.</p>
+        </div>
+
+        <div class="alert alert-success" id="successBox" style="display:none;"></div>
+        <div class="alert alert-error" id="errorBox" style="display:none;"></div>
+
+        <div class="card card-no-hover" style="margin-bottom:25px;" id="currentRateCard">
+          <h3 style="font-family:'Manrope',sans-serif; font-size:14px; margin-bottom:18px; letter-spacing:.5px; text-transform:uppercase; color:var(--muted);" data-i18n="adminCurrentRate">
+            Current Rate
+          </h3>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+            <div>
+              <div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;" data-i18n="adminBuyRate">Platform Buys At</div>
+              <div style="font-family:'Manrope',sans-serif; font-size:28px; font-weight:800; color:var(--green);" id="currentBuy">—</div>
+            </div>
+            <div>
+              <div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;" data-i18n="adminSellRate">Platform Sells At</div>
+              <div style="font-family:'Manrope',sans-serif; font-size:28px; font-weight:800; color:#8a6b30;" id="currentSell">—</div>
+            </div>
+          </div>
+          <div style="margin-top:18px; padding-top:18px; border-top:1px solid var(--border); font-size:11px; color:var(--muted);">
+            <span data-i18n="adminLastUpdated">Last updated:</span>
+            <strong id="currentUpdated" style="color:var(--text);">—</strong>
+          </div>
+        </div>
+
+        <div class="card card-no-hover">
+          <h3 style="font-family:'Manrope',sans-serif; font-size:15px; margin-bottom:20px;" data-i18n="adminSetNewRate">
+            Set New Rate
+          </h3>
+
+          <form id="rateForm">
+            <div class="inline-form">
+              <div class="field-group">
+                <label class="field-label" for="buyPrice" data-i18n="adminBuyRate">
+                  Platform Buys At (AFN per USDT)
+                </label>
+                <input type="number" id="buyPrice" class="field-input" step="0.01" min="0" placeholder="69.00" required>
+              </div>
+
+              <div class="field-group">
+                <label class="field-label" for="sellPrice" data-i18n="adminSellRate">
+                  Platform Sells At (AFN per USDT)
+                </label>
+                <input type="number" id="sellPrice" class="field-input" step="0.01" min="0" placeholder="70.50" required>
+              </div>
+
+              <button type="submit" class="btn btn-gold" id="submitBtn" style="height:44px;">
+                <span data-i18n="adminSaveRate">Save Rate</span>
+              </button>
+            </div>
+
+            <p style="font-size:11px; color:var(--muted); margin-top:10px; line-height:1.7;">
+              <span data-i18n="adminRateNote">
+                The sell price must be higher than the buy price — that difference is the platform's spread.
+              </span>
+            </p>
+          </form>
+        </div>
+
+        <section class="admin-section" style="margin-top:35px;">
+          <div class="admin-section-head">
+            <h2 data-i18n="adminRateHistory">Recent Rate History</h2>
+          </div>
+
+          <div class="orders-table-wrap">
+            <table class="orders-table">
+              <thead>
+                <tr>
+                  <th data-i18n="adminBuyRate">Buy</th>
+                  <th data-i18n="adminSellRate">Sell</th>
+                  <th data-i18n="thStatus">Status</th>
+                  <th data-i18n="thDate">Date</th>
+                </tr>
+              </thead>
+              <tbody id="historyBody">
+                <tr><td colspan="4" style="text-align:center; padding:30px; color:var(--muted);">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="../../assets/js/config.js"></script>
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/theme.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/api.js"></script>
+  <script src="../../assets/js/notifications.js"></script>
+  <script src="../../assets/js/animations.js"></script>
+  <script src="../../assets/js/admin/rates.js"></script>
+</body>
+</html>

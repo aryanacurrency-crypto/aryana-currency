@@ -1,0 +1,93 @@
+# ═══════════════════════════════════════
+# Environment Variables
+# ═══════════════════════════════════════
+.env
+.env.local
+.env.*.local
+backend/.env
+*.env
+
+# ═══════════════════════════════════════
+# Python
+# ═══════════════════════════════════════
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ═══════════════════════════════════════
+# Virtual Environment
+# ═══════════════════════════════════════
+.venv/
+venv/
+ENV/
+env/
+.venv.bak/
+
+# ═══════════════════════════════════════
+# KYC Documents & Uploads
+# ═══════════════════════════════════════
+backend/storage/
+storage/
+*.jpg
+*.jpeg
+*.png
+*.webp
+!frontend/assets/images/*
+!frontend/assets/icons/*
+
+# ═══════════════════════════════════════
+# IDE & Editor
+# ═══════════════════════════════════════
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ═══════════════════════════════════════
+# Database
+# ═══════════════════════════════════════
+*.db
+*.sqlite
+*.sqlite3
+
+# ═══════════════════════════════════════
+# Logs & Misc
+# ═══════════════════════════════════════
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ═══════════════════════════════════════
+# OS
+# ═══════════════════════════════════════
+Thumbs.db
+desktop.ini
+
+# ═══════════════════════════════════════
+# Alembic (keep migrations, ignore cache)
+# ═══════════════════════════════════════
+backend/alembic/versions/__pycache__/

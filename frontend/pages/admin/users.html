@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Manage users — Aryana Currency Admin.">
+  <meta name="theme-color" content="#101b30">
+
+  <title>Users | Admin — ARYANA CURRENCY</title>
+
+  <link rel="icon" type="image/png" href="../../assets/images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../assets/css/admin.css">
+  <link rel="stylesheet" href="../../assets/css/notifications.css">
+</head>
+<body>
+
+  <div class="admin-page">
+
+    <header class="admin-topbar">
+      <div class="container admin-topbar-inner">
+        <a href="index.html" class="admin-brand">
+          <img src="../../assets/images/logo.png" alt="ARYANA CURRENCY">
+          <div class="admin-brand-text">
+            ARYANA CURRENCY
+            <small>ADMIN PANEL</small>
+          </div>
+        </a>
+
+        <div class="admin-topbar-actions">
+          <select class="language-select" id="languageSelect" aria-label="Language" style="background:rgba(255,255,255,.08); color:#fff; border-color:rgba(255,255,255,.15);">
+            <option value="en">EN</option>
+            <option value="fa">دری</option>
+            <option value="ps">پښتو</option>
+          </select>
+          <button class="dash-icon-btn" id="themeToggle" aria-label="Toggle theme">☾</button>
+          <button class="dash-icon-btn" id="logoutBtn" title="Logout">⏻</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="admin-layout">
+
+      <aside class="admin-sidebar">
+        <ul class="admin-nav">
+          <li><a href="index.html"><span class="admin-nav-icon">◈</span><span class="admin-nav-text" data-i18n="adminNavDashboard">Dashboard</span></a></li>
+          <li><a href="orders.html"><span class="admin-nav-icon">⊞</span><span class="admin-nav-text" data-i18n="adminNavOrders">Orders</span></a></li>
+          <li><a href="kyc.html"><span class="admin-nav-icon">☑</span><span class="admin-nav-text" data-i18n="adminNavKyc">KYC</span></a></li>
+          <li><a href="rates.html"><span class="admin-nav-icon">₮</span><span class="admin-nav-text" data-i18n="adminNavRates">Rates</span></a></li>
+          <li><a href="users.html" class="active"><span class="admin-nav-icon">◯</span><span class="admin-nav-text" data-i18n="adminNavUsers">Users</span></a></li>
+          <li class="admin-nav-divider"></li>
+          <li><a href="../dashboard.html"><span class="admin-nav-icon">←</span><span class="admin-nav-text" data-i18n="adminNavBack">Back to site</span></a></li>
+        </ul>
+      </aside>
+
+      <main class="admin-main">
+
+        <div class="admin-header">
+          <h1 data-i18n="adminUsersTitle">Users</h1>
+          <p data-i18n="adminUsersSubtitle">Manage all registered users.</p>
+        </div>
+
+        <div class="filter-row">
+          <input type="text" class="field-input" id="searchInput" placeholder="Search by name, email or phone…">
+        </div>
+
+        <div id="loadingBox" class="admin-empty">
+          <div class="spinner" style="width:24px; height:24px; border-width:3px; color:var(--gold);"></div>
+        </div>
+
+        <section class="admin-section" id="usersSection" style="display:none;">
+          <div class="orders-table-wrap">
+            <div class="admin-empty" id="emptyBox" style="display:none;">
+              <div class="admin-empty-icon">◯</div>
+              <p data-i18n="adminNoUsers">No users found.</p>
+            </div>
+
+            <table class="orders-table" id="usersTable" style="display:none;">
+              <thead>
+                <tr>
+                  <th data-i18n="thName">Name</th>
+                  <th data-i18n="thEmail">Email</th>
+                  <th data-i18n="thPhone">Phone</th>
+                  <th data-i18n="thRole">Role</th>
+                  <th data-i18n="thStatus">Status</th>
+                  <th data-i18n="thDate">Joined</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="usersBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="../../assets/js/config.js"></script>
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/theme.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/api.js"></script>
+  <script src="../../assets/js/notifications.js"></script>
+  <script src="../../assets/js/animations.js"></script>
+  <script src="../../assets/js/admin/users.js"></script>
+</body>
+</html>

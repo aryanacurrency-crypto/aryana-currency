@@ -1,0 +1,443 @@
+/* ═══════════════════════════════════════
+   ARYANA CURRENCY — Profile Page
+   ═══════════════════════════════════════ */
+
+.profile-page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.profile-main {
+  padding-block: 40px 60px;
+  max-width: 900px;
+  margin-inline: auto;
+}
+
+/* --- Header --- */
+.profile-header-card {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 28px;
+  background: linear-gradient(135deg, #101b30 0%, #1a2b45 100%);
+  border-radius: 18px;
+  margin-bottom: 25px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-header-card::before {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border: 1px solid rgba(198, 165, 104, .18);
+  border-radius: 50%;
+  top: -80px;
+  right: -60px;
+  box-shadow: 0 0 0 25px rgba(198, 165, 104, .04),
+              0 0 0 50px rgba(198, 165, 104, .025);
+  pointer-events: none;
+}
+
+.profile-avatar {
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), #a3864c);
+  color: var(--navy);
+  display: grid;
+  place-items: center;
+  font-family: "Manrope", sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  border: 3px solid rgba(255, 255, 255, .15);
+  position: relative;
+  z-index: 1;
+}
+
+.profile-header-info {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+}
+
+.profile-header-info h1 {
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(20px, 2.5vw, 26px);
+  font-weight: 800;
+  letter-spacing: -.5px;
+  margin-bottom: 5px;
+}
+
+.profile-header-info .profile-email {
+  color: #c2cad8;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.profile-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.profile-badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+.profile-badge.gold {
+  background: rgba(198, 165, 104, .2);
+  color: var(--gold-light);
+}
+
+.profile-badge.green {
+  background: rgba(19, 133, 104, .25);
+  color: #8ee6c5;
+}
+
+.profile-badge.gray {
+  background: rgba(255, 255, 255, .1);
+  color: #c2cad8;
+}
+
+/* --- Tabs --- */
+.profile-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 25px;
+  overflow-x: auto;
+}
+
+.profile-tab {
+  flex: 1;
+  min-width: 120px;
+  padding: 11px 18px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+}
+
+.profile-tab:hover {
+  color: var(--text);
+}
+
+.profile-tab.active {
+  background: var(--navy);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(16, 27, 48, .15);
+}
+
+/* --- Card --- */
+.profile-card {
+  padding: 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  margin-bottom: 20px;
+}
+
+.profile-card h2 {
+  font-family: "Manrope", sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-card h2::before {
+  content: "";
+  width: 3px;
+  height: 16px;
+  background: var(--gold);
+  border-radius: 2px;
+}
+
+.profile-card > p {
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 22px;
+  line-height: 1.7;
+}
+
+/* --- Form rows --- */
+.profile-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.profile-form .field-group {
+  margin-bottom: 18px;
+}
+
+.profile-form .field-input:disabled {
+  background: var(--bg);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+body.dark .profile-form .field-input:disabled {
+  background: #0d1524;
+}
+
+.field-hint {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 5px;
+  line-height: 1.6;
+}
+
+/* --- Info rows --- */
+.profile-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-block: 14px;
+  font-size: 13px;
+  gap: 15px;
+  border-bottom: 1px solid var(--border);
+}
+
+.profile-info-row:last-child {
+  border-bottom: none;
+}
+
+.profile-info-row span:first-child {
+  color: var(--muted);
+}
+
+.profile-info-row span:last-child {
+  font-weight: 700;
+  text-align: end;
+}
+
+/* --- Save bar --- */
+.profile-save-bar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+/* --- Tabs content --- */
+.profile-tab-content {
+  display: none;
+}
+
+.profile-tab-content.active {
+  display: block;
+}
+
+/* ═══════════════════════════════════════
+   KYC (Identity Verification)
+   ═══════════════════════════════════════ */
+
+.kyc-status-banner {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 18px 22px;
+  border-radius: 14px;
+  border: 1px solid;
+  margin-bottom: 20px;
+}
+
+.kyc-status-banner.not-submitted {
+  background: rgba(198, 165, 104, .08);
+  border-color: rgba(198, 165, 104, .3);
+  color: #8a6b30;
+}
+
+.kyc-status-banner.pending {
+  background: rgba(59, 130, 246, .08);
+  border-color: rgba(59, 130, 246, .3);
+  color: #1d4ed8;
+}
+
+.kyc-status-banner.approved {
+  background: rgba(19, 133, 104, .08);
+  border-color: rgba(19, 133, 104, .3);
+  color: var(--green);
+}
+
+.kyc-status-banner.rejected {
+  background: rgba(196, 91, 91, .08);
+  border-color: rgba(196, 91, 91, .3);
+  color: var(--red);
+}
+
+body.dark .kyc-status-banner.not-submitted { color: var(--gold-light); }
+body.dark .kyc-status-banner.pending { color: #93c5fd; }
+
+.kyc-status-icon {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, .5);
+  font-size: 20px;
+}
+
+body.dark .kyc-status-icon {
+  background: rgba(0, 0, 0, .2);
+}
+
+.kyc-status-text strong {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 3px;
+}
+
+.kyc-status-text small {
+  font-size: 11px;
+  opacity: .85;
+  line-height: 1.6;
+}
+
+/* Upload grid */
+.kyc-upload-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 15px;
+}
+
+.kyc-upload-card {
+  padding: 20px 16px;
+  background: var(--bg);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  text-align: center;
+  transition: border-color .2s, background .2s;
+}
+
+body.dark .kyc-upload-card {
+  background: #0d1524;
+}
+
+.kyc-upload-card:hover {
+  border-color: var(--gold);
+}
+
+.kyc-upload-icon {
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 12px;
+  border-radius: 11px;
+  background: rgba(198, 165, 104, .13);
+  color: #98763d;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+}
+
+.kyc-upload-card h3 {
+  font-size: 12px;
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+
+.kyc-upload-card p {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  min-height: 32px;
+}
+
+.kyc-file-name {
+  display: block;
+  margin-top: 10px;
+  font-size: 10px;
+  color: var(--green);
+  overflow-wrap: anywhere;
+  font-family: monospace;
+}
+
+/* Document status */
+.kyc-doc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 15px;
+  border-radius: 10px;
+  background: var(--bg);
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+
+body.dark .kyc-doc-row {
+  background: #0d1524;
+}
+
+.kyc-doc-type {
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.kyc-doc-date {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.kyc-doc-reason {
+  font-size: 10px;
+  color: var(--red);
+  margin-top: 4px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 700px) {
+  .profile-main {
+    padding-block: 25px 40px;
+  }
+  .profile-header-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 25px 20px;
+  }
+  .profile-badges {
+    justify-content: center;
+  }
+  .profile-form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .profile-card {
+    padding: 22px;
+  }
+  .profile-tab {
+    min-width: auto;
+    padding: 10px 14px;
+    font-size: 11px;
+  }
+  .kyc-upload-grid {
+    grid-template-columns: 1fr;
+  }
+}

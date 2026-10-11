@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Your Aryana Currency dashboard.">
+  <meta name="theme-color" content="#101b30">
+
+  <title>Dashboard | ARYANA CURRENCY</title>
+
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+  <link rel="stylesheet" href="../assets/css/notifications.css">
+</head>
+<body>
+
+  <div class="dashboard-page">
+
+    <!-- Header -->
+    <header class="dash-header">
+      <div class="container dash-header-inner">
+        <a href="../index.html" class="brand">
+          <img src="../assets/images/logo.png" alt="ARYANA CURRENCY" class="brand-logo" width="40" height="40">
+          <div>
+            <div class="brand-name">ARYANA CURRENCY</div>
+            <div class="brand-subtitle" data-i18n="brandSubtitle">DIGITAL EXCHANGE</div>
+          </div>
+        </a>
+
+        <div class="dash-actions">
+          <select class="language-select" id="languageSelect" aria-label="Select language">
+            <option value="en">EN</option>
+            <option value="fa">دری</option>
+            <option value="ps">پښتو</option>
+          </select>
+
+          <button class="dash-icon-btn" id="themeToggle" aria-label="Toggle theme">☾</button>
+
+          <a href="profile.html" class="dash-icon-btn" title="Profile">◯</a>
+
+          <a href="admin/index.html" class="btn btn-gold" id="adminPanelBtn" style="display:none;">
+            <span data-i18n="adminPanelBtn">⚙ Admin Panel</span>
+          </a>
+
+          <button class="btn btn-outline-dark dash-logout" id="logoutBtn">
+            <span data-i18n="logoutBtn">Logout</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="container dash-main">
+
+      <!-- Welcome + User -->
+      <div class="dash-welcome">
+        <a href="profile.html" class="dash-user" style="margin-bottom:14px; text-decoration:none; color:inherit; cursor:pointer;">
+          <div class="dash-avatar" id="userAvatar">A</div>
+          <div class="dash-user-info">
+            <strong id="userName">—</strong>
+            <small id="userEmail">—</small>
+          </div>
+        </a>
+        <h1>
+          <span data-i18n="dashWelcome">Welcome back,</span>
+          <span id="welcomeName">—</span>
+        </h1>
+        <p data-i18n="dashSubtitle">Here's a summary of your account.</p>
+      </div>
+
+      <!-- Balance cards -->
+      <div class="balance-grid">
+        <div class="balance-card usdt">
+          <div class="balance-card-header">
+            <div class="balance-card-label">
+              <span class="balance-icon">₮</span>
+              <span data-i18n="dashUsdtBalance">Tether (USDT)</span>
+            </div>
+          </div>
+          <div class="balance-amount" id="usdtBalance">—</div>
+          <div class="balance-sub" data-i18n="dashAvailableBalance">Available balance</div>
+          <div class="balance-locked" id="usdtLocked" style="display:none;">
+            <span data-i18n="dashLocked">Locked:</span> <strong>0</strong>
+          </div>
+        </div>
+
+        <div class="balance-card afn">
+          <div class="balance-card-header">
+            <div class="balance-card-label">
+              <span class="balance-icon">؋</span>
+              <span data-i18n="dashAfnBalance">Afghan Afghani (AFN)</span>
+            </div>
+          </div>
+          <div class="balance-amount" id="afnBalance">—</div>
+          <div class="balance-sub" data-i18n="dashAvailableBalance">Available balance</div>
+        </div>
+      </div>
+
+      <!-- Quick actions -->
+      <div class="quick-actions">
+        <a href="exchange.html?side=BUY" class="action-card buy">
+          <div class="action-icon">↓</div>
+          <div>
+            <strong data-i18n="dashBuyUsdt">Buy USDT</strong>
+            <small data-i18n="dashBuyUsdtText">Pay AFN, receive USDT</small>
+          </div>
+        </a>
+
+        <a href="exchange.html?side=SELL" class="action-card sell">
+          <div class="action-icon">↑</div>
+          <div>
+            <strong data-i18n="dashSellUsdt">Sell USDT</strong>
+            <small data-i18n="dashSellUsdtText">Send USDT, receive AFN</small>
+          </div>
+        </a>
+      </div>
+
+      <!-- Recent orders -->
+      <section class="dash-section">
+        <div class="dash-section-head">
+          <h2 data-i18n="dashRecentOrders">Recent orders</h2>
+          <a href="orders.html" data-i18n="dashViewAll">View all →</a>
+        </div>
+
+        <div class="orders-table-wrap" id="ordersWrap">
+          <div class="empty-state" id="ordersEmpty">
+            <div class="empty-state-icon">◇</div>
+            <h3 data-i18n="dashNoOrders">No orders yet</h3>
+            <p data-i18n="dashNoOrdersText">Your transactions will appear here.</p>
+          </div>
+
+          <table class="orders-table" id="ordersTable" style="display:none;">
+            <thead>
+              <tr>
+                <th data-i18n="thReference">Reference</th>
+                <th data-i18n="thSide">Type</th>
+                <th data-i18n="thAmount">Amount</th>
+                <th data-i18n="thStatus">Status</th>
+                <th data-i18n="thDate">Date</th>
+              </tr>
+            </thead>
+            <tbody id="ordersBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/notifications.js"></script>
+  <script src="../assets/js/animations.js"></script>
+  <script src="../assets/js/dashboard.js"></script>
+</body>
+</html>

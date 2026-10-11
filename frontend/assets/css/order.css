@@ -1,0 +1,422 @@
+/* ═══════════════════════════════════════
+   ARYANA CURRENCY — Order Detail Page
+   ═══════════════════════════════════════ */
+
+.order-page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.order-main {
+  padding-block: 40px 60px;
+  max-width: 900px;
+  margin-inline: auto;
+}
+
+/* --- Header --- */
+.order-header {
+  margin-bottom: 25px;
+}
+
+.order-header-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.order-back {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  text-decoration: none;
+  transition: border-color .2s, color .2s;
+}
+
+.order-back:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.order-header h1 {
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(22px, 3vw, 28px);
+  font-weight: 800;
+  letter-spacing: -.6px;
+}
+
+.order-ref {
+  color: var(--muted);
+  font-size: 12px;
+  font-family: monospace;
+}
+
+body[dir="rtl"] .order-header h1 {
+  letter-spacing: 0;
+}
+
+/* --- Status banner --- */
+.order-status-banner {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 18px 22px;
+  border-radius: 14px;
+  margin-bottom: 25px;
+  border: 1px solid;
+}
+
+.order-status-banner.pending {
+  background: rgba(198, 165, 104, .08);
+  border-color: rgba(198, 165, 104, .3);
+  color: #8a6b30;
+}
+
+.order-status-banner.review {
+  background: rgba(59, 130, 246, .08);
+  border-color: rgba(59, 130, 246, .3);
+  color: #1d4ed8;
+}
+
+.order-status-banner.processing {
+  background: rgba(99, 102, 241, .08);
+  border-color: rgba(99, 102, 241, .3);
+  color: #4338ca;
+}
+
+.order-status-banner.completed {
+  background: rgba(19, 133, 104, .08);
+  border-color: rgba(19, 133, 104, .3);
+  color: var(--green);
+}
+
+.order-status-banner.cancelled,
+.order-status-banner.rejected {
+  background: rgba(196, 91, 91, .08);
+  border-color: rgba(196, 91, 91, .3);
+  color: var(--red);
+}
+
+body.dark .order-status-banner.pending { color: var(--gold-light); }
+body.dark .order-status-banner.review { color: #93c5fd; }
+body.dark .order-status-banner.processing { color: #a5b4fc; }
+
+.status-banner-icon {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, .4);
+  font-size: 20px;
+}
+
+body.dark .status-banner-icon {
+  background: rgba(0, 0, 0, .2);
+}
+
+.status-banner-text strong {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 3px;
+}
+
+.status-banner-text small {
+  font-size: 11px;
+  opacity: .85;
+}
+
+/* --- Grid --- */
+.order-grid {
+  display: grid;
+  grid-template-columns: 1.3fr .7fr;
+  gap: 22px;
+  align-items: start;
+}
+
+/* --- Card --- */
+.order-card {
+  padding: 25px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  margin-bottom: 20px;
+}
+
+.order-card h2 {
+  font-family: "Manrope", sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.order-card h2::before {
+  content: "";
+  width: 3px;
+  height: 16px;
+  background: var(--gold);
+  border-radius: 2px;
+}
+
+/* --- Details rows --- */
+.order-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.order-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-block: 12px;
+  font-size: 13px;
+  gap: 15px;
+}
+
+.order-detail-row:not(:last-child) {
+  border-bottom: 1px solid var(--border);
+}
+
+.order-detail-row span:first-child {
+  color: var(--muted);
+}
+
+.order-detail-row span:last-child {
+  font-weight: 700;
+  text-align: end;
+  overflow-wrap: anywhere;
+}
+
+.order-detail-row.total {
+  padding-top: 15px;
+  margin-top: 5px;
+  border-top: 2px solid var(--gold);
+  font-size: 15px;
+}
+
+.order-detail-row.total span:last-child {
+  color: var(--gold);
+  font-size: 18px;
+  font-family: "Manrope", sans-serif;
+}
+
+/* --- Payment instructions --- */
+.payment-instructions {
+  background: linear-gradient(135deg, #101b30, #1a2b45);
+  color: #fff;
+  padding: 25px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.payment-instructions::before {
+  content: "";
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 1px solid rgba(198, 165, 104, .15);
+  top: -80px;
+  right: -60px;
+  pointer-events: none;
+}
+
+.payment-instructions h3 {
+  font-family: "Manrope", sans-serif;
+  font-size: 14px;
+  margin-bottom: 15px;
+  position: relative;
+  z-index: 1;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.payment-info {
+  position: relative;
+  z-index: 1;
+}
+
+.payment-field {
+  margin-bottom: 15px;
+}
+
+.payment-field label {
+  display: block;
+  font-size: 11px;
+  color: #aab5c6;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.payment-value {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 10px;
+  padding: 12px 15px;
+  font-family: monospace;
+  font-size: 14px;
+  color: #fff;
+  overflow-wrap: anywhere;
+}
+
+.copy-btn {
+  flex-shrink: 0;
+  border: none;
+  background: rgba(198, 165, 104, .2);
+  color: var(--gold-light);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s;
+}
+
+.copy-btn:hover {
+  background: rgba(198, 165, 104, .35);
+}
+
+.payment-warning {
+  font-size: 11px;
+  color: #d4dceb;
+  line-height: 1.8;
+  margin-top: 15px;
+  padding: 12px 15px;
+  background: rgba(196, 91, 91, .15);
+  border-inline-start: 3px solid var(--red);
+  border-radius: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Forms --- */
+.order-form .field-group {
+  margin-bottom: 18px;
+}
+
+/* --- Actions --- */
+.order-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.order-actions .btn {
+  flex: 1;
+}
+
+/* --- Timeline --- */
+.order-timeline {
+  list-style: none;
+  position: relative;
+  padding-inline-start: 25px;
+}
+
+.order-timeline::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--border);
+}
+
+body[dir="rtl"] .order-timeline {
+  padding-inline-start: 0;
+  padding-inline-end: 25px;
+}
+
+body[dir="rtl"] .order-timeline::before {
+  left: auto;
+  right: 8px;
+}
+
+.order-timeline li {
+  position: relative;
+  padding-block: 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.order-timeline li::before {
+  content: "";
+  position: absolute;
+  left: -21px;
+  top: 16px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border);
+  border: 2px solid var(--surface);
+}
+
+body[dir="rtl"] .order-timeline li::before {
+  left: auto;
+  right: -21px;
+}
+
+.order-timeline li.active {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.order-timeline li.active::before {
+  background: var(--gold);
+}
+
+.order-timeline li.done::before {
+  background: var(--green);
+}
+
+.order-timeline li strong {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.order-timeline li small {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* --- Responsive --- */
+@media (max-width: 800px) {
+  .order-grid {
+    grid-template-columns: 1fr;
+  }
+  .order-card {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-main {
+    padding-block: 25px 40px;
+  }
+  .order-detail-row {
+    font-size: 12px;
+  }
+  .payment-value {
+    font-size: 12px;
+    padding: 10px 12px;
+  }
+}

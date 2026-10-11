@@ -1,0 +1,470 @@
+/* ═══════════════════════════════════════
+   ARYANA CURRENCY — Home Page Styles
+   Hero, Exchange Card, Rates, Steps, CTA
+   ═══════════════════════════════════════ */
+
+/* --- Hero --- */
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 85% 25%, rgba(198, 165, 104, .16), transparent 33%),
+              linear-gradient(115deg, #101b30 0%, #14223b 62%, #1a2b45 100%);
+  color: #fff;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  width: 430px;
+  height: 430px;
+  border: 1px solid rgba(198, 165, 104, .12);
+  border-radius: 50%;
+  top: -230px;
+  right: -100px;
+  box-shadow: 0 0 0 45px rgba(198, 165, 104, .025),
+              0 0 0 90px rgba(198, 165, 104, .02);
+  pointer-events: none;
+}
+
+.hero-grid {
+  min-height: 520px;
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 70px;
+  align-items: center;
+  padding-block: 75px 95px;
+  position: relative;
+  z-index: 1;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 10px;
+  font-weight: 700;
+  margin-bottom: 23px;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 26px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.hero h1 {
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(38px, 4.4vw, 60px);
+  line-height: 1.12;
+  letter-spacing: -2px;
+  font-weight: 800;
+  max-width: 600px;
+}
+
+.hero h1 span {
+  color: var(--gold-light);
+}
+
+.hero-description {
+  color: #c2cad8;
+  font-size: 15px;
+  line-height: 1.9;
+  max-width: 480px;
+  margin-top: 22px;
+}
+
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.hero-note {
+  margin-top: 25px;
+  font-size: 11px;
+  color: #aab5c6;
+}
+
+.hero-note span:first-child {
+  color: var(--gold-light);
+  margin-inline-end: 6px;
+}
+
+/* --- Exchange Card --- */
+.exchange-card {
+  background: rgba(255, 255, 255, .98);
+  color: #192438;
+  border: 1px solid rgba(255, 255, 255, .25);
+  border-radius: 17px;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, .22);
+  overflow: hidden;
+  max-width: 430px;
+  width: 100%;
+  justify-self: end;
+}
+
+body[dir="rtl"] .exchange-card {
+  justify-self: start;
+}
+
+.exchange-card-header {
+  padding: 23px 25px 18px;
+  border-bottom: 1px solid #edf0f4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.exchange-card-header h2 {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.sample-badge {
+  font-size: 9px;
+  font-weight: 800;
+  color: #8a6b30;
+  background: #f5ecd9;
+  padding: 5px 8px;
+  border-radius: 5px;
+}
+
+.exchange-body {
+  padding: 22px 25px 25px;
+}
+
+.swap-row {
+  display: flex;
+  justify-content: center;
+  margin: -5px 0 10px;
+  position: relative;
+  z-index: 2;
+}
+
+.swap-btn {
+  border: 4px solid #fff;
+  width: 37px;
+  height: 37px;
+  border-radius: 50%;
+  background: #f4ecd9;
+  color: #8a6b30;
+  font-size: 18px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+
+.exchange-result {
+  margin-top: 5px;
+  background: #f6f7f9;
+  border-radius: 9px;
+  padding: 13px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.exchange-result small {
+  color: #7b8494;
+  display: block;
+  font-size: 10px;
+}
+
+.exchange-result strong {
+  display: block;
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+
+.exchange-result .result-currency {
+  color: #8a6b30;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.rate-disclaimer {
+  color: #8b94a3;
+  font-size: 10px;
+  line-height: 1.7;
+  margin: 13px 0 17px;
+}
+
+.exchange-submit {
+  width: 100%;
+}
+
+/* --- Rates section --- */
+.rates-section {
+  background: var(--bg);
+}
+
+.rates-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.rate-card {
+  padding: 21px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  transition: transform .2s, box-shadow .2s;
+}
+
+.rate-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+
+.rate-top {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 22px;
+}
+
+.currency-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  background: rgba(198, 165, 104, .13);
+  display: grid;
+  place-items: center;
+  font-size: 19px;
+  color: #98763d;
+  font-weight: 800;
+}
+
+.currency-name {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.currency-code {
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+.rate-price {
+  font-family: "Manrope", sans-serif;
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -.6px;
+}
+
+.rate-unit {
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+.rate-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 18px 0 14px;
+}
+
+.rate-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  font-size: 10px;
+}
+
+.rate-bottom span {
+  color: var(--muted);
+}
+
+.rate-bottom strong {
+  color: var(--green);
+}
+
+.rates-footnote {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 20px;
+}
+
+/* --- Steps --- */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.step-card {
+  position: relative;
+  padding: 28px 25px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.step-number {
+  color: var(--gold);
+  font-family: "Manrope", sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  opacity: .9;
+  margin-bottom: 20px;
+}
+
+.step-card h3 {
+  font-size: 15px;
+  margin-bottom: 9px;
+}
+
+.step-card p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+/* --- CTA box --- */
+.cta-section {
+  padding-block: 0 83px;
+}
+
+.cta-box {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  border-radius: 18px;
+  padding: 49px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+  color: white;
+}
+
+.cta-box::after {
+  content: "";
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  border: 1px solid rgba(198, 165, 104, .2);
+  border-radius: 50%;
+  right: 15%;
+  top: -170px;
+  box-shadow: 0 0 0 25px rgba(198, 165, 104, .04),
+              0 0 0 50px rgba(198, 165, 104, .025);
+}
+
+body[dir="rtl"] .cta-box::after {
+  right: auto;
+  left: 15%;
+}
+
+.cta-content,
+.cta-box .btn {
+  position: relative;
+  z-index: 1;
+}
+
+.cta-box h2 {
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(23px, 3vw, 32px);
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+
+.cta-box p {
+  color: #bbc5d4;
+  font-size: 12px;
+}
+
+/* --- RTL fixes --- */
+body[dir="rtl"] .hero::before {
+  right: auto;
+  left: -100px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 1000px) {
+  .hero-grid {
+    gap: 35px;
+  }
+  .rates-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    padding-block: 58px 55px;
+    gap: 40px;
+  }
+  .hero h1 {
+    font-size: clamp(38px, 10vw, 51px);
+  }
+  .hero-description {
+    font-size: 13px;
+  }
+  .exchange-card {
+    justify-self: center;
+  }
+  .rates-grid {
+    gap: 11px;
+  }
+  .rate-card {
+    padding: 15px;
+  }
+  .rate-price {
+    font-size: 19px;
+  }
+  .currency-icon {
+    width: 36px;
+    height: 36px;
+  }
+  .steps-grid {
+    grid-template-columns: 1fr;
+    gap: 13px;
+  }
+  .step-card {
+    padding: 22px;
+  }
+  .step-number {
+    margin-bottom: 10px;
+  }
+  .cta-section {
+    padding-bottom: 59px;
+  }
+  .cta-box {
+    flex-direction: column;
+    align-items: start;
+    padding: 31px 24px;
+  }
+}
+
+@media (max-width: 380px) {
+  .rates-grid {
+    grid-template-columns: 1fr;
+  }
+  .rate-card {
+    padding: 19px;
+  }
+  .hero-buttons .btn {
+    width: 100%;
+  }
+  .exchange-card-header,
+  .exchange-body {
+    padding-inline: 16px;
+  }
+  .amount-field {
+    padding: 10px;
+  }
+  .currency-select {
+    max-width: 100px;
+  }
+}
