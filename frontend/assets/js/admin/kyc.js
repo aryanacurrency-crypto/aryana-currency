@@ -75,15 +75,15 @@ async function loadPending() {
         const typeName = (typeNames[doc.doc_type] || {})[I18N.currentLang] || doc.doc_type;
 
         return `
-          <div class="kyc-doc-row" data-doc-row="${doc.id}">
+          <div class="kyc-doc-row">
             <div>
               <div class="kyc-doc-type">${typeName}</div>
               <div class="kyc-doc-date">${new Date(doc.created_at).toLocaleString()}</div>
             </div>
             <div class="table-actions">
-              <a href="http://127.0.0.1:8000/${doc.file_path}" target="_blank" class="btn-xs btn-xs-muted">
+              <button class="btn-xs btn-xs-muted" onclick="viewKycFile(${doc.id})">
                 ${I18N.currentLang === 'en' ? 'View' : I18N.currentLang === 'fa' ? 'مشاهده' : 'کتل'}
-              </a>
+              </button>
               <button class="btn-xs btn-xs-primary" data-approve="${doc.id}">
                 ${I18N.currentLang === 'en' ? 'Approve' : I18N.currentLang === 'fa' ? 'تأیید' : 'تصدیق'}
               </button>
@@ -114,7 +114,6 @@ async function loadPending() {
         <div style="margin-top:15px;">${docsHtml}</div>
       `;
 
-      // اتصال رویدادها
       card.querySelectorAll('[data-approve]').forEach(btn => {
         btn.addEventListener('click', () => approveDoc(parseInt(btn.dataset.approve)));
       });
@@ -135,6 +134,27 @@ async function loadPending() {
         : 'غوښتنې بارول ناکامې شوې.'}
       </p>
     `;
+  }
+}
+
+async function viewKycFile(docId) {
+  try {
+    const token = localStorage.getItem(CONFIG.STORAGE.ACCESS_TOKEN);
+    const res = await fetch(`${CONFIG.API_BASE}/kyc/admin/file/${docId}`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+
+    if (!res.ok) {
+      Notify.error('Failed to load file.');
+      return;
+    }
+
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+  } catch (err) {
+    console.error('View file failed:', err);
+    Notify.error('Failed to load file.');
   }
 }
 
@@ -191,3 +211,6 @@ async function rejectDoc(docId) {
     Notify.error(err.detail || 'Failed to reject.');
   }
 }
+
+// Global function for onclick
+window.viewKycFile = viewKycFile;

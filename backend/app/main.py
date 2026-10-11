@@ -1,8 +1,5 @@
-from pathlib import Path
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 
 from app.api.v1 import admin as admin_router
 from app.api.v1 import auth as auth_router
@@ -20,7 +17,6 @@ app = FastAPI(
     description="صرافی دیجیتال آریانا — API",
 )
 
-# CORS
 if settings.cors_origins_list:
     app.add_middleware(
         CORSMiddleware,
@@ -30,12 +26,6 @@ if settings.cors_origins_list:
         allow_headers=["*"],
     )
 
-# Static files (KYC documents, etc.)
-STORAGE_DIR = Path("storage")
-STORAGE_DIR.mkdir(exist_ok=True)
-app.mount("/storage", StaticFiles(directory=str(STORAGE_DIR)), name="storage")
-
-# --- Routers ---
 API_V1_PREFIX = "/api/v1"
 app.include_router(auth_router.router, prefix=API_V1_PREFIX)
 app.include_router(rates_router.router, prefix=API_V1_PREFIX)
@@ -46,14 +36,8 @@ app.include_router(public_router.router, prefix=API_V1_PREFIX)
 app.include_router(kyc_router.router, prefix=API_V1_PREFIX)
 
 
-# ═══════════════════════════════════════
-#              System endpoints
-# ═══════════════════════════════════════
-
-
 @app.get("/", tags=["system"])
 def root():
-    """Root endpoint — for uptime monitors and quick checks."""
     return {
         "app": settings.APP_NAME,
         "status": "ok",
@@ -64,7 +48,6 @@ def root():
 
 @app.get("/health", tags=["system"])
 def health():
-    """Health check endpoint."""
     return {
         "status": "ok",
         "env": settings.APP_ENV,

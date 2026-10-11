@@ -1,22 +1,14 @@
-import os
-import uuid
 from datetime import datetime, timezone
-from pathlib import Path
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Response, UploadFile, status
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_admin, get_current_user
-from app.core.config import settings
 from app.core.database import get_db
 from app.models import KycDocument, User
 from app.models.enums import KycStatus
 
 router = APIRouter(prefix="/kyc", tags=["kyc"])
-
-# پوشه ذخیره فایل‌های آپلودی
-UPLOAD_DIR = Path("storage/kyc")
-UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 # محدودیت فایل
 MAX_FILE_SIZE = 5 * 1024 * 1024  # 5 MB
@@ -71,7 +63,7 @@ async def upload_kyc_document(
     current_user: User = Depends(get_current_user),
 ):
     """
-    آپلود مدرک KYC.
+    آپلود مدرک KYC — فایل مستقیم توی دیتابیس ذخیره میشه.
     doc_type: national_id / passport / selfie
     """
     # اعتبارسنجی نوع مدرک
@@ -97,14 +89,6 @@ async def upload_kyc_document(
             detail="حجم فایل نباید بیشتر از ۵ مگابایت باشد",
         )
 
-    # ذخیره فایل
-    ext = Path(file.filename or "").suffix.lower() or ".jpg"
-    unique_name = f"{current_user.id}_{doc_type}_{uuid.uuid4().hex[:12]}{ext}"
-    file_path = UPLOAD_DIR / unique_name
-
-    with open(file_path, "wb") as f:
-        f.write(content)
-
     # حذف مدارک قبلی از همین نوع که هنوز PENDING یا REJECTED هستن
     db.query(KycDocument).filter(
         KycDocument.user_id == current_user.id,
@@ -112,11 +96,12 @@ async def upload_kyc_document(
         KycDocument.status != KycStatus.APPROVED,
     ).delete()
 
-    # ثبت مدرک جدید
+    # ثبت مدرک جدید با فایل توی دیتابیس
     doc = KycDocument(
         user_id=current_user.id,
         doc_type=doc_type,
-        file_path=str(file_path),
+        file_data=content,
+        file_mime=file.content_type,
         status=KycStatus.PENDING,
     )
     db.add(doc)
@@ -165,14 +150,9 @@ def list_pending_kyc(
                 "documents": [],
             }
 
-        # مسیر نسبی برای استفاده در فرانت
-        # مثلاً: storage/kyc/xxx.jpg
-        file_path = doc.file_path.replace("\\", "/")
-
         result[doc.user_id]["documents"].append({
             "id": doc.id,
             "doc_type": doc.doc_type,
-            "file_path": file_path,
             "status": doc.status.value,
             "created_at": doc.created_at.isoformat(),
         })
@@ -186,12 +166,22 @@ def get_kyc_file(
     db: Session = Depends(get_db),
     admin: User = Depends(get_current_admin),
 ):
-    """مسیر فایل مدرک (ادمین)."""
+    """برگرداندن فایل مدرک — ادمین."""
     doc = db.query(KycDocument).filter(KycDocument.id == doc_id).first()
     if not doc:
         raise HTTPException(status_code=404, detail="مدرک یافت نشد")
 
-    return {"file_path": doc.file_path, "doc_type": doc.doc_type}
+    if not doc.file_data:
+        raise HTTPException(status_code=404, detail="فایل مدرک خالی است")
+
+    return Response(
+        content=doc.file_data,
+        media_type=doc.file_mime or "application/octet-stream",
+        headers={
+            "Content-Disposition": f'inline; filename="{doc.doc_type}_{doc.id}"',
+            "Cache-Control": "private, max-age=300",
+        },
+    )
 
 
 @router.post("/admin/{doc_id}/approve")
@@ -209,7 +199,6 @@ def approve_kyc(
     doc.reviewed_by = admin.id
     doc.reviewed_at = datetime.now(timezone.utc)
 
-    # اگه کاربر قبلاً verified نبود، الان verified کن
     user = db.query(User).filter(User.id == doc.user_id).first()
     if user and not user.is_verified:
         user.is_verified = True
@@ -242,7 +231,6 @@ def reject_kyc(
     doc.reviewed_by = admin.id
     doc.reviewed_at = datetime.now(timezone.utc)
 
-    # چک کن آیا کاربر مدارک دیگه‌ای APPROVED داره
     other_approved = db.query(KycDocument).filter(
         KycDocument.user_id == doc.user_id,
         KycDocument.id != doc.id,
