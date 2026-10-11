@@ -10,11 +10,16 @@ const I18N = {
    * مسیر پایه (چون بعضی صفحات توی pages/ هستن)
    */
   getBasePath() {
-    if (window.location.pathname.includes('/pages/')) {
-      return '../';
-    }
-    return '';
-  },
+  // اگه توی پوشه pages هستیم (یا admin)، برو یه پله بالاتر
+  const path = window.location.pathname;
+  if (path.includes('/pages/admin/')) {
+    return '../../';
+  }
+  if (path.includes('/pages/')) {
+    return '../';
+  }
+  return '';
+},
 
   /**
    * لود کردن فایل ترجمه
