@@ -343,3 +343,61 @@
   color: white;
   border-color: var(--green);
 }
+
+/* ═══ Network Tabs ═══ */
+
+.network-tabs {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.network-tab {
+  flex: 1;
+  min-width: 85px;
+  padding: 10px 14px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: inherit;
+}
+
+.network-tab:hover {
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.network-tab.active {
+  background: rgba(240, 185, 11, 0.12);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* Network Badge (نمایش شبکه‌ی فعال) */
+.network-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  background: rgba(240, 185, 11, 0.12);
+  color: var(--gold);
+}
+
+.network-badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}

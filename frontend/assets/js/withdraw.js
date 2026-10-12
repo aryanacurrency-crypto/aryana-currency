@@ -3,6 +3,7 @@
    ═══════════════════════════════════════ */
 
 let currentCurrency = 'USDT';
+let currentNetwork = 'TRC20';
 let currentWallets = null;
 let myWithdrawals = [];
 
@@ -150,26 +151,41 @@ function applyCurrency() {
   // Card header
   setText('cardTitle', isUsdt ? 'Withdraw USDT' : 'Withdraw AFN');
   setText('cardSubtitle', isUsdt
-    ? 'Request a withdrawal to your TRC20 wallet.'
+    ? 'Choose a network and request a withdrawal to your wallet.'
     : 'Request a withdrawal to your Hesab Pay account.'
   );
 
-  // Form labels
-  setText('amountCurrency', currentCurrency);
-  setText('minHint', isUsdt ? 'Minimum: 10 USDT' : 'Minimum: 500 AFN');
-  setText('destinationLabel', isUsdt ? 'USDT Wallet Address (TRC20)' : 'Hesab Pay Number');
-  setText('destinationHint', isUsdt
-    ? 'Paste your TRC20 (Tron) wallet address.'
-    : 'Enter your Hesab Pay number.'
-  );
-
-  // Placeholder
-  const destInput = document.getElementById('destination');
-  if (destInput) {
-    destInput.placeholder = isUsdt ? 'T...' : '07XX XXX XXX';
-    destInput.value = '';
+  // Network field
+  const networkField = document.getElementById('networkField');
+  if (networkField) {
+    networkField.style.display = isUsdt ? 'block' : 'none';
   }
 
+  // Network tabs (فقط USDT)
+  if (isUsdt) {
+    renderNetworkTabs('networkTabs', (id) => {
+      applyNetwork(id);
+    }, currentNetwork);
+  }
+
+  // Amount
+  setText('amountCurrency', currentCurrency);
+  setText('minHint', isUsdt ? 'Minimum: 10 USDT' : 'Minimum: 500 AFN');
+
+  // Destination
+  if (isUsdt) {
+    applyNetwork(currentNetwork);
+  } else {
+    setText('destinationLabel', 'Hesab Pay Number');
+    setText('destinationHint', 'Enter your Hesab Pay number.');
+    const destInput = document.getElementById('destination');
+    if (destInput) {
+      destInput.placeholder = '07XX XXX XXX';
+      destInput.value = '';
+    }
+  }
+
+  // Reset amount
   const amountInput = document.getElementById('amount');
   if (amountInput) amountInput.value = '';
 
@@ -185,6 +201,27 @@ function applyCurrency() {
 
   // Balance display
   updateBalanceDisplay();
+}
+
+function applyNetwork(networkId) {
+  currentNetwork = networkId;
+  const net = getNetwork(networkId);
+
+  // Labels
+  setText('destinationLabel', `USDT Wallet Address (${net.label})`);
+  setText('destinationHint', net.hint);
+
+  // Placeholder
+  const destInput = document.getElementById('destination');
+  if (destInput) {
+    destInput.placeholder = net.placeholder;
+    destInput.value = '';
+  }
+
+  // Min hint (اگه USDT هست)
+  if (currentCurrency === 'USDT') {
+    setText('minHint', `Minimum: ${net.minDeposit}`);
+  }
 }
 
 function updateBalanceDisplay() {
@@ -241,7 +278,6 @@ function useMaxBalance() {
     return;
   }
 
-  // کم کردن ۰.۰۱ برای جلوگیری از گرد کردن
   const maxValue = Math.max(0, available - 0.01);
 
   const amountInput = document.getElementById('amount');
@@ -272,13 +308,25 @@ function handleSubmit(e) {
   }
 
   // Min
-  if (isUsdt && amount < 10) {
-    Notify.warning('Minimum withdrawal is 10 USDT.');
-    return;
-  }
-  if (!isUsdt && amount < 500) {
-    Notify.warning('Minimum withdrawal is 500 AFN.');
-    return;
+  if (isUsdt) {
+    const net = getNetwork(currentNetwork);
+    if (net.id === 'TRC20' && amount < 10) {
+      Notify.warning('Minimum withdrawal is 10 USDT for TRC20.');
+      return;
+    }
+    if (net.id === 'BEP20' && amount < 5) {
+      Notify.warning('Minimum withdrawal is 5 USDT for BEP20.');
+      return;
+    }
+    if (net.id === 'ERC20' && amount < 20) {
+      Notify.warning('Minimum withdrawal is 20 USDT for ERC20.');
+      return;
+    }
+  } else {
+    if (amount < 500) {
+      Notify.warning('Minimum withdrawal is 500 AFN.');
+      return;
+    }
   }
 
   // Destination
@@ -287,9 +335,15 @@ function handleSubmit(e) {
     return;
   }
 
-  if (isUsdt && !destination.startsWith('T')) {
-    Notify.warning('TRC20 wallet address must start with T.');
-    return;
+  if (isUsdt) {
+    if (currentNetwork === 'TRC20' && !destination.startsWith('T')) {
+      Notify.warning('TRC20 wallet address must start with T.');
+      return;
+    }
+    if ((currentNetwork === 'BEP20' || currentNetwork === 'ERC20') && !destination.startsWith('0x')) {
+      Notify.warning(`${currentNetwork} wallet address must start with 0x.`);
+      return;
+    }
   }
 
   if (!isUsdt && !destinationHolder) {
@@ -318,9 +372,9 @@ function handleSubmit(e) {
     amount,
     destination,
     destinationHolder,
+    network: isUsdt ? currentNetwork : null,
   };
 
-  // Show confirm modal
   openConfirmModal(pendingWithdrawal);
 }
 
@@ -340,6 +394,19 @@ function openConfirmModal(data) {
   setText('confirmAmount', `${fmt(data.amount)} ${data.currency}`);
   setText('confirmDestination', data.destination);
 
+  // Network
+  const networkRow = document.getElementById('confirmNetworkRow');
+  const networkValue = document.getElementById('confirmNetwork');
+  if (networkRow && networkValue) {
+    if (data.network) {
+      networkRow.style.display = 'flex';
+      networkValue.textContent = getNetwork(data.network).fullName;
+    } else {
+      networkRow.style.display = 'none';
+    }
+  }
+
+  // Holder
   const holderRow = document.getElementById('confirmHolderRow');
   if (holderRow) {
     if (data.destinationHolder) {
@@ -375,16 +442,15 @@ async function confirmWithdrawal() {
         amount: String(pendingWithdrawal.amount),
         destination: pendingWithdrawal.destination,
         destination_holder: pendingWithdrawal.destinationHolder,
+        network: pendingWithdrawal.network,
       }),
     });
 
     closeConfirmModal();
     Notify.success('Withdrawal request submitted! Awaiting review.');
 
-    // Reset form
     document.getElementById('withdrawForm').reset();
 
-    // Reload
     setTimeout(async () => {
       await loadWallets();
       await loadMyWithdrawals();

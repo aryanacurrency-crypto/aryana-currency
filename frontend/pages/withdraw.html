@@ -170,6 +170,14 @@
             <div class="field-hint" id="minHint">Minimum: 10 USDT</div>
           </div>
 
+          <!-- Network (فقط USDT) -->
+          <div class="field" id="networkField">
+            <label class="field-label">
+              <span>Network</span>
+            </label>
+            <div id="networkTabs"></div>
+          </div>
+
           <!-- Destination -->
           <div class="field">
             <label class="field-label" for="destination">
@@ -320,6 +328,10 @@
           <span>Destination</span>
           <span id="confirmDestination">—</span>
         </div>
+        <div class="confirm-modal-row" id="confirmNetworkRow" style="display:none;">
+          <span>Network</span>
+          <span id="confirmNetwork">—</span>
+        </div>
         <div class="confirm-modal-row" id="confirmHolderRow" style="display:none;">
           <span>Holder</span>
           <span id="confirmHolder">—</span>
@@ -344,6 +356,7 @@
   <script src="../assets/js/auth.js"></script>
   <script src="../assets/js/api.js"></script>
   <script src="../assets/js/notifications.js"></script>
+  <script src="../assets/js/networks.js"></script>
   <script src="../assets/js/withdraw.js"></script>
 </body>
 </html>

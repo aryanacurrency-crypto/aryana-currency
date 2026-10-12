@@ -4,6 +4,7 @@
 
 let paymentInfo = null;
 let currentCurrency = 'USDT';
+let currentNetwork = 'TRC20';
 
 document.addEventListener('DOMContentLoaded', async () => {
   Auth.requireLogin();
@@ -106,7 +107,7 @@ function applyCurrency() {
 function applyUsdt() {
   // Card header
   setText('cardTitle', 'Deposit USDT');
-  setText('cardSubtitle', 'Send USDT via TRC20 network to the address below.');
+  setText('cardSubtitle', 'Choose a network, then send USDT to the address below.');
 
   // Icon
   const icon = document.getElementById('cardIcon');
@@ -119,34 +120,51 @@ function applyUsdt() {
     `;
   }
 
-  // Network block
+  // Network block رو نشون بده
   const networkBlock = document.getElementById('networkBlock');
   if (networkBlock) networkBlock.style.display = 'block';
 
-  setText('networkValue', paymentInfo?.usdt_network || 'TRC20 (Tron)');
-  setText('minValue', '10 USDT');
+  // Network tabs رو رندر کن
+  renderNetworkTabs('networkTabs', (id) => {
+    applyNetwork(id);
+  }, currentNetwork);
 
-  // Address
-  setText('addressLabel', 'USDT Wallet Address (TRC20)');
+  // شبکه فعلی رو اعمال کن
+  applyNetwork(currentNetwork);
 
+  // Address wrap
   const addressWrap = document.getElementById('addressValueWrap');
   if (addressWrap) addressWrap.classList.remove('hesab');
-
-  setText('addressValue', paymentInfo?.usdt_wallet || '—');
 
   // Visual block
   setText('visualLabel', 'Use Copy Button');
   setText('visualText', 'Tap the copy button to copy the address, then paste it in your wallet app.');
+}
 
-  // Warnings
-  setText('dangerCurrency', 'USDT (TRC20)');
-  setText('warningDangerText', '');
+function applyNetwork(networkId) {
+  currentNetwork = networkId;
+  const net = getNetwork(networkId);
 
+  // Info list
+  setText('networkValue', net.fullName);
+  setText('minValue', net.minDeposit);
+
+  // Address label
+  setText('addressLabel', `USDT Wallet Address (${net.label})`);
+
+  // Wallet address from API
+  const walletAddress = paymentInfo?.[net.walletField]
+    || paymentInfo?.usdt_wallet
+    || '—';
+  setText('addressValue', walletAddress);
+
+  // Danger warning
   const dangerText = document.getElementById('warningDangerText');
   if (dangerText) {
-    dangerText.innerHTML = `<strong>Important:</strong> Send only <span>USDT (TRC20)</span> to this address. Sending any other asset or using a different network will result in permanent loss.`;
+    dangerText.innerHTML = `<strong>Important:</strong> ${net.warning}`;
   }
 
+  // Info warning
   const infoText = document.getElementById('warningInfoText');
   if (infoText) {
     infoText.textContent = 'Deposits are processed within 30 minutes. After sending, place a SELL order on the Trade page.';
@@ -169,7 +187,7 @@ function applyAfn() {
     `;
   }
 
-  // Network block (مخفی برای AFN)
+  // Network block مخفی
   const networkBlock = document.getElementById('networkBlock');
   if (networkBlock) networkBlock.style.display = 'none';
 

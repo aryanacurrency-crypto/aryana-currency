@@ -225,6 +225,7 @@
             </div>
           </div>
 
+          <!-- Network Card -->
           <div class="rate-card">
             <div class="rate-card-header">
               <div class="rate-icon">
@@ -235,12 +236,48 @@
                 </svg>
               </div>
               <div>
-                <div class="rate-card-name" data-i18n="networkTitle">Network</div>
+                <div class="rate-card-name" data-i18n="networkTitle">Networks</div>
                 <div class="rate-card-code" data-i18n="networkCode">USDT TRANSFER</div>
               </div>
             </div>
-            <div class="rate-card-price">TRC20</div>
-            <div class="rate-card-unit" data-i18n="networkUnit">Fast & low-cost</div>
+            <div class="network-list">
+
+              <!-- TRC20 (Tron) -->
+              <div class="network-item">
+                <div class="network-logo tron">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3.2 3.1l8.2 4.7 6.2-2.5L3.2 3.1zm8.9 5.7l-8.9-5l14.5 2.1-5.6 2.9zm6.1-2.5l-5.5 2.9 5.5 6.8V6.3zm-6.6 3.6L4.4 5.7l6.2 14.2 1-9zm1.5.1l-1 8.8 5.9-8.7-4.9-.1z"/>
+                  </svg>
+                </div>
+                <span class="network-name">TRC20</span>
+                <span class="network-sub">Tron</span>
+              </div>
+
+              <!-- BEP20 (BNB Chain) -->
+              <div class="network-item">
+                <div class="network-logo bnb">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2l3.09 3.09L12 8.18 8.91 5.09 12 2zm-6.91 6.91L8.18 12l-3.09 3.09L2 12l3.09-3.09zM12 15.82L15.09 18.91 12 22 8.91 18.91 12 15.82zm6.91-6.91L22 12l-3.09 3.09L15.82 12l3.09-3.09zM12 9.27L14.73 12 12 14.73 9.27 12 12 9.27z"/>
+                  </svg>
+                </div>
+                <span class="network-name">BEP20</span>
+                <span class="network-sub">BNB Chain</span>
+              </div>
+
+              <!-- ERC20 (Ethereum) -->
+              <div class="network-item">
+                <div class="network-logo eth">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 1.5L5.5 11.2 12 15l6.5-3.8L12 1.5zM12 16.2L5.5 12.4 12 22l6.5-9.6L12 16.2z" opacity=".9"/>
+                    <path d="M12 1.5v13.5l6.5-3.8L12 1.5z" opacity=".6"/>
+                  </svg>
+                </div>
+                <span class="network-name">ERC20</span>
+                <span class="network-sub">Ethereum</span>
+              </div>
+
+            </div>
+            <div class="rate-card-unit" style="margin-top: 14px;" data-i18n="networkUnit">Choose your network</div>
             <div class="rate-card-footer">
               <span data-i18n="supportLabel">Support</span>
               <strong data-i18n="supportValue">24/7</strong>

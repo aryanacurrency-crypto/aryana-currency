@@ -884,3 +884,69 @@
     align-items: flex-start;
   }
 }
+
+/* ═══ Network List ═══ */
+
+.network-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-block: var(--space-3);
+}
+
+.network-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.network-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  padding: 8px;
+  transition: transform var(--transition-fast);
+}
+
+.network-logo svg {
+  width: 100%;
+  height: 100%;
+}
+
+.network-item:hover .network-logo {
+  transform: scale(1.1);
+}
+
+.network-logo.tron {
+  background: rgba(255, 60, 60, 0.12);
+  color: #FF3C3C;
+}
+
+.network-logo.bnb {
+  background: rgba(240, 185, 11, 0.12);
+  color: #F0B90B;
+}
+
+.network-logo.eth {
+  background: rgba(98, 126, 234, 0.12);
+  color: #627EEA;
+}
+
+.network-name {
+  font-weight: 800;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.3px;
+}
+
+.network-sub {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-weight: 600;
+}
