@@ -50,7 +50,7 @@ class Settings(BaseSettings):
 
     # --- SMTP (مقادیر موقت هاردکد برای تست) ---
     SMTP_HOST: str = "smtp.gmail.com"
-    SMTP_PORT: int = 587
+    SMTP_PORT: int = 465
     SMTP_USER: str = "aryanaacurrency@gmail.com"
     SMTP_PASSWORD: str = "hufawnlfawgthoxg"
     SMTP_FROM_EMAIL: str = "aryanaacurrency@gmail.com"

@@ -47,7 +47,7 @@ def send_password_reset_email(email: str, reset_token: str) -> bool:
 
 def _send_via_smtp(to_email: str, reset_link: str, reset_token: str) -> None:
     """
-    ارسال واقعی با SMTP.
+    ارسال واقعی با SMTP (SSL روی پورت 465).
     """
     subject = "بازنشانی رمز عبور — Aryana Currency"
 
@@ -224,8 +224,7 @@ Aryana Currency — بازنشانی رمز عبور
     msg.attach(MIMEText(text_body, "plain", "utf-8"))
     msg.attach(MIMEText(html_body, "html", "utf-8"))
 
-    # ─── اتصال به SMTP ───
-    with smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT, timeout=15) as server:
-        server.starttls()
+    # ─── اتصال به SMTP با SSL (پورت 465) ───
+    with smtplib.SMTP_SSL(settings.SMTP_HOST, settings.SMTP_PORT, timeout=15) as server:
         server.login(settings.SMTP_USER, settings.SMTP_PASSWORD)
         server.send_message(msg)
