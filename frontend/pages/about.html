@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="About Aryana Currency — a licensed digital exchange from Afghanistan.">
-  <meta name="theme-color" content="#101b30">
+  <meta name="description" content="About Aryana Currency — A licensed digital exchange built for Afghanistan.">
+  <meta name="theme-color" content="#0B0E11">
 
   <title>About Us | ARYANA CURRENCY</title>
 
@@ -12,134 +12,383 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../assets/css/main.css">
-  <link rel="stylesheet" href="../assets/css/components.css">
-  <link rel="stylesheet" href="../assets/css/dashboard.css">
-  <link rel="stylesheet" href="../assets/css/content.css">
+  <link rel="stylesheet" href="../assets/css/v2/theme.css">
+  <link rel="stylesheet" href="../assets/css/v2/ui.css">
+  <link rel="stylesheet" href="../assets/css/v2/content.css">
+  <link rel="stylesheet" href="../assets/css/notifications.css">
 </head>
 <body>
 
-  <div class="content-page">
+  <!-- Header -->
+  <header class="app-header">
+    <div class="container app-header-inner">
 
-    <header class="dash-header">
-      <div class="container dash-header-inner">
-        <a href="../index.html" class="brand">
-          <img src="../assets/images/logo.png" alt="ARYANA CURRENCY" class="brand-logo" width="40" height="40">
-          <div>
-            <div class="brand-name">ARYANA CURRENCY</div>
-            <div class="brand-subtitle" data-i18n="brandSubtitle">DIGITAL EXCHANGE</div>
-          </div>
+      <a href="../index.html" class="app-brand">
+        <img src="../assets/images/logo.png" alt="ARYANA CURRENCY">
+        <div class="app-brand-text">
+          ARYANA
+          <small>CURRENCY</small>
+        </div>
+      </a>
+
+      <nav class="app-nav">
+        <a href="../index.html" class="app-nav-link">
+          <span>Home</span>
         </a>
+        <a href="about.html" class="app-nav-link active">
+          <span>About</span>
+        </a>
+        <a href="contact.html" class="app-nav-link">
+          <span>Contact</span>
+        </a>
+      </nav>
 
-        <div class="dash-actions">
-          <select class="language-select" id="languageSelect" aria-label="Language">
-            <option value="en">EN</option>
-            <option value="fa">دری</option>
-            <option value="ps">پښتو</option>
-          </select>
-          <button class="dash-icon-btn" id="themeToggle" aria-label="Toggle theme">☾</button>
-          <a href="../index.html" class="btn btn-gold" data-i18n="notFoundHome">Go home</a>
-        </div>
+      <div class="app-header-actions">
+        <a href="login.html" class="btn btn-ghost">Login</a>
+        <a href="register.html" class="btn btn-primary">Register</a>
       </div>
-    </header>
 
-    <main class="container content-main">
+    </div>
+  </header>
 
-      <!-- Hero -->
-      <div class="content-hero">
-        <div class="content-hero-content">
-          <div class="section-kicker" data-i18n="aboutKicker">ABOUT US</div>
-          <h1 data-i18n="aboutTitle">A trusted exchange, built in Afghanistan.</h1>
-          <p data-i18n="aboutLead">
-            Aryana Currency is a licensed digital currency exchange focused on making USDT ↔ AFN trading clear, safe and accessible for everyone.
+  <!-- Main -->
+  <main>
+
+    <!-- Breadcrumb -->
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../index.html">Home</a>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">About Us</span>
+      </div>
+    </div>
+
+    <!-- Document Hero -->
+    <div class="container">
+      <div class="doc-hero">
+        <div class="doc-hero-content">
+          <div class="doc-kicker">ABOUT US</div>
+
+          <h1 class="doc-title">
+            A trusted exchange,<br>
+            <span class="gold">built in Afghanistan.</span>
+          </h1>
+
+          <p class="doc-subtitle">
+            Aryana Currency is a licensed digital currency exchange focused on making USDT ↔ AFN trading clear, safe, and accessible for everyone in Afghanistan.
           </p>
+
+          <div class="doc-meta">
+            <div class="doc-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              <span>Last updated: <strong>January 2026</strong></span>
+            </div>
+
+            <div class="doc-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              <span>Version <strong>2.0</strong></span>
+            </div>
+
+            <div class="doc-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              <span>Licensed & <strong>Regulated</strong></span>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
 
-      <!-- Body -->
-      <div class="content-body">
+    <!-- Content Layout -->
+    <div class="container">
+      <div class="doc-layout">
 
-        <h2 data-i18n="aboutStoryTitle">Our Story</h2>
-        <p data-i18n="aboutStoryText1">
-          Aryana Currency was founded with a simple goal: give people in Afghanistan a trustworthy, modern way to exchange digital currency. For years, the market has been informal, rates have been unclear, and trust has been hard to find.
-        </p>
-        <p data-i18n="aboutStoryText2">
-          We wanted to change that. Our platform is designed around transparency, security, and a straightforward customer experience — from the rate you see, to the moment the funds arrive.
-        </p>
+        <!-- Table of Contents -->
+        <aside class="doc-toc">
+          <div class="doc-toc-title">Table of Contents</div>
+          <ul class="doc-toc-list">
+            <li><a href="#story" class="toc-link active"><span class="toc-num">01</span> Our Story</a></li>
+            <li><a href="#mission" class="toc-link"><span class="toc-num">02</span> Mission</a></li>
+            <li><a href="#values" class="toc-link"><span class="toc-num">03</span> Our Values</a></li>
+            <li><a href="#licensed" class="toc-link"><span class="toc-num">04</span> Licensed Operation</a></li>
+            <li><a href="#how" class="toc-link"><span class="toc-num">05</span> How We Work</a></li>
+            <li><a href="#contact" class="toc-link"><span class="toc-num">06</span> Contact</a></li>
+          </ul>
+        </aside>
 
-        <h2 data-i18n="aboutValuesTitle">Our Values</h2>
+        <!-- Document Body -->
+        <article class="doc-body">
 
-        <h3 data-i18n="aboutValue1Title">Transparency</h3>
-        <p data-i18n="aboutValue1Text">
-          Every rate, every fee, every step — shown clearly before you commit. No hidden charges, no surprises.
-        </p>
+          <!-- Section 1: Story -->
+          <section class="doc-section" id="story">
+            <div class="doc-section-number">01</div>
+            <h2>Our Story</h2>
 
-        <h3 data-i18n="aboutValue2Title">Security</h3>
-        <p data-i18n="aboutValue2Text">
-          Funds are held in secure, segregated wallets. Every payment is manually verified by our team before completion.
-        </p>
+            <p>
+              <strong>Aryana Currency was founded with a single, uncompromising goal:</strong> to give people in Afghanistan a trustworthy and modern way to exchange digital currency. For years, the market has been informal, rates have been opaque, and trust has been difficult to establish.
+            </p>
 
-        <h3 data-i18n="aboutValue3Title">Compliance</h3>
-        <p data-i18n="aboutValue3Text">
-          We operate under a valid official license, follow KYC/AML best practices, and maintain a full audit trail of every transaction.
-        </p>
+            <p>
+              We set out to change that. Our platform is designed around three pillars — <em>transparency, security, and simplicity</em> — so that every customer, whether they are exchanging for the first time or the hundredth, has a clear and dependable experience.
+            </p>
 
-        <h3 data-i18n="aboutValue4Title">Customer First</h3>
-        <p data-i18n="aboutValue4Text">
-          Real humans, real support. Whether it's your first exchange or your hundredth, we treat every customer with the same care.
-        </p>
+            <div class="callout note">
+              <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="16" x2="12" y2="12"/>
+                <line x1="12" y1="8" x2="12.01" y2="8"/>
+              </svg>
+              <div class="callout-content">
+                <div class="callout-title">Founding Principle</div>
+                <div class="callout-text">
+                  Every transaction on Aryana Currency is <strong>manually verified</strong>. We believe this human step is the foundation of trust in digital currency exchanges — especially in emerging markets.
+                </div>
+              </div>
+            </div>
+          </section>
 
-        <h2 data-i18n="aboutLicensedTitle">Licensed & Regulated</h2>
+          <!-- Section 2: Mission -->
+          <section class="doc-section" id="mission">
+            <div class="doc-section-number">02</div>
+            <h2>Our Mission</h2>
 
-        <div class="content-box gold">
-          <strong data-i18n="aboutLicenseBoxTitle">Official License</strong>
-          <span data-i18n="aboutLicenseBoxText">
-            Aryana Currency operates under an officially-issued license for digital currency exchange. License details are available upon request. For verification, contact us at the email below.
-          </span>
-        </div>
+            <p>
+              Our mission is to provide a <strong>licensed, transparent, and accessible</strong> digital currency exchange that serves the people of Afghanistan with integrity. We aim to remove the friction, uncertainty, and risk that have historically characterized the informal currency exchange market.
+            </p>
 
-        <h2 data-i18n="aboutHowTitle">How We Work</h2>
-        <p data-i18n="aboutHowText">
-          We operate a manual-verified model. When you place an order:
-        </p>
-        <ol>
-          <li data-i18n="aboutHowStep1">You send the funds (AFN via Hesab Pay, or USDT via Tron network).</li>
-          <li data-i18n="aboutHowStep2">You submit the transaction reference in your dashboard.</li>
-          <li data-i18n="aboutHowStep3">Our team verifies the payment — usually within minutes.</li>
-          <li data-i18n="aboutHowStep4">We send the equivalent funds to your account.</li>
-        </ol>
+            <p>
+              We measure our success not only by the volume of transactions we process, but by the trust our customers place in us — and by the standard of service we deliver every day.
+            </p>
+          </section>
 
-        <p data-i18n="aboutHowNote">
-          This manual step is intentional. It's how we protect both you and the platform from fraud.
-        </p>
+          <!-- Section 3: Values -->
+          <section class="doc-section" id="values">
+            <div class="doc-section-number">03</div>
+            <h2>Our Values</h2>
 
-        <h2 data-i18n="aboutContactTitle">Get in Touch</h2>
-        <p data-i18n="aboutContactText">
-          Have questions? We're here to help.
-        </p>
-        <ul>
-          <li><span data-i18n="contactEmail">Email:</span> <a href="mailto:support@aryana.af">support@aryana.af</a></li>
-          <li><span data-i18n="contactPhone">Phone:</span> <a href="tel:+93700000000">+93 700 000 000</a></li>
-          <li><span data-i18n="contactAddress">Address:</span> Kabul, Afghanistan</li>
-        </ul>
+            <p>
+              Four principles guide every decision we make and every feature we build.
+            </p>
 
-        <div class="content-meta">
-          <span>© <span id="currentYear"></span> ARYANA CURRENCY</span>
-          <span data-i18n="aboutLastUpdate">Last updated: January 2026</span>
-        </div>
+            <div class="value-cards">
+              <div class="value-card">
+                <div class="value-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                </div>
+                <h4>Transparency</h4>
+                <p>Every rate, every fee, every step — shown clearly before you commit. No hidden charges, no surprises.</p>
+              </div>
+
+              <div class="value-card">
+                <div class="value-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                </div>
+                <h4>Security</h4>
+                <p>Funds are held in segregated wallets, and every payment is manually verified by our team.</p>
+              </div>
+
+              <div class="value-card">
+                <div class="value-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 12l2 2 4-4"/>
+                    <path d="M21 12c0 5-3.5 8.5-9 10-5.5-1.5-9-5-9-10V5l9-3 9 3z"/>
+                  </svg>
+                </div>
+                <h4>Compliance</h4>
+                <p>We operate under a valid official license, follow KYC/AML best practices, and maintain a full audit trail.</p>
+              </div>
+
+              <div class="value-card">
+                <div class="value-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                  </svg>
+                </div>
+                <h4>Customer First</h4>
+                <p>Real humans, real support. Whether it's your first exchange or your hundredth, we treat every customer the same.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section 4: Licensed -->
+          <section class="doc-section" id="licensed">
+            <div class="doc-section-number">04</div>
+            <h2>Licensed Operation</h2>
+
+            <p>
+              Aryana Currency operates under an <strong>officially-issued license</strong> for digital currency exchange. Our operations are subject to regulatory oversight, and we maintain full compliance with all applicable laws and regulations.
+            </p>
+
+            <p>
+              License details and documentation are available upon request. For verification purposes, please contact us at the email address listed in the Contact section below.
+            </p>
+
+            <div class="callout success">
+              <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+              <div class="callout-content">
+                <div class="callout-title">Verification Available</div>
+                <div class="callout-text">
+                  We encourage all customers to verify our license and regulatory status. Full documentation can be provided upon written request.
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section 5: How We Work -->
+          <section class="doc-section" id="how">
+            <div class="doc-section-number">05</div>
+            <h2>How We Work</h2>
+
+            <p>
+              We operate a <strong>manual-verified model</strong>. When you place an order, the following steps occur:
+            </p>
+
+            <ol>
+              <li>
+                <strong>You send the funds.</strong> AFN payments are made via Hesab Pay. USDT payments are made via the Tron (TRC20) network.
+              </li>
+              <li>
+                <strong>You submit the reference.</strong> In your dashboard, you enter the transaction reference or TXID.
+              </li>
+              <li>
+                <strong>Our team verifies the payment.</strong> A member of our team confirms the payment — typically within minutes.
+              </li>
+              <li>
+                <strong>We send the equivalent funds.</strong> Once verified, we send the equivalent amount to your account.
+              </li>
+            </ol>
+
+            <div class="callout warning">
+              <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              <div class="callout-content">
+                <div class="callout-title">Why Manual Verification?</div>
+                <div class="callout-text">
+                  This manual step is <strong>intentional</strong>. It is how we protect both you and the platform from fraud, and it is a legal requirement under our operating license.
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section 6: Contact -->
+          <section class="doc-section" id="contact">
+            <div class="doc-section-number">06</div>
+            <h2>Contact</h2>
+
+            <p>
+              We welcome your questions, feedback, and inquiries. Please use any of the channels below to reach us.
+            </p>
+
+            <div class="contact-grid">
+              <div class="contact-card">
+                <div class="contact-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
+                  </svg>
+                </div>
+                <h4>Email Support</h4>
+                <p>For general inquiries and support.</p>
+                <a href="mailto:support@aryana.af">
+                  support@aryana.af
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="7" y1="17" x2="17" y2="7"/>
+                    <polyline points="7 7 17 7 17 17"/>
+                  </svg>
+                </a>
+              </div>
+
+              <div class="contact-card">
+                <div class="contact-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  </svg>
+                </div>
+                <h4>Phone</h4>
+                <p>Available during business hours.</p>
+                <a href="tel:+93700000000">
+                  +93 700 000 000
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="7" y1="17" x2="17" y2="7"/>
+                    <polyline points="7 7 17 7 17 17"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </section>
+
+          <!-- Signature Block -->
+          <div class="signature-block">
+            <div class="signature-title">Official Document</div>
+
+            <div class="signature-grid">
+              <div class="signature-item">
+                <div class="signature-item-label">Issued By</div>
+                <div class="signature-item-value">ARYANA CURRENCY</div>
+              </div>
+              <div class="signature-item">
+                <div class="signature-item-label">Document Type</div>
+                <div class="signature-item-value">ABOUT US</div>
+              </div>
+              <div class="signature-item">
+                <div class="signature-item-label">Version</div>
+                <div class="signature-item-value">2.0</div>
+              </div>
+              <div class="signature-item">
+                <div class="signature-item-label">Last Updated</div>
+                <div class="signature-item-value">JANUARY 2026</div>
+              </div>
+            </div>
+
+            <div class="signature-stamp">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <polyline points="9 12 11 14 15 10"/>
+              </svg>
+              <div>
+                <div class="signature-stamp-text">Verified</div>
+                <div class="signature-stamp-sub">ARYANA CURRENCY · LICENSED</div>
+              </div>
+            </div>
+          </div>
+
+        </article>
 
       </div>
+    </div>
 
-    </main>
-  </div>
+  </main>
 
+  <!-- Scripts -->
   <script src="../assets/js/config.js"></script>
   <script src="../assets/js/i18n.js"></script>
   <script src="../assets/js/theme.js"></script>
-  <script src="../assets/js/notifications.js"></script>
-  <script src="../assets/js/animations.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
       Theme.init();
@@ -147,14 +396,40 @@
       await I18N.load(lang);
       I18N.apply();
 
-      const langSelect = document.getElementById('languageSelect');
-      if (langSelect) {
-        langSelect.value = I18N.currentLang;
-        langSelect.addEventListener('change', (e) => I18N.setLanguage(e.target.value));
+      // TOC active tracking on scroll
+      const tocLinks = document.querySelectorAll('.toc-link');
+      const sections = document.querySelectorAll('.doc-section');
+
+      if (tocLinks.length && sections.length) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const id = entry.target.id;
+              tocLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+              });
+            }
+          });
+        }, {
+          rootMargin: '-100px 0px -60% 0px',
+          threshold: 0,
+        });
+
+        sections.forEach(section => observer.observe(section));
       }
 
-      const yearEl = document.getElementById('currentYear');
-      if (yearEl) yearEl.textContent = new Date().getFullYear();
+      // Smooth scroll for TOC
+      tocLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const target = document.querySelector(link.getAttribute('href'));
+          if (target) {
+            const offset = 80;
+            const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({ top, behavior: 'smooth' });
+          }
+        });
+      });
     });
   </script>
 </body>

@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Your profile — Aryana Currency.">
-  <meta name="theme-color" content="#101b30">
+  <meta name="description" content="Your profile — Aryana Currency">
+  <meta name="theme-color" content="#0B0E11">
 
   <title>Profile | ARYANA CURRENCY</title>
 
@@ -12,304 +12,380 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../assets/css/main.css">
-  <link rel="stylesheet" href="../assets/css/components.css">
-  <link rel="stylesheet" href="../assets/css/dashboard.css">
-  <link rel="stylesheet" href="../assets/css/profile.css">
+  <link rel="stylesheet" href="../assets/css/v2/theme.css">
+  <link rel="stylesheet" href="../assets/css/v2/ui.css">
+  <link rel="stylesheet" href="../assets/css/v2/dashboard.css">
+  <link rel="stylesheet" href="../assets/css/v2/profile.css">
   <link rel="stylesheet" href="../assets/css/notifications.css">
 </head>
 <body>
 
-  <div class="profile-page">
+  <!-- Header -->
+  <header class="app-header">
+    <div class="container app-header-inner">
 
-    <!-- Header -->
-    <header class="dash-header">
-      <div class="container dash-header-inner">
-        <a href="dashboard.html" class="brand">
-          <img src="../assets/images/logo.png" alt="ARYANA CURRENCY" class="brand-logo" width="40" height="40">
-          <div>
-            <div class="brand-name">ARYANA CURRENCY</div>
-            <div class="brand-subtitle" data-i18n="brandSubtitle">DIGITAL EXCHANGE</div>
-          </div>
+      <a href="dashboard.html" class="app-brand">
+        <img src="../assets/images/logo.png" alt="ARYANA CURRENCY">
+        <div class="app-brand-text">
+          ARYANA
+          <small>CURRENCY</small>
+        </div>
+      </a>
+
+      <nav class="app-nav">
+        <a href="dashboard.html" class="app-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="exchange.html" class="app-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12M17 20l4-4M17 20l-4-4"/>
+          </svg>
+          <span>Trade</span>
+        </a>
+        <a href="orders.html" class="app-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+          <span>Orders</span>
+        </a>
+        <a href="profile.html" class="app-nav-link active">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span>Profile</span>
+        </a>
+      </nav>
+
+      <div class="app-header-actions">
+        <a href="admin/index.html" class="icon-btn" id="adminPanelBtn" style="display:none;" title="Admin Panel">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l3 6 6 1-4.5 4.5L18 20l-6-3-6 3 1.5-6.5L3 9l6-1z"/>
+          </svg>
         </a>
 
-        <div class="dash-actions">
-          <select class="language-select" id="languageSelect" aria-label="Language">
-            <option value="en">EN</option>
-            <option value="fa">دری</option>
-            <option value="ps">پښتو</option>
-          </select>
-          <button class="dash-icon-btn" id="themeToggle" aria-label="Toggle theme">☾</button>
-          <a href="dashboard.html" class="dash-icon-btn" title="Back">←</a>
-        </div>
-      </div>
-    </header>
+        <a href="profile.html" class="user-avatar-btn">
+          <div class="user-avatar" id="userAvatar">A</div>
+          <span class="user-name" id="userName">User</span>
+        </a>
 
-    <main class="container profile-main">
-
-      <!-- Profile header card -->
-      <div class="profile-header-card">
-        <div class="profile-avatar" id="avatar">A</div>
-        <div class="profile-header-info">
-          <h1 id="headerName">—</h1>
-          <div class="profile-email" id="headerEmail">—</div>
-          <div class="profile-badges" id="badges">
-            <span class="profile-badge gray" id="badgeRole">USER</span>
-            <span class="profile-badge gray" id="badgeKyc">KYC PENDING</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Alerts -->
-      <div class="alert alert-success" id="successBox" style="display:none;"></div>
-      <div class="alert alert-error" id="errorBox" style="display:none;"></div>
-
-      <!-- Tabs -->
-      <div class="profile-tabs">
-        <button class="profile-tab active" data-tab="personal">
-          <span data-i18n="profileTabPersonal">Personal Info</span>
-        </button>
-        <button class="profile-tab" data-tab="payment">
-          <span data-i18n="profileTabPayment">Payment Details</span>
-        </button>
-        <button class="profile-tab" data-tab="kyc">
-          <span data-i18n="profileTabKyc">Verification</span>
-        </button>
-        <button class="profile-tab" data-tab="security">
-          <span data-i18n="profileTabSecurity">Security</span>
-        </button>
-        <button class="profile-tab" data-tab="account">
-          <span data-i18n="profileTabAccount">Account</span>
+        <button class="icon-btn" id="logoutBtn" title="Logout">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
         </button>
       </div>
 
-      <!-- TAB: Personal -->
-      <section class="profile-tab-content active" data-tab-content="personal">
-        <div class="profile-card">
-          <h2 data-i18n="profilePersonalTitle">Personal Information</h2>
-          <p data-i18n="profilePersonalText">Update your display name and phone number.</p>
+    </div>
+  </header>
 
-          <form class="profile-form" id="personalForm">
-            <div class="profile-form-row">
-              <div class="field-group">
-                <label class="field-label" for="fullName" data-i18n="registerFullNameLabel">Full name</label>
-                <input type="text" id="fullName" class="field-input" placeholder="Ahmad Rahimi">
-              </div>
-              <div class="field-group">
-                <label class="field-label" for="phone" data-i18n="registerPhoneLabel">Phone</label>
-                <input type="tel" id="phone" class="field-input" placeholder="+93 700 000 000">
-              </div>
-            </div>
+  <!-- Main -->
+  <main class="container app-main">
 
-            <div class="field-group">
-              <label class="field-label" for="emailDisplay" data-i18n="profileEmailLabel">Email</label>
-              <input type="email" id="emailDisplay" class="field-input" disabled>
-              <div class="field-hint" data-i18n="profileEmailHint">
-                Email cannot be changed. Contact support if needed.
-              </div>
-            </div>
+    <!-- Page Header -->
+    <div class="page-header-row">
+      <a href="dashboard.html" class="back-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+      </a>
+      <div>
+        <h1 style="font-size:22px; font-weight:800; letter-spacing:-0.5px;">Profile</h1>
+        <p style="font-size:13px; color:var(--text-secondary); margin-top:2px;">Manage your account and preferences</p>
+      </div>
+    </div>
 
-            <div class="profile-save-bar">
-              <button type="submit" class="btn btn-gold" id="savePersonalBtn">
-                <span data-i18n="profileSave">Save Changes</span>
-              </button>
-            </div>
-          </form>
-        </div>
-      </section>
+    <div class="profile-layout">
 
-      <!-- TAB: Payment -->
-      <section class="profile-tab-content" data-tab-content="payment">
-        <div class="profile-card">
-          <h2 data-i18n="profileHesabTitle">Hesab Pay Details</h2>
-          <p data-i18n="profileHesabText">
-            This is where we send AFN when you sell USDT. Make sure the number and name match your account.
-          </p>
+      <!-- Sidebar -->
+      <aside class="profile-sidebar">
 
-          <form class="profile-form" id="paymentForm">
-            <div class="profile-form-row">
-              <div class="field-group">
-                <label class="field-label" for="hesabPay" data-i18n="registerHesabPayLabel">Hesab Pay number</label>
-                <input type="text" id="hesabPay" class="field-input" placeholder="07XX XXX XXX">
-              </div>
-              <div class="field-group">
-                <label class="field-label" for="hesabHolder" data-i18n="profileHesabHolder">Account holder name</label>
-                <input type="text" id="hesabHolder" class="field-input" placeholder="Ahmad Rahimi">
-              </div>
-            </div>
-
-            <div class="field-group" style="margin-top:20px;">
-              <label class="field-label" for="usdtWallet" data-i18n="registerWalletLabel">USDT wallet address (TRC20)</label>
-              <input type="text" id="usdtWallet" class="field-input" placeholder="T...">
-              <div class="field-hint" data-i18n="profileWalletHint">
-                This is where we send USDT when you buy. Must be a TRC20 (Tron) address.
-              </div>
-            </div>
-
-            <div class="field-group">
-              <label class="field-label" for="usdtNetwork" data-i18n="profileNetworkLabel">Network</label>
-              <select id="usdtNetwork" class="field-input">
-                <option value="TRC20">TRC20 (Tron)</option>
-                <option value="BEP20">BEP20 (BNB Chain)</option>
-                <option value="ERC20">ERC20 (Ethereum)</option>
-              </select>
-              <div class="field-hint" data-i18n="profileNetworkHint">
-                ⚠ Make sure this matches your wallet. Wrong network = lost funds.
-              </div>
-            </div>
-
-            <div class="profile-save-bar">
-              <button type="submit" class="btn btn-gold" id="savePaymentBtn">
-                <span data-i18n="profileSave">Save Changes</span>
-              </button>
-            </div>
-          </form>
-        </div>
-      </section>
-
-      <!-- TAB: KYC -->
-      <section class="profile-tab-content" data-tab-content="kyc">
-        <div class="profile-card">
-          <h2 data-i18n="kycTitle">Identity Verification (KYC)</h2>
-          <p data-i18n="kycText">
-            To comply with financial regulations, we may require you to verify your identity. Upload a clear photo of your ID document and a selfie.
-          </p>
-
-          <!-- Status banner -->
-          <div class="kyc-status-banner not-submitted" id="kycStatusBanner">
-            <div class="kyc-status-icon" id="kycStatusIcon">⏳</div>
-            <div class="kyc-status-text">
-              <strong id="kycStatusTitle">Not submitted</strong>
-              <small id="kycStatusText">Please upload your documents to verify your identity.</small>
-            </div>
-          </div>
-
-          <!-- Existing documents -->
-          <div id="kycDocuments" style="margin-top:20px;"></div>
-
-          <!-- Upload sections -->
-          <div class="kyc-upload-grid" id="kycUploadBox">
-            <!-- National ID -->
-            <div class="kyc-upload-card">
-              <div class="kyc-upload-icon">◫</div>
-              <h3 data-i18n="kycIdTitle">National ID (Tazkira)</h3>
-              <p data-i18n="kycIdText">Clear photo of the front side.</p>
-              <input type="file" id="fileNationalId" accept="image/*,application/pdf" hidden>
-              <button type="button" class="btn btn-outline-dark btn-full" data-upload="national_id">
-                <span data-i18n="kycChooseFile">Choose file</span>
-              </button>
-              <small class="kyc-file-name" id="nameNationalId" style="display:none;"></small>
-            </div>
-
-            <!-- Passport -->
-            <div class="kyc-upload-card">
-              <div class="kyc-upload-icon">◈</div>
-              <h3 data-i18n="kycPassportTitle">Passport</h3>
-              <p data-i18n="kycPassportText">Clear photo of the main page.</p>
-              <input type="file" id="filePassport" accept="image/*,application/pdf" hidden>
-              <button type="button" class="btn btn-outline-dark btn-full" data-upload="passport">
-                <span data-i18n="kycChooseFile">Choose file</span>
-              </button>
-              <small class="kyc-file-name" id="namePassport" style="display:none;"></small>
-            </div>
-
-            <!-- Selfie -->
-            <div class="kyc-upload-card">
-              <div class="kyc-upload-icon">☺</div>
-              <h3 data-i18n="kycSelfieTitle">Selfie</h3>
-              <p data-i18n="kycSelfieText">Photo of yourself holding your ID.</p>
-              <input type="file" id="fileSelfie" accept="image/*" hidden>
-              <button type="button" class="btn btn-outline-dark btn-full" data-upload="selfie">
-                <span data-i18n="kycChooseFile">Choose file</span>
-              </button>
-              <small class="kyc-file-name" id="nameSelfie" style="display:none;"></small>
-            </div>
-          </div>
-
-          <!-- Upload button -->
-          <div class="profile-save-bar" id="kycUploadBar" style="display:none;">
-            <button type="button" class="btn btn-outline-dark" id="kycClearBtn">
-              <span data-i18n="kycClear">Clear</span>
-            </button>
-            <button type="button" class="btn btn-gold" id="kycSubmitBtn">
-              <span data-i18n="kycUploadBtn">Upload Selected File</span>
-            </button>
-          </div>
-
-          <div class="content-box gold" style="margin-top:20px;">
-            <strong data-i18n="kycNoteTitle">Why we ask</strong>
-            <span data-i18n="kycNoteText">
-              Identity verification is a legal requirement for all financial platforms. Your documents are stored securely and never shared with third parties except when required by law.
-            </span>
+        <div class="profile-user">
+          <div class="profile-user-avatar" id="sideAvatar">A</div>
+          <div class="profile-user-name" id="sideName">User</div>
+          <div class="profile-user-email" id="sideEmail">—</div>
+          <div class="profile-badges" id="sideBadges">
+            <span class="profile-badge user" id="sideRoleBadge">USER</span>
+            <span class="profile-badge unverified" id="sideKycBadge">UNVERIFIED</span>
           </div>
         </div>
-      </section>
 
-      <!-- TAB: Security -->
-      <section class="profile-tab-content" data-tab-content="security">
-        <div class="profile-card">
-          <h2 data-i18n="profileSecurityTitle">Change Password</h2>
-          <p data-i18n="profileSecurityText">Use a strong password. At least 8 characters.</p>
+        <nav class="profile-nav">
+          <a class="profile-nav-item active" data-tab="personal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <span>Personal Info</span>
+          </a>
+          <a class="profile-nav-item" data-tab="payment">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+              <line x1="1" y1="10" x2="23" y2="10"/>
+            </svg>
+            <span>Payment</span>
+          </a>
+          <a class="profile-nav-item" data-tab="kyc">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 12l2 2 4-4"/>
+              <path d="M21 12c0 5-3.5 8.5-9 10-5.5-1.5-9-5-9-10V5l9-3 9 3z"/>
+            </svg>
+            <span>KYC</span>
+          </a>
+          <a class="profile-nav-item" data-tab="security">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <span>Security</span>
+          </a>
+          <a class="profile-nav-item" data-tab="account">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="16" x2="12" y2="12"/>
+              <line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+            <span>Account</span>
+          </a>
+        </nav>
 
-          <form class="profile-form" id="passwordForm">
-            <div class="field-group">
-              <label class="field-label" for="currentPassword" data-i18n="profileCurrentPassword">Current password</label>
-              <input type="password" id="currentPassword" class="field-input" autocomplete="current-password" required>
+      </aside>
+
+      <!-- Content -->
+      <div class="profile-content">
+
+        <!-- PANEL: Personal -->
+        <div class="profile-panel active" data-panel="personal">
+          <div class="panel-card">
+            <div class="panel-header">
+              <h2>Personal Information</h2>
+              <p>Update your display name and phone number.</p>
             </div>
 
-            <div class="profile-form-row">
-              <div class="field-group">
-                <label class="field-label" for="newPassword" data-i18n="profileNewPassword">New password</label>
-                <input type="password" id="newPassword" class="field-input" autocomplete="new-password" minlength="8" required>
+            <form class="panel-form" id="personalForm">
+              <div class="form-row">
+                <div class="field">
+                  <label class="field-label" for="fullName">Full name</label>
+                  <input type="text" id="fullName" class="field-input" placeholder="Ahmad Rahimi">
+                </div>
+                <div class="field">
+                  <label class="field-label" for="phone">Phone</label>
+                  <input type="tel" id="phone" class="field-input" placeholder="+93 700 000 000">
+                </div>
               </div>
-              <div class="field-group">
-                <label class="field-label" for="confirmPassword" data-i18n="profileConfirmPassword">Confirm new password</label>
-                <input type="password" id="confirmPassword" class="field-input" autocomplete="new-password" minlength="8" required>
+
+              <div class="field">
+                <label class="field-label" for="emailDisplay">Email</label>
+                <input type="email" id="emailDisplay" class="field-input" disabled>
+                <div class="field-hint">Email cannot be changed. Contact support if needed.</div>
+              </div>
+
+              <div class="panel-actions">
+                <button type="submit" class="btn btn-primary" id="savePersonalBtn">
+                  <span>Save Changes</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- PANEL: Payment -->
+        <div class="profile-panel" data-panel="payment">
+          <div class="panel-card">
+            <div class="panel-header">
+              <h2>Hesab Pay Details</h2>
+              <p>This is where we send AFN when you sell USDT.</p>
+            </div>
+
+            <form class="panel-form" id="paymentForm">
+              <div class="form-row">
+                <div class="field">
+                  <label class="field-label" for="hesabPay">Hesab Pay number</label>
+                  <input type="text" id="hesabPay" class="field-input" placeholder="07XX XXX XXX">
+                </div>
+                <div class="field">
+                  <label class="field-label" for="hesabHolder">Account holder name</label>
+                  <input type="text" id="hesabHolder" class="field-input" placeholder="Ahmad Rahimi">
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-header">
+              <h2>USDT Wallet</h2>
+              <p>This is where we send USDT when you buy.</p>
+            </div>
+
+            <form class="panel-form" id="walletForm">
+              <div class="field">
+                <label class="field-label" for="usdtWallet">Wallet address</label>
+                <input type="text" id="usdtWallet" class="field-input" placeholder="T...">
+                <div class="field-hint">Must be a valid TRC20 (Tron) address.</div>
+              </div>
+
+              <div class="field">
+                <label class="field-label" for="usdtNetwork">Network</label>
+                <select id="usdtNetwork" class="field-input">
+                  <option value="TRC20">TRC20 (Tron)</option>
+                  <option value="BEP20">BEP20 (BNB Chain)</option>
+                  <option value="ERC20">ERC20 (Ethereum)</option>
+                </select>
+                <div class="field-hint">⚠ Wrong network = lost funds.</div>
+              </div>
+
+              <div class="panel-actions">
+                <button type="submit" class="btn btn-primary" id="savePaymentBtn">
+                  <span>Save Changes</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- PANEL: KYC -->
+        <div class="profile-panel" data-panel="kyc">
+          <div class="panel-card">
+            <div class="panel-header">
+              <h2>Identity Verification (KYC)</h2>
+              <p>Verify your identity to unlock all features.</p>
+            </div>
+
+            <div class="kyc-banner not-submitted" id="kycBanner">
+              <div class="kyc-banner-icon" id="kycBannerIcon">⏳</div>
+              <div class="kyc-banner-content">
+                <div class="kyc-banner-title" id="kycBannerTitle">Not submitted</div>
+                <div class="kyc-banner-text" id="kycBannerText">Upload your documents to get verified.</div>
               </div>
             </div>
 
-            <div class="profile-save-bar">
-              <button type="submit" class="btn btn-gold" id="changePasswordBtn">
-                <span data-i18n="profileChangePassword">Change Password</span>
+            <div class="kyc-grid" id="kycUploadGrid">
+              <div class="kyc-item">
+                <div class="kyc-item-icon">◫</div>
+                <div class="kyc-item-title">National ID</div>
+                <div class="kyc-item-desc">Front side photo</div>
+                <input type="file" id="fileNationalId" accept="image/*" hidden>
+                <span class="kyc-item-btn" data-upload="national_id">Choose file</span>
+                <small class="kyc-file-name" id="nameNationalId" style="display:none;"></small>
+              </div>
+
+              <div class="kyc-item">
+                <div class="kyc-item-icon">◈</div>
+                <div class="kyc-item-title">Passport</div>
+                <div class="kyc-item-desc">Main page</div>
+                <input type="file" id="filePassport" accept="image/*" hidden>
+                <span class="kyc-item-btn" data-upload="passport">Choose file</span>
+                <small class="kyc-file-name" id="namePassport" style="display:none;"></small>
+              </div>
+
+              <div class="kyc-item">
+                <div class="kyc-item-icon">☺</div>
+                <div class="kyc-item-title">Selfie</div>
+                <div class="kyc-item-desc">With your ID</div>
+                <input type="file" id="fileSelfie" accept="image/*" hidden>
+                <span class="kyc-item-btn" data-upload="selfie">Choose file</span>
+                <small class="kyc-file-name" id="nameSelfie" style="display:none;"></small>
+              </div>
+            </div>
+
+            <div class="panel-actions" id="kycUploadBar" style="display:none;">
+              <button type="button" class="btn btn-secondary" id="kycClearBtn">Clear</button>
+              <button type="button" class="btn btn-primary" id="kycSubmitBtn">
+                <span>Upload Selected File</span>
               </button>
             </div>
-          </form>
-        </div>
-      </section>
 
-      <!-- TAB: Account -->
-      <section class="profile-tab-content" data-tab-content="account">
-        <div class="profile-card">
-          <h2 data-i18n="profileAccountTitle">Account Information</h2>
-          <p data-i18n="profileAccountText">Read-only information about your account.</p>
+            <div class="kyc-docs-list" id="kycDocsList"></div>
 
-          <div class="profile-info-row">
-            <span data-i18n="profileUserId">User ID</span>
-            <span id="infoId">—</span>
-          </div>
-          <div class="profile-info-row">
-            <span data-i18n="profileJoinDate">Member since</span>
-            <span id="infoCreated">—</span>
-          </div>
-          <div class="profile-info-row">
-            <span data-i18n="profileRole">Role</span>
-            <span id="infoRole">—</span>
-          </div>
-          <div class="profile-info-row">
-            <span data-i18n="profileKycStatus">KYC status</span>
-            <span id="infoKyc">—</span>
-          </div>
-          <div class="profile-info-row">
-            <span data-i18n="profileStatus">Account status</span>
-            <span id="infoStatus">—</span>
+            <div class="info-box">
+              <strong>Why we ask</strong>
+              Identity verification is a legal requirement for all financial platforms. Your documents are stored securely and never shared with third parties.
+            </div>
           </div>
         </div>
-      </section>
 
-    </main>
-  </div>
+        <!-- PANEL: Security -->
+        <div class="profile-panel" data-panel="security">
+          <div class="panel-card">
+            <div class="panel-header">
+              <h2>Change Password</h2>
+              <p>Use a strong password with at least 8 characters.</p>
+            </div>
+
+            <form class="panel-form" id="passwordForm">
+              <div class="field">
+                <label class="field-label" for="currentPassword">Current password</label>
+                <input type="password" id="currentPassword" class="field-input" autocomplete="current-password" required>
+              </div>
+
+              <div class="form-row">
+                <div class="field">
+                  <label class="field-label" for="newPassword">New password</label>
+                  <input type="password" id="newPassword" class="field-input" autocomplete="new-password" minlength="8" required>
+                </div>
+                <div class="field">
+                  <label class="field-label" for="confirmPassword">Confirm new password</label>
+                  <input type="password" id="confirmPassword" class="field-input" autocomplete="new-password" minlength="8" required>
+                </div>
+              </div>
+
+              <div class="panel-actions">
+                <button type="submit" class="btn btn-primary" id="changePasswordBtn">
+                  <span>Change Password</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- PANEL: Account -->
+        <div class="profile-panel" data-panel="account">
+          <div class="panel-card">
+            <div class="panel-header">
+              <h2>Account Information</h2>
+              <p>Read-only information about your account.</p>
+            </div>
+
+            <div class="info-list">
+              <div class="info-row">
+                <span class="info-label">User ID</span>
+                <span class="info-value" id="infoId">—</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Member since</span>
+                <span class="info-value" id="infoCreated">—</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Role</span>
+                <span class="info-value" id="infoRole">—</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">KYC status</span>
+                <span class="info-value" id="infoKyc">—</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Account status</span>
+                <span class="info-value" id="infoStatus">—</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
 
   <!-- Scripts -->
   <script src="../assets/js/config.js"></script>
@@ -318,7 +394,6 @@
   <script src="../assets/js/auth.js"></script>
   <script src="../assets/js/api.js"></script>
   <script src="../assets/js/notifications.js"></script>
-  <script src="../assets/js/animations.js"></script>
   <script src="../assets/js/profile.js"></script>
 </body>
 </html>

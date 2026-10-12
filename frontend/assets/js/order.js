@@ -1,9 +1,13 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Order Detail Page
+   ARYANA CURRENCY — Order Detail v2
    ═══════════════════════════════════════ */
 
 let currentOrder = null;
 let paymentInfo = null;
+
+/* ═══════════════════════════════════════
+              Init
+   ═══════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', async () => {
   Auth.requireLogin();
@@ -13,12 +17,26 @@ document.addEventListener('DOMContentLoaded', async () => {
   await I18N.load(initialLang);
   I18N.apply();
 
-  const langSelect = document.getElementById('languageSelect');
-  if (langSelect) {
-    langSelect.value = I18N.currentLang;
-    langSelect.addEventListener('change', (e) => I18N.setLanguage(e.target.value));
+  // Logout
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) logoutBtn.addEventListener('click', () => Auth.logout());
+
+  showAdminButton();
+  renderUserInfo();
+
+  // Copy ref
+  const refCopy = document.getElementById('refCopy');
+  if (refCopy) {
+    refCopy.addEventListener('click', () => {
+      const ref = document.getElementById('orderRef')?.textContent;
+      if (ref && ref !== '—') copyText(ref, refCopy);
+    });
   }
 
+  // Setup copy buttons
+  setupCopyButtons();
+
+  // Load order
   const params = new URLSearchParams(window.location.search);
   const orderId = params.get('id');
 
@@ -43,50 +61,114 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
+/* ═══════════════════════════════════════
+              Helpers
+   ═══════════════════════════════════════ */
+
+function showAdminButton() {
+  const user = Auth.getUser();
+  const btn = document.getElementById('adminPanelBtn');
+  if (btn && user && user.role === 'ADMIN') {
+    btn.style.display = 'grid';
+  }
+}
+
+function renderUserInfo() {
+  const user = Auth.getUser();
+  if (!user) return;
+
+  const initial = (user.full_name || user.email || '?').charAt(0).toUpperCase();
+  const avatarEl = document.getElementById('userAvatar');
+  const nameEl = document.getElementById('userName');
+
+  if (avatarEl) avatarEl.textContent = initial;
+  if (nameEl) nameEl.textContent = (user.full_name || 'User').split(' ')[0];
+}
+
+/* ═══════════════════════════════════════
+              Render
+   ═══════════════════════════════════════ */
+
 function render() {
   document.getElementById('loadingBox').style.display = 'none';
-  document.getElementById('orderContent').style.display = 'block';
+  document.getElementById('contentBox').style.display = 'block';
 
   const o = currentOrder;
   const isBuy = o.side === 'BUY';
 
-  document.getElementById('orderRef').textContent = o.reference;
+  // Ref
+  setText('orderRef', o.reference);
 
+  // Status banner
   renderStatusBanner(o.status);
 
-  document.getElementById('detailSide').textContent = isBuy
-    ? (I18N.t('exchangeTabBuy') || 'Buy USDT')
-    : (I18N.t('exchangeTabSell') || 'Sell USDT');
+  // Progress timeline
+  renderProgress(o.status);
 
-  document.getElementById('detailAmount').textContent = `${fmt(o.amount_usdt)} USDT`;
-  document.getElementById('detailRate').textContent = `${fmt(o.rate_afn_per_usdt)} AFN`;
-  document.getElementById('detailGross').textContent = `${fmt(o.gross_afn)} AFN`;
-  document.getElementById('detailFee').textContent = `${fmt(o.fee_afn)} AFN`;
-  document.getElementById('detailTotal').textContent = `${fmt(o.net_afn)} AFN`;
+  // Order summary
+  setText('detailSide', isBuy ? '▲ BUY USDT' : '▼ SELL USDT');
+  const sideEl = document.getElementById('detailSide');
+  if (sideEl) sideEl.className = 'detail-value ' + (isBuy ? 'buy' : 'sell');
 
-  document.getElementById('detailTotalLabel').textContent = isBuy
-    ? (I18N.t('exchangeYouPay') || 'You pay')
-    : (I18N.t('exchangeYouReceive') || 'You receive');
+  const fmt = (n, d = 2) => Number(n).toLocaleString('en-US', {
+    minimumFractionDigits: d,
+    maximumFractionDigits: d,
+  });
 
-  renderTimeline(o.status);
+  setText('detailAmount', `${fmt(o.amount_usdt)} USDT`);
+  setText('detailRate', `${fmt(o.rate_afn_per_usdt)} AFN`);
+  setText('detailGross', `${fmt(o.gross_afn)} AFN`);
+  setText('detailFee', `${fmt(o.fee_afn)} AFN`);
+  setText('detailTotal', `${fmt(o.net_afn)} AFN`);
+  setText('detailTotalLabel', isBuy ? 'Total to Pay' : 'Total to Receive');
 
-  if (o.status === 'PENDING') {
-    renderPaymentBox(o);
+  // Payment section
+  if (o.status === 'PENDING' && paymentInfo) {
+    renderPaymentSection(o, isBuy, fmt);
+    document.getElementById('paymentBox').style.display = 'block';
     document.getElementById('submitBox').style.display = 'block';
-    document.getElementById('actionsBox').style.display = 'flex';
+    document.getElementById('cancelBox').style.display = 'flex';
     setupSubmitForm();
-    setupCancel();
+    setupCancelButton();
   } else {
     document.getElementById('paymentBox').style.display = 'none';
     document.getElementById('submitBox').style.display = 'none';
-    document.getElementById('actionsBox').style.display = 'none';
+    document.getElementById('cancelBox').style.display = 'none';
   }
 
-  if (o.admin_note && (o.status === 'REJECTED' || o.status === 'CANCELLED')) {
+  // User submitted ref (shown for AWAITING_REVIEW / PROCESSING / COMPLETED / REJECTED)
+  if (o.user_payment_reference) {
+    document.getElementById('userRefBox').style.display = 'block';
+    setText('userRefValue', o.user_payment_reference);
+
+    if (o.user_note) {
+      const noteRow = document.getElementById('userNoteRow');
+      if (noteRow) noteRow.style.display = 'flex';
+      setText('userNoteValue', o.user_note);
+    }
+  }
+
+  // Admin note
+  if (o.admin_note) {
     document.getElementById('adminNoteBox').style.display = 'block';
-    document.getElementById('adminNoteText').textContent = o.admin_note;
+    const box = document.getElementById('adminNoteBox');
+    const label = document.getElementById('adminNoteLabel');
+
+    if (o.status === 'REJECTED' || o.status === 'CANCELLED') {
+      box.classList.remove('info');
+      if (label) label.textContent = 'Rejection Reason';
+    } else {
+      box.classList.add('info');
+      if (label) label.textContent = 'Admin Note';
+    }
+
+    setText('adminNoteText', o.admin_note);
   }
 }
+
+/* ═══════════════════════════════════════
+              Status Banner
+   ═══════════════════════════════════════ */
 
 function renderStatusBanner(status) {
   const banner = document.getElementById('statusBanner');
@@ -94,192 +176,301 @@ function renderStatusBanner(status) {
   const title = document.getElementById('statusTitle');
   const text = document.getElementById('statusText');
 
-  banner.className = 'order-status-banner';
+  if (!banner) return;
+
+  banner.className = 'status-banner';
 
   const config = {
     'PENDING': {
       cls: 'pending', icon: '⏳',
-      title: { en: 'Awaiting payment', fa: 'در انتظار پرداخت', ps: 'د تادیې په تمه' },
-      text: { en: 'Send the exact amount and submit the reference below.', fa: 'مبلغ دقیق را ارسال کنید و شماره تراکنش را ثبت کنید.', ps: 'سمه اندازه ولېږئ او د معاملې شمېره ثبت کړئ.' },
+      title: 'Awaiting Payment',
+      text: 'Send the exact amount using the instructions below, then submit the transaction reference.',
     },
     'AWAITING_REVIEW': {
       cls: 'review', icon: '🔍',
-      title: { en: 'Awaiting verification', fa: 'در انتظار تأیید', ps: 'د تصدیق په تمه' },
-      text: { en: 'Our team is reviewing your payment.', fa: 'تیم ما در حال بررسی پرداخت شما است.', ps: 'زموږ ټیم ستاسو تادیه کتنه کوي.' },
+      title: 'Under Review',
+      text: 'Your payment reference has been submitted. Our team is verifying it now.',
     },
     'PROCESSING': {
       cls: 'processing', icon: '⚙',
-      title: { en: 'Processing', fa: 'در حال پردازش', ps: 'پروسس' },
-      text: { en: 'Verified. We are sending the funds.', fa: 'تأیید شد. در حال ارسال وجوه.', ps: 'تصدیق شو. پیسې لیږو.' },
+      title: 'Processing',
+      text: 'Payment verified. We are sending your funds.',
     },
     'COMPLETED': {
       cls: 'completed', icon: '✓',
-      title: { en: 'Completed', fa: 'تکمیل شد', ps: 'بشپړ شو' },
-      text: { en: 'Your transaction is complete. Thank you!', fa: 'تراکنش شما تکمیل شد. سپاسگزاریم!', ps: 'ستاسو معامله بشپړه شوه. مننه!' },
+      title: 'Order Completed',
+      text: 'Your funds have been delivered successfully. Thank you for using Aryana Currency!',
     },
     'CANCELLED': {
       cls: 'cancelled', icon: '✕',
-      title: { en: 'Cancelled', fa: 'لغو شد', ps: 'لغوه شو' },
-      text: { en: 'This order was cancelled.', fa: 'این سفارش لغو شد.', ps: 'دا غوښتنه لغوه شوه.' },
+      title: 'Order Cancelled',
+      text: 'This order was cancelled. You can create a new one anytime.',
     },
     'REJECTED': {
       cls: 'rejected', icon: '✕',
-      title: { en: 'Rejected', fa: 'رد شد', ps: 'رد شو' },
-      text: { en: 'This order was rejected by our team.', fa: 'این سفارش توسط تیم ما رد شد.', ps: 'دا غوښتنه زموږ ټیم رد کړه.' },
+      title: 'Order Rejected',
+      text: 'This order was rejected by our team. Check the note below for details.',
     },
   };
 
   const c = config[status] || config.PENDING;
   banner.classList.add(c.cls);
-  icon.textContent = c.icon;
-  title.textContent = c.title[I18N.currentLang] || c.title.en;
-  text.textContent = c.text[I18N.currentLang] || c.text.en;
+  if (icon) icon.textContent = c.icon;
+  if (title) title.textContent = c.title;
+  if (text) text.textContent = c.text;
 }
 
-function renderTimeline(currentStatus) {
-  const steps = ['PENDING', 'AWAITING_REVIEW', 'PROCESSING', 'COMPLETED'];
-  const currentIdx = steps.indexOf(currentStatus);
+/* ═══════════════════════════════════════
+              Progress Timeline
+   ═══════════════════════════════════════ */
 
-  document.querySelectorAll('#timeline li').forEach(li => {
-    const step = li.dataset.step;
-    const stepIdx = steps.indexOf(step);
-    li.classList.remove('active', 'done');
+function renderProgress(status) {
+  const stages = ['PENDING', 'AWAITING_REVIEW', 'PROCESSING', 'COMPLETED'];
+  const currentIdx = stages.indexOf(status);
 
-    if (step === currentStatus) {
-      li.classList.add('active');
-    } else if (currentIdx > -1 && stepIdx < currentIdx) {
-      li.classList.add('done');
-    }
+  // Reset all
+  document.querySelectorAll('.progress-stage').forEach(el => {
+    el.classList.remove('done', 'active', 'cancelled', 'rejected');
+  });
+  document.querySelectorAll('.progress-line').forEach(el => {
+    el.classList.remove('done', 'active');
   });
 
-  if (currentStatus === 'CANCELLED' || currentStatus === 'REJECTED') {
-    document.querySelectorAll('#timeline li').forEach(li => {
-      li.classList.remove('active', 'done');
+  // Set current
+  if (status === 'CANCELLED' || status === 'REJECTED') {
+    // همه سرخ
+    document.querySelectorAll('.progress-stage').forEach(el => {
+      el.classList.add(status === 'REJECTED' ? 'rejected' : 'cancelled');
     });
-  }
-}
-
-function renderPaymentBox(order) {
-  const box = document.getElementById('paymentBox');
-  const usdtBox = document.getElementById('paymentUsdtBox');
-  const afnBox = document.getElementById('paymentAfnBox');
-  const warning = document.getElementById('paymentWarning');
-
-  if (!paymentInfo) {
-    box.style.display = 'none';
     return;
   }
 
-  box.style.display = 'block';
+  document.querySelectorAll('.progress-stage').forEach(el => {
+    const stage = el.dataset.stage;
+    const idx = stages.indexOf(stage);
 
-  if (order.side === 'BUY') {
-    usdtBox.style.display = 'none';
-    afnBox.style.display = 'block';
+    if (idx < currentIdx) {
+      el.classList.add('done');
+      // تغییر محتوا به ✓
+      const dot = el.querySelector('.progress-stage-dot');
+      if (dot) dot.textContent = '✓';
+    } else if (idx === currentIdx) {
+      el.classList.add('active');
+    } else {
+      // آینده - شماره
+      const dot = el.querySelector('.progress-stage-dot');
+      if (dot) dot.textContent = (idx + 1).toString();
+    }
+  });
 
-    document.getElementById('platformHesabPay').textContent = paymentInfo.hesab_pay || '—';
-    document.getElementById('platformAmount').textContent = `${fmt(order.net_afn)} AFN`;
+  // Lines
+  document.querySelectorAll('.progress-line').forEach(el => {
+    const lineNum = parseInt(el.dataset.line);
+    if (lineNum <= currentIdx) {
+      el.classList.add('done');
+    } else if (lineNum === currentIdx + 1) {
+      // نیمه فعال — فعلاً done
+    }
+  });
 
-    setupCopy('copyHesab', paymentInfo.hesab_pay);
-    setupCopy('copyAmount', fmt(order.net_afn));
+  // Info steps (کنار)
+  document.querySelectorAll('.info-step').forEach(el => {
+    const stage = el.dataset.step;
+    const idx = stages.indexOf(stage);
 
-    warning.textContent = I18N.currentLang === 'en'
-      ? `After sending ${fmt(order.net_afn)} AFN via Hesab Pay, paste the transaction reference below and submit.`
-      : I18N.currentLang === 'fa'
-      ? `پس از ارسال ${fmt(order.net_afn)} افغانی از طریق حساب پی، شماره تراکنش را در پایین ثبت کنید.`
-      : `له حساب پی له لارې ${fmt(order.net_afn)} افغانۍ لیږلو وروسته، د معاملې شمېره لاندې ثبت کړئ.`;
+    el.classList.remove('done', 'active');
+    if (idx < currentIdx) {
+      el.classList.add('done');
+      const num = el.querySelector('.info-step-num');
+      if (num) num.textContent = '✓';
+    } else if (idx === currentIdx) {
+      el.classList.add('active');
+    } else {
+      const num = el.querySelector('.info-step-num');
+      if (num) num.textContent = (idx + 1).toString();
+    }
+  });
+}
+
+/* ═══════════════════════════════════════
+              Payment Section
+   ═══════════════════════════════════════ */
+
+function renderPaymentSection(order, isBuy, fmt) {
+  const afnSection = document.getElementById('afnPaymentSection');
+  const usdtSection = document.getElementById('usdtPaymentSection');
+
+  if (isBuy) {
+    // BUY: کاربر AFN میده
+    afnSection.style.display = 'block';
+    usdtSection.style.display = 'none';
+
+    setText('platformHesabPay', paymentInfo.hesab_pay || '—');
+    setText('platformAmount', `${fmt(order.net_afn)} AFN`);
+
+    setText('paymentSubtitle', 'Send AFN via Hesab Pay to complete your purchase');
+
+    const warning = document.getElementById('paymentWarning');
+    if (warning) {
+      warning.innerHTML = `⚠ After sending <strong>${fmt(order.net_afn)} AFN</strong> via Hesab Pay, copy the transaction reference and paste it in the form below.`;
+    }
+
+    // تغییر label فرم
+    setText('refLabel', 'Hesab Pay Transaction Reference');
+    setText('refHint', 'Paste the transaction ID from your Hesab Pay app.');
+
+    // info steps
+    setText('infoStep1Text', 'Transfer the AFN amount via Hesab Pay.');
+    setText('infoStep2Text', 'Copy the transaction reference from Hesab Pay.');
+    setText('infoStep3Text', 'Our team verifies your payment.');
+    setText('infoStep4Text', 'USDT is sent to your wallet.');
+
   } else {
-    usdtBox.style.display = 'block';
-    afnBox.style.display = 'none';
+    // SELL: کاربر USDT میده
+    afnSection.style.display = 'none';
+    usdtSection.style.display = 'block';
 
-    document.getElementById('platformWalletAddress').textContent = paymentInfo.usdt_wallet || '—';
+    setText('platformWallet', paymentInfo.usdt_wallet || '—');
+    setText('platformUsdtAmount', `${fmt(order.amount_usdt)} USDT`);
 
-    setupCopy('copyWallet', paymentInfo.usdt_wallet);
+    setText('paymentSubtitle', 'Send USDT via TRC20 network to complete your sale');
 
-    warning.textContent = I18N.currentLang === 'en'
-      ? `Send exactly ${fmt(order.amount_usdt)} USDT via TRC20 network to the address above, then paste the TXID below.`
-      : I18N.currentLang === 'fa'
-      ? `دقیقاً ${fmt(order.amount_usdt)} تتر از شبکه TRC20 به آدرس بالا ارسال کنید، سپس TXID را در پایین ثبت نمایید.`
-      : `سم ${fmt(order.amount_usdt)} تتر د TRC20 شبکې له لارې پورتني پته ته ولېږئ، بیا TXID لاندې ثبت کړئ.`;
+    const warning = document.getElementById('paymentWarning');
+    if (warning) {
+      warning.innerHTML = `⚠ Send exactly <strong>${fmt(order.amount_usdt)} USDT</strong> via TRC20 network, then paste the transaction hash (TXID) in the form below.`;
+    }
+
+    setText('refLabel', 'USDT Transaction Hash (TXID)');
+    setText('refHint', 'Paste the TXID from your wallet app.');
+
+    setText('infoStep1Text', 'Send USDT to the wallet address above.');
+    setText('infoStep2Text', 'Copy the TXID from your wallet.');
+    setText('infoStep3Text', 'Our team verifies the transfer.');
+    setText('infoStep4Text', 'AFN is sent to your Hesab Pay.');
   }
 }
 
-function setupCopy(btnId, value) {
-  const btn = document.getElementById(btnId);
-  if (!btn) return;
+/* ═══════════════════════════════════════
+              Copy Buttons
+   ═══════════════════════════════════════ */
 
-  const newBtn = btn.cloneNode(true);
-  btn.parentNode.replaceChild(newBtn, btn);
+function setupCopyButtons() {
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.dataset.copy;
+      const target = document.getElementById(targetId);
+      if (!target) return;
 
-  newBtn.addEventListener('click', () => {
-    if (!value) return;
-    navigator.clipboard.writeText(value).then(() => {
-      const orig = newBtn.textContent;
-      newBtn.textContent = '✓';
-      setTimeout(() => { newBtn.textContent = orig; }, 1200);
+      const text = target.textContent;
+      if (!text || text === '—') return;
+
+      copyText(text, btn);
     });
   });
 }
+
+function copyText(text, btnEl) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showCopied(btnEl);
+    }).catch(() => {
+      fallbackCopy(text, btnEl);
+    });
+  } else {
+    fallbackCopy(text, btnEl);
+  }
+}
+
+function fallbackCopy(text, btnEl) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    document.execCommand('copy');
+    showCopied(btnEl);
+  } catch (err) {
+    Notify.error('Could not copy.');
+  }
+  document.body.removeChild(textarea);
+}
+
+function showCopied(btnEl) {
+  if (!btnEl) {
+    Notify.success('Copied!');
+    return;
+  }
+
+  const origHtml = btnEl.innerHTML;
+  btnEl.classList.add('copied');
+  btnEl.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+    <span>Copied</span>
+  `;
+
+  setTimeout(() => {
+    btnEl.classList.remove('copied');
+    btnEl.innerHTML = origHtml;
+  }, 1500);
+}
+
+/* ═══════════════════════════════════════
+              Submit Form
+   ═══════════════════════════════════════ */
 
 function setupSubmitForm() {
   const form = document.getElementById('submitForm');
   const btn = document.getElementById('submitPaymentBtn');
+  if (!form) return;
 
-  const refLabel = document.getElementById('paymentRefLabel');
-  const refInput = document.getElementById('paymentRef');
-
-  if (currentOrder.side === 'BUY') {
-    if (refLabel) refLabel.textContent = I18N.currentLang === 'en' ? 'Hesab Pay transaction reference'
-                                  : I18N.currentLang === 'fa' ? 'شماره تراکنش حساب پی'
-                                  : 'د حساب پی د معاملې شمېره';
-    if (refInput) refInput.placeholder = 'HP-...';
-  } else {
-    if (refLabel) refLabel.textContent = I18N.currentLang === 'en' ? 'USDT transaction hash (TXID)'
-                                  : I18N.currentLang === 'fa' ? 'هش تراکنش تتر (TXID)'
-                                  : 'د تتر د معاملې هش (TXID)';
-    if (refInput) refInput.placeholder = 'abc123...';
-  }
-
-  form.onsubmit = async (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const ref = document.getElementById('paymentRef').value.trim();
     const note = document.getElementById('paymentNote').value.trim() || null;
 
-    if (!ref) return;
+    if (!ref) {
+      Notify.warning('Please enter the transaction reference.');
+      return;
+    }
 
     btn.disabled = true;
     const orig = btn.innerHTML;
     btn.innerHTML = '<span class="spinner"></span>';
 
     try {
-      const updated = await API.submitPayment(currentOrder.id, ref, note);
-      currentOrder = updated;
-      Notify.success(
-        I18N.currentLang === 'en' ? 'Payment submitted. Awaiting verification.'
-        : I18N.currentLang === 'fa' ? 'پرداخت ثبت شد. در انتظار تأیید.'
-        : 'تادیه ثبت شوه. د تصدیق په تمه.'
-      );
-      setTimeout(() => window.location.reload(), 1200);
+      await API.submitPayment(currentOrder.id, ref, note);
+      Notify.success('Payment submitted! Awaiting verification.');
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 1200);
+
     } catch (err) {
-      Notify.error(err.detail || 'Failed to submit.');
+      console.error('Submit failed:', err);
+      Notify.error(err.detail || 'Failed to submit payment.');
       btn.disabled = false;
       btn.innerHTML = orig;
     }
-  };
+  });
 }
 
-function setupCancel() {
+/* ═══════════════════════════════════════
+              Cancel Order
+   ═══════════════════════════════════════ */
+
+function setupCancelButton() {
   const btn = document.getElementById('cancelOrderBtn');
   if (!btn) return;
 
-  btn.onclick = async () => {
+  btn.addEventListener('click', async () => {
     const ok = await Notify.confirm({
-      title: I18N.currentLang === 'en' ? 'Cancel this order?'
-           : I18N.currentLang === 'fa' ? 'این سفارش لغو شود؟'
-           : 'دا غوښتنه لغوه شي؟',
-      message: I18N.currentLang === 'en' ? 'This action cannot be undone.'
-             : I18N.currentLang === 'fa' ? 'این اقدام قابل بازگشت نیست.'
-             : 'دا کړنه نه شي بیرته کېدای.',
+      title: 'Cancel this order?',
+      message: 'This action cannot be undone. You will need to create a new order if you change your mind.',
       type: 'warning',
     });
 
@@ -291,30 +482,44 @@ function setupCancel() {
 
     try {
       await API.cancelOrder(currentOrder.id);
-      Notify.warning(
-        I18N.currentLang === 'en' ? 'Order cancelled.'
-        : I18N.currentLang === 'fa' ? 'سفارش لغو شد.'
-        : 'غوښتنه لغوه شوه.'
-      );
-      setTimeout(() => window.location.reload(), 1200);
+      Notify.warning('Order cancelled.');
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+
     } catch (err) {
-      Notify.error(err.detail || 'Cancel failed.');
+      console.error('Cancel failed:', err);
+      Notify.error(err.detail || 'Failed to cancel order.');
       btn.disabled = false;
       btn.innerHTML = orig;
     }
-  };
-}
-
-function fmt(n) {
-  return Number(n).toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
   });
 }
 
+/* ═══════════════════════════════════════
+              Error
+   ═══════════════════════════════════════ */
+
 function showError(msg) {
   document.getElementById('loadingBox').style.display = 'none';
-  const box = document.getElementById('errorBox');
-  box.textContent = msg;
+  const box = document.getElementById('contentBox');
   box.style.display = 'block';
+  box.innerHTML = `
+    <div class="alert alert-danger" style="margin-top:40px;">
+      ${msg}
+    </div>
+    <div style="text-align:center; margin-top:20px;">
+      <a href="orders-v2.html" class="btn btn-outline">← Back to Orders</a>
+    </div>
+  `;
+}
+
+/* ═══════════════════════════════════════
+              Helpers
+   ═══════════════════════════════════════ */
+
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
 }

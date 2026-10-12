@@ -1,12 +1,11 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Exchange Page Logic
+   ARYANA CURRENCY — Exchange v2 Logic
+   Trade page
    ═══════════════════════════════════════ */
 
-const ExchangeState = {
-  side: 'BUY',
-  rate: null,
-  wallets: null,
-};
+let currentRate = null;
+let currentSide = 'BUY';
+let currentWallets = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
   Auth.requireLogin();
@@ -16,252 +15,447 @@ document.addEventListener('DOMContentLoaded', async () => {
   await I18N.load(initialLang);
   I18N.apply();
 
-  // زبان
-  const langSelect = document.getElementById('languageSelect');
-  if (langSelect) {
-    langSelect.value = I18N.currentLang;
-    langSelect.addEventListener('change', (e) => {
-      I18N.setLanguage(e.target.value).then(updateAll);
-    });
-  }
+  // Logout
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) logoutBtn.addEventListener('click', () => Auth.logout());
+
+  // Show admin button
+  showAdminButton();
+
+  // Render user info
+  renderUserInfo();
 
   // تشخیص side از URL
   const params = new URLSearchParams(window.location.search);
   const sideParam = params.get('side');
   if (sideParam === 'SELL') {
-    ExchangeState.side = 'SELL';
+    currentSide = 'SELL';
   }
 
-  // راهاندازی تبها
+  // Setup
   setupTabs();
+  setupInputs();
+  setupQuickAmounts();
+  setupSwapButton();
+  setupForm();
 
-  // دکمههای مقدار سریع
-  document.querySelectorAll('[data-quick]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const val = btn.dataset.quick;
-      const input = document.getElementById('amountUsdt');
-      input.value = val;
+  // Load data
+  await Promise.all([
+    loadProfile(),
+    loadRate(),
+    loadWallets(),
+  ]);
+
+  // Apply side
+  applySide();
+
+  // Calculate اولیه
+  calculate();
+});
+
+/* ═══════════════════════════════════════
+              Helpers
+   ═══════════════════════════════════════ */
+
+function showAdminButton() {
+  const user = Auth.getUser();
+  const btn = document.getElementById('adminPanelBtn');
+  if (btn && user && user.role === 'ADMIN') {
+    btn.style.display = 'grid';
+  }
+}
+
+function renderUserInfo() {
+  const user = Auth.getUser();
+  if (!user) return;
+
+  const initial = (user.full_name || user.email || '?').charAt(0).toUpperCase();
+  const avatarEl = document.getElementById('userAvatar');
+  const nameEl = document.getElementById('userName');
+
+  if (avatarEl) avatarEl.textContent = initial;
+  if (nameEl) nameEl.textContent = (user.full_name || 'User').split(' ')[0];
+}
+
+/* ═══════════════════════════════════════
+              Load Data
+   ═══════════════════════════════════════ */
+
+async function loadProfile() {
+  try {
+    const user = await API.me();
+    Auth.setUser(user);
+    showAdminButton();
+
+    const initial = (user.full_name || user.email || '?').charAt(0).toUpperCase();
+    const avatarEl = document.getElementById('userAvatar');
+    const nameEl = document.getElementById('userName');
+    if (avatarEl) avatarEl.textContent = initial;
+    if (nameEl) nameEl.textContent = (user.full_name || 'User').split(' ')[0];
+  } catch (err) {
+    console.error('Profile load failed:', err);
+  }
+}
+
+async function loadRate() {
+  try {
+    currentRate = await API.getCurrentRate();
+
+    const fmt = (n) => Number(n).toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
+    setText('rateBadge', `${fmt(currentRate.sell_price_afn)} AFN`);
+  } catch (err) {
+    console.error('Rate load failed:', err);
+    Notify.error('Could not load exchange rate.');
+  }
+}
+
+async function loadWallets() {
+  try {
+    currentWallets = await API.getWallets();
+    updateBalanceDisplay();
+  } catch (err) {
+    console.error('Wallets load failed:', err);
+  }
+}
+
+/* ═══════════════════════════════════════
+              Setup
+   ═══════════════════════════════════════ */
+
+function setupTabs() {
+  document.querySelectorAll('.trade-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const side = tab.dataset.side;
+      if (side === currentSide) return;
+
+      currentSide = side;
+      applySide();
       calculate();
     });
   });
-
-  // ورودی مقدار
-  const amountInput = document.getElementById('amountUsdt');
-  amountInput.addEventListener('input', calculate);
-
-  // فرم
-  const form = document.getElementById('exchangeForm');
-  form.addEventListener('submit', handleSubmit);
-
-  // بارگذاری نرخ و کیف پولها
-  await loadData();
-
-  // آپدیت اولیه
-  updateAll();
-});
-
-/**
- * تنظیم تبها (BUY/SELL)
- */
-function setupTabs() {
-  const tabBuy = document.getElementById('tabBuy');
-  const tabSell = document.getElementById('tabSell');
-
-  tabBuy.addEventListener('click', () => setSide('BUY'));
-  tabSell.addEventListener('click', () => setSide('SELL'));
-
-  updateTabsUI();
 }
 
-function setSide(side) {
-  ExchangeState.side = side;
-  updateTabsUI();
-  updateAll();
-  calculate();
+function applySide() {
+  const isBuy = currentSide === 'BUY';
+
+  // Tabs
+  document.querySelectorAll('.trade-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.side === currentSide);
+  });
+
+  // Title
+  setText('formTitle', isBuy ? 'Buy USDT' : 'Sell USDT');
+  setText('sideCardTitle', isBuy ? 'How to Buy' : 'How to Sell');
+
+  // Submit
+  const submitBtn = document.getElementById('submitBtn');
+  if (submitBtn) {
+    submitBtn.dataset.side = currentSide;
+    const span = submitBtn.querySelector('span');
+    if (span) span.textContent = isBuy ? 'Buy Now' : 'Sell Now';
+  }
+
+  // Pay/Receive
+  if (isBuy) {
+    // کاربر AFN میده، USDT میگیره
+    setText('payLabel', 'You Pay');
+    setText('receiveLabel', 'You Receive');
+    setText('payCurrency', 'AFN');
+    setText('receiveCurrency', 'USDT');
+    const payIcon = document.getElementById('payCurrencyIcon');
+    const receiveIcon = document.getElementById('receiveCurrencyIcon');
+    if (payIcon) payIcon.className = 'currency-icon afn';
+    if (receiveIcon) receiveIcon.className = 'currency-icon usdt';
+    if (payIcon) payIcon.textContent = '؋';
+    if (receiveIcon) receiveIcon.textContent = '₮';
+
+    // Rate badge
+    if (currentRate) {
+      const fmt = (n) => Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      setText('rateBadge', `${fmt(currentRate.sell_price_afn)} AFN`);
+    }
+
+    // Steps
+    setText('step1Text', 'Enter the amount of AFN you want to pay.');
+    setText('step2Text', 'Review the rate and how much USDT you get.');
+    setText('step3Text', 'Continue to see payment instructions.');
+    setText('step4Text', 'Our team verifies and sends USDT to your wallet.');
+
+  } else {
+    // کاربر USDT میده، AFN میگیره
+    setText('payLabel', 'You Pay');
+    setText('receiveLabel', 'You Receive');
+    setText('payCurrency', 'USDT');
+    setText('receiveCurrency', 'AFN');
+    const payIcon = document.getElementById('payCurrencyIcon');
+    const receiveIcon = document.getElementById('receiveCurrencyIcon');
+    if (payIcon) payIcon.className = 'currency-icon usdt';
+    if (receiveIcon) receiveIcon.className = 'currency-icon afn';
+    if (payIcon) payIcon.textContent = '₮';
+    if (receiveIcon) receiveIcon.textContent = '؋';
+
+    // Rate badge
+    if (currentRate) {
+      const fmt = (n) => Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      setText('rateBadge', `${fmt(currentRate.buy_price_afn)} AFN`);
+    }
+
+    // Steps
+    setText('step1Text', 'Enter the amount of USDT you want to sell.');
+    setText('step2Text', 'Review the rate and how much AFN you get.');
+    setText('step3Text', 'Continue to see wallet address for payment.');
+    setText('step4Text', 'Our team verifies and sends AFN to your Hesab Pay.');
+  }
+
+  // Placeholder
+  const input = document.getElementById('amountUsdt');
+  if (input) input.placeholder = '0';
+
+  // Reset input
+  if (input) input.value = '';
+
+  // Balance display
+  updateBalanceDisplay();
 }
 
-function updateTabsUI() {
-  const tabBuy = document.getElementById('tabBuy');
-  const tabSell = document.getElementById('tabSell');
+function updateBalanceDisplay() {
+  if (!currentWallets) return;
 
-  tabBuy.classList.toggle('active', ExchangeState.side === 'BUY');
-  tabSell.classList.toggle('active', ExchangeState.side === 'SELL');
-  tabBuy.classList.toggle('buy', ExchangeState.side === 'BUY');
-  tabSell.classList.toggle('sell', ExchangeState.side === 'SELL');
-}
+  const usdt = currentWallets.usdt || {};
+  const afn = currentWallets.afn || {};
 
-/**
- * آپدیت همه متنهای وابسته به side
- */
-function updateAll() {
-  const isBuy = ExchangeState.side === 'BUY';
-
-  // عنوان فرم
-  const formTitle = document.getElementById('formTitle');
-  if (formTitle) {
-    formTitle.textContent = isBuy
-      ? I18N.t('exchangeFormTitleBuy') || 'Buy USDT'
-      : I18N.t('exchangeFormTitleSell') || 'Sell USDT';
-  }
-
-  // برچسب total
-  const totalLabel = document.getElementById('sumTotalLabel');
-  if (totalLabel) {
-    totalLabel.textContent = isBuy
-      ? (I18N.t('exchangeYouPay') || 'You pay')
-      : (I18N.t('exchangeYouReceive') || 'You receive');
-  }
-
-  // عنوان راهنما
-  const instrTitle = document.getElementById('instructionsTitle');
-  if (instrTitle) {
-    instrTitle.textContent = isBuy
-      ? (I18N.t('exchangeHowToBuy') || 'How to buy')
-      : (I18N.t('exchangeHowToSell') || 'How to sell');
-  }
-
-  // آیتمهای راهنما
-  const list = document.getElementById('instructionsList');
-  if (list) {
-    const keys = isBuy
-      ? ['exchangeStep1Buy', 'exchangeStep2Buy', 'exchangeStep3Buy', 'exchangeStep4Buy', 'exchangeStep5Buy']
-      : ['exchangeStep1Sell', 'exchangeStep2Sell', 'exchangeStep3Sell', 'exchangeStep4Sell', 'exchangeStep5Sell'];
-
-    list.innerHTML = '';
-    keys.forEach(k => {
-      const li = document.createElement('li');
-      li.setAttribute('data-i18n', k);
-      li.textContent = I18N.t(k);
-      list.appendChild(li);
-    });
-  }
-}
-
-/**
- * بارگذاری نرخ و کیف پول
- */
-async function loadData() {
-  try {
-    const [rate, wallets] = await Promise.all([
-      API.getCurrentRate(),
-      API.getWallets(),
-    ]);
-    ExchangeState.rate = rate;
-    ExchangeState.wallets = wallets;
-  } catch (err) {
-    console.error('Failed to load data:', err);
-    showError(I18N.currentLang === 'en' ? 'Could not load exchange rate.'
-            : I18N.currentLang === 'fa' ? 'بارگذاری نرخ ناموفق بود.'
-            : 'د نرخ بارول ناکام شو.');
-  }
-}
-
-/**
- * محاسبه و نمایش
- */
-function calculate() {
-  const amountInput = document.getElementById('amountUsdt');
-  const amount = parseFloat(amountInput.value);
-
-  const sumRate = document.getElementById('sumRate');
-  const sumGross = document.getElementById('sumGross');
-  const sumFee = document.getElementById('sumFee');
-  const sumTotal = document.getElementById('sumTotal');
-
-  if (!ExchangeState.rate || isNaN(amount) || amount <= 0) {
-    sumRate.textContent = '—';
-    sumGross.textContent = '—';
-    sumFee.textContent = '—';
-    sumTotal.textContent = '—';
-    return;
-  }
-
-  const isBuy = ExchangeState.side === 'BUY';
-  const rate = isBuy
-    ? Number(ExchangeState.rate.sell_price_afn)
-    : Number(ExchangeState.rate.buy_price_afn);
-
-  const gross = amount * rate;
-  const fee = gross * 0.015; // 1.5%
-  const total = isBuy ? (gross + fee) : (gross - fee);
+  const usdtBal = Number(usdt.balance || 0) - Number(usdt.locked_balance || 0);
+  const afnBal = Number(afn.balance || 0);
 
   const fmt = (n) => Number(n).toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
 
-  sumRate.textContent = `${fmt(rate)} AFN`;
-  sumGross.textContent = `${fmt(gross)} AFN`;
-  sumFee.textContent = `${fmt(fee)} AFN`;
-  sumTotal.textContent = `${fmt(total)} AFN`;
+  // در BUY کاربر AFN میده → موجودی AFN
+  // در SELL کاربر USDT میده → موجودی USDT
+  const payBalanceWrap = document.getElementById('payBalanceWrap');
+  const payBalanceEl = document.getElementById('payBalance');
+
+  if (currentSide === 'BUY') {
+    if (payBalanceEl) payBalanceEl.textContent = `${fmt(afnBal)} AFN`;
+  } else {
+    if (payBalanceEl) payBalanceEl.textContent = `${fmt(usdtBal)} USDT`;
+  }
+
+  if (payBalanceWrap) payBalanceWrap.style.display = 'inline';
 }
 
-/**
- * ارسال سفارش
- */
-async function handleSubmit(e) {
-  e.preventDefault();
+/* ═══════════════════════════════════════
+              Inputs
+   ═══════════════════════════════════════ */
 
-  const errorBox = document.getElementById('errorBox');
-  errorBox.style.display = 'none';
+function setupInputs() {
+  const input = document.getElementById('amountUsdt');
+  if (!input) return;
 
-  const amountInput = document.getElementById('amountUsdt');
-  const submitBtn = document.getElementById('submitBtn');
-  const amount = parseFloat(amountInput.value);
+  input.addEventListener('input', (e) => {
+    // فقط اعداد و نقطه
+    let value = e.target.value.replace(/[^\d.]/g, '');
+    // فقط یه نقطه
+    const parts = value.split('.');
+    if (parts.length > 2) {
+      value = parts[0] + '.' + parts.slice(1).join('');
+    }
+    e.target.value = value;
+    calculate();
+  });
+}
 
-  // اعتبارسنجی
-  if (isNaN(amount) || amount < 10) {
-    showError(I18N.currentLang === 'en' ? 'Minimum order is 10 USDT.'
-            : I18N.currentLang === 'fa' ? 'حداقل سفارش ۱۰ تتر است.'
-            : 'لږترلږه غوښتنه ۱۰ تتر ده.');
+function setupQuickAmounts() {
+  document.querySelectorAll('.quick-amount').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = document.getElementById('amountUsdt');
+      if (!input) return;
+      input.value = btn.dataset.amount;
+      calculate();
+    });
+  });
+}
+
+function setupSwapButton() {
+  const btn = document.getElementById('swapBtn');
+  if (!btn) return;
+
+  btn.addEventListener('click', () => {
+    currentSide = currentSide === 'BUY' ? 'SELL' : 'BUY';
+    applySide();
+    calculate();
+  });
+}
+
+/* ═══════════════════════════════════════
+              Calculate
+   ═══════════════════════════════════════ */
+
+function calculate() {
+  const input = document.getElementById('amountUsdt');
+  const output = document.getElementById('amountAfn');
+  const sumRate = document.getElementById('sumRate');
+  const sumFee = document.getElementById('sumFee');
+  const sumTotal = document.getElementById('sumTotal');
+  const sumTotalLabel = document.getElementById('sumTotalLabel');
+
+  if (!currentRate) return;
+
+  const amount = parseFloat(input.value) || 0;
+  const isBuy = currentSide === 'BUY';
+
+  const rate = isBuy
+    ? Number(currentRate.sell_price_afn)
+    : Number(currentRate.buy_price_afn);
+
+  const fmt = (n) => Number(n).toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
+  if (amount <= 0) {
+    output.value = '0';
+    if (sumRate) sumRate.textContent = `${fmt(rate)} AFN`;
+    if (sumFee) sumFee.textContent = '0.00 AFN';
+    if (sumTotal) sumTotal.textContent = '0.00 AFN';
     return;
   }
 
-  // برای SELL، چک موجودی
-  if (ExchangeState.side === 'SELL' && ExchangeState.wallets) {
-    const usdt = ExchangeState.wallets.usdt;
-    const avail = Number(usdt.balance) - Number(usdt.locked_balance);
-    if (amount > avail) {
-      showError(I18N.currentLang === 'en' ? `Insufficient USDT balance. Available: ${avail.toFixed(2)}`
-              : I18N.currentLang === 'fa' ? `موجودی تتر کافی نیست. موجودی: ${avail.toFixed(2)}`
-              : `د تتر موجودي بس نه ده. شته: ${avail.toFixed(2)}`);
-      return;
-    }
-  }
+  if (isBuy) {
+    // کاربر AFN میده، USDT میگیره
+    const gross = amount / rate;         // USDT
+    const grossAfn = amount;              // AFN
+    const fee = grossAfn * 0.015;         // AFN
+    const totalAfn = grossAfn;            // کاربر اینقدر AFN میده (کارمزد داخل نرخ)
 
-  submitBtn.disabled = true;
-  const originalText = submitBtn.innerHTML;
-  submitBtn.innerHTML = '<span class="spinner"></span>';
+    output.value = fmt(gross);
+    if (sumRate) sumRate.textContent = `${fmt(rate)} AFN`;
+    if (sumFee) sumFee.textContent = `${fmt(fee)} AFN`;
+    if (sumTotalLabel) sumTotalLabel.textContent = 'Total to Pay';
+    if (sumTotal) sumTotal.textContent = `${fmt(totalAfn)} AFN`;
 
-  try {
-    const order = await API.createOrder(ExchangeState.side, amount);
-    // موفق → برو به صفحه جزئیات سفارش
-    window.location.href = `order.html?id=${order.id}`;
-  } catch (err) {
-    console.error('Order error:', err);
-    let msg = err.detail || 'Order failed.';
-    if (msg.includes('حداقل')) {
-      msg = I18N.currentLang === 'en' ? 'Minimum order is 10 USDT.'
-          : I18N.currentLang === 'fa' ? 'حداقل سفارش ۱۰ تتر است.'
-          : 'لږترلږه غوښتنه ۱۰ تتر ده.';
-    } else if (msg.includes('موجودی')) {
-      msg = I18N.currentLang === 'en' ? 'Insufficient balance.'
-          : I18N.currentLang === 'fa' ? 'موجودی کافی نیست.'
-          : 'موجودي بس نه ده.';
-    } else if (err.status === 0) {
-      msg = I18N.currentLang === 'en' ? 'Cannot connect to server.'
-          : I18N.currentLang === 'fa' ? 'اتصال به سرور برقرار نشد.'
-          : 'سرور سره اړیکه نشوه.';
-    }
-    showError(msg);
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = originalText;
+  } else {
+    // کاربر USDT میده، AFN میگیره
+    const grossAfn = amount * rate;       // AFN
+    const fee = grossAfn * 0.015;         // AFN
+    const totalAfn = grossAfn - fee;      // AFN دریافتی
+
+    output.value = fmt(grossAfn);
+    if (sumRate) sumRate.textContent = `${fmt(rate)} AFN`;
+    if (sumFee) sumFee.textContent = `${fmt(fee)} AFN`;
+    if (sumTotalLabel) sumTotalLabel.textContent = 'Total to Receive';
+    if (sumTotal) sumTotal.textContent = `${fmt(totalAfn)} AFN`;
   }
 }
 
-function showError(msg) {
+/* ═══════════════════════════════════════
+              Form Submit
+   ═══════════════════════════════════════ */
+
+function setupForm() {
+  const form = document.getElementById('tradeForm');
+  const btn = document.getElementById('submitBtn');
   const errorBox = document.getElementById('errorBox');
-  errorBox.textContent = msg;
-  errorBox.style.display = 'block';
-  errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    errorBox.style.display = 'none';
+
+    const input = document.getElementById('amountUsdt');
+    const amount = parseFloat(input.value);
+
+    // Validation
+    if (!amount || amount <= 0) {
+      Notify.warning('Please enter a valid amount.');
+      return;
+    }
+
+    const isBuy = currentSide === 'BUY';
+
+    // حداقل
+    if (isBuy) {
+      // کاربر AFN میده → حداقل معادل 10 USDT
+      const rate = Number(currentRate.sell_price_afn);
+      const minAfn = 10 * rate;
+      if (amount < minAfn) {
+        Notify.warning(`Minimum order is 10 USDT (≈ ${minAfn.toFixed(2)} AFN).`);
+        return;
+      }
+    } else {
+      // کاربر USDT میده → حداقل 10 USDT
+      if (amount < 10) {
+        Notify.warning('Minimum order is 10 USDT.');
+        return;
+      }
+
+      // چک موجودی USDT
+      if (currentWallets) {
+        const usdt = currentWallets.usdt || {};
+        const avail = Number(usdt.balance || 0) - Number(usdt.locked_balance || 0);
+        if (amount > avail) {
+          Notify.error(`Insufficient USDT balance. Available: ${avail.toFixed(2)}`);
+          return;
+        }
+      }
+    }
+
+    btn.disabled = true;
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<span class="spinner"></span>';
+
+    try {
+      // ساخت سفارش
+      // API ما side و amount_usdt می‌خواد
+      let amountUsdt;
+
+      if (isBuy) {
+        // کاربر AFN داده → تبدیل به USDT
+        const rate = Number(currentRate.sell_price_afn);
+        amountUsdt = amount / rate;
+      } else {
+        // کاربر USDT داده
+        amountUsdt = amount;
+      }
+
+      const order = await API.createOrder(currentSide, amountUsdt.toFixed(2));
+
+      Notify.success('Order created. Redirecting...');
+
+      setTimeout(() => {
+        window.location.href = `order.html?id=${order.id}`;
+      }, 800);
+
+    } catch (err) {
+      console.error('Order failed:', err);
+      let msg = err.detail || 'Failed to create order.';
+
+      if (msg.includes('حداقل')) {
+        msg = 'Minimum order is 10 USDT.';
+      } else if (msg.includes('موجودی')) {
+        msg = 'Insufficient balance.';
+      }
+
+      Notify.error(msg);
+      btn.disabled = false;
+      btn.innerHTML = orig;
+    }
+  });
+}
+
+/* ═══════════════════════════════════════
+              Helpers
+   ═══════════════════════════════════════ */
+
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
 }

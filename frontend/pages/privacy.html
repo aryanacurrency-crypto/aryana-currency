@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Privacy Policy — Aryana Currency.">
-  <meta name="theme-color" content="#101b30">
+  <meta name="description" content="Privacy Policy — Aryana Currency">
+  <meta name="theme-color" content="#0B0E11">
 
   <title>Privacy Policy | ARYANA CURRENCY</title>
 
@@ -12,155 +12,468 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../assets/css/main.css">
-  <link rel="stylesheet" href="../assets/css/components.css">
-  <link rel="stylesheet" href="../assets/css/dashboard.css">
-  <link rel="stylesheet" href="../assets/css/content.css">
+  <link rel="stylesheet" href="../assets/css/v2/theme.css">
+  <link rel="stylesheet" href="../assets/css/v2/ui.css">
+  <link rel="stylesheet" href="../assets/css/v2/content.css">
+  <link rel="stylesheet" href="../assets/css/notifications.css">
 </head>
 <body>
 
-  <div class="content-page">
+  <!-- Header -->
+  <header class="app-header">
+    <div class="container app-header-inner">
 
-    <header class="dash-header">
-      <div class="container dash-header-inner">
-        <a href="../index.html" class="brand">
-          <img src="../assets/images/logo.png" alt="ARYANA CURRENCY" class="brand-logo" width="40" height="40">
-          <div>
-            <div class="brand-name">ARYANA CURRENCY</div>
-            <div class="brand-subtitle" data-i18n="brandSubtitle">DIGITAL EXCHANGE</div>
-          </div>
-        </a>
-
-        <div class="dash-actions">
-          <select class="language-select" id="languageSelect" aria-label="Language">
-            <option value="en">EN</option>
-            <option value="fa">دری</option>
-            <option value="ps">پښتو</option>
-          </select>
-          <button class="dash-icon-btn" id="themeToggle" aria-label="Toggle theme">☾</button>
-          <a href="../index.html" class="btn btn-gold" data-i18n="notFoundHome">Go home</a>
+      <a href="../index.html" class="app-brand">
+        <img src="../assets/images/logo.png" alt="ARYANA CURRENCY">
+        <div class="app-brand-text">
+          ARYANA
+          <small>CURRENCY</small>
         </div>
+      </a>
+
+      <nav class="app-nav">
+        <a href="../index.html" class="app-nav-link"><span>Home</span></a>
+        <a href="about.html" class="app-nav-link"><span>About</span></a>
+        <a href="contact.html" class="app-nav-link"><span>Contact</span></a>
+      </nav>
+
+      <div class="app-header-actions">
+        <a href="login.html" class="btn btn-ghost">Login</a>
+        <a href="register.html" class="btn btn-primary">Register</a>
       </div>
-    </header>
 
-    <main class="container content-main">
+    </div>
+  </header>
 
-      <div class="content-hero">
-        <div class="content-hero-content">
-          <div class="section-kicker" data-i18n="privacyKicker">LEGAL</div>
-          <h1 data-i18n="privacyTitle">Privacy Policy</h1>
-          <p data-i18n="privacyLead">
-            How Aryana Currency collects, uses, and protects your personal information.
+  <!-- Main -->
+  <main>
+
+    <!-- Breadcrumb -->
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../index.html">Home</a>
+        <span class="breadcrumb-sep">/</span>
+        <span>Legal</span>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Privacy Policy</span>
+      </div>
+    </div>
+
+    <!-- Document Hero -->
+    <div class="container">
+      <div class="doc-hero">
+        <div class="doc-hero-content">
+          <div class="doc-kicker">LEGAL · DOCUMENT</div>
+
+          <h1 class="doc-title">
+            Privacy<br>
+            <span class="gold">Policy.</span>
+          </h1>
+
+          <p class="doc-subtitle">
+            How Aryana Currency collects, uses, protects, and shares your personal information. Please read this policy carefully.
           </p>
+
+          <div class="doc-meta">
+            <div class="doc-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              <span>Effective: <strong>January 1, 2026</strong></span>
+            </div>
+
+            <div class="doc-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              <span>Version <strong>2.0</strong></span>
+            </div>
+
+            <div class="doc-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              <span>GDPR-style <strong>compliance</strong></span>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
 
-      <div class="content-body">
+    <!-- Content Layout -->
+    <div class="container">
+      <div class="doc-layout">
 
-        <div class="content-box gold">
-          <strong data-i18n="privacySummaryTitle">Summary</strong>
-          <span data-i18n="privacySummaryText">
-            We collect only what we need to operate the exchange, verify your identity, and protect your account. We never sell your data. We never share it except when required by law.
-          </span>
-        </div>
+        <!-- TOC -->
+        <aside class="doc-toc">
+          <div class="doc-toc-title">Table of Contents</div>
+          <ul class="doc-toc-list">
+            <li><a href="#intro" class="toc-link active"><span class="toc-num">01</span> Introduction</a></li>
+            <li><a href="#collect" class="toc-link"><span class="toc-num">02</span> Data We Collect</a></li>
+            <li><a href="#use" class="toc-link"><span class="toc-num">03</span> How We Use Data</a></li>
+            <li><a href="#protect" class="toc-link"><span class="toc-num">04</span> How We Protect Data</a></li>
+            <li><a href="#share" class="toc-link"><span class="toc-num">05</span> Sharing</a></li>
+            <li><a href="#retention" class="toc-link"><span class="toc-num">06</span> Data Retention</a></li>
+            <li><a href="#rights" class="toc-link"><span class="toc-num">07</span> Your Rights</a></li>
+            <li><a href="#cookies" class="toc-link"><span class="toc-num">08</span> Cookies</a></li>
+            <li><a href="#changes" class="toc-link"><span class="toc-num">09</span> Changes</a></li>
+            <li><a href="#contact" class="toc-link"><span class="toc-num">10</span> Contact</a></li>
+          </ul>
+        </aside>
 
-        <h2 data-i18n="privacy1Title">1. Information We Collect</h2>
-        <p data-i18n="privacy1Text">
-          We collect the following types of information:
-        </p>
-        <ul>
-          <li data-i18n="privacy1Item1"><strong>Account data:</strong> name, email address, phone number, password (hashed).</li>
-          <li data-i18n="privacy1Item2"><strong>Payment data:</strong> Hesab Pay number, USDT wallet address, transaction references.</li>
-          <li data-i18n="privacy1Item3"><strong>Transaction data:</strong> orders, amounts, timestamps, and status history.</li>
-          <li data-i18n="privacy1Item4"><strong>KYC data (when applicable):</strong> identity documents you upload for verification.</li>
-          <li data-i18n="privacy1Item5"><strong>Technical data:</strong> IP address, browser type, and access times for security purposes.</li>
-        </ul>
+        <!-- Doc Body -->
+        <article class="doc-body">
 
-        <h2 data-i18n="privacy2Title">2. How We Use Your Information</h2>
-        <p data-i18n="privacy2Text">
-          We use your information only for the following purposes:
-        </p>
-        <ul>
-          <li data-i18n="privacy2Item1">To operate your account and process orders.</li>
-          <li data-i18n="privacy2Item2">To verify your identity (KYC) as required by law.</li>
-          <li data-i18n="privacy2Item3">To prevent fraud, money laundering, and unauthorized access.</li>
-          <li data-i18n="privacy2Item4">To communicate with you about your account or orders.</li>
-          <li data-i18n="privacy2Item5">To comply with legal and regulatory obligations.</li>
-        </ul>
+          <!-- Section 1: Intro -->
+          <section class="doc-section" id="intro">
+            <div class="doc-section-number">01</div>
+            <h2>Introduction</h2>
 
-        <h2 data-i18n="privacy3Title">3. How We Protect Your Information</h2>
-        <p data-i18n="privacy3Text">
-          We take security seriously. Our protections include:
-        </p>
-        <ul>
-          <li data-i18n="privacy3Item1">Passwords are hashed with industry-standard bcrypt — never stored in plain text.</li>
-          <li data-i18n="privacy3Item2">All communication uses HTTPS encryption.</li>
-          <li data-i18n="privacy3Item3">Sessions use short-lived JWT tokens with refresh rotation.</li>
-          <li data-i18n="privacy3Item4">Access to customer data is restricted and logged.</li>
-          <li data-i18n="privacy3Item5">Funds are held in secure, segregated wallets.</li>
-        </ul>
+            <p>
+              <strong>Aryana Currency ("we", "us", or "our")</strong> is committed to protecting the privacy of our users. This Privacy Policy explains what information we collect, how we use it, and the choices you have regarding your personal data.
+            </p>
 
-        <h2 data-i18n="privacy4Title">4. Sharing Your Information</h2>
-        <p data-i18n="privacy4Text">
-          <strong>We do not sell your personal data.</strong> We only share information in the following cases:
-        </p>
-        <ul>
-          <li data-i18n="privacy4Item1">With regulatory authorities, when legally required.</li>
-          <li data-i18n="privacy4Item2">With service providers essential to operating the platform (hosting, database), under strict confidentiality agreements.</li>
-          <li data-i18n="privacy4Item3">With your explicit consent, for any other purpose.</li>
-        </ul>
+            <p>
+              By using our services, you agree to the collection and use of information in accordance with this policy. If you do not agree with any part of this policy, please do not use our services.
+            </p>
 
-        <h2 data-i18n="privacy5Title">5. Data Retention</h2>
-        <p data-i18n="privacy5Text">
-          We retain your account and transaction data for as long as your account is active, and for the period required by applicable law after that (typically 5 years for financial records).
-        </p>
+            <div class="callout success">
+              <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+              <div class="callout-content">
+                <div class="callout-title">Our Commitment</div>
+                <div class="callout-text">
+                  We collect only what we need to operate the exchange, verify your identity, and protect your account. <strong>We never sell your data.</strong>
+                </div>
+              </div>
+            </div>
+          </section>
 
-        <h2 data-i18n="privacy6Title">6. Your Rights</h2>
-        <p data-i18n="privacy6Text">
-          You have the right to:
-        </p>
-        <ul>
-          <li data-i18n="privacy6Item1">Access the personal data we hold about you.</li>
-          <li data-i18n="privacy6Item2">Request correction of inaccurate data.</li>
-          <li data-i18n="privacy6Item3">Request deletion of your account (subject to legal retention requirements).</li>
-          <li data-i18n="privacy6Item4">Contact us with any privacy-related concern.</li>
-        </ul>
+          <!-- Section 2: Collect -->
+          <section class="doc-section" id="collect">
+            <div class="doc-section-number">02</div>
+            <h2>Information We Collect</h2>
 
-        <h2 data-i18n="privacy7Title">7. Cookies & Local Storage</h2>
-        <p data-i18n="privacy7Text">
-          We use browser local storage to keep you logged in and to remember your language and theme preferences. We do not use third-party tracking cookies.
-        </p>
+            <p>
+              We collect the following categories of information when you use our platform:
+            </p>
 
-        <h2 data-i18n="privacy8Title">8. Changes to This Policy</h2>
-        <p data-i18n="privacy8Text">
-          We may update this policy from time to time. Material changes will be announced on the platform. Continued use of the service means you accept the updated policy.
-        </p>
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>What We Collect</th>
+                  <th>Purpose</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Account Data</td>
+                  <td>Name, email, phone, hashed password</td>
+                  <td>Authentication & identity</td>
+                </tr>
+                <tr>
+                  <td>Payment Data</td>
+                  <td>Hesab Pay number, USDT wallet address</td>
+                  <td>Processing orders</td>
+                </tr>
+                <tr>
+                  <td>Transaction Data</td>
+                  <td>Order details, amounts, references, timestamps</td>
+                  <td>Ledger & audit trail</td>
+                </tr>
+                <tr>
+                  <td>KYC Data</td>
+                  <td>ID documents, selfie photos</td>
+                  <td>Regulatory compliance</td>
+                </tr>
+                <tr>
+                  <td>Technical Data</td>
+                  <td>IP address, browser type, access times</td>
+                  <td>Security & fraud prevention</td>
+                </tr>
+              </tbody>
+            </table>
 
-        <h2 data-i18n="privacy9Title">9. Contact Us</h2>
-        <p data-i18n="privacy9Text">
-          For any privacy-related questions or requests, contact us at:
-        </p>
-        <ul>
-          <li><span data-i18n="contactEmail">Email:</span> <a href="mailto:privacy@aryana.af">privacy@aryana.af</a></li>
-          <li><span data-i18n="contactAddress">Address:</span> Kabul, Afghanistan</li>
-        </ul>
+            <div class="callout warning">
+              <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              <div class="callout-content">
+                <div class="callout-title">Legal Requirement</div>
+                <div class="callout-text">
+                  Collection of <strong>KYC data is a legal requirement</strong> under our operating license. We cannot provide services to users who decline to complete verification.
+                </div>
+              </div>
+            </div>
+          </section>
 
-        <div class="content-meta">
-          <span>© <span id="currentYear"></span> ARYANA CURRENCY</span>
-          <span data-i18n="privacyLastUpdate">Last updated: January 2026</span>
-        </div>
+          <!-- Section 3: Use -->
+          <section class="doc-section" id="use">
+            <div class="doc-section-number">03</div>
+            <h2>How We Use Your Information</h2>
+
+            <p>
+              We use your information <strong>only</strong> for the following purposes:
+            </p>
+
+            <ul>
+              <li><strong>To operate your account</strong> — creating and managing your profile, processing login sessions.</li>
+              <li><strong>To process orders</strong> — executing buy and sell transactions, updating balances, recording ledger entries.</li>
+              <li><strong>To verify your identity (KYC)</strong> — as required by law and by our operating license.</li>
+              <li><strong>To prevent fraud</strong> — detecting suspicious activity, money laundering, and unauthorized access.</li>
+              <li><strong>To communicate with you</strong> — responding to support requests and sending important account notifications.</li>
+              <li><strong>To comply with legal obligations</strong> — responding to lawful requests from regulatory authorities.</li>
+            </ul>
+
+            <p>
+              We do not use your data for marketing purposes without your explicit consent, and you may opt out at any time.
+            </p>
+          </section>
+
+          <!-- Section 4: Protect -->
+          <section class="doc-section" id="protect">
+            <div class="doc-section-number">04</div>
+            <h2>How We Protect Your Information</h2>
+
+            <p>
+              We take the security of your data seriously. Our protective measures include:
+            </p>
+
+            <ul>
+              <li><strong>Password hashing</strong> — passwords are hashed using industry-standard bcrypt and never stored in plain text.</li>
+              <li><strong>HTTPS encryption</strong> — all communication between your browser and our servers is encrypted.</li>
+              <li><strong>JWT authentication</strong> — sessions use short-lived tokens with automatic refresh rotation.</li>
+              <li><strong>Access controls</strong> — access to customer data is restricted to authorized personnel and logged.</li>
+              <li><strong>Segregated wallets</strong> — customer funds are held separately from operational funds.</li>
+              <li><strong>Regular audits</strong> — our systems are regularly reviewed for vulnerabilities.</li>
+            </ul>
+
+            <div class="callout note">
+              <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="16" x2="12" y2="12"/>
+                <line x1="12" y1="8" x2="12.01" y2="8"/>
+              </svg>
+              <div class="callout-content">
+                <div class="callout-title">No System is 100% Secure</div>
+                <div class="callout-text">
+                  While we take every reasonable precaution, no online platform can guarantee absolute security. We recommend you use a <strong>strong, unique password</strong> and enable any available security features.
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section 5: Share -->
+          <section class="doc-section" id="share">
+            <div class="doc-section-number">05</div>
+            <h2>Sharing Your Information</h2>
+
+            <p>
+              <strong>We do not sell your personal data.</strong> We only share information in the following limited circumstances:
+            </p>
+
+            <ul>
+              <li>
+                <strong>With regulatory authorities</strong> — when legally required, such as in response to a lawful court order or regulatory inquiry.
+              </li>
+              <li>
+                <strong>With service providers</strong> — essential partners such as our cloud hosting and database providers, bound by strict confidentiality agreements.
+              </li>
+              <li>
+                <strong>With your explicit consent</strong> — for any other purpose, only after you have given us clear permission.
+              </li>
+            </ul>
+
+            <p>
+              In all cases, we share only the minimum information necessary for the specific purpose.
+            </p>
+          </section>
+
+          <!-- Section 6: Retention -->
+          <section class="doc-section" id="retention">
+            <div class="doc-section-number">06</div>
+            <h2>Data Retention</h2>
+
+            <p>
+              We retain your account and transaction data for as long as your account is active, and for a period required by applicable law after account closure.
+            </p>
+
+            <p>
+              <strong>Financial records</strong> are typically retained for a minimum of <strong>5 years</strong> after the last transaction, in accordance with regulatory requirements.
+            </p>
+
+            <p>
+              After the retention period expires, your data is securely deleted or anonymized.
+            </p>
+          </section>
+
+          <!-- Section 7: Rights -->
+          <section class="doc-section" id="rights">
+            <div class="doc-section-number">07</div>
+            <h2>Your Rights</h2>
+
+            <p>
+              You have the following rights regarding your personal data:
+            </p>
+
+            <ul>
+              <li><strong>Right to Access</strong> — request a copy of the personal data we hold about you.</li>
+              <li><strong>Right to Correction</strong> — request correction of inaccurate or incomplete data.</li>
+              <li><strong>Right to Deletion</strong> — request deletion of your account, subject to legal retention requirements.</li>
+              <li><strong>Right to Object</strong> — object to certain types of processing, such as marketing communications.</li>
+              <li><strong>Right to Data Portability</strong> — request your data in a structured, machine-readable format.</li>
+            </ul>
+
+            <p>
+              To exercise any of these rights, please contact us at the address in the Contact section below. We will respond within 30 days.
+            </p>
+          </section>
+
+          <!-- Section 8: Cookies -->
+          <section class="doc-section" id="cookies">
+            <div class="doc-section-number">08</div>
+            <h2>Cookies & Local Storage</h2>
+
+            <p>
+              We use <strong>browser local storage</strong> to:
+            </p>
+
+            <ul>
+              <li>Keep you logged in between sessions</li>
+              <li>Remember your language preference (English, Dari, Pashto)</li>
+              <li>Remember your theme preference (dark or light mode)</li>
+            </ul>
+
+            <p>
+              We do <strong>not</strong> use third-party tracking cookies, advertising cookies, or any cookies that follow you across other websites.
+            </p>
+          </section>
+
+          <!-- Section 9: Changes -->
+          <section class="doc-section" id="changes">
+            <div class="doc-section-number">09</div>
+            <h2>Changes to This Policy</h2>
+
+            <p>
+              We may update this Privacy Policy from time to time to reflect changes in our practices or legal requirements. When we make material changes, we will:
+            </p>
+
+            <ul>
+              <li>Update the "Effective date" at the top of this page</li>
+              <li>Announce the change prominently on our platform</li>
+              <li>Notify you by email if the changes significantly affect your rights</li>
+            </ul>
+
+            <p>
+              Your continued use of the service after such changes constitutes acceptance of the updated policy.
+            </p>
+          </section>
+
+          <!-- Section 10: Contact -->
+          <section class="doc-section" id="contact">
+            <div class="doc-section-number">10</div>
+            <h2>Contact</h2>
+
+            <p>
+              For any privacy-related questions, requests, or concerns, please contact our Data Protection Officer at:
+            </p>
+
+            <div class="contact-grid">
+              <div class="contact-card">
+                <div class="contact-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
+                  </svg>
+                </div>
+                <h4>Privacy Inquiries</h4>
+                <p>For privacy-related matters and data requests.</p>
+                <a href="mailto:privacy@aryana.af">
+                  privacy@aryana.af
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="7" y1="17" x2="17" y2="7"/>
+                    <polyline points="7 7 17 7 17 17"/>
+                  </svg>
+                </a>
+              </div>
+
+              <div class="contact-card">
+                <div class="contact-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                </div>
+                <h4>Registered Office</h4>
+                <p>For formal correspondence.</p>
+                <a href="#">
+                  Kabul, Afghanistan
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="7" y1="17" x2="17" y2="7"/>
+                    <polyline points="7 7 17 7 17 17"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </section>
+
+          <!-- Signature Block -->
+          <div class="signature-block">
+            <div class="signature-title">Official Document</div>
+
+            <div class="signature-grid">
+              <div class="signature-item">
+                <div class="signature-item-label">Issued By</div>
+                <div class="signature-item-value">ARYANA CURRENCY</div>
+              </div>
+              <div class="signature-item">
+                <div class="signature-item-label">Document Type</div>
+                <div class="signature-item-value">PRIVACY POLICY</div>
+              </div>
+              <div class="signature-item">
+                <div class="signature-item-label">Version</div>
+                <div class="signature-item-value">2.0</div>
+              </div>
+              <div class="signature-item">
+                <div class="signature-item-label">Effective Date</div>
+                <div class="signature-item-value">JAN 01, 2026</div>
+              </div>
+            </div>
+
+            <div class="signature-stamp">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <polyline points="9 12 11 14 15 10"/>
+              </svg>
+              <div>
+                <div class="signature-stamp-text">Official</div>
+                <div class="signature-stamp-sub">ARYANA CURRENCY · LEGAL</div>
+              </div>
+            </div>
+          </div>
+
+        </article>
+
       </div>
+    </div>
 
-    </main>
-  </div>
+  </main>
 
+  <!-- Scripts -->
   <script src="../assets/js/config.js"></script>
   <script src="../assets/js/i18n.js"></script>
   <script src="../assets/js/theme.js"></script>
-  <script src="../assets/js/notifications.js"></script>
-  <script src="../assets/js/animations.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
       Theme.init();
@@ -168,14 +481,34 @@
       await I18N.load(lang);
       I18N.apply();
 
-      const langSelect = document.getElementById('languageSelect');
-      if (langSelect) {
-        langSelect.value = I18N.currentLang;
-        langSelect.addEventListener('change', (e) => I18N.setLanguage(e.target.value));
+      const tocLinks = document.querySelectorAll('.toc-link');
+      const sections = document.querySelectorAll('.doc-section');
+
+      if (tocLinks.length && sections.length) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const id = entry.target.id;
+              tocLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+              });
+            }
+          });
+        }, { rootMargin: '-100px 0px -60% 0px', threshold: 0 });
+
+        sections.forEach(section => observer.observe(section));
       }
 
-      const yearEl = document.getElementById('currentYear');
-      if (yearEl) yearEl.textContent = new Date().getFullYear();
+      tocLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const target = document.querySelector(link.getAttribute('href'));
+          if (target) {
+            const top = target.getBoundingClientRect().top + window.pageYOffset - 80;
+            window.scrollTo({ top, behavior: 'smooth' });
+          }
+        });
+      });
     });
   </script>
 </body>

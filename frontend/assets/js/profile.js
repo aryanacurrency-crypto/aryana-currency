@@ -1,8 +1,19 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Profile Page Logic
+   ARYANA CURRENCY — Profile v2 Logic
    ═══════════════════════════════════════ */
 
 let currentUser = null;
+
+/* ─── KYC State ─── */
+let selectedFiles = {
+  national_id: null,
+  passport: null,
+  selfie: null,
+};
+
+/* ═══════════════════════════════════════
+              Init
+   ═══════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', async () => {
   Auth.requireLogin();
@@ -12,121 +23,159 @@ document.addEventListener('DOMContentLoaded', async () => {
   await I18N.load(initialLang);
   I18N.apply();
 
-  const langSelect = document.getElementById('languageSelect');
-  if (langSelect) {
-    langSelect.value = I18N.currentLang;
-    langSelect.addEventListener('change', (e) => I18N.setLanguage(e.target.value));
-  }
+  // Logout
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) logoutBtn.addEventListener('click', () => Auth.logout());
 
-  // تب‌ها
+  // Tabs
   setupTabs();
 
-  // فرم‌ها
+  // Forms
   setupPersonalForm();
   setupPaymentForm();
   setupPasswordForm();
-
-  // KYC
   setupKycHandlers();
 
-  // لود پروفایل
-  await loadProfile();
+  // Show admin button
+  showAdminButton();
 
-  // لود وضعیت KYC
-  await loadKycStatus();
+  // Load data
+  renderUserFromCache();
+
+  await Promise.all([
+    loadProfile(),
+    loadKycStatus(),
+  ]);
 });
 
 /* ═══════════════════════════════════════
-                تب‌ها
+              Tabs
    ═══════════════════════════════════════ */
 
 function setupTabs() {
-  document.querySelectorAll('.profile-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      const target = tab.dataset.tab;
+  const items = document.querySelectorAll('.profile-nav-item');
 
-      document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
+  items.forEach(item => {
+    item.addEventListener('click', () => {
+      const target = item.dataset.tab;
 
-      document.querySelectorAll('.profile-tab-content').forEach(c => c.classList.remove('active'));
-      const content = document.querySelector(`[data-tab-content="${target}"]`);
-      if (content) content.classList.add('active');
+      items.forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+
+      document.querySelectorAll('.profile-panel').forEach(p => p.classList.remove('active'));
+      const panel = document.querySelector(`[data-panel="${target}"]`);
+      if (panel) panel.classList.add('active');
     });
   });
 }
 
 /* ═══════════════════════════════════════
-              لود پروفایل
+              Show Admin Button
    ═══════════════════════════════════════ */
+
+function showAdminButton() {
+  const user = Auth.getUser();
+  const btn = document.getElementById('adminPanelBtn');
+  if (!btn) return;
+
+  if (user && user.role === 'ADMIN') {
+    btn.style.display = 'grid';
+  }
+}
+
+/* ═══════════════════════════════════════
+              Render User
+   ═══════════════════════════════════════ */
+
+function renderUserFromCache() {
+  const user = Auth.getUser();
+  if (!user) return;
+
+  const initial = (user.full_name || user.email || '?').charAt(0).toUpperCase();
+
+  setText('sideAvatar', initial);
+  setText('userAvatar', initial);
+  setText('sideName', user.full_name || 'User');
+  setText('userName', (user.full_name || 'User').split(' ')[0]);
+  setText('sideEmail', user.email);
+}
 
 async function loadProfile() {
   try {
     currentUser = await API.me();
     Auth.setUser(currentUser);
     renderProfile();
+    showAdminButton();
   } catch (err) {
     console.error('Load profile failed:', err);
-    showError(err.detail || 'Could not load profile.');
+    Notify.error(err.detail || 'Could not load profile.');
   }
 }
 
 function renderProfile() {
   const u = currentUser;
+  if (!u) return;
+
+  const initial = (u.full_name || u.email || '?').charAt(0).toUpperCase();
 
   // Header
-  const initial = (u.full_name || u.email || '?').charAt(0).toUpperCase();
-  document.getElementById('avatar').textContent = initial;
-  document.getElementById('headerName').textContent = u.full_name || 'User';
-  document.getElementById('headerEmail').textContent = u.email;
+  setText('userAvatar', initial);
+  setText('userName', (u.full_name || 'User').split(' ')[0]);
+
+  // Sidebar
+  setText('sideAvatar', initial);
+  setText('sideName', u.full_name || 'User');
+  setText('sideEmail', u.email);
 
   // Badges
-  const roleBadge = document.getElementById('badgeRole');
-  roleBadge.textContent = u.role;
-  roleBadge.className = 'profile-badge ' + (u.role === 'ADMIN' ? 'gold' : 'gray');
+  const roleBadge = document.getElementById('sideRoleBadge');
+  if (roleBadge) {
+    roleBadge.textContent = u.role;
+    roleBadge.className = 'profile-badge ' + (u.role === 'ADMIN' ? 'admin' : 'user');
+  }
 
-  const kycBadge = document.getElementById('badgeKyc');
-  const kycStatus = u.is_verified ? 'VERIFIED' : 'PENDING';
-  kycBadge.textContent = 'KYC ' + kycStatus;
-  kycBadge.className = 'profile-badge ' + (u.is_verified ? 'green' : 'gray');
+  const kycBadge = document.getElementById('sideKycBadge');
+  if (kycBadge) {
+    kycBadge.textContent = u.is_verified ? 'VERIFIED' : 'UNVERIFIED';
+    kycBadge.className = 'profile-badge ' + (u.is_verified ? 'verified' : 'unverified');
+  }
 
   // Personal
-  document.getElementById('fullName').value = u.full_name || '';
-  document.getElementById('phone').value = u.phone || '';
-  document.getElementById('emailDisplay').value = u.email;
+  setValue('fullName', u.full_name || '');
+  setValue('phone', u.phone || '');
+  setValue('emailDisplay', u.email);
 
   // Payment
-  document.getElementById('hesabPay').value = u.hesab_pay_number || '';
-  document.getElementById('hesabHolder').value = u.hesab_pay_holder_name || '';
-  document.getElementById('usdtWallet').value = u.usdt_wallet_address || '';
-  document.getElementById('usdtNetwork').value = u.usdt_wallet_network || 'TRC20';
+  setValue('hesabPay', u.hesab_pay_number || '');
+  setValue('hesabHolder', u.hesab_pay_holder_name || '');
+  setValue('usdtWallet', u.usdt_wallet_address || '');
+  setValue('usdtNetwork', u.usdt_wallet_network || 'TRC20');
 
-  // Account info
-  document.getElementById('infoId').textContent = '#' + u.id;
-  document.getElementById('infoCreated').textContent = new Date(u.created_at).toLocaleDateString();
-  document.getElementById('infoRole').textContent = u.role;
-  document.getElementById('infoKyc').textContent = u.is_verified ? 'Verified' : 'Pending';
-  document.getElementById('infoStatus').textContent = u.is_active ? 'Active' : 'Disabled';
+  // Account Info
+  setText('infoId', '#' + u.id);
+  setText('infoCreated', new Date(u.created_at).toLocaleDateString());
+  setText('infoRole', u.role);
+  setText('infoKyc', u.is_verified ? 'Verified' : 'Pending');
+  setText('infoStatus', u.is_active ? 'Active' : 'Disabled');
 }
 
 /* ═══════════════════════════════════════
-          فرم اطلاعات شخصی
+              Personal Form
    ═══════════════════════════════════════ */
 
 function setupPersonalForm() {
   const form = document.getElementById('personalForm');
   const btn = document.getElementById('savePersonalBtn');
+  if (!form) return;
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    hideAlerts();
 
     const fullName = document.getElementById('fullName').value.trim();
     const phone = document.getElementById('phone').value.trim() || null;
 
     if (!fullName) {
-      showError(I18N.currentLang === 'en' ? 'Full name is required.'
-              : I18N.currentLang === 'fa' ? 'نام کامل الزامی است.'
-              : 'بشپړ نوم اړین دی.');
+      Notify.warning('Full name is required.');
       return;
     }
 
@@ -142,13 +191,10 @@ function setupPersonalForm() {
       currentUser = updated;
       Auth.setUser(updated);
       renderProfile();
-      showSuccess(I18N.currentLang === 'en' ? 'Profile updated.'
-                : I18N.currentLang === 'fa' ? 'پروفایل به‌روزرسانی شد.'
-                : 'پروفایل تازه شو.');
-      setTimeout(hideAlerts, 2500);
+      Notify.success('Profile updated.');
     } catch (err) {
-      console.error('Update profile failed:', err);
-      showError(err.detail || 'Failed to update profile.');
+      console.error('Update failed:', err);
+      Notify.error(err.detail || 'Failed to update profile.');
     } finally {
       btn.disabled = false;
       btn.innerHTML = orig;
@@ -157,34 +203,29 @@ function setupPersonalForm() {
 }
 
 /* ═══════════════════════════════════════
-          فرم اطلاعات پرداخت
+              Payment Form
    ═══════════════════════════════════════ */
 
 function setupPaymentForm() {
-  const form = document.getElementById('paymentForm');
+  const form = document.getElementById('walletForm');
   const btn = document.getElementById('savePaymentBtn');
+  if (!form) return;
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    hideAlerts();
 
     const hesabPay = document.getElementById('hesabPay').value.trim() || null;
     const hesabHolder = document.getElementById('hesabHolder').value.trim() || null;
     const usdtWallet = document.getElementById('usdtWallet').value.trim() || null;
     const usdtNetwork = document.getElementById('usdtNetwork').value || 'TRC20';
 
-    // اعتبارسنجی ولت تتر
+    // Validation
     if (usdtWallet && !usdtWallet.startsWith('T') && usdtNetwork === 'TRC20') {
-      showError(I18N.currentLang === 'en' ? 'TRC20 wallet address must start with T.'
-              : I18N.currentLang === 'fa' ? 'آدرس TRC20 باید با T شروع شود.'
-              : 'د TRC20 پته باید د T سره پیل شي.');
+      Notify.warning('TRC20 wallet address must start with T.');
       return;
     }
-
     if (usdtWallet && !usdtWallet.startsWith('0x') && usdtNetwork === 'BEP20') {
-      showError(I18N.currentLang === 'en' ? 'BEP20 wallet address must start with 0x.'
-              : I18N.currentLang === 'fa' ? 'آدرس BEP20 باید با 0x شروع شود.'
-              : 'د BEP20 پته باید د 0x سره پیل شي.');
+      Notify.warning('BEP20 wallet address must start with 0x.');
       return;
     }
 
@@ -202,13 +243,10 @@ function setupPaymentForm() {
       currentUser = updated;
       Auth.setUser(updated);
       renderProfile();
-      showSuccess(I18N.currentLang === 'en' ? 'Payment details updated.'
-                : I18N.currentLang === 'fa' ? 'اطلاعات پرداخت به‌روزرسانی شد.'
-                : 'د تادیې معلومات تازه شول.');
-      setTimeout(hideAlerts, 2500);
+      Notify.success('Payment details updated.');
     } catch (err) {
-      console.error('Update payment failed:', err);
-      showError(err.detail || 'Failed to update payment details.');
+      console.error('Update failed:', err);
+      Notify.error(err.detail || 'Failed to update payment details.');
     } finally {
       btn.disabled = false;
       btn.innerHTML = orig;
@@ -217,39 +255,31 @@ function setupPaymentForm() {
 }
 
 /* ═══════════════════════════════════════
-           فرم تغییر رمز
+              Password Form
    ═══════════════════════════════════════ */
 
 function setupPasswordForm() {
   const form = document.getElementById('passwordForm');
   const btn = document.getElementById('changePasswordBtn');
+  if (!form) return;
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    hideAlerts();
 
     const current = document.getElementById('currentPassword').value;
     const newPass = document.getElementById('newPassword').value;
     const confirm = document.getElementById('confirmPassword').value;
 
     if (!current || !newPass || !confirm) {
-      showError(I18N.currentLang === 'en' ? 'Please fill all fields.'
-              : I18N.currentLang === 'fa' ? 'لطفاً همه فیلدها را پر کنید.'
-              : 'مهرباني وکړئ ټول ساحې ډک کړئ.');
+      Notify.warning('Please fill all fields.');
       return;
     }
-
     if (newPass.length < 8) {
-      showError(I18N.currentLang === 'en' ? 'New password must be at least 8 characters.'
-              : I18N.currentLang === 'fa' ? 'پسورد جدید باید حداقل ۸ کاراکتر باشد.'
-              : 'نوی پټنوم باید لږترلږه ۸ توري وي.');
+      Notify.warning('New password must be at least 8 characters.');
       return;
     }
-
     if (newPass !== confirm) {
-      showError(I18N.currentLang === 'en' ? 'New passwords do not match.'
-              : I18N.currentLang === 'fa' ? 'پسوردهای جدید یکسان نیستند.'
-              : 'نوي پټنومونه سره سمون نه خوري.');
+      Notify.warning('New passwords do not match.');
       return;
     }
 
@@ -260,19 +290,12 @@ function setupPasswordForm() {
     try {
       await API.changePassword(current, newPass);
       form.reset();
-      showSuccess(I18N.currentLang === 'en' ? 'Password changed successfully.'
-                : I18N.currentLang === 'fa' ? 'پسورد با موفقیت تغییر کرد.'
-                : 'پټنوم په بریالیتوب سره بدل شو.');
-      setTimeout(hideAlerts, 3000);
+      Notify.success('Password changed successfully.');
     } catch (err) {
       console.error('Change password failed:', err);
       let msg = err.detail || 'Failed to change password.';
-      if (msg.includes('فعلی اشتباه')) {
-        msg = I18N.currentLang === 'en' ? 'Current password is incorrect.'
-            : I18N.currentLang === 'fa' ? 'پسورد فعلی اشتباه است.'
-            : 'اوسنی پټنوم غلط دی.';
-      }
-      showError(msg);
+      if (msg.includes('فعلی اشتباه')) msg = 'Current password is incorrect.';
+      Notify.error(msg);
     } finally {
       btn.disabled = false;
       btn.innerHTML = orig;
@@ -281,30 +304,23 @@ function setupPasswordForm() {
 }
 
 /* ═══════════════════════════════════════
-                KYC
+              KYC
    ═══════════════════════════════════════ */
 
-let selectedFiles = {
-  national_id: null,
-  passport: null,
-  selfie: null,
-};
-
 function setupKycHandlers() {
-  // کلیک روی دکمه‌های Choose file
+  // Choose file buttons
   document.querySelectorAll('[data-upload]').forEach(btn => {
     btn.addEventListener('click', () => {
       const type = btn.dataset.upload;
-      const input = document.getElementById(
-        type === 'national_id' ? 'fileNationalId' :
-        type === 'passport' ? 'filePassport' :
-        'fileSelfie'
-      );
+      const inputId = type === 'national_id' ? 'fileNationalId'
+                    : type === 'passport' ? 'filePassport'
+                    : 'fileSelfie';
+      const input = document.getElementById(inputId);
       if (input) input.click();
     });
   });
 
-  // تغییر فایل‌ها
+  // File inputs
   const fileInputs = [
     { input: 'fileNationalId', name: 'nameNationalId', type: 'national_id' },
     { input: 'filePassport', name: 'namePassport', type: 'passport' },
@@ -320,11 +336,7 @@ function setupKycHandlers() {
       if (!file) return;
 
       if (file.size > 5 * 1024 * 1024) {
-        Notify.error(
-          I18N.currentLang === 'en' ? 'File too large. Max 5 MB.'
-          : I18N.currentLang === 'fa' ? 'فایل خیلی بزرگه. حداکثر ۵ مگابایت.'
-          : 'فایل ډیر لوی دی. اعظمي ۵ MB.'
-        );
+        Notify.error('File too large. Max 5 MB.');
         el.value = '';
         return;
       }
@@ -341,7 +353,7 @@ function setupKycHandlers() {
     });
   });
 
-  // دکمه Clear
+  // Clear
   const clearBtn = document.getElementById('kycClearBtn');
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
@@ -358,7 +370,7 @@ function setupKycHandlers() {
     });
   }
 
-  // دکمه Upload
+  // Submit
   const submitBtn = document.getElementById('kycSubmitBtn');
   if (submitBtn) {
     submitBtn.addEventListener('click', handleKycUpload);
@@ -378,11 +390,7 @@ async function handleKycUpload() {
   const toUpload = Object.entries(selectedFiles).filter(([_, f]) => f !== null);
 
   if (toUpload.length === 0) {
-    Notify.warning(
-      I18N.currentLang === 'en' ? 'Please choose at least one file.'
-      : I18N.currentLang === 'fa' ? 'لطفاً حداقل یک فایل انتخاب کنید.'
-      : 'مهرباني وکړئ لږترلږه یو فایل غوره کړئ.'
-    );
+    Notify.warning('Please choose at least one file.');
     return;
   }
 
@@ -395,13 +403,9 @@ async function handleKycUpload() {
       await API.uploadKycDocument(docType, file);
     }
 
-    Notify.success(
-      I18N.currentLang === 'en' ? 'Documents uploaded. Awaiting verification.'
-      : I18N.currentLang === 'fa' ? 'مدارک آپلود شد. در انتظار تأیید.'
-      : 'اسناد پورته شول. د تصدیق په تمه.'
-    );
+    Notify.success('Documents uploaded. Awaiting verification.');
 
-    // ریست
+    // Reset
     selectedFiles = { national_id: null, passport: null, selfie: null };
     ['fileNationalId', 'filePassport', 'fileSelfie'].forEach(id => {
       const el = document.getElementById(id);
@@ -433,135 +437,105 @@ async function loadKycStatus() {
 }
 
 function renderKycStatus(data) {
-  const banner = document.getElementById('kycStatusBanner');
-  const icon = document.getElementById('kycStatusIcon');
-  const title = document.getElementById('kycStatusTitle');
-  const text = document.getElementById('kycStatusText');
-  const docsContainer = document.getElementById('kycDocuments');
-  const uploadBox = document.getElementById('kycUploadBox');
+  const banner = document.getElementById('kycBanner');
+  const icon = document.getElementById('kycBannerIcon');
+  const title = document.getElementById('kycBannerTitle');
+  const text = document.getElementById('kycBannerText');
+  const docsList = document.getElementById('kycDocsList');
+  const uploadGrid = document.getElementById('kycUploadGrid');
 
   if (!banner) return;
 
-  banner.className = 'kyc-status-banner';
+  banner.className = 'kyc-banner';
 
   const config = {
     'NOT_SUBMITTED': {
       cls: 'not-submitted',
       icon: '⏳',
-      title: { en: 'Not submitted', fa: 'ارسال نشده', ps: 'نه دی سپارل شوی' },
-      text: { 
-        en: 'Upload your documents to verify your identity.',
-        fa: 'برای تأیید هویت، مدارک خود را آپلود کنید.',
-        ps: 'د خپل هویت تصدیق لپاره خپل اسناد پورته کړئ.'
-      },
+      title: 'Not submitted',
+      text: 'Upload your documents to get verified.',
       showUpload: true,
     },
     'PENDING': {
       cls: 'pending',
       icon: '🔍',
-      title: { en: 'Under review', fa: 'در حال بررسی', ps: 'د کتنې لاندې' },
-      text: { 
-        en: 'Your documents are being reviewed. This usually takes up to 24 hours.',
-        fa: 'مدارک شما در حال بررسی است. معمولاً تا ۲۴ ساعت طول می‌کشد.',
-        ps: 'ستاسو اسناد کتل کیږي. دا معمولاً تر ۲۴ ساعتونو پورې وخت نیسي.'
-      },
+      title: 'Under review',
+      text: 'Your documents are being reviewed. Usually takes up to 24 hours.',
       showUpload: false,
     },
     'APPROVED': {
       cls: 'approved',
       icon: '✓',
-      title: { en: 'Verified', fa: 'تأیید شده', ps: 'تصدیق شوی' },
-      text: { 
-        en: 'Your identity has been verified. You have full access to all features.',
-        fa: 'هویت شما تأیید شد. به تمام امکانات دسترسی کامل دارید.',
-        ps: 'ستاسو هویت تصدیق شو. تاسو ټولو ځانګړتیاوو ته بشپړ لاسرسی لرئ.'
-      },
+      title: 'Verified',
+      text: 'Your identity has been verified. You have full access.',
       showUpload: false,
     },
     'REJECTED': {
       cls: 'rejected',
       icon: '✕',
-      title: { en: 'Rejected', fa: 'رد شده', ps: 'رد شوی' },
-      text: { 
-        en: 'One or more documents were rejected. Please re-upload.',
-        fa: 'یک یا چند مدرک رد شد. لطفاً دوباره آپلود کنید.',
-        ps: 'یو یا ډیر اسناد رد شول. مهرباني وکړئ بیا پورته کړئ.'
-      },
+      title: 'Rejected',
+      text: 'One or more documents were rejected. Please re-upload.',
       showUpload: true,
     },
   };
 
   const c = config[data.overall_status] || config.NOT_SUBMITTED;
   banner.classList.add(c.cls);
-  icon.textContent = c.icon;
-  title.textContent = c.title[I18N.currentLang] || c.title.en;
-  text.textContent = c.text[I18N.currentLang] || c.text.en;
+  if (icon) icon.textContent = c.icon;
+  if (title) title.textContent = c.title;
+  if (text) text.textContent = c.text;
 
-  // مخفی یا نشون دادن بخش آپلود
-  if (uploadBox) {
-    uploadBox.style.display = c.showUpload ? 'grid' : 'none';
+  if (uploadGrid) {
+    uploadGrid.style.display = c.showUpload ? 'grid' : 'none';
   }
   if (!c.showUpload) {
     const bar = document.getElementById('kycUploadBar');
     if (bar) bar.style.display = 'none';
   }
 
-  // لیست مدارک
-  if (docsContainer && data.documents.length > 0) {
-    docsContainer.innerHTML = '';
+  // Documents list
+  if (docsList && data.documents && data.documents.length > 0) {
+    docsList.innerHTML = '';
     data.documents.forEach(doc => {
-      const div = document.createElement('div');
-      div.className = 'kyc-doc-row';
-
       const statusMap = {
-        'PENDING': { text: { en: 'Pending', fa: 'در انتظار', ps: 'په تمه' }, cls: 'status-review' },
-        'APPROVED': { text: { en: 'Approved', fa: 'تأیید', ps: 'تصدیق' }, cls: 'status-completed' },
-        'REJECTED': { text: { en: 'Rejected', fa: 'رد', ps: 'رد' }, cls: 'status-rejected' },
+        'PENDING': { text: 'Pending', cls: 'badge-warning' },
+        'APPROVED': { text: 'Approved', cls: 'badge-success' },
+        'REJECTED': { text: 'Rejected', cls: 'badge-danger' },
       };
-
       const typeNames = {
-        'national_id': { en: 'National ID', fa: 'تذکره ملی', ps: 'ملي تذکره' },
-        'passport': { en: 'Passport', fa: 'پاسپورت', ps: 'پاسپورت' },
-        'selfie': { en: 'Selfie', fa: 'سلفی', ps: 'سیلفي' },
+        'national_id': 'National ID',
+        'passport': 'Passport',
+        'selfie': 'Selfie',
       };
-
       const s = statusMap[doc.status] || statusMap.PENDING;
-      const typeName = (typeNames[doc.doc_type] || {})[I18N.currentLang] || doc.doc_type;
 
-      div.innerHTML = `
-        <div>
-          <div class="kyc-doc-type">${typeName}</div>
+      const row = document.createElement('div');
+      row.className = 'kyc-doc-row';
+      row.innerHTML = `
+        <div class="kyc-doc-info">
+          <div class="kyc-doc-type">${typeNames[doc.doc_type] || doc.doc_type}</div>
           <div class="kyc-doc-date">${new Date(doc.created_at).toLocaleString()}</div>
           ${doc.rejection_reason ? `<div class="kyc-doc-reason">${doc.rejection_reason}</div>` : ''}
         </div>
-        <span class="order-status ${s.cls}">${s.text[I18N.currentLang] || s.text.en}</span>
+        <span class="badge ${s.cls}">${s.text}</span>
       `;
-      docsContainer.appendChild(div);
+      docsList.appendChild(row);
     });
-  } else if (docsContainer) {
-    docsContainer.innerHTML = '';
+  } else if (docsList) {
+    docsList.innerHTML = '';
   }
 }
 
 /* ═══════════════════════════════════════
-                Helpers
+              Helpers
    ═══════════════════════════════════════ */
 
-function showSuccess(msg) {
-  const box = document.getElementById('successBox');
-  box.textContent = msg;
-  box.style.display = 'block';
-  box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
 }
 
-function showError(msg) {
-  const box = document.getElementById('errorBox');
-  box.textContent = msg;
-  box.style.display = 'block';
-  box.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
-
-function hideAlerts() {
-  document.getElementById('successBox').style.display = 'none';
-  document.getElementById('errorBox').style.display = 'none';
+function setValue(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.value = value;
 }

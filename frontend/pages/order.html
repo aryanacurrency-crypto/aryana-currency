@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Order details — Aryana Currency.">
-  <meta name="theme-color" content="#101b30">
+  <meta name="description" content="Order details — Aryana Currency">
+  <meta name="theme-color" content="#0B0E11">
 
   <title>Order | ARYANA CURRENCY</title>
 
@@ -12,220 +12,411 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../assets/css/main.css">
-  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/v2/theme.css">
+  <link rel="stylesheet" href="../assets/css/v2/ui.css">
+  <link rel="stylesheet" href="../assets/css/v2/dashboard.css">
+  <link rel="stylesheet" href="../assets/css/v2/order.css">
   <link rel="stylesheet" href="../assets/css/notifications.css">
-  <link rel="stylesheet" href="../assets/css/dashboard.css">
-  <link rel="stylesheet" href="../assets/css/order.css">
 </head>
 <body>
 
-  <div class="order-page">
+  <!-- Header -->
+  <header class="app-header">
+    <div class="container app-header-inner">
 
-    <!-- Header -->
-    <header class="dash-header">
-      <div class="container dash-header-inner">
-        <a href="dashboard.html" class="brand">
-          <img src="../assets/images/logo.png" alt="ARYANA CURRENCY" class="brand-logo" width="40" height="40">
-          <div>
-            <div class="brand-name">ARYANA CURRENCY</div>
-            <div class="brand-subtitle" data-i18n="brandSubtitle">DIGITAL EXCHANGE</div>
-          </div>
+      <a href="dashboard.html" class="app-brand">
+        <img src="../assets/images/logo.png" alt="ARYANA CURRENCY">
+        <div class="app-brand-text">
+          ARYANA
+          <small>CURRENCY</small>
+        </div>
+      </a>
+
+      <nav class="app-nav">
+        <a href="dashboard.html" class="app-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="exchange.html" class="app-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12M17 20l4-4M17 20l-4-4"/>
+          </svg>
+          <span>Trade</span>
+        </a>
+        <a href="orders.html" class="app-nav-link active">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+          <span>Orders</span>
+        </a>
+        <a href="profile.html" class="app-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span>Profile</span>
+        </a>
+      </nav>
+
+      <div class="app-header-actions">
+        <a href="admin/index.html" class="icon-btn" id="adminPanelBtn" style="display:none;" title="Admin Panel">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l3 6 6 1-4.5 4.5L18 20l-6-3-6 3 1.5-6.5L3 9l6-1z"/>
+          </svg>
         </a>
 
-        <div class="dash-actions">
-          <select class="language-select" id="languageSelect" aria-label="Select language">
-            <option value="en">EN</option>
-            <option value="fa">دری</option>
-            <option value="ps">پښتو</option>
-          </select>
-          <button class="dash-icon-btn" id="themeToggle" aria-label="Toggle theme">☾</button>
-        </div>
-      </div>
-    </header>
+        <a href="profile.html" class="user-avatar-btn">
+          <div class="user-avatar" id="userAvatar">A</div>
+          <span class="user-name" id="userName">User</span>
+        </a>
 
-    <main class="container order-main">
-
-      <!-- Header -->
-      <div class="order-header">
-        <div class="order-header-top">
-          <a href="dashboard.html" class="order-back">←</a>
-          <h1 id="orderTitle" data-i18n="orderTitle">Order Details</h1>
-        </div>
-        <div class="order-ref" id="orderRef">—</div>
+        <button class="icon-btn" id="logoutBtn" title="Logout">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+        </button>
       </div>
 
-      <!-- Loading -->
-      <div id="loadingBox" class="card" style="text-align:center; padding:50px;">
-        <div class="spinner" style="width:30px; height:30px; border-width:3px; color: var(--gold);"></div>
-        <p style="margin-top:15px; color:var(--muted); font-size:13px;">
-          <span data-i18n="orderLoading">Loading order…</span>
-        </p>
-      </div>
+    </div>
+  </header>
 
-      <!-- Content -->
-      <div id="orderContent" style="display:none;">
+  <!-- Main -->
+  <main class="container app-main">
 
-        <!-- Status banner -->
-        <div class="order-status-banner" id="statusBanner">
-          <div class="status-banner-icon" id="statusIcon">⏳</div>
-          <div class="status-banner-text">
-            <strong id="statusTitle">—</strong>
-            <small id="statusText">—</small>
+    <!-- Loading -->
+    <div class="order-loading" id="loadingBox">
+      <div class="spinner spinner-lg" style="color: var(--gold);"></div>
+      <p style="color: var(--text-secondary); font-size: 13px;">Loading order...</p>
+    </div>
+
+    <!-- Content -->
+    <div id="contentBox" style="display:none;">
+
+      <!-- Page Header -->
+      <div class="page-header-row">
+        <a href="orders.html" class="back-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/>
+            <polyline points="12 19 5 12 12 5"/>
+          </svg>
+        </a>
+        <div>
+          <h1 style="font-size:22px; font-weight:800; letter-spacing:-0.5px;">Order Details</h1>
+          <div class="order-ref-copy" id="refCopy">
+            <span id="orderRef">—</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
           </div>
         </div>
+      </div>
 
-        <div class="order-grid">
+      <!-- Status Banner -->
+      <div class="status-banner pending" id="statusBanner">
+        <div class="status-banner-icon" id="statusIcon">⏳</div>
+        <div class="status-banner-content">
+          <div class="status-banner-title" id="statusTitle">Awaiting payment</div>
+          <div class="status-banner-text" id="statusText">Send the exact amount and submit the reference below.</div>
+        </div>
+      </div>
 
-          <!-- LEFT -->
-          <div>
-            <!-- Order details -->
-            <div class="order-card">
-              <h2 data-i18n="orderSummary">Order Summary</h2>
-              <div class="order-details">
-                <div class="order-detail-row">
-                  <span data-i18n="orderSide">Type</span>
-                  <span id="detailSide">—</span>
+      <!-- Progress Timeline -->
+      <div class="progress-timeline" id="progressTimeline">
+        <div class="progress-stage done" data-stage="PENDING">
+          <div class="progress-stage-dot">✓</div>
+          <div class="progress-stage-label">Order Placed</div>
+        </div>
+        <div class="progress-line" data-line="1"></div>
+        <div class="progress-stage" data-stage="AWAITING_REVIEW">
+          <div class="progress-stage-dot">2</div>
+          <div class="progress-stage-label">In Review</div>
+        </div>
+        <div class="progress-line" data-line="2"></div>
+        <div class="progress-stage" data-stage="PROCESSING">
+          <div class="progress-stage-dot">3</div>
+          <div class="progress-stage-label">Processing</div>
+        </div>
+        <div class="progress-line" data-line="3"></div>
+        <div class="progress-stage" data-stage="COMPLETED">
+          <div class="progress-stage-dot">4</div>
+          <div class="progress-stage-label">Completed</div>
+        </div>
+      </div>
+
+      <!-- Order Layout -->
+      <div class="order-layout">
+
+        <!-- LEFT -->
+        <div>
+
+          <!-- Order Summary -->
+          <div class="order-card">
+            <div class="card-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 11l3 3L22 4"/>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+              </svg>
+              Order Summary
+            </div>
+
+            <div class="detail-list">
+              <div class="detail-row">
+                <span class="detail-label">Type</span>
+                <span class="detail-value" id="detailSide">—</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Amount</span>
+                <span class="detail-value" id="detailAmount">—</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Rate</span>
+                <span class="detail-value" id="detailRate">—</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Gross Amount</span>
+                <span class="detail-value" id="detailGross">—</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Platform Fee (1.5%)</span>
+                <span class="detail-value" id="detailFee">—</span>
+              </div>
+              <div class="detail-row total">
+                <span class="detail-label" id="detailTotalLabel">Total</span>
+                <span class="detail-value" id="detailTotal">—</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment Instructions -->
+          <div class="payment-box" id="paymentBox" style="display:none;">
+            <div class="payment-box-header">
+              <div class="payment-box-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                  <line x1="1" y1="10" x2="23" y2="10"/>
+                </svg>
+              </div>
+              <div>
+                <div class="payment-box-title">Payment Instructions</div>
+                <div class="payment-box-subtitle" id="paymentSubtitle">Send the exact amount to the account below</div>
+              </div>
+            </div>
+
+            <!-- AFN Payment (for BUY) -->
+            <div id="afnPaymentSection" style="display:none;">
+              <div class="payment-field">
+                <label class="payment-field-label">Hesab Pay Number</label>
+                <div class="payment-value">
+                  <span id="platformHesabPay">—</span>
+                  <button type="button" class="copy-btn" data-copy="platformHesabPay">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                    <span>Copy</span>
+                  </button>
                 </div>
-                <div class="order-detail-row">
-                  <span data-i18n="orderAmount">Amount</span>
-                  <span id="detailAmount">—</span>
-                </div>
-                <div class="order-detail-row">
-                  <span data-i18n="orderRate">Rate</span>
-                  <span id="detailRate">—</span>
-                </div>
-                <div class="order-detail-row">
-                  <span data-i18n="orderGross">Gross amount</span>
-                  <span id="detailGross">—</span>
-                </div>
-                <div class="order-detail-row">
-                  <span data-i18n="orderFee">Platform fee</span>
-                  <span id="detailFee">—</span>
-                </div>
-                <div class="order-detail-row total">
-                  <span id="detailTotalLabel" data-i18n="orderTotal">Total</span>
-                  <span id="detailTotal">—</span>
+              </div>
+
+              <div class="payment-field">
+                <label class="payment-field-label">Exact Amount to Send</label>
+                <div class="payment-value big">
+                  <span id="platformAmount">—</span>
+                  <button type="button" class="copy-btn" data-copy="platformAmount">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                    <span>Copy</span>
+                  </button>
                 </div>
               </div>
             </div>
 
-            <!-- Payment instructions -->
-            <div class="payment-instructions" id="paymentBox" style="display:none;">
-              <h3 data-i18n="orderPaymentInstructions">Payment Instructions</h3>
-              <div class="payment-info">
-                <div id="paymentUsdtBox" style="display:none;">
-                  <div class="payment-field">
-                    <label data-i18n="orderSendUsdtTo">Send USDT (TRC20) to this address</label>
-                    <div class="payment-value">
-                      <span id="platformWalletAddress">—</span>
-                      <button type="button" class="copy-btn" id="copyWallet" data-i18n="orderCopy">COPY</button>
-                    </div>
-                  </div>
+            <!-- USDT Payment (for SELL) -->
+            <div id="usdtPaymentSection" style="display:none;">
+              <div class="payment-field">
+                <label class="payment-field-label">Send USDT (TRC20) to</label>
+                <div class="payment-value">
+                  <span id="platformWallet">—</span>
+                  <button type="button" class="copy-btn" data-copy="platformWallet">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                    <span>Copy</span>
+                  </button>
                 </div>
+              </div>
 
-                <div id="paymentAfnBox" style="display:none;">
-                  <div class="payment-field">
-                    <label data-i18n="orderSendAfnTo">Send AFN via Hesab Pay to</label>
-                    <div class="payment-value">
-                      <span id="platformHesabPay">—</span>
-                      <button type="button" class="copy-btn" id="copyHesab" data-i18n="orderCopy">COPY</button>
-                    </div>
-                  </div>
-                  <div class="payment-field">
-                    <label data-i18n="orderExactAmount">Exact amount to send</label>
-                    <div class="payment-value">
-                      <span id="platformAmount">—</span>
-                      <button type="button" class="copy-btn" id="copyAmount" data-i18n="orderCopy">COPY</button>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="payment-warning">
-                  <span id="paymentWarning">—</span>
+              <div class="payment-field">
+                <label class="payment-field-label">Exact Amount</label>
+                <div class="payment-value big">
+                  <span id="platformUsdtAmount">—</span>
+                  <button type="button" class="copy-btn" data-copy="platformUsdtAmount">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                    <span>Copy</span>
+                  </button>
                 </div>
               </div>
             </div>
 
-            <!-- Submit payment form -->
-            <div class="order-card" id="submitBox" style="display:none;">
-              <h2 data-i18n="orderSubmitTitle">Submit Payment Reference</h2>
-              <form class="order-form" id="submitForm">
-                <div class="field-group">
-                  <label class="field-label" for="paymentRef" id="paymentRefLabel">
-                    <span data-i18n="orderReferenceLabel">Transaction reference</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="paymentRef"
-                    class="field-input"
-                    placeholder="TXID or Hesab Pay ref"
-                    required
-                  >
-                </div>
-                <div class="field-group">
-                  <label class="field-label" for="paymentNote" data-i18n="orderNoteLabel">Note (optional)</label>
-                  <textarea
-                    id="paymentNote"
-                    class="field-input"
-                    rows="3"
-                    placeholder="Any extra info"
-                  ></textarea>
-                </div>
+            <div class="payment-warning" id="paymentWarning">
+              ⚠ Send the exact amount and keep the transaction reference. You'll need it to complete the order.
+            </div>
+          </div>
 
-                <button type="submit" class="btn btn-gold" id="submitPaymentBtn" style="width:100%; padding:13px;">
-                  <span data-i18n="orderSubmitBtn">Submit reference</span>
-                </button>
-              </form>
+          <!-- Submit Form -->
+          <div class="order-card" id="submitBox" style="display:none;">
+            <div class="card-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                <polyline points="16 2 22 8 9 21 2 21 2 14 16 2"/>
+              </svg>
+              Submit Payment Reference
             </div>
 
-            <!-- Admin note -->
-            <div class="order-card" id="adminNoteBox" style="display:none;">
-              <h2 data-i18n="orderAdminNote">Admin Note</h2>
-              <p id="adminNoteText" style="font-size:13px; line-height:1.7; color:var(--muted);">—</p>
-            </div>
+            <form class="submit-form" id="submitForm">
+              <div class="field">
+                <label class="field-label" for="paymentRef" id="refLabel">
+                  Transaction reference
+                </label>
+                <input
+                  type="text"
+                  id="paymentRef"
+                  class="field-input"
+                  placeholder="TXID or Hesab Pay reference"
+                  required
+                >
+                <div class="field-hint" id="refHint">
+                  Paste the transaction ID you received.
+                </div>
+              </div>
 
-            <!-- Cancel button -->
-            <div class="order-actions" id="actionsBox" style="display:none;">
-              <button class="btn btn-outline-dark" id="cancelOrderBtn">
-                <span data-i18n="orderCancel">Cancel order</span>
+              <div class="field">
+                <label class="field-label" for="paymentNote">Note (optional)</label>
+                <textarea
+                  id="paymentNote"
+                  class="field-input"
+                  rows="2"
+                  placeholder="Any extra info"
+                ></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary" id="submitPaymentBtn">
+                <span>Submit Reference</span>
               </button>
+            </form>
+          </div>
+
+          <!-- User's submitted ref (shown after submit) -->
+          <div class="order-card" id="userRefBox" style="display:none;">
+            <div class="card-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              Payment Submitted
+            </div>
+
+            <div class="detail-list">
+              <div class="detail-row">
+                <span class="detail-label">Reference</span>
+                <span class="detail-value" style="font-family:var(--font-mono);font-size:12px;" id="userRefValue">—</span>
+              </div>
+              <div class="detail-row" id="userNoteRow" style="display:none;">
+                <span class="detail-label">Note</span>
+                <span class="detail-value" id="userNoteValue">—</span>
+              </div>
             </div>
           </div>
 
-          <!-- RIGHT: Timeline -->
-          <aside class="order-card">
-            <h2 data-i18n="orderTimeline">Status Timeline</h2>
-            <ul class="order-timeline" id="timeline">
-              <li data-step="PENDING">
-                <strong data-i18n="timelinePending">Order created</strong>
-                <small data-i18n="timelinePendingText">Waiting for payment</small>
-              </li>
-              <li data-step="AWAITING_REVIEW">
-                <strong data-i18n="timelineReview">Payment submitted</strong>
-                <small data-i18n="timelineReviewText">Awaiting verification</small>
-              </li>
-              <li data-step="PROCESSING">
-                <strong data-i18n="timelineProcessing">Processing</strong>
-                <small data-i18n="timelineProcessingText">Team is sending funds</small>
-              </li>
-              <li data-step="COMPLETED">
-                <strong data-i18n="timelineCompleted">Completed</strong>
-                <small data-i18n="timelineCompletedText">Funds delivered</small>
-              </li>
-            </ul>
-          </aside>
+          <!-- Admin Note -->
+          <div class="admin-note-box" id="adminNoteBox" style="display:none;">
+            <div class="admin-note-label" id="adminNoteLabel">Admin Note</div>
+            <div class="admin-note-text" id="adminNoteText">—</div>
+          </div>
+
+          <!-- Cancel Button -->
+          <div class="order-actions" id="cancelBox" style="display:none;">
+            <button type="button" class="btn btn-outline" id="cancelOrderBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              <span>Cancel Order</span>
+            </button>
+          </div>
 
         </div>
+
+        <!-- RIGHT: Side Info -->
+        <aside class="side-info-card">
+          <div class="side-info-header">
+            <div class="side-info-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+            </div>
+            <div class="side-info-title">What happens next?</div>
+          </div>
+
+          <div class="info-steps" id="infoSteps">
+            <div class="info-step active" data-step="PENDING">
+              <div class="info-step-num">1</div>
+              <div>
+                <div class="info-step-title">Send the funds</div>
+                <div class="info-step-text" id="infoStep1Text">Transfer the exact amount using the instructions.</div>
+              </div>
+            </div>
+
+            <div class="info-step" data-step="AWAITING_REVIEW">
+              <div class="info-step-num">2</div>
+              <div>
+                <div class="info-step-title">Submit reference</div>
+                <div class="info-step-text" id="infoStep2Text">Paste the transaction reference in the form.</div>
+              </div>
+            </div>
+
+            <div class="info-step" data-step="PROCESSING">
+              <div class="info-step-num">3</div>
+              <div>
+                <div class="info-step-title">Verification</div>
+                <div class="info-step-text" id="infoStep3Text">Our team verifies your payment — usually within minutes.</div>
+              </div>
+            </div>
+
+            <div class="info-step" data-step="COMPLETED">
+              <div class="info-step-num">4</div>
+              <div>
+                <div class="info-step-title">Funds delivered</div>
+                <div class="info-step-text" id="infoStep4Text">You receive your funds and the order is complete.</div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
       </div>
 
-      <!-- Error -->
-      <div class="alert alert-error" id="errorBox" style="display:none;"></div>
+    </div>
 
-    </main>
-  </div>
+  </main>
 
   <!-- Scripts -->
   <script src="../assets/js/config.js"></script>
@@ -234,7 +425,6 @@
   <script src="../assets/js/auth.js"></script>
   <script src="../assets/js/api.js"></script>
   <script src="../assets/js/notifications.js"></script>
-  <script src="../assets/js/animations.js"></script>
   <script src="../assets/js/order.js"></script>
 </body>
 </html>

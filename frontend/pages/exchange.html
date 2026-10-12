@@ -1,152 +1,298 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Exchange USDT with clear rates — Aryana Currency.">
-  <meta name="theme-color" content="#101b30">
+  <meta name="description" content="Trade USDT — Aryana Currency">
+  <meta name="theme-color" content="#0B0E11">
 
-  <title>Exchange | ARYANA CURRENCY</title>
+  <title>Trade | ARYANA CURRENCY</title>
 
   <link rel="icon" type="image/png" href="../assets/images/logo.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../assets/css/main.css">
-  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/v2/theme.css">
+  <link rel="stylesheet" href="../assets/css/v2/ui.css">
+  <link rel="stylesheet" href="../assets/css/v2/dashboard.css">
+  <link rel="stylesheet" href="../assets/css/v2/exchange.css">
   <link rel="stylesheet" href="../assets/css/notifications.css">
-  <link rel="stylesheet" href="../assets/css/dashboard.css">
-  <link rel="stylesheet" href="../assets/css/exchange.css">
 </head>
 <body>
 
-  <div class="exchange-page">
+  <!-- Header -->
+  <header class="app-header">
+    <div class="container app-header-inner">
 
-    <!-- Header (same as dashboard) -->
-    <header class="dash-header">
-      <div class="container dash-header-inner">
-        <a href="dashboard.html" class="brand">
-          <img src="../assets/images/logo.png" alt="ARYANA CURRENCY" class="brand-logo" width="40" height="40">
-          <div>
-            <div class="brand-name">ARYANA CURRENCY</div>
-            <div class="brand-subtitle" data-i18n="brandSubtitle">DIGITAL EXCHANGE</div>
-          </div>
+      <a href="dashboard.html" class="app-brand">
+        <img src="../assets/images/logo.png" alt="ARYANA CURRENCY">
+        <div class="app-brand-text">
+          ARYANA
+          <small>CURRENCY</small>
+        </div>
+      </a>
+
+      <nav class="app-nav">
+        <a href="dashboard.html" class="app-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="exchange.html" class="app-nav-link active">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12M17 20l4-4M17 20l-4-4"/>
+          </svg>
+          <span>Trade</span>
+        </a>
+        <a href="orders.html" class="app-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+          <span>Orders</span>
+        </a>
+        <a href="profile.html" class="app-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span>Profile</span>
+        </a>
+      </nav>
+
+      <div class="app-header-actions">
+        <a href="admin/index.html" class="icon-btn" id="adminPanelBtn" style="display:none;" title="Admin Panel">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l3 6 6 1-4.5 4.5L18 20l-6-3-6 3 1.5-6.5L3 9l6-1z"/>
+          </svg>
         </a>
 
-        <div class="dash-actions">
-          <a href="dashboard.html" class="dash-icon-btn" title="Dashboard">←</a>
-          <select class="language-select" id="languageSelect" aria-label="Select language">
-            <option value="en">EN</option>
-            <option value="fa">دری</option>
-            <option value="ps">پښتو</option>
-          </select>
-          <button class="dash-icon-btn" id="themeToggle" aria-label="Toggle theme">☾</button>
+        <a href="profile.html" class="user-avatar-btn">
+          <div class="user-avatar" id="userAvatar">A</div>
+          <span class="user-name" id="userName">User</span>
+        </a>
+
+        <button class="icon-btn" id="logoutBtn" title="Logout">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="container app-main">
+
+    <!-- Page Header -->
+    <div class="page-header-row">
+      <a href="dashboard.html" class="back-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+      </a>
+      <div>
+        <h1 style="font-size:22px; font-weight:800; letter-spacing:-0.5px;">Trade USDT</h1>
+        <p style="font-size:13px; color:var(--text-secondary); margin-top:2px;">Buy or sell USDT at the best rate</p>
+      </div>
+    </div>
+
+    <!-- Trade Tabs -->
+    <div class="trade-tabs">
+      <button class="trade-tab active" data-side="BUY">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <polyline points="19 12 12 19 5 12"/>
+        </svg>
+        Buy USDT
+      </button>
+      <button class="trade-tab" data-side="SELL">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="19" x2="12" y2="5"/>
+          <polyline points="5 12 12 5 19 12"/>
+        </svg>
+        Sell USDT
+      </button>
+    </div>
+
+    <!-- Trade Layout -->
+    <div class="trade-layout">
+
+      <!-- Trade Form -->
+      <div class="trade-card">
+
+        <div class="trade-card-header">
+          <div class="trade-card-title" id="formTitle">Buy USDT</div>
+          <div class="trade-rate-badge">
+            <span>Rate:</span>
+            <span class="rate-value" id="rateBadge">— AFN</span>
+          </div>
         </div>
-      </div>
-    </header>
 
-    <!-- Main -->
-    <main class="container exchange-main">
+        <div class="alert alert-danger" id="errorBox" style="display:none;"></div>
 
-      <div class="exchange-header">
-        <h1 data-i18n="exchangeTitle">Exchange USDT</h1>
-        <p data-i18n="exchangeSubtitle">Buy or sell USDT with clear, live rates.</p>
-      </div>
+        <form id="tradeForm">
 
-      <!-- Tabs -->
-      <div class="exchange-tabs">
-        <button class="exchange-tab buy active" data-side="BUY" id="tabBuy">
-          <span data-i18n="exchangeTabBuy">Buy USDT</span>
-        </button>
-        <button class="exchange-tab sell" data-side="SELL" id="tabSell">
-          <span data-i18n="exchangeTabSell">Sell USDT</span>
-        </button>
-      </div>
-
-      <div class="alert alert-error" id="errorBox" style="display:none;"></div>
-
-      <div class="exchange-grid">
-
-        <!-- Form -->
-        <div class="exchange-form-card">
-          <h2 id="formTitle" data-i18n="exchangeFormTitleBuy">Buy USDT</h2>
-
-          <form class="exchange-form" id="exchangeForm">
-            <div class="field-group">
-              <label class="field-label" for="amountUsdt" data-i18n="exchangeAmountLabel">Amount (USDT)</label>
-              <div class="exchange-amount-input">
-                <input
-                  type="number"
-                  id="amountUsdt"
-                  step="0.01"
-                  min="10"
-                  placeholder="10.00"
-                  inputmode="decimal"
-                  required
-                >
-                <span class="currency-tag">USDT</span>
-              </div>
-              <div class="min-order-note">
-                <span data-i18n="exchangeMinOrder">Minimum order:</span>
-                <strong>10 USDT</strong>
+          <!-- You Pay -->
+          <div class="amount-field">
+            <div class="amount-label">
+              <span id="payLabel">You Pay</span>
+              <span class="balance" id="payBalanceWrap" style="display:none;">
+                Balance: <strong id="payBalance">0</strong>
+              </span>
+            </div>
+            <div class="amount-input-row">
+              <input
+                type="text"
+                id="amountUsdt"
+                class="amount-input"
+                inputmode="decimal"
+                placeholder="0"
+                autocomplete="off"
+              >
+              <div class="currency-tag">
+                <div class="currency-icon usdt" id="payCurrencyIcon">₮</div>
+                <span id="payCurrency">USDT</span>
               </div>
             </div>
+          </div>
 
-            <!-- Quick amounts -->
-            <div style="display:flex; gap:8px; margin-bottom:20px;">
-              <button type="button" class="btn btn-outline-dark" style="flex:1; padding:8px 6px; font-size:11px;" data-quick="10">10</button>
-              <button type="button" class="btn btn-outline-dark" style="flex:1; padding:8px 6px; font-size:11px;" data-quick="50">50</button>
-              <button type="button" class="btn btn-outline-dark" style="flex:1; padding:8px 6px; font-size:11px;" data-quick="100">100</button>
-              <button type="button" class="btn btn-outline-dark" style="flex:1; padding:8px 6px; font-size:11px;" data-quick="500">500</button>
-            </div>
-
-            <!-- Summary -->
-            <div class="exchange-summary" id="summaryBox">
-              <div class="summary-row">
-                <span data-i18n="exchangeRate">Rate</span>
-                <span id="sumRate">—</span>
-              </div>
-              <div class="summary-row">
-                <span data-i18n="exchangeGross">Gross amount</span>
-                <span id="sumGross">—</span>
-              </div>
-              <div class="summary-row">
-                <span data-i18n="exchangeFee">Platform fee (1.5%)</span>
-                <span id="sumFee">—</span>
-              </div>
-              <div class="summary-row total">
-                <span id="sumTotalLabel" data-i18n="exchangeYouPay">You pay</span>
-                <span id="sumTotal">—</span>
-              </div>
-            </div>
-
-            <button type="submit" class="btn btn-gold" id="submitBtn" style="width:100%; padding:14px; font-size:14px;">
-              <span data-i18n="exchangeSubmitBtn">Continue</span>
+          <!-- Swap -->
+          <div class="swap-row">
+            <button type="button" class="swap-btn" id="swapBtn" aria-label="Swap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 4v16M7 20l-4-4M7 20l4-4M17 20V4M17 4l4 4M17 4l-4 4"/>
+              </svg>
             </button>
-          </form>
-        </div>
+          </div>
 
-        <!-- Instructions -->
-        <aside class="instructions-card">
-          <h3>
-            <span class="instructions-icon">?</span>
-            <span id="instructionsTitle" data-i18n="exchangeHowToBuy">How to buy</span>
-          </h3>
+          <!-- You Receive -->
+          <div class="amount-field">
+            <div class="amount-label">
+              <span id="receiveLabel">You Receive</span>
+            </div>
+            <div class="amount-input-row">
+              <input
+                type="text"
+                id="amountAfn"
+                class="amount-input"
+                readonly
+                placeholder="0"
+              >
+              <div class="currency-tag">
+                <div class="currency-icon afn" id="receiveCurrencyIcon">؋</div>
+                <span id="receiveCurrency">AFN</span>
+              </div>
+            </div>
+          </div>
 
-          <ul class="instructions-list" id="instructionsList">
-            <li data-i18n="exchangeStep1Buy">Enter the amount of USDT you want to buy.</li>
-            <li data-i18n="exchangeStep2Buy">Review the rate and total amount to pay in AFN.</li>
-            <li data-i18n="exchangeStep3Buy">Submit the order to see payment instructions.</li>
-            <li data-i18n="exchangeStep4Buy">Transfer the AFN via Hesab Pay and submit the reference.</li>
-            <li data-i18n="exchangeStep5Buy">Our team verifies and sends USDT to your wallet.</li>
-          </ul>
-        </aside>
+          <!-- Quick Amounts -->
+          <div class="quick-amounts">
+            <button type="button" class="quick-amount" data-amount="10">10</button>
+            <button type="button" class="quick-amount" data-amount="50">50</button>
+            <button type="button" class="quick-amount" data-amount="100">100</button>
+            <button type="button" class="quick-amount" data-amount="500">500</button>
+          </div>
+
+          <!-- Summary -->
+          <div class="summary-box">
+            <div class="summary-row">
+              <span>Rate</span>
+              <span id="sumRate">— AFN</span>
+            </div>
+            <div class="summary-row">
+              <span>Platform Fee (1.5%)</span>
+              <span id="sumFee">— AFN</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-row total">
+              <span id="sumTotalLabel">Total</span>
+              <span id="sumTotal">— AFN</span>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="trade-submit" id="submitBtn" data-side="BUY">
+            <span>Continue</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </button>
+
+          <!-- Min Order Note -->
+          <div class="min-order-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="16" x2="12" y2="12"/>
+              <line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+            <span>Minimum order: <strong>10 USDT</strong></span>
+          </div>
+
+        </form>
 
       </div>
-    </main>
-  </div>
+
+      <!-- Side Instructions -->
+      <aside class="side-card">
+        <div class="side-card-header">
+          <div class="side-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+          </div>
+          <div class="side-card-title" id="sideCardTitle">How to Buy</div>
+        </div>
+
+        <div class="side-steps" id="sideSteps">
+          <div class="side-step active">
+            <div class="side-step-num">1</div>
+            <div>
+              <div class="side-step-title">Enter amount</div>
+              <div class="side-step-text" id="step1Text">Enter how much USDT you want to buy.</div>
+            </div>
+          </div>
+
+          <div class="side-step">
+            <div class="side-step-num">2</div>
+            <div>
+              <div class="side-step-title">Review the rate</div>
+              <div class="side-step-text" id="step2Text">Check the rate and total to pay in AFN.</div>
+            </div>
+          </div>
+
+          <div class="side-step">
+            <div class="side-step-num">3</div>
+            <div>
+              <div class="side-step-title">Submit order</div>
+              <div class="side-step-text" id="step3Text">Continue to see payment instructions.</div>
+            </div>
+          </div>
+
+          <div class="side-step">
+            <div class="side-step-num">4</div>
+            <div>
+              <div class="side-step-title">Verify payment</div>
+              <div class="side-step-text" id="step4Text">Our team verifies and completes your order.</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+
+  </main>
 
   <!-- Scripts -->
   <script src="../assets/js/config.js"></script>
@@ -155,7 +301,6 @@
   <script src="../assets/js/auth.js"></script>
   <script src="../assets/js/api.js"></script>
   <script src="../assets/js/notifications.js"></script>
-  <script src="../assets/js/animations.js"></script>
   <script src="../assets/js/exchange.js"></script>
 </body>
 </html>

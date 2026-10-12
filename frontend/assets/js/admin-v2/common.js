@@ -1,4 +1,4 @@
-/* ═══════════════════════════════════════
+﻿/* ═══════════════════════════════════════
    ARYANA CURRENCY — Admin v2 Common
    Shared logic for all admin pages
    ═══════════════════════════════════════ */
@@ -15,7 +15,7 @@ const AdminCommon = {
     // چک ادمین
     Auth.requireLogin();
     if (!Auth.isAdmin()) {
-      window.location.href = '../dashboard-v2.html';
+      window.location.href = '../dashboard.html';
       return;
     }
 
@@ -50,40 +50,40 @@ const AdminCommon = {
 
     const items = [
       {
-        href: 'index-v2.html',
+        href: 'index.html',
         icon: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>',
         label: 'Dashboard',
         key: 'dashboard',
       },
       {
-        href: 'orders-v2.html',
+        href: 'orders.html',
         icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>',
         label: 'Orders',
         key: 'orders',
         badge: 'orders',
       },
       {
-        href: 'kyc-v2.html',
+        href: 'kyc.html',
         icon: '<path d="M9 12l2 2 4-4"/><path d="M21 12c0 5-3.5 8.5-9 10-5.5-1.5-9-5-9-10V5l9-3 9 3z"/>',
         label: 'KYC',
         key: 'kyc',
         badge: 'kyc',
       },
       {
-        href: 'withdrawals-v2.html',
+        href: 'withdrawals.html',
         icon: '<line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>',
         label: 'Withdrawals',
         key: 'withdrawals',
         badge: 'withdrawals',
       },
       {
-        href: 'rates-v2.html',
+        href: 'rates.html',
         icon: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',
         label: 'Rates',
         key: 'rates',
       },
       {
-        href: 'users-v2.html',
+        href: 'users.html',
         icon: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
         label: 'Users',
         key: 'users',
@@ -112,7 +112,7 @@ const AdminCommon = {
     // Divider + back to site
     html += `
       <div class="admin-nav-divider"></div>
-      <a href="../dashboard-v2.html" class="admin-nav-item">
+      <a href="../dashboard.html" class="admin-nav-item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="19" y1="12" x2="5" y2="12"/>
           <polyline points="12 19 5 12 12 5"/>
