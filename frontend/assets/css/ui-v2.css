@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — UI Components
+   ARYANA CURRENCY — UI Components v2
    Buttons, Cards, Inputs, Badges
    ═══════════════════════════════════════ */
 
@@ -20,6 +20,8 @@
   border: 1px solid transparent;
   cursor: pointer;
   user-select: none;
+  text-decoration: none;
+  font-family: inherit;
 }
 
 .btn:disabled {
@@ -40,10 +42,6 @@
   transform: translateY(-1px);
 }
 
-.btn-primary:active:not(:disabled) {
-  transform: translateY(0);
-}
-
 .btn-secondary {
   background: var(--bg-hover);
   color: var(--text-primary);
@@ -60,19 +58,9 @@
   color: var(--text-inverse);
 }
 
-.btn-success:hover:not(:disabled) {
-  background: #0FDD8E;
-  transform: translateY(-1px);
-}
-
 .btn-danger {
   background: var(--red);
   color: white;
-}
-
-.btn-danger:hover:not(:disabled) {
-  background: #FF5A6E;
-  transform: translateY(-1px);
 }
 
 .btn-outline {
@@ -168,6 +156,7 @@
   font-size: 14px;
   color: var(--text-primary);
   transition: border-color var(--transition-fast), background var(--transition-fast);
+  font-family: inherit;
 }
 
 .field-input:focus {
@@ -190,46 +179,6 @@
   color: var(--text-tertiary);
   margin-top: 6px;
   line-height: 1.5;
-}
-
-/* ═══ Amount Input (with currency tag) ═══ */
-
-.amount-input-wrap {
-  position: relative;
-}
-
-.amount-input-wrap .field-input {
-  padding-right: 100px;
-  font-size: 18px;
-  font-weight: 600;
-  font-family: var(--font-mono);
-}
-
-.amount-input-tag {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  background: var(--bg-hover);
-  border-radius: var(--radius-sm);
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-primary);
-  pointer-events: none;
-}
-
-body[dir="rtl"] .amount-input-tag {
-  right: auto;
-  left: 12px;
-}
-
-body[dir="rtl"] .amount-input-wrap .field-input {
-  padding-right: 16px;
-  padding-left: 100px;
 }
 
 /* ═══ Badges ═══ */
@@ -359,29 +308,38 @@ body[dir="rtl"] .amount-input-wrap .field-input {
   margin-inline: auto;
 }
 
-/* ═══ Skeleton Loading ═══ */
+/* ═══ Copy Button ═══ */
 
-.skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--bg-tertiary) 0%,
-    var(--bg-hover) 50%,
-    var(--bg-tertiary) 100%
-  );
-  background-size: 200% 100%;
-  animation: skeleton-shimmer 1.5s infinite;
+.copy-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(240, 185, 11, 0.15);
+  border: 1px solid rgba(240, 185, 11, 0.25);
   border-radius: var(--radius-sm);
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: inherit;
 }
 
-@keyframes skeleton-shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+.copy-btn:hover {
+  background: var(--gold);
+  color: var(--text-inverse);
+  border-color: var(--gold);
 }
 
-/* ═══ Responsive ═══ */
+.copy-btn svg {
+  width: 13px;
+  height: 13px;
+}
 
-@media (max-width: 768px) {
-  .card {
-    padding: var(--space-4);
-  }
+.copy-btn.copied {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
 }
