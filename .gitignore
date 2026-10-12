@@ -91,3 +91,4 @@ desktop.ini
 # Alembic (keep migrations, ignore cache)
 # ═══════════════════════════════════════
 backend/alembic/versions/__pycache__/
+.vercel

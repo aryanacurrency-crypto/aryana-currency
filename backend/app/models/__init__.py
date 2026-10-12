@@ -16,6 +16,7 @@ from app.models.user import User
 from app.models.wallet import Wallet
 from app.models.withdrawal import Withdrawal
 from app.models.password_reset import PasswordResetToken
+from app.models.platform_settings import PlatformSettings
 
 
 __all__ = [
@@ -35,4 +36,5 @@ __all__ = [
     "Withdrawal",
     "WithdrawalStatus",
     "PasswordResetToken",
+    "PlatformSettings",
 ]

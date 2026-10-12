@@ -1,19 +1,43 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 
-from app.core.config import settings
+from app.core.database import get_db
+from app.core.settings_service import get_settings_row
+from app.schemas.settings import ContactInfoRead, PaymentInfoRead
 
 router = APIRouter(prefix="/public", tags=["public"])
 
 
-@router.get("/payment-info")
-def get_payment_info():
+@router.get("/contact-info", response_model=ContactInfoRead)
+def get_contact_info(db: Session = Depends(get_db)):
     """
-    اطلاعات پرداخت عمومی (آدرس ولت و حساب Hesab Pay پلتفرم).
-    برای نمایش به کاربر در صفحه سفارش.
+    اطلاعات تماس عمومی (تلفن، ایمیل، آدرس).
+    برای نمایش توی Footer و صفحه Contact.
     """
-    return {
-        "usdt_wallet": settings.PLATFORM_USDT_WALLET,
-        "usdt_network": "TRC20",
-        "hesab_pay": settings.PLATFORM_HESAB_PAY,
-        "hesab_pay_holder": settings.PLATFORM_HESAB_PAY_HOLDER,
-    }
+    row = get_settings_row(db)
+    return ContactInfoRead(
+        phone=row.contact_phone,
+        email=row.contact_email,
+        address=row.contact_address,
+        telegram=row.contact_telegram,
+        whatsapp=row.contact_whatsapp,
+    )
+
+
+@router.get("/payment-info", response_model=PaymentInfoRead)
+def get_payment_info(db: Session = Depends(get_db)):
+    """
+    اطلاعات پرداخت (Hesab Pay و USDT wallets).
+    فقط برای صفحه Deposit و Withdraw.
+    """
+    row = get_settings_row(db)
+    return PaymentInfoRead(
+        hesab_pay=row.hesab_pay_number,
+        hesab_pay_holder=row.hesab_pay_holder,
+        usdt_wallet_trc20=row.usdt_wallet_trc20,
+        usdt_wallet_bep20=row.usdt_wallet_bep20,
+        usdt_wallet_erc20=row.usdt_wallet_erc20,
+        min_deposit_usdt=float(row.min_deposit_usdt or 10),
+        min_withdraw_usdt=float(row.min_withdraw_usdt or 10),
+        min_withdraw_afn=float(row.min_withdraw_afn or 500),
+    )

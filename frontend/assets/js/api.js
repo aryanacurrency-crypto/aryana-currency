@@ -136,6 +136,10 @@ const API = {
     return this.request('/public/payment-info', { skipAuth: true });
   },
 
+  getContactInfo() {
+    return this.request('/public/contact-info', { skipAuth: true });
+  },
+
   // ═══════════════════════════════════════
   //              Rates
   // ═══════════════════════════════════════
@@ -252,6 +256,21 @@ const API = {
     return this.request(`/orders/${orderId}/reject`, {
       method: 'POST',
       body: JSON.stringify({ reason }),
+    });
+  },
+
+  // ═══════════════════════════════════════
+  //         Platform Settings (Admin)
+  // ═══════════════════════════════════════
+
+  getPlatformSettings() {
+    return this.request('/admin/settings');
+  },
+
+  updatePlatformSettings(payload) {
+    return this.request('/admin/settings', {
+      method: 'PATCH',
+      body: JSON.stringify(payload),
     });
   },
 

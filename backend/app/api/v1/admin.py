@@ -4,9 +4,11 @@ from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_admin
 from app.core.database import get_db
+from app.core.settings_service import get_settings_row
 from app.models import Order, User, Wallet
 from app.models.enums import OrderStatus
 from app.schemas.order import OrderRead
+from app.schemas.settings import PlatformSettingsRead, PlatformSettingsUpdate
 from app.schemas.user import UserRead
 
 router = APIRouter(prefix="/admin", tags=["admin"])
@@ -92,6 +94,42 @@ def get_user_wallets(
         }
         for w in wallets
     ]
+
+
+# ═══════════════════════════════════════
+#              تنظیمات پلتفرم
+# ═══════════════════════════════════════
+
+
+@router.get("/settings", response_model=PlatformSettingsRead)
+def get_settings(
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_current_admin),
+):
+    """گرفتن تنظیمات پلتفرم (فقط ادمین)."""
+    return get_settings_row(db)
+
+
+@router.patch("/settings", response_model=PlatformSettingsRead)
+def update_settings(
+    payload: PlatformSettingsUpdate,
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_current_admin),
+):
+    """آپدیت تنظیمات پلتفرم (فقط ادمین)."""
+    row = get_settings_row(db)
+
+    # فقط فیلدهایی که ارسال شدن رو آپدیت کن
+    update_data = payload.model_dump(exclude_unset=True)
+
+    for field, value in update_data.items():
+        setattr(row, field, value)
+
+    row.updated_by = admin.id
+    db.commit()
+    db.refresh(row)
+
+    return row
 
 
 # ═══════════════════════════════════════
