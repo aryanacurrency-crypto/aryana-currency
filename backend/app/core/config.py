@@ -14,9 +14,6 @@ class Settings(BaseSettings):
         case_sensitive=True,
     )
 
-    # --- DEBUG ---
-    DEBUG_MARKER: str = "VERSION_2026_01"
-
     # --- App ---
     APP_NAME: str = "Aryana Currency"
     APP_ENV: str = "development"
@@ -42,18 +39,15 @@ class Settings(BaseSettings):
     MIN_ORDER_USD: float = 10.0
     DEFAULT_FEE_PERCENT: float = 1.5
 
-    # --- Platform Wallets (for payment instructions) ---
+    # --- Platform Wallets ---
     PLATFORM_USDT_WALLET: str = ""
     PLATFORM_USDT_NETWORK: str = "TRC20"
     PLATFORM_HESAB_PAY: str = ""
     PLATFORM_HESAB_PAY_HOLDER: str = "ARYANA CURRENCY"
 
-    # --- SMTP (مقادیر موقت هاردکد برای تست) ---
-    SMTP_HOST: str = "smtp.gmail.com"
-    SMTP_PORT: int = 465
-    SMTP_USER: str = "aryanaacurrency@gmail.com"
-    SMTP_PASSWORD: str = "hufawnlfawgthoxg"
-    SMTP_FROM_EMAIL: str = "aryanaacurrency@gmail.com"
+    # --- Resend (برای ارسال ایمیل) ---
+    RESEND_API_KEY: str = "re_emVGCV8Y_PwbfNfN1BSsn9kkdp1rSATE"
+    RESEND_FROM_EMAIL: str = "onboarding@resend.dev"
     SMTP_FROM_NAME: str = "Aryana Currency"
 
     @property

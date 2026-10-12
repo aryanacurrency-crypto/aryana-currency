@@ -1,14 +1,11 @@
 """
 سرویس ایمیل Aryana Currency.
 
-با SMTP واقعی ایمیل می‌فرسته (Gmail, SendGrid, Resend, ...).
-اگه SMTP تنظیم نشده باشه، فقط توی لاگ چاپ می‌کنه (برای توسعه).
+از Resend API استفاده می‌کنه (HTTP-based) که روی Render کار می‌کنه.
 """
 import logging
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from email.utils import formataddr
+
+import resend
 
 from app.core.config import settings
 
@@ -17,39 +14,25 @@ logger = logging.getLogger(__name__)
 
 def send_password_reset_email(email: str, reset_token: str) -> bool:
     """
-    ارسال ایمیل بازنشانی رمز عبور.
+    ارسال ایمیل بازنشانی رمز عبور با Resend API.
     """
     reset_link = f"{settings.FRONTEND_URL}/pages/reset-password.html?token={reset_token}"
 
-    # ─── لاگ برای توسعه ───
+    # ─── لاگ ───
     logger.warning("=" * 60)
     logger.warning("PASSWORD RESET REQUEST")
     logger.warning(f"Email: {email}")
     logger.warning(f"Token: {reset_token}")
     logger.warning(f"Link:  {reset_link}")
-    logger.warning(f"Valid for: {settings.PASSWORD_RESET_EXPIRE_MINUTES} minutes")
     logger.warning("=" * 60)
 
-    # ─── اگه SMTP تنظیم نشده، فقط لاگ ───
-    if not settings.SMTP_HOST or not settings.SMTP_USER or not settings.SMTP_PASSWORD:
-        logger.warning("SMTP not configured — email not sent (log only).")
+    # ─── چک تنظیمات ───
+    if not settings.RESEND_API_KEY:
+        logger.warning("RESEND_API_KEY not configured — email not sent (log only).")
         return False
 
-    # ─── ارسال واقعی ───
-    try:
-        _send_via_smtp(email, reset_link, reset_token)
-        logger.info(f"Password reset email sent to {email}")
-        return True
-    except Exception as e:
-        logger.error(f"Failed to send reset email to {email}: {e}")
-        return False
-
-
-def _send_via_smtp(to_email: str, reset_link: str, reset_token: str) -> None:
-    """
-    ارسال واقعی با SMTP (SSL روی پورت 465).
-    """
-    subject = "بازنشانی رمز عبور — Aryana Currency"
+    # ─── تنظیم API Key ───
+    resend.api_key = settings.RESEND_API_KEY
 
     # ─── بدنه HTML ───
     html_body = f"""
@@ -200,31 +183,19 @@ def _send_via_smtp(to_email: str, reset_link: str, reset_token: str) -> None:
     </html>
     """
 
-    # ─── نسخه ساده (برای کلاینت‌های قدیمی) ───
-    text_body = f"""
-Aryana Currency — بازنشانی رمز عبور
+    # ─── ارسال با Resend ───
+    try:
+        params = {
+            "from": f"{settings.SMTP_FROM_NAME} <{settings.RESEND_FROM_EMAIL}>",
+            "to": [email],
+            "subject": "بازنشانی رمز عبور — Aryana Currency",
+            "html": html_body,
+        }
 
-برای تنظیم رمز جدید، این لینک را در مرورگر باز کنید:
+        response = resend.Emails.send(params)
+        logger.info(f"Password reset email sent to {email}. ID: {response.get('id')}")
+        return True
 
-{reset_link}
-
-این لینک تا {settings.PASSWORD_RESET_EXPIRE_MINUTES} دقیقه معتبر است.
-
-اگر شما این درخواست را نداده‌اید، این ایمیل را نادیده بگیرید.
-
-© Aryana Currency
-    """.strip()
-
-    # ─── ساخت پیام ───
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = subject
-    msg["From"] = formataddr((settings.SMTP_FROM_NAME, settings.SMTP_FROM_EMAIL))
-    msg["To"] = to_email
-
-    msg.attach(MIMEText(text_body, "plain", "utf-8"))
-    msg.attach(MIMEText(html_body, "html", "utf-8"))
-
-    # ─── اتصال به SMTP با SSL (پورت 465) ───
-    with smtplib.SMTP_SSL(settings.SMTP_HOST, settings.SMTP_PORT, timeout=15) as server:
-        server.login(settings.SMTP_USER, settings.SMTP_PASSWORD)
-        server.send_message(msg)
+    except Exception as e:
+        logger.error(f"Failed to send reset email to {email}: {e}")
+        return False
