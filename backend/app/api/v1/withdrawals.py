@@ -125,6 +125,35 @@ def admin_list_pending(
     )
 
 
+# ⚠️ این باید قبل از /admin/{withdrawal_id} باشه
+@router.get("/admin/stats")
+def admin_withdrawal_stats(
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_current_admin),
+):
+    """آمار برداشت‌ها."""
+    from sqlalchemy import func
+
+    total = db.query(func.count(Withdrawal.id)).scalar()
+    pending = db.query(func.count(Withdrawal.id)).filter(
+        Withdrawal.status == WithdrawalStatus.PENDING
+    ).scalar()
+    completed = db.query(func.count(Withdrawal.id)).filter(
+        Withdrawal.status == WithdrawalStatus.COMPLETED
+    ).scalar()
+    rejected = db.query(func.count(Withdrawal.id)).filter(
+        Withdrawal.status == WithdrawalStatus.REJECTED
+    ).scalar()
+
+    return {
+        "total": total,
+        "pending": pending,
+        "completed": completed,
+        "rejected": rejected,
+    }
+
+
+# ⚠️ این باید بعد از /admin/stats باشه
 @router.get("/admin/{withdrawal_id}", response_model=WithdrawalRead)
 def admin_get_withdrawal(
     withdrawal_id: int,
@@ -180,30 +209,3 @@ def admin_reject_withdrawal(
             detail="درخواست برداشت یافت نشد",
         )
     return withdrawal_service.reject_withdrawal(db, w, admin, payload.reason)
-
-
-@router.get("/admin/stats")
-def admin_withdrawal_stats(
-    db: Session = Depends(get_db),
-    admin: User = Depends(get_current_admin),
-):
-    """آمار برداشت‌ها."""
-    from sqlalchemy import func
-
-    total = db.query(func.count(Withdrawal.id)).scalar()
-    pending = db.query(func.count(Withdrawal.id)).filter(
-        Withdrawal.status == WithdrawalStatus.PENDING
-    ).scalar()
-    completed = db.query(func.count(Withdrawal.id)).filter(
-        Withdrawal.status == WithdrawalStatus.COMPLETED
-    ).scalar()
-    rejected = db.query(func.count(Withdrawal.id)).filter(
-        Withdrawal.status == WithdrawalStatus.REJECTED
-    ).scalar()
-
-    return {
-        "total": total,
-        "pending": pending,
-        "completed": completed,
-        "rejected": rejected,
-    }
