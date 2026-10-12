@@ -5,7 +5,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
   Auth.requireLogin();
   if (!Auth.isAdmin()) {
-    window.location.href = '../dashboard-v2.html';
+    window.location.href = '../dashboard.html';
     return;
   }
 

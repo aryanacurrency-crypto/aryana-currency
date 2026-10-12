@@ -510,7 +510,7 @@ function showError(msg) {
       ${msg}
     </div>
     <div style="text-align:center; margin-top:20px;">
-      <a href="orders-v2.html" class="btn btn-outline">← Back to Orders</a>
+      <a href="orders.html" class="btn btn-outline">← Back to Orders</a>
     </div>
   `;
 }

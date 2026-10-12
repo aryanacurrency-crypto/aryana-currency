@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       showSuccess(I18N.t('registerSuccess') || 'Account created! Redirecting...');
 
       setTimeout(() => {
-        window.location.href = 'dashboard-v2.html';
+        window.location.href = 'dashboard.html';
       }, 900);
 
     } catch (err) {

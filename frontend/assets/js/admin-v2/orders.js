@@ -114,7 +114,7 @@ function renderOrders() {
     const tr = document.createElement('tr');
     tr.style.cursor = 'pointer';
     tr.onclick = () => {
-      window.location.href = `order-detail-v2.html?id=${order.id}`;
+      window.location.href = `order-detail.html?id=${order.id}`;
     };
 
     const amount = AdminCommon.formatNumber(order.amount_usdt, 2);
