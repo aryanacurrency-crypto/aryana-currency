@@ -1,0 +1,912 @@
+/* ═══════════════════════════════════════
+   ARYANA CURRENCY — Deposit & Withdraw v2
+   ═══════════════════════════════════════ */
+
+/* ═══ Page Header ═══ */
+
+.page-header-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.back-btn {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-md);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.back-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* ═══ Currency Tabs ═══ */
+
+.currency-tabs {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-6);
+  max-width: 400px;
+}
+
+.currency-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: 14px 24px;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.currency-tab:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.currency-tab.active {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.currency-tab-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.currency-tab-icon.usdt {
+  background: linear-gradient(135deg, #26A17B, #1A8060);
+  color: white;
+}
+
+.currency-tab-icon.afn {
+  background: linear-gradient(135deg, #F0B90B, #B58C0F);
+  color: #0B0E11;
+}
+
+/* ═══ Main Layout ═══ */
+
+.deposit-layout {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: var(--space-5);
+  align-items: start;
+}
+
+/* ═══ Main Card ═══ */
+
+.deposit-card {
+  background: 
+    radial-gradient(circle at 100% 0%, rgba(240, 185, 11, 0.12), transparent 50%),
+    linear-gradient(135deg, #1E2329 0%, #15181D 100%);
+  border: 1px solid rgba(240, 185, 11, 0.2);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  position: relative;
+  overflow: hidden;
+}
+
+.deposit-card::before {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border: 1px solid rgba(240, 185, 11, 0.1);
+  border-radius: 50%;
+  top: -200px;
+  right: -150px;
+  box-shadow: 0 0 0 40px rgba(240, 185, 11, 0.02),
+              0 0 0 80px rgba(240, 185, 11, 0.015);
+  pointer-events: none;
+}
+
+.deposit-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  position: relative;
+  z-index: 1;
+}
+
+.deposit-card-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  background: rgba(240, 185, 11, 0.15);
+  color: var(--gold);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.deposit-card-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.4px;
+  margin-bottom: 4px;
+}
+
+.deposit-card-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ═══ Deposit Main Row ═══ */
+
+.deposit-main-row {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  gap: var(--space-5);
+  margin-bottom: var(--space-6);
+  position: relative;
+  z-index: 1;
+  align-items: start;
+}
+
+.deposit-info-block {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ═══ Address Label ═══ */
+
+.address-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-2);
+}
+
+.address-value {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+  transition: border-color var(--transition-fast);
+}
+
+.address-value:hover {
+  border-color: rgba(240, 185, 11, 0.3);
+}
+
+.address-value.hesab {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* ═══ Copy Button ═══ */
+
+.copy-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(240, 185, 11, 0.15);
+  border: 1px solid rgba(240, 185, 11, 0.25);
+  border-radius: var(--radius-sm);
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.copy-btn:hover {
+  background: var(--gold);
+  color: var(--text-inverse);
+  border-color: var(--gold);
+}
+
+.copy-btn svg {
+  width: 13px;
+  height: 13px;
+}
+
+.copy-btn.copied {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
+}
+
+/* ═══ Visual Block (بدون QR) ═══ */
+
+.visual-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-6) var(--space-4);
+  background: rgba(240, 185, 11, 0.06);
+  border: 1px dashed rgba(240, 185, 11, 0.25);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  min-height: 220px;
+}
+
+.visual-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(240, 185, 11, 0.15);
+  color: var(--gold);
+  display: grid;
+  place-items: center;
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(240, 185, 11, 0.3); }
+  50% { box-shadow: 0 0 0 20px rgba(240, 185, 11, 0); }
+}
+
+.visual-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.visual-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--gold);
+}
+
+.visual-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 220px;
+}
+
+/* ═══ Warning Box ═══ */
+
+.warning-box {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-4);
+  position: relative;
+  z-index: 1;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.warning-box.danger {
+  background: rgba(246, 70, 93, 0.08);
+  border: 1px solid rgba(246, 70, 93, 0.2);
+  border-inline-start: 3px solid var(--red);
+}
+
+.warning-box.warning {
+  background: rgba(240, 185, 11, 0.06);
+  border: 1px solid rgba(240, 185, 11, 0.2);
+  border-inline-start: 3px solid var(--gold);
+}
+
+.warning-box.info {
+  background: var(--blue-bg);
+  border: 1px solid rgba(30, 136, 229, 0.2);
+  border-inline-start: 3px solid var(--blue);
+}
+
+.warning-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+}
+
+.warning-box.danger .warning-icon { color: var(--red); }
+.warning-box.warning .warning-icon { color: var(--gold); }
+.warning-box.info .warning-icon { color: var(--blue); }
+
+.warning-text strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+/* ═══ Info Rows ═══ */
+
+.info-list {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  padding-block: var(--space-3);
+  font-size: 13px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  color: var(--text-secondary);
+}
+
+.info-value {
+  color: var(--text-primary);
+  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.info-value.sans {
+  font-family: var(--font-sans);
+  font-size: 13px;
+}
+
+/* ═══ Side Card ═══ */
+
+.side-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  position: sticky;
+  top: 88px;
+}
+
+.side-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.side-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: rgba(240, 185, 11, 0.12);
+  color: var(--gold);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.side-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.side-steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.side-step {
+  display: flex;
+  gap: var(--space-3);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.side-step-num {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--bg-hover);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.side-step-title {
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.side-step-text {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+/* ═══ Support Box ═══ */
+
+.support-box {
+  padding: var(--space-5);
+  background: rgba(240, 185, 11, 0.06);
+  border: 1px solid rgba(240, 185, 11, 0.2);
+  border-radius: var(--radius-md);
+  margin-top: var(--space-5);
+  text-align: center;
+}
+
+.support-box-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.support-box-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: var(--space-3);
+}
+
+.support-box-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--gold);
+  color: var(--text-inverse);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.support-box-btn:hover {
+  background: var(--gold-light);
+  transform: translateY(-1px);
+}
+
+/* ═══ Responsive ═══ */
+
+@media (max-width: 900px) {
+  .deposit-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .side-card {
+    position: static;
+  }
+
+  .deposit-main-row {
+    grid-template-columns: 1fr;
+  }
+
+  .visual-block {
+    min-height: auto;
+    padding: var(--space-5) var(--space-4);
+  }
+}
+
+@media (max-width: 640px) {
+  .deposit-card {
+    padding: var(--space-5);
+  }
+
+  .deposit-card-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .deposit-card-title {
+    font-size: 17px;
+  }
+
+  .currency-tab {
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+
+  .address-value {
+    padding: var(--space-3) var(--space-4);
+    font-size: 12px;
+  }
+
+  .address-value.hesab {
+    font-size: 14px;
+  }
+
+  .copy-btn span {
+    display: none;
+  }
+
+  .copy-btn {
+    padding: 8px 10px;
+  }
+
+  .visual-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .visual-icon svg {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+/* ═══════════════════════════════════════
+   Withdraw-specific styles
+   ═══════════════════════════════════════ */
+
+/* ═══ Balance Card ═══ */
+
+.balance-info-card {
+  padding: var(--space-5);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-5);
+  position: relative;
+  z-index: 1;
+}
+
+.balance-info-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-2);
+}
+
+.balance-info-value {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.balance-info-value small {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-left: 6px;
+}
+
+.balance-info-locked {
+  font-size: 11px;
+  color: var(--gold);
+  margin-top: var(--space-2);
+  font-weight: 600;
+}
+
+/* ═══ Withdraw Form ═══ */
+
+.withdraw-form {
+  position: relative;
+  z-index: 1;
+}
+
+.withdraw-form .field {
+  margin-bottom: var(--space-5);
+}
+
+.withdraw-form .field-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.withdraw-form .field-label .max-btn {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold);
+  cursor: pointer;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  background: rgba(240, 185, 11, 0.1);
+  transition: all var(--transition-fast);
+  border: none;
+}
+
+.withdraw-form .field-label .max-btn:hover {
+  background: rgba(240, 185, 11, 0.2);
+}
+
+.amount-input-wrap {
+  position: relative;
+}
+
+.amount-input-wrap .field-input {
+  padding-right: 80px;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.amount-input-tag {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+/* ═══ Recent Withdrawals ═══ */
+
+.recent-withdrawals {
+  margin-top: var(--space-6);
+  position: relative;
+  z-index: 1;
+}
+
+.recent-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-4);
+}
+
+.withdrawal-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-2);
+  font-size: 13px;
+  transition: all var(--transition-fast);
+}
+
+.withdrawal-item:hover {
+  border-color: rgba(240, 185, 11, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.withdrawal-item-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.withdrawal-item-ref {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-bottom: 4px;
+}
+
+.withdrawal-item-amount {
+  font-weight: 800;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.withdrawal-item-amount small {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-left: 4px;
+  font-weight: 600;
+}
+
+.withdrawal-item-right {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.withdrawal-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.withdrawal-status.pending {
+  background: rgba(240, 185, 11, 0.12);
+  color: var(--gold);
+}
+
+.withdrawal-status.processing {
+  background: rgba(99, 102, 241, 0.12);
+  color: #A5B4FC;
+}
+
+.withdrawal-status.completed {
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.withdrawal-status.rejected,
+.withdrawal-status.cancelled {
+  background: var(--red-bg);
+  color: var(--red);
+}
+
+.withdrawal-item-date {
+  font-size: 10px;
+  color: var(--text-tertiary);
+}
+
+/* ═══ Empty State ═══ */
+
+.withdrawals-empty {
+  padding: 30px 20px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* ═══ Confirm Modal (overlay) ═══ */
+
+.confirm-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 14, 17, 0.85);
+  backdrop-filter: blur(8px);
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-base);
+}
+
+.confirm-modal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.confirm-modal-content {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  transform: scale(0.95);
+  transition: transform var(--transition-base);
+}
+
+.confirm-modal.show .confirm-modal-content {
+  transform: scale(1);
+}
+
+.confirm-modal-header {
+  text-align: center;
+  margin-bottom: var(--space-5);
+}
+
+.confirm-modal-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(240, 185, 11, 0.15);
+  color: var(--gold);
+  display: grid;
+  place-items: center;
+  margin: 0 auto var(--space-4);
+}
+
+.confirm-modal-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.confirm-modal-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.confirm-modal-details {
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.confirm-modal-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-2);
+  font-size: 13px;
+}
+
+.confirm-modal-row span:first-child {
+  color: var(--text-secondary);
+}
+
+.confirm-modal-row span:last-child {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+
+.confirm-modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+/* ═══ Responsive ═══ */
+
+@media (max-width: 640px) {
+  .withdrawal-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .withdrawal-item-right {
+    text-align: left;
+    width: 100%;
+  }
+
+  .confirm-modal-actions {
+    grid-template-columns: 1fr;
+  }
+}
