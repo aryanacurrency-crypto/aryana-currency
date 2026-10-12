@@ -14,6 +14,9 @@ class Settings(BaseSettings):
         case_sensitive=True,
     )
 
+    # --- DEBUG ---
+    DEBUG_MARKER: str = "VERSION_2026_01"
+
     # --- App ---
     APP_NAME: str = "Aryana Currency"
     APP_ENV: str = "development"
@@ -45,7 +48,7 @@ class Settings(BaseSettings):
     PLATFORM_HESAB_PAY: str = ""
     PLATFORM_HESAB_PAY_HOLDER: str = "ARYANA CURRENCY"
 
-    # --- SMTP (اختیاری، برای آینده) ---
+    # --- SMTP ---
     SMTP_HOST: str = ""
     SMTP_PORT: int = 587
     SMTP_USER: str = ""
