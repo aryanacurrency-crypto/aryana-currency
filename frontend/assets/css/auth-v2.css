@@ -553,3 +553,128 @@
     font-size: 26px;
   }
 }
+
+/* ═══ Password Input with Toggle ═══ */
+
+.password-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrap .field-input {
+  padding-right: 48px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  padding: 0;
+}
+
+.password-toggle:hover {
+  color: var(--gold);
+  background: rgba(240, 185, 11, 0.08);
+}
+
+.password-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ═══ Forgot Password Success State ═══ */
+
+.forgot-success {
+  text-align: center;
+  padding: var(--space-6) var(--space-4);
+}
+
+.forgot-success-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--space-5);
+  border-radius: 50%;
+  background: var(--green-bg);
+  color: var(--green);
+  display: grid;
+  place-items: center;
+  animation: fadeInScale 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.forgot-success h3 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+}
+
+.forgot-success p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+.forgot-success strong {
+  color: var(--gold);
+  font-weight: 700;
+  word-break: break-all;
+}
+
+.forgot-success a {
+  color: var(--gold);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.forgot-success a:hover {
+  color: var(--gold-light);
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ═══ Responsive ═══ */
+
+@media (max-width: 640px) {
+  .password-input-wrap .field-input {
+    padding-right: 44px;
+  }
+  
+  .password-toggle {
+    right: 8px;
+    width: 28px;
+    height: 28px;
+  }
+  
+  .forgot-success-icon {
+    width: 64px;
+    height: 64px;
+  }
+  
+  .forgot-success h3 {
+    font-size: 18px;
+  }
+}

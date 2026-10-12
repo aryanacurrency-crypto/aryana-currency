@@ -19,10 +19,14 @@ class Settings(BaseSettings):
     APP_ENV: str = "development"
     DEBUG: bool = True
 
+    # --- Frontend URL (برای لینک‌های ایمیل) ---
+    FRONTEND_URL: str = "http://localhost:5500"
+
     # --- Security ---
     SECRET_KEY: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
+    PASSWORD_RESET_EXPIRE_MINUTES: int = 15
     ALGORITHM: str = "HS256"
 
     # --- Database ---
@@ -40,6 +44,14 @@ class Settings(BaseSettings):
     PLATFORM_USDT_NETWORK: str = "TRC20"
     PLATFORM_HESAB_PAY: str = ""
     PLATFORM_HESAB_PAY_HOLDER: str = "ARYANA CURRENCY"
+
+    # --- SMTP (اختیاری، برای آینده) ---
+    SMTP_HOST: str = ""
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: str = ""
+    SMTP_FROM_EMAIL: str = "noreply@aryana.af"
+    SMTP_FROM_NAME: str = "Aryana Currency"
 
     @property
     def cors_origins_list(self) -> list[str]:

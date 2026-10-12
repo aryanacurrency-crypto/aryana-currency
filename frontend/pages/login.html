@@ -38,7 +38,7 @@
 
         <div class="alert alert-danger" id="errorBox" style="display:none;"></div>
 
-        <form class="auth-form" id="loginForm">
+        <form class="auth-form" id="loginForm" novalidate>
 
           <div class="field">
             <label class="field-label" for="email">Email</label>
@@ -55,17 +55,20 @@
           <div class="field">
             <label class="field-label" for="password">
               <span>Password</span>
-              <a href="#">Forgot?</a>
+              <a href="forgot-password.html">Forgot?</a>
             </label>
-            <input
-              type="password"
-              id="password"
-              class="field-input"
-              placeholder="••••••••"
-              autocomplete="current-password"
-              minlength="8"
-              required
-            >
+            <div class="password-input-wrap">
+              <input
+                type="password"
+                id="password"
+                class="field-input"
+                placeholder="••••••••"
+                autocomplete="current-password"
+                minlength="8"
+                required
+              >
+              <button type="button" class="password-toggle" id="passwordToggle" aria-label="Show password"></button>
+            </div>
           </div>
 
           <button type="submit" class="btn btn-primary" id="submitBtn">
@@ -220,12 +223,7 @@
   <script src="../assets/js/auth.js"></script>
   <script src="../assets/js/api.js"></script>
   <script src="../assets/js/notifications.js"></script>
+  <script src="../assets/js/form-helpers.js"></script>
   <script src="../assets/js/login.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const yearEl = document.getElementById('currentYear');
-      if (yearEl) yearEl.textContent = new Date().getFullYear();
-    });
-  </script>
 </body>
 </html>

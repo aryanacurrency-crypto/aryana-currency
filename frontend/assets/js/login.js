@@ -17,6 +17,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   const form = document.getElementById('loginForm');
   const submitBtn = document.getElementById('submitBtn');
   const errorBox = document.getElementById('errorBox');
+  const emailInput = document.getElementById('email');
+
+  // ─── فقط انگلیسی توی ایمیل ───
+  preventNonEnglish(emailInput);
+
+  // ─── Show/Hide Password ───
+  attachPasswordToggle('password', 'passwordToggle');
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -27,8 +34,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const email = form.email.value.trim();
     const password = form.password.value;
 
+    // اعتبارسنجی
     if (!email || !password) {
       showError(I18N.t('loginErrorEmpty') || 'Please fill in all fields.');
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      showError(I18N.currentLang === 'en' ? 'Please enter a valid email address.'
+            : I18N.currentLang === 'fa' ? 'لطفاً یک ایمیل معتبر وارد کنید.'
+            : 'مهرباني وکړئ یو سم ایمیل ولیکئ.');
       return;
     }
 

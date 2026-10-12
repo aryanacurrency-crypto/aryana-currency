@@ -15,6 +15,7 @@ from app.models.rate import Rate
 from app.models.user import User
 from app.models.wallet import Wallet
 from app.models.withdrawal import Withdrawal
+from app.models.password_reset import PasswordResetToken
 
 
 __all__ = [
@@ -33,4 +34,5 @@ __all__ = [
     "Wallet",
     "Withdrawal",
     "WithdrawalStatus",
+    "PasswordResetToken",
 ]

@@ -39,7 +39,7 @@
         <div class="alert alert-danger" id="errorBox" style="display:none;"></div>
         <div class="alert alert-success" id="successBox" style="display:none;"></div>
 
-        <form class="auth-form" id="registerForm">
+        <form class="auth-form" id="registerForm" novalidate>
 
           <div class="field">
             <label class="field-label" for="fullName">Full name</label>
@@ -78,28 +78,34 @@
 
           <div class="field">
             <label class="field-label" for="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              class="field-input"
-              placeholder="At least 8 characters"
-              autocomplete="new-password"
-              minlength="8"
-              required
-            >
+            <div class="password-input-wrap">
+              <input
+                type="password"
+                id="password"
+                class="field-input"
+                placeholder="At least 8 characters"
+                autocomplete="new-password"
+                minlength="8"
+                required
+              >
+              <button type="button" class="password-toggle" id="passwordToggle" aria-label="Show password"></button>
+            </div>
           </div>
 
           <div class="field">
             <label class="field-label" for="passwordConfirm">Confirm password</label>
-            <input
-              type="password"
-              id="passwordConfirm"
-              class="field-input"
-              placeholder="Repeat password"
-              autocomplete="new-password"
-              minlength="8"
-              required
-            >
+            <div class="password-input-wrap">
+              <input
+                type="password"
+                id="passwordConfirm"
+                class="field-input"
+                placeholder="Repeat password"
+                autocomplete="new-password"
+                minlength="8"
+                required
+              >
+              <button type="button" class="password-toggle" id="passwordConfirmToggle" aria-label="Show password"></button>
+            </div>
           </div>
 
           <button type="submit" class="btn btn-primary" id="submitBtn">
@@ -254,12 +260,7 @@
   <script src="../assets/js/auth.js"></script>
   <script src="../assets/js/api.js"></script>
   <script src="../assets/js/notifications.js"></script>
+  <script src="../assets/js/form-helpers.js"></script>
   <script src="../assets/js/register.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const yearEl = document.getElementById('currentYear');
-      if (yearEl) yearEl.textContent = new Date().getFullYear();
-    });
-  </script>
 </body>
 </html>

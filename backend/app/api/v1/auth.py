@@ -1,8 +1,13 @@
+import secrets
+from datetime import datetime, timedelta, timezone
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_user
+from app.core.config import settings
 from app.core.database import get_db
+from app.core.email import send_password_reset_email
 from app.core.security import (
     create_access_token,
     create_refresh_token,
@@ -12,11 +17,15 @@ from app.core.security import (
 )
 from app.models import User, Wallet
 from app.models.enums import Currency
+from app.models.password_reset import PasswordResetToken
 from app.schemas.auth import (
     AccessTokenResponse,
     ChangePasswordRequest,
+    ForgotPasswordRequest,
     LoginRequest,
+    MessageResponse,
     RefreshRequest,
+    ResetPasswordRequest,
     TokenResponse,
 )
 from app.schemas.user import UserCreate, UserRead, UserUpdate
@@ -32,7 +41,6 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 @router.post("/register", response_model=UserRead, status_code=status.HTTP_201_CREATED)
 def register(payload: UserCreate, db: Session = Depends(get_db)):
     """ثبت‌نام کاربر جدید."""
-    # چک ایمیل تکراری
     existing = db.query(User).filter(User.email == payload.email).first()
     if existing:
         raise HTTPException(
@@ -40,7 +48,6 @@ def register(payload: UserCreate, db: Session = Depends(get_db)):
             detail="این ایمیل قبلاً ثبت شده است",
         )
 
-    # چک شماره تلفن تکراری
     if payload.phone:
         existing_phone = db.query(User).filter(User.phone == payload.phone).first()
         if existing_phone:
@@ -49,7 +56,6 @@ def register(payload: UserCreate, db: Session = Depends(get_db)):
                 detail="این شماره تلفن قبلاً ثبت شده است",
             )
 
-    # ساخت کاربر
     user = User(
         email=payload.email,
         phone=payload.phone,
@@ -63,7 +69,6 @@ def register(payload: UserCreate, db: Session = Depends(get_db)):
     db.add(user)
     db.flush()
 
-    # ساخت دو کیف پول خالی
     for currency in (Currency.AFN, Currency.USDT):
         db.add(Wallet(user_id=user.id, currency=currency))
 
@@ -111,6 +116,108 @@ def refresh(payload: RefreshRequest):
 
 
 # ═══════════════════════════════════════
+#         فراموشی / بازنشانی رمز
+# ═══════════════════════════════════════
+
+
+@router.post("/forgot-password", response_model=MessageResponse)
+def forgot_password(payload: ForgotPasswordRequest, db: Session = Depends(get_db)):
+    """
+    درخواست بازنشانی رمز عبور.
+
+    برای امنیت، همیشه پیام موفقیت برمی‌گردونیم — حتی اگه ایمیل وجود نداشته باشه
+    (تا کسی نتونه بفهمه کدوم ایمیل‌ها توی سیستم ثبت شدن).
+    """
+    user = db.query(User).filter(User.email == payload.email).first()
+
+    # اگه کاربر وجود داشت، توکن بساز
+    if user and user.is_active:
+        # پاک کردن توکن‌های قدیمی استفاده نشده
+        db.query(PasswordResetToken).filter(
+            PasswordResetToken.user_id == user.id,
+            PasswordResetToken.used == False,  # noqa: E712
+        ).delete(synchronize_session=False)
+
+        # ساخت توکن جدید
+        token = secrets.token_urlsafe(48)
+        expires_at = datetime.now(timezone.utc) + timedelta(
+            minutes=settings.PASSWORD_RESET_EXPIRE_MINUTES
+        )
+
+        reset_token = PasswordResetToken(
+            user_id=user.id,
+            token=token,
+            expires_at=expires_at,
+        )
+        db.add(reset_token)
+        db.commit()
+
+        # ارسال ایمیل (فعلاً فقط لاگ)
+        try:
+            send_password_reset_email(user.email, token)
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).error(f"Failed to send reset email: {e}")
+
+    # همیشه پیام موفقیت (برای امنیت)
+    return MessageResponse(
+        message="اگر این ایمیل در سیستم ثبت شده باشد، لینک بازنشانی برای شما ارسال خواهد شد."
+    )
+
+
+@router.post("/reset-password", response_model=MessageResponse)
+def reset_password(payload: ResetPasswordRequest, db: Session = Depends(get_db)):
+    """بازنشانی رمز عبور با توکن."""
+    # پیدا کردن توکن
+    reset_token = db.query(PasswordResetToken).filter(
+        PasswordResetToken.token == payload.token
+    ).first()
+
+    if not reset_token:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="لینک بازنشانی نامعتبر است",
+        )
+
+    if reset_token.used:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="این لینک قبلاً استفاده شده است",
+        )
+
+    # چک انقضا
+    now = datetime.now(timezone.utc)
+    expires_at = reset_token.expires_at
+
+    if expires_at.tzinfo is None:
+        expires_at = expires_at.replace(tzinfo=timezone.utc)
+
+    if now > expires_at:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="لینک بازنشانی منقضی شده است",
+        )
+
+    # پیدا کردن کاربر
+    user = db.query(User).filter(User.id == reset_token.user_id).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="کاربر یافت نشد",
+        )
+
+    # تغییر رمز
+    user.hashed_password = hash_password(payload.new_password)
+
+    # علامت‌گذاری توکن به عنوان استفاده‌شده
+    reset_token.used = True
+
+    db.commit()
+
+    return MessageResponse(message="رمز عبور با موفقیت تغییر کرد")
+
+
+# ═══════════════════════════════════════
 #           اطلاعات کاربر فعلی
 # ═══════════════════════════════════════
 
@@ -131,7 +238,6 @@ def update_profile(
     ویرایش پروفایل کاربر.
     فقط فیلدهای قابل ویرایش: full_name, phone, hesab_pay_*, usdt_wallet_*
     """
-    # اگه شماره تلفن تغییر کرده، چک کن تکراری نباشه
     if payload.phone is not None and payload.phone != current_user.phone:
         existing = db.query(User).filter(
             User.phone == payload.phone,
@@ -143,7 +249,6 @@ def update_profile(
                 detail="این شماره تلفن قبلاً ثبت شده است",
             )
 
-    # آپدیت فیلدها (فقط اونایی که ارسال شدن)
     update_data = payload.model_dump(exclude_unset=True)
 
     for field, value in update_data.items():

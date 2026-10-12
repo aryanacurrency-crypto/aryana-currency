@@ -18,6 +18,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   const submitBtn = document.getElementById('submitBtn');
   const errorBox = document.getElementById('errorBox');
   const successBox = document.getElementById('successBox');
+  const emailInput = document.getElementById('email');
+  const fullNameInput = document.getElementById('fullName');
+
+  // ─── فقط انگلیسی توی ایمیل ───
+  preventNonEnglish(emailInput);
+
+  // ─── اسم: فقط حروف انگلیسی و فاصله ───
+  preventNonEnglish(fullNameInput, { mode: 'name' });
+
+  // ─── Show/Hide Password (هر دو فیلد) ───
+  attachPasswordToggle('password', 'passwordToggle');
+  attachPasswordToggle('passwordConfirm', 'passwordConfirmToggle');
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -30,12 +42,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     const phone = form.phone.value.trim() || null;
     const password = form.password.value;
     const passwordConfirm = form.passwordConfirm.value;
-    const hesabPay = form.hesabPay.value.trim() || null;
-    const usdtWallet = form.usdtWallet.value.trim() || null;
 
     // اعتبارسنجی
     if (!fullName || !email || !password) {
       showError(I18N.t('registerErrorEmpty') || 'Please fill in required fields.');
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      showError(I18N.currentLang === 'en' ? 'Please enter a valid email address.'
+            : I18N.currentLang === 'fa' ? 'لطفاً یک ایمیل معتبر وارد کنید.'
+            : 'مهرباني وکړئ یو سم ایمیل ولیکئ.');
+      return;
+    }
+
+    if (phone && !isValidPhone(phone)) {
+      showError(I18N.currentLang === 'en' ? 'Please enter a valid phone number.'
+            : I18N.currentLang === 'fa' ? 'لطفاً یک شماره تلفن معتبر وارد کنید.'
+            : 'مهرباني وکړئ یو سم تلیفون شمېره ولیکئ.');
       return;
     }
 
@@ -49,12 +73,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
-    if (usdtWallet && !usdtWallet.startsWith('T')) {
-      showError(I18N.t('registerErrorWallet') || 'TRC20 wallet address must start with T.');
-      return;
-    }
-
-    // غیرفعال کردن دکمه
     submitBtn.disabled = true;
     const originalText = submitBtn.innerHTML;
     submitBtn.innerHTML = '<span class="spinner"></span>';
@@ -65,15 +83,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         password,
         full_name: fullName,
         phone,
-        hesab_pay_number: hesabPay,
-        hesab_pay_holder_name: hesabPay ? fullName : null,
-        usdt_wallet_address: usdtWallet,
-        usdt_wallet_network: usdtWallet ? 'TRC20' : null,
       };
 
       await API.register(payload);
 
-      // موفق — لاگین خودکار
       const tokens = await API.login(email, password);
       Auth.setTokens(tokens.access_token, tokens.refresh_token);
 
@@ -90,7 +103,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       console.error('Register error:', err);
       let msg = err.detail || 'Registration failed. Please try again.';
 
-      // ترجمه خطاهای رایج
       if (msg.includes('ایمیل')) {
         msg = I18N.currentLang === 'en' ? 'This email is already registered.'
             : I18N.currentLang === 'fa' ? 'این ایمیل قبلاً ثبت شده است.'

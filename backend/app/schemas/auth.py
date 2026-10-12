@@ -29,3 +29,23 @@ class ChangePasswordRequest(BaseModel):
     """ورودی تغییر رمز عبور."""
     current_password: str = Field(min_length=1)
     new_password: str = Field(min_length=8, max_length=72)
+
+
+# ═══════════════════════════════════════
+#         Forgot / Reset Password
+# ═══════════════════════════════════════
+
+class ForgotPasswordRequest(BaseModel):
+    """ورودی فراموشی رمز عبور."""
+    email: EmailStr
+
+
+class ResetPasswordRequest(BaseModel):
+    """ورودی بازنشانی رمز عبور."""
+    token: str = Field(min_length=10)
+    new_password: str = Field(min_length=8, max_length=72)
+
+
+class MessageResponse(BaseModel):
+    """پاسخ ساده با پیام."""
+    message: str
