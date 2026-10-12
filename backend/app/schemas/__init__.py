@@ -20,6 +20,12 @@ from app.schemas.user import (
     UserUpdate,
 )
 from app.schemas.wallet import WalletRead, WalletSummary
+from app.schemas.withdrawal import (
+    WithdrawalComplete,
+    WithdrawalCreate,
+    WithdrawalRead,
+    WithdrawalReject,
+)
 
 
 __all__ = [
@@ -46,4 +52,9 @@ __all__ = [
     # wallet
     "WalletRead",
     "WalletSummary",
+    # withdrawal
+    "WithdrawalComplete",
+    "WithdrawalCreate",
+    "WithdrawalRead",
+    "WithdrawalReject",
 ]

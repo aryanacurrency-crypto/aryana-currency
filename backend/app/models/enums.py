@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class Currency(str, Enum):
-    """ارزهای پشتیبانیشده."""
+    """ارزهای پشتیبانی‌شده."""
     AFN = "AFN"       # افغانی
     USDT = "USDT"     # تتر
 
@@ -22,8 +22,8 @@ class KycStatus(str, Enum):
 
 class OrderSide(str, Enum):
     """نوع سفارش."""
-    BUY = "BUY"       # کاربر تتر میخره (افغانی میده)
-    SELL = "SELL"     # کاربر تتر میفروشه (افغانی میگیره)
+    BUY = "BUY"       # کاربر تتر می‌خره (افغانی می‌ده)
+    SELL = "SELL"     # کاربر تتر می‌فروشه (افغانی می‌گیره)
 
 
 class OrderStatus(str, Enum):
@@ -40,3 +40,12 @@ class LedgerDirection(str, Enum):
     """جهت ثبت در دفتر کل."""
     DEBIT = "DEBIT"     # بدهکار
     CREDIT = "CREDIT"   # بستانکار
+
+
+class WithdrawalStatus(str, Enum):
+    """وضعیت برداشت."""
+    PENDING = "PENDING"             # منتظر بررسی ادمین
+    PROCESSING = "PROCESSING"       # در حال پردازش
+    COMPLETED = "COMPLETED"         # تکمیل شده
+    REJECTED = "REJECTED"           # رد شده
+    CANCELLED = "CANCELLED"         # لغو شده

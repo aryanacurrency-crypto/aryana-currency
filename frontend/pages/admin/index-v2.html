@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Admin Dashboard — Aryana Currency">
+  <meta name="theme-color" content="#0B0E11">
+
+  <title>Admin | ARYANA CURRENCY</title>
+
+  <link rel="icon" type="image/png" href="../../assets/images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../assets/css/v2/theme.css">
+  <link rel="stylesheet" href="../../assets/css/v2/ui.css">
+  <link rel="stylesheet" href="../../assets/css/v2/dashboard.css">
+  <link rel="stylesheet" href="../../assets/css/v2/admin-v2.css">
+  <link rel="stylesheet" href="../../assets/css/notifications.css">
+</head>
+<body>
+
+  <!-- Admin Topbar -->
+  <header class="admin-topbar">
+    <div class="admin-topbar-inner">
+
+      <a href="index-v2.html" class="admin-brand">
+        <img src="../../assets/images/logo.png" alt="ARYANA CURRENCY">
+        <div class="admin-brand-text">
+          ARYANA
+          <small>ADMIN PANEL</small>
+        </div>
+      </a>
+
+      <div class="admin-topbar-actions">
+        <a href="../dashboard-v2.html" class="icon-btn" title="Back to site">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/>
+            <polyline points="12 19 5 12 12 5"/>
+          </svg>
+        </a>
+
+        <button class="icon-btn" id="refreshBtn" title="Refresh">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"/>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+          </svg>
+        </button>
+
+        <button class="icon-btn" id="logoutBtn" title="Logout">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Admin Layout -->
+  <div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <nav class="admin-nav">
+        <a href="index-v2.html" class="admin-nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          <span class="nav-text">Dashboard</span>
+        </a>
+
+        <a href="orders-v2.html" class="admin-nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+          <span class="nav-text">Orders</span>
+          <span class="nav-count" id="countOrders" style="display:none;">0</span>
+        </a>
+
+        <a href="kyc-v2.html" class="admin-nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 12l2 2 4-4"/>
+            <path d="M21 12c0 5-3.5 8.5-9 10-5.5-1.5-9-5-9-10V5l9-3 9 3z"/>
+          </svg>
+          <span class="nav-text">KYC</span>
+          <span class="nav-count" id="countKyc" style="display:none;">0</span>
+        </a>
+
+        <a href="withdrawals-v2.html" class="admin-nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="19" x2="12" y2="5"/>
+            <polyline points="5 12 12 5 19 12"/>
+          </svg>
+          <span class="nav-text">Withdrawals</span>
+          <span class="nav-count" id="countWithdrawals" style="display:none;">0</span>
+        </a>
+
+        <a href="rates-v2.html" class="admin-nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+          <span class="nav-text">Rates</span>
+        </a>
+
+        <a href="users-v2.html" class="admin-nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span class="nav-text">Users</span>
+        </a>
+
+        <div class="admin-nav-divider"></div>
+
+        <a href="../dashboard-v2.html" class="admin-nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/>
+            <polyline points="12 19 5 12 12 5"/>
+          </svg>
+          <span class="nav-text">Back to site</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <main class="admin-main">
+
+      <!-- Page Header -->
+      <div class="admin-page-header">
+        <h1>Dashboard</h1>
+        <p>Overview of your platform activity</p>
+      </div>
+
+      <!-- Loading -->
+      <div id="loadingBox" class="admin-empty">
+        <div class="spinner spinner-lg" style="color: var(--gold); margin: 0 auto;"></div>
+      </div>
+
+      <!-- Content -->
+      <div id="contentBox" style="display:none;">
+
+        <!-- Stats Grid -->
+        <div class="admin-stats-grid">
+
+          <div class="admin-stat-card gold">
+            <div class="admin-stat-header">
+              <div class="admin-stat-icon gold">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </div>
+            </div>
+            <div class="admin-stat-value" id="statUsers">—</div>
+            <div class="admin-stat-label">Total Users</div>
+            <div class="admin-stat-sub" id="statUsersSub">— verified</div>
+          </div>
+
+          <div class="admin-stat-card green">
+            <div class="admin-stat-header">
+              <div class="admin-stat-icon green">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+              </div>
+            </div>
+            <div class="admin-stat-value" id="statCompletedOrders">—</div>
+            <div class="admin-stat-label">Completed Orders</div>
+            <div class="admin-stat-sub" id="statCompletedOrdersSub">— USDT traded</div>
+          </div>
+
+          <div class="admin-stat-card red">
+            <div class="admin-stat-header">
+              <div class="admin-stat-icon red">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </div>
+            </div>
+            <div class="admin-stat-value" id="statPendingOrders">—</div>
+            <div class="admin-stat-label">Pending Review</div>
+            <div class="admin-stat-sub">Orders awaiting verification</div>
+          </div>
+
+          <div class="admin-stat-card blue">
+            <div class="admin-stat-header">
+              <div class="admin-stat-icon blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="1" x2="12" y2="23"/>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+              </div>
+            </div>
+            <div class="admin-stat-value" id="statFees">—</div>
+            <div class="admin-stat-label">Total Fees (AFN)</div>
+            <div class="admin-stat-sub">From completed orders</div>
+          </div>
+
+        </div>
+
+        <!-- Pending Orders -->
+        <section class="admin-section">
+          <div class="admin-section-header">
+            <h2 class="admin-section-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              Orders Awaiting Review
+              <span class="count-badge" id="pendingCountBadge">0</span>
+            </h2>
+            <a href="orders-v2.html" class="admin-section-link">View all →</a>
+          </div>
+
+          <div class="admin-table-wrap" id="pendingWrap">
+            <div class="admin-empty" id="pendingEmpty" style="display:none;">
+              <div class="admin-empty-icon">✓</div>
+              <h3>No pending orders</h3>
+              <p>All orders have been processed</p>
+            </div>
+
+            <table class="admin-table" id="pendingTable" style="display:none;">
+              <thead>
+                <tr>
+                  <th>Reference</th>
+                  <th>Type</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="pendingBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Quick Stats Row -->
+        <section class="admin-section">
+          <div class="admin-section-header">
+            <h2 class="admin-section-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+              Platform Overview
+            </h2>
+          </div>
+
+          <div class="admin-stats-grid">
+            <div class="admin-stat-card">
+              <div class="admin-stat-value" id="statKycPending">—</div>
+              <div class="admin-stat-label">KYC Pending</div>
+            </div>
+            <div class="admin-stat-card">
+              <div class="admin-stat-value" id="statWithdrawalsPending">—</div>
+              <div class="admin-stat-label">Withdrawals Pending</div>
+            </div>
+            <div class="admin-stat-card">
+              <div class="admin-stat-value" id="statTotalOrders">—</div>
+              <div class="admin-stat-label">Total Orders</div>
+            </div>
+            <div class="admin-stat-card">
+              <div class="admin-stat-value" id="statUsdtTraded">—</div>
+              <div class="admin-stat-label">Total USDT Traded</div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../../assets/js/config.js"></script>
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/theme.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/api.js"></script>
+  <script src="../../assets/js/notifications.js"></script>
+  <script src="../../assets/js/admin-v2/dashboard.js"></script>
+</body>
+</html>

@@ -8,6 +8,7 @@ from app.api.v1 import orders as orders_router
 from app.api.v1 import public as public_router
 from app.api.v1 import rates as rates_router
 from app.api.v1 import wallet as wallet_router
+from app.api.v1 import withdrawals as withdrawals_router
 from app.core.config import settings
 
 app = FastAPI(
@@ -34,6 +35,7 @@ app.include_router(orders_router.router, prefix=API_V1_PREFIX)
 app.include_router(admin_router.router, prefix=API_V1_PREFIX)
 app.include_router(public_router.router, prefix=API_V1_PREFIX)
 app.include_router(kyc_router.router, prefix=API_V1_PREFIX)
+app.include_router(withdrawals_router.router, prefix=API_V1_PREFIX)
 
 
 @app.get("/", tags=["system"])

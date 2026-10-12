@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const user = await API.me();
       Auth.setUser(user);
 
-      window.location.href = 'dashboard.html';
+      window.location.href = 'dashboard-v2.html';
     } catch (err) {
       console.error('Login error:', err);
       let msg = err.detail || 'Login failed. Please try again.';

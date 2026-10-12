@@ -1,0 +1,258 @@
+/* ═══════════════════════════════════════
+   ARYANA CURRENCY — Design System v2
+   Theme (Dark Mode)
+   ═══════════════════════════════════════ */
+
+:root {
+  /* --- Backgrounds --- */
+  --bg-primary: #0B0E11;
+  --bg-secondary: #181A20;
+  --bg-tertiary: #1E2329;
+  --bg-hover: #2B3139;
+
+  /* --- Borders --- */
+  --border-subtle: #2B3139;
+  --border-strong: #3C4450;
+
+  /* --- Brand Colors --- */
+  --gold: #F0B90B;
+  --gold-light: #FCD535;
+  --gold-dark: #B58C0F;
+
+  /* --- Semantic Colors --- */
+  --green: #0ECB81;
+  --green-bg: rgba(14, 203, 129, 0.1);
+  --red: #F6465D;
+  --red-bg: rgba(246, 70, 93, 0.1);
+  --blue: #1E88E5;
+  --blue-bg: rgba(30, 136, 229, 0.1);
+
+  /* --- Text Colors --- */
+  --text-primary: #EAECEF;
+  --text-secondary: #848E9C;
+  --text-tertiary: #5E6673;
+  --text-inverse: #0B0E11;
+
+  /* --- Shadows --- */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 24px rgba(240, 185, 11, 0.15);
+
+  /* --- Radii --- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* --- Spacing --- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* --- Typography --- */
+  --font-sans: 'Inter', 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+  --font-arabic: 'Noto Sans Arabic', sans-serif;
+
+  /* --- Transitions --- */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ═══════════════════════════════════════
+   Reset & Base
+   ═══════════════════════════════════════ */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  font-size: 14px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body[dir="rtl"] {
+  font-family: var(--font-arabic);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  color: inherit;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  color: inherit;
+  outline: none;
+}
+
+/* --- Image fix (جلوگیری از کشیدگی) --- */
+img {
+  max-width: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+/* --- Brand Logo --- */
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.app-brand img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+/* --- Utility Classes --- */
+.container {
+  width: min(1280px, calc(100% - 40px));
+  margin-inline: auto;
+}
+
+.text-muted {
+  color: var(--text-secondary);
+}
+
+.text-success {
+  color: var(--green);
+}
+
+.text-danger {
+  color: var(--red);
+}
+
+.text-gold {
+  color: var(--gold);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gap-1 { gap: var(--space-1); }
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-6 { gap: var(--space-6); }
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-hover);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-strong);
+}
+
+/* --- Selection --- */
+::selection {
+  background: var(--gold);
+  color: var(--text-inverse);
+}
+
+/* --- Animations --- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 300ms ease-out;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 400ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* --- Reduced motion --- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
