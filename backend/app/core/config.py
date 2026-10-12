@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     DEBUG: bool = True
 
     # --- Frontend URL (برای لینک‌های ایمیل) ---
-    FRONTEND_URL: str = "http://localhost:5500"
+    FRONTEND_URL: str = "https://aryana-currency.vercel.app"
 
     # --- Security ---
     SECRET_KEY: str
@@ -48,12 +48,12 @@ class Settings(BaseSettings):
     PLATFORM_HESAB_PAY: str = ""
     PLATFORM_HESAB_PAY_HOLDER: str = "ARYANA CURRENCY"
 
-    # --- SMTP ---
-    SMTP_HOST: str = ""
+    # --- SMTP (مقادیر موقت هاردکد برای تست) ---
+    SMTP_HOST: str = "smtp.gmail.com"
     SMTP_PORT: int = 587
-    SMTP_USER: str = ""
-    SMTP_PASSWORD: str = ""
-    SMTP_FROM_EMAIL: str = "noreply@aryana.af"
+    SMTP_USER: str = "aryanaacurrency@gmail.com"
+    SMTP_PASSWORD: str = "hufawnlfawgthoxg"
+    SMTP_FROM_EMAIL: str = "aryanaacurrency@gmail.com"
     SMTP_FROM_NAME: str = "Aryana Currency"
 
     @property
