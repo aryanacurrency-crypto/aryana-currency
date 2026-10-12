@@ -45,9 +45,9 @@ class Settings(BaseSettings):
     PLATFORM_HESAB_PAY: str = ""
     PLATFORM_HESAB_PAY_HOLDER: str = "ARYANA CURRENCY"
 
-    # --- Resend (برای ارسال ایمیل) ---
-    RESEND_API_KEY: str = ""
-    RESEND_FROM_EMAIL: str = "onboarding@resend.dev"
+    # --- Brevo (برای ارسال ایمیل) ---
+    BREVO_API_KEY: str = ""
+    BREVO_FROM_EMAIL: str = "onboarding@resend.dev"
     SMTP_FROM_NAME: str = "Aryana Currency"
 
     @property
