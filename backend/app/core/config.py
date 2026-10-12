@@ -47,7 +47,7 @@ class Settings(BaseSettings):
 
     # --- Brevo (برای ارسال ایمیل) ---
     BREVO_API_KEY: str = ""
-    BREVO_FROM_EMAIL: str = "onboarding@resend.dev"
+    BREVO_FROM_EMAIL: str = "aryanaacurrency@gmail.com"
     SMTP_FROM_NAME: str = "Aryana Currency"
 
     @property

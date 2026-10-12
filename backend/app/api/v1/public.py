@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.core.config import settings
 from app.core.database import get_db
 from app.core.settings_service import get_settings_row
 from app.schemas.settings import ContactInfoRead, PaymentInfoRead
@@ -42,23 +41,3 @@ def get_payment_info(db: Session = Depends(get_db)):
         min_withdraw_usdt=float(row.min_withdraw_usdt or 10),
         min_withdraw_afn=float(row.min_withdraw_afn or 500),
     )
-
-
-@router.get("/smtp-debug")
-def smtp_debug():
-    """
-    ⚠️ ENDPOINT TEMPORARY — فقط برای دیباگ.
-    بعداً پاک کن.
-    """
-    return {
-        "debug_marker": settings.DEBUG_MARKER,
-        "smtp_host": settings.SMTP_HOST or "EMPTY",
-        "smtp_port": settings.SMTP_PORT,
-        "smtp_user": settings.SMTP_USER or "EMPTY",
-        "smtp_pass_set": bool(settings.SMTP_PASSWORD),
-        "smtp_pass_len": len(settings.SMTP_PASSWORD) if settings.SMTP_PASSWORD else 0,
-        "smtp_from_email": settings.SMTP_FROM_EMAIL or "EMPTY",
-        "frontend_url": settings.FRONTEND_URL,
-        "app_env": settings.APP_ENV,
-        "debug": settings.DEBUG,
-    }
