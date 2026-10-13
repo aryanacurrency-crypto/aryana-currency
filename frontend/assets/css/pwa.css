@@ -661,3 +661,81 @@ body.pwa-active main {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ═══════════════════════════════════════
+   🚫 Hide Footer in PWA
+   ═══════════════════════════════════════ */
+
+body.pwa-active .home-footer,
+body.pwa-active footer.home-footer,
+.pwa-mode .home-footer {
+  display: none !important;
+}
+
+body.pwa-active main {
+  padding-bottom: 20px !important;
+}
+
+/* ═══════════════════════════════════════
+   👤 PWA Profile Adjustments
+   ═══════════════════════════════════════ */
+
+body.pwa-active .profile-layout {
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+body.pwa-active .profile-sidebar {
+  position: static;
+}
+
+body.pwa-active .profile-nav {
+  flex-direction: row;
+  overflow-x: auto;
+  padding: 8px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+body.pwa-active .profile-nav::-webkit-scrollbar {
+  display: none;
+}
+
+body.pwa-active .profile-nav-item {
+  white-space: nowrap;
+  padding: 10px 14px;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+body.pwa-active .profile-user {
+  padding: 20px 16px;
+  border-radius: 20px;
+}
+
+body.pwa-active .profile-user-avatar {
+  width: 76px;
+  height: 76px;
+  font-size: 30px;
+}
+
+body.pwa-active .panel-card {
+  padding: 20px 16px;
+  border-radius: 20px;
+}
+
+body.pwa-active .settings-item {
+  padding: 14px 14px;
+  border-radius: 16px;
+}
+
+body.pwa-active .settings-item-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+}
+
+body.pwa-active .settings-item-icon svg {
+  width: 20px;
+  height: 20px;
+}
