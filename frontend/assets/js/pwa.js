@@ -26,7 +26,6 @@
       document.body.classList.add('pwa-active');
       injectBottomNav();
 
-      // اگه توی profile.html هستیم، پیش‌فرض Settings رو باز کن
       if (window.location.pathname.includes('profile.html')) {
         setTimeout(openDefaultProfileTab, 150);
       }
@@ -39,9 +38,6 @@
     }
   }
 
-  /**
-   * باز کردن تب پیش‌فرض Settings در پروفایل
-   */
   function openDefaultProfileTab() {
     document.querySelectorAll('.profile-nav-item').forEach(item => item.classList.remove('active'));
     document.querySelectorAll('.profile-panel').forEach(panel => panel.classList.remove('active'));
@@ -55,9 +51,6 @@
     }
   }
 
-  /**
-   * منوی پایین
-   */
   function injectBottomNav() {
     if (document.getElementById('pwaBottomNav')) return;
 
@@ -106,9 +99,6 @@
     document.body.appendChild(nav);
   }
 
-  /**
-   * آیکون‌ها (Binance-style, خطی و حرفه‌ای)
-   */
   function getIcon(name) {
     const icons = {
       home: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
@@ -128,9 +118,6 @@
     return icons[name] || '';
   }
 
-  /**
-   * دکمه نصب
-   */
   let deferredPrompt = null;
 
   window.addEventListener('beforeinstallprompt', (e) => {

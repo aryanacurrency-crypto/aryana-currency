@@ -116,46 +116,99 @@
       <p data-i18n="dashboardSubtitle">Here's an overview of your portfolio.</p>
     </div>
 
-    <!-- Balance Hero -->
+    <!-- Balance Hero (Binance-style) -->
     <div class="balance-hero">
       <div class="balance-hero-content">
+
+        <!-- Label + Eye -->
         <div class="balance-label">
-          <span data-i18n="totalBalance">Total Balance</span>
-          <svg id="toggleBalance" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-            <circle cx="12" cy="12" r="3"/>
+          <span data-i18n="estTotalValue">Estimated Total Value</span>
+          <button type="button" class="balance-eye-btn" id="toggleBalance" aria-label="Toggle balance visibility">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Big Amount -->
+        <div class="balance-amount-row">
+          <span class="balance-amount" id="totalBalance">0.00</span>
+          <span class="balance-currency-badge">USDT</span>
+        </div>
+
+        <!-- Equivalent + Change -->
+        <div class="balance-equivalent-row">
+          <span class="balance-equivalent" id="totalUsdt">≈ $0.00</span>
+          <span class="balance-change up" id="balanceChange">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="18 15 12 9 6 15"/>
+            </svg>
+            +0.00%
+          </span>
+        </div>
+
+        <!-- Mini Sparkline Chart -->
+        <div class="balance-chart">
+          <svg viewBox="0 0 300 60" preserveAspectRatio="none" class="sparkline">
+            <defs>
+              <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#FFC107" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#FFC107" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0,40 L20,35 L40,38 L60,30 L80,32 L100,25 L120,28 L140,20 L160,22 L180,18 L200,15 L220,20 L240,12 L260,15 L280,10 L300,12"
+                  stroke="#FFC107"
+                  stroke-width="2"
+                  fill="none"
+                  stroke-linecap="round"/>
+            <path d="M0,40 L20,35 L40,38 L60,30 L80,32 L100,25 L120,28 L140,20 L160,22 L180,18 L200,15 L220,20 L240,12 L260,15 L280,10 L300,12 L300,60 L0,60 Z"
+                  fill="url(#chartGradient)"/>
           </svg>
         </div>
 
-        <div class="balance-total" id="totalBalance">$0.00</div>
-        <div class="balance-equivalent">
-          <strong id="totalUsdt">0.00 USDT</strong>
-        </div>
-
+        <!-- Action Buttons (Horizontal with Icons) -->
         <div class="balance-actions">
-          <a href="deposit.html" class="btn btn-primary">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19"/>
-              <line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
+          <a href="deposit.html" class="balance-action">
+            <div class="balance-action-icon deposit">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </div>
             <span data-i18n="deposit">Deposit</span>
           </a>
-          <a href="withdraw.html" class="btn btn-secondary">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
+
+          <a href="withdraw.html" class="balance-action">
+            <div class="balance-action-icon withdraw">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"/>
+                <polyline points="5 12 12 5 19 12"/>
+              </svg>
+            </div>
             <span data-i18n="withdraw">Withdraw</span>
           </a>
-          <a href="exchange.html" class="btn btn-secondary">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M17 1l4 4-4 4"/>
-              <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
-              <path d="M7 23l-4-4 4-4"/>
-              <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
-            </svg>
+
+          <a href="exchange.html" class="balance-action">
+            <div class="balance-action-icon convert">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12M17 20l4-4M17 20l-4-4"/>
+              </svg>
+            </div>
             <span data-i18n="convert">Convert</span>
           </a>
+
+          <a href="orders.html" class="balance-action">
+            <div class="balance-action-icon history">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <span data-i18n="history">History</span>
+          </a>
         </div>
+
       </div>
     </div>
 
@@ -337,5 +390,33 @@
   <script src="../assets/js/dashboard.js"></script>
   <script src="../assets/js/footer.js"></script>
   <script src="../assets/js/pwa.js"></script>
+
+  <!-- Balance Toggle Logic -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleBalance = document.getElementById('toggleBalance');
+      if (toggleBalance) {
+        let balanceVisible = localStorage.getItem('balance_visible') !== 'false';
+
+        const applyBalanceVisibility = () => {
+          const hero = document.querySelector('.balance-hero');
+          if (!hero) return;
+          if (balanceVisible) {
+            hero.classList.remove('balance-hidden');
+          } else {
+            hero.classList.add('balance-hidden');
+          }
+        };
+
+        applyBalanceVisibility();
+
+        toggleBalance.addEventListener('click', () => {
+          balanceVisible = !balanceVisible;
+          localStorage.setItem('balance_visible', balanceVisible);
+          applyBalanceVisibility();
+        });
+      }
+    });
+  </script>
 </body>
 </html>

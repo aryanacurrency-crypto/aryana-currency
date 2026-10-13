@@ -766,3 +766,246 @@ body.pwa-active .profile-panel.active {
     font-size: 14px !important;
   }
 }
+
+/* ═══════════════════════════════════════
+   💰 Binance-style Balance Hero
+   ═══════════════════════════════════════ */
+
+body.pwa-active .balance-hero {
+  padding: 22px 20px !important;
+  border-radius: 22px !important;
+  margin-bottom: 16px !important;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(255, 193, 7, 0.12), transparent 60%),
+    linear-gradient(160deg, rgba(26, 29, 36, 0.9) 0%, rgba(19, 22, 28, 0.95) 100%) !important;
+  border: 1px solid rgba(255, 193, 7, 0.15) !important;
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 193, 7, 0.05) inset !important;
+  position: relative;
+  overflow: hidden;
+}
+
+body.light.pwa-active .balance-hero {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(245, 127, 23, 0.1), transparent 60%),
+    linear-gradient(160deg, #FFFFFF 0%, #FFFBEB 100%) !important;
+  border-color: rgba(245, 127, 23, 0.15) !important;
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(245, 127, 23, 0.08) inset !important;
+}
+
+/* ─── Label + Eye ─── */
+body.pwa-active .balance-label {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.3px;
+  color: var(--text-secondary) !important;
+  text-transform: none !important;
+  margin-bottom: 8px !important;
+}
+
+body.pwa-active .balance-eye-btn {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  width: 18px !important;
+  height: 18px !important;
+  display: grid !important;
+  place-items: center !important;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+body.pwa-active .balance-eye-btn svg {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+body.pwa-active .balance-eye-btn:hover {
+  color: var(--pwa-gold);
+}
+
+/* ─── Big Amount ─── */
+body.pwa-active .balance-amount-row {
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 10px !important;
+  margin-bottom: 8px !important;
+  flex-wrap: wrap;
+}
+
+body.pwa-active .balance-amount {
+  font-size: 40px !important;
+  font-weight: 800 !important;
+  letter-spacing: -1.8px !important;
+  line-height: 1 !important;
+  color: var(--text-primary) !important;
+  font-variant-numeric: tabular-nums;
+}
+
+body.pwa-active .balance-currency-badge {
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  letter-spacing: 1px;
+  color: var(--text-secondary) !important;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 4px 10px;
+  border-radius: 8px;
+  position: relative;
+  top: -6px;
+}
+
+body.light.pwa-active .balance-currency-badge {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* ─── Equivalent + Change ─── */
+body.pwa-active .balance-equivalent-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin-bottom: 14px !important;
+  flex-wrap: wrap;
+}
+
+body.pwa-active .balance-equivalent {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: var(--text-secondary) !important;
+  letter-spacing: 0.2px;
+}
+
+body.pwa-active .balance-change {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+  padding: 3px 8px !important;
+  border-radius: 8px !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.3px;
+}
+
+body.pwa-active .balance-change svg {
+  width: 11px !important;
+  height: 11px !important;
+}
+
+body.pwa-active .balance-change.up {
+  background: rgba(0, 230, 118, 0.12) !important;
+  color: #00E676 !important;
+}
+
+body.pwa-active .balance-change.down {
+  background: rgba(255, 82, 82, 0.12) !important;
+  color: #FF5252 !important;
+}
+
+body.pwa-active .balance-change.down svg {
+  transform: rotate(180deg);
+}
+
+/* ─── Sparkline Chart ─── */
+body.pwa-active .balance-chart {
+  height: 56px !important;
+  margin-bottom: 18px !important;
+  padding: 8px 0 !important;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+body.pwa-active .balance-chart .sparkline {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  overflow: visible;
+}
+
+/* ─── Action Buttons (Horizontal) ─── */
+body.pwa-active .balance-actions {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 6px !important;
+  margin-top: 4px !important;
+}
+
+body.pwa-active .balance-action {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  padding: 8px 4px !important;
+  border-radius: 12px !important;
+  text-decoration: none;
+  color: var(--text-primary) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1px;
+  transition: all 0.2s ease;
+  background: transparent !important;
+  border: none !important;
+}
+
+body.pwa-active .balance-action:active {
+  transform: scale(0.94);
+  background: rgba(255, 193, 7, 0.08) !important;
+}
+
+body.pwa-active .balance-action-icon {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  display: grid !important;
+  place-items: center !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+body.pwa-active .balance-action-icon svg {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+body.pwa-active .balance-action-icon.deposit {
+  background: linear-gradient(135deg, rgba(0, 230, 118, 0.25), rgba(0, 230, 118, 0.08)) !important;
+  color: #00E676 !important;
+  box-shadow: 0 4px 16px rgba(0, 230, 118, 0.2);
+}
+
+body.pwa-active .balance-action-icon.withdraw {
+  background: linear-gradient(135deg, rgba(255, 82, 82, 0.25), rgba(255, 82, 82, 0.08)) !important;
+  color: #FF5252 !important;
+  box-shadow: 0 4px 16px rgba(255, 82, 82, 0.2);
+}
+
+body.pwa-active .balance-action-icon.convert {
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.3), rgba(255, 193, 7, 0.1)) !important;
+  color: #FFC107 !important;
+  box-shadow: 0 4px 16px rgba(255, 193, 7, 0.2);
+}
+
+body.pwa-active .balance-action-icon.history {
+  background: linear-gradient(135deg, rgba(68, 138, 255, 0.25), rgba(68, 138, 255, 0.08)) !important;
+  color: #448AFF !important;
+  box-shadow: 0 4px 16px rgba(68, 138, 255, 0.2);
+}
+
+body.pwa-active .balance-action:active .balance-action-icon {
+  transform: scale(0.92);
+}
+
+/* ─── Balance Hidden State ─── */
+body.pwa-active .balance-hidden .balance-amount,
+body.pwa-active .balance-hidden .balance-equivalent {
+  filter: blur(8px);
+  user-select: none;
+  pointer-events: none;
+}
