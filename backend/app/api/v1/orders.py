@@ -1,10 +1,13 @@
+from datetime import datetime, timezone
+
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_admin, get_current_user
 from app.core.database import get_db
-from app.models import Order, User
-from app.models.enums import OrderSide, OrderStatus
+from app.core.email import send_order_completed_email
+from app.models import Order, User, Wallet
+from app.models.enums import Currency, OrderSide, OrderStatus
 from app.schemas.order import (
     OrderComplete,
     OrderCreate,
@@ -172,12 +175,41 @@ def admin_complete_order(
         )
 
     order.admin_note = payload.admin_note
-    return order_service.complete_order(
+
+    # ─── تکمیل سفارش ───
+    completed_order = order_service.complete_order(
         db=db,
         order=order,
         admin_user=admin,
         platform_ref=payload.platform_payment_reference,
     )
+
+    # ─── ارسال ایمیل تأیید تراکنش ───
+    try:
+        user = db.query(User).filter(User.id == completed_order.user_id).first()
+        if user:
+            # گرفتن side به صورت string
+            side_value = (
+                completed_order.side.value
+                if hasattr(completed_order.side, "value")
+                else str(completed_order.side)
+            )
+
+            send_order_completed_email(
+                email=user.email,
+                full_name=user.full_name,
+                order_reference=completed_order.reference,
+                side=side_value,
+                amount_usdt=float(completed_order.amount_usdt),
+                rate_afn=float(completed_order.rate_afn_per_usdt),
+                total_afn=float(completed_order.gross_afn),
+                fee_afn=float(completed_order.fee_afn),
+            )
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Order completed email failed: {e}")
+
+    return completed_order
 
 
 @router.post("/{order_id}/reject", response_model=OrderRead)
@@ -203,8 +235,6 @@ def admin_reject_order(
 
     # اگه SELL بود، موجودی قفلشده رو باز کن
     if order.side == OrderSide.SELL:
-        from app.models import Wallet
-        from app.models.enums import Currency
         wallet = db.query(Wallet).filter(
             Wallet.user_id == order.user_id,
             Wallet.currency == Currency.USDT,
@@ -215,7 +245,6 @@ def admin_reject_order(
     order.status = OrderStatus.REJECTED
     order.admin_note = payload.reason
     order.reviewed_by = admin.id
-    from datetime import datetime, timezone
     order.reviewed_at = datetime.now(timezone.utc)
 
     db.commit()
