@@ -1009,3 +1009,370 @@ body.pwa-active .balance-hidden .balance-equivalent {
   user-select: none;
   pointer-events: none;
 }
+
+/* ═══════════════════════════════════════
+   💱 Trade Page (Mobile)
+   ═══════════════════════════════════════ */
+
+body.pwa-active .trade-layout {
+  display: block !important;
+  grid-template-columns: 1fr !important;
+  gap: 14px !important;
+}
+
+body.pwa-active .trade-tabs {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 8px !important;
+  padding: 6px !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 16px !important;
+  margin-bottom: 16px;
+}
+
+body.light .trade-tabs {
+  background: rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+body.pwa-active .trade-tab {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  padding: 12px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  border-radius: 12px !important;
+  min-height: 48px !important;
+}
+
+body.pwa-active .trade-tab svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+body.pwa-active .trade-tab.active[data-side="BUY"] {
+  background: linear-gradient(135deg, rgba(0, 230, 118, 0.2), rgba(0, 230, 118, 0.08)) !important;
+  color: #00E676 !important;
+  box-shadow: 0 4px 16px rgba(0, 230, 118, 0.2);
+}
+
+body.pwa-active .trade-tab.active[data-side="SELL"] {
+  background: linear-gradient(135deg, rgba(255, 82, 82, 0.2), rgba(255, 82, 82, 0.08)) !important;
+  color: #FF5252 !important;
+  box-shadow: 0 4px 16px rgba(255, 82, 82, 0.2);
+}
+
+body.pwa-active .trade-card {
+  padding: 18px 16px !important;
+  border-radius: 20px !important;
+  margin-bottom: 14px;
+}
+
+body.pwa-active .trade-card-header {
+  margin-bottom: 16px !important;
+}
+
+body.pwa-active .trade-card-title {
+  font-size: 18px !important;
+  font-weight: 800;
+}
+
+body.pwa-active .trade-rate-badge {
+  padding: 6px 12px !important;
+  font-size: 12px !important;
+  border-radius: 10px !important;
+}
+
+body.pwa-active .amount-field {
+  margin-bottom: 12px !important;
+}
+
+body.pwa-active .amount-label {
+  font-size: 12px !important;
+  margin-bottom: 8px !important;
+}
+
+body.pwa-active .amount-input-row {
+  padding: 14px 16px !important;
+  border-radius: 14px !important;
+  gap: 10px;
+}
+
+body.pwa-active .amount-input {
+  font-size: 26px !important;
+  font-weight: 800 !important;
+  letter-spacing: -1px !important;
+}
+
+body.pwa-active .currency-tag {
+  padding: 6px 12px !important;
+  border-radius: 10px !important;
+  gap: 6px;
+  font-size: 13px !important;
+  font-weight: 700;
+}
+
+body.pwa-active .currency-icon {
+  width: 24px !important;
+  height: 24px !important;
+  font-size: 13px !important;
+}
+
+body.pwa-active .swap-row {
+  margin: 8px 0 !important;
+}
+
+body.pwa-active .swap-btn {
+  width: 44px !important;
+  height: 44px !important;
+}
+
+body.pwa-active .swap-btn svg {
+  width: 22px !important;
+  height: 22px !important;
+}
+
+body.pwa-active .quick-amounts {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 8px !important;
+  margin: 14px 0 18px !important;
+}
+
+body.pwa-active .quick-amount {
+  padding: 10px !important;
+  font-size: 13px !important;
+  font-weight: 700;
+  border-radius: 10px !important;
+  min-height: 42px;
+}
+
+body.pwa-active .summary-box {
+  padding: 16px !important;
+  border-radius: 14px !important;
+  margin-bottom: 16px !important;
+}
+
+body.pwa-active .summary-row {
+  font-size: 13px !important;
+  padding: 6px 0 !important;
+}
+
+body.pwa-active .summary-row.total {
+  font-size: 17px !important;
+  padding-top: 12px !important;
+}
+
+body.pwa-active .trade-submit {
+  padding: 16px 20px !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  border-radius: 14px !important;
+  min-height: 54px;
+}
+
+body.pwa-active .min-order-note {
+  padding: 12px 14px !important;
+  font-size: 12px !important;
+  border-radius: 12px !important;
+  margin-top: 14px !important;
+}
+
+/* Hide side card in PWA */
+body.pwa-active .side-card {
+  display: none !important;
+}
+
+/* ═══════════════════════════════════════
+   📋 Orders Page (Mobile)
+   ═══════════════════════════════════════ */
+
+body.pwa-active .page-header-row .btn {
+  display: none !important;
+}
+
+body.pwa-active .stats-row {
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 10px !important;
+  margin-bottom: 16px;
+}
+
+body.pwa-active .stat-block {
+  padding: 14px !important;
+  border-radius: 14px !important;
+}
+
+body.pwa-active .stat-label {
+  font-size: 10px !important;
+  margin-bottom: 6px;
+}
+
+body.pwa-active .stat-value {
+  font-size: 17px !important;
+}
+
+/* Tabs */
+body.pwa-active .main-tabs {
+  display: flex !important;
+  overflow-x: auto !important;
+  gap: 6px !important;
+  padding: 8px !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 16px !important;
+  margin-bottom: 12px !important;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+body.light .main-tabs {
+  background: rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+body.pwa-active .main-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+body.pwa-active .main-tab {
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+  padding: 10px 16px !important;
+  font-size: 13px !important;
+  border-radius: 12px !important;
+  font-weight: 700;
+}
+
+body.pwa-active .main-tab.active {
+  background: linear-gradient(135deg, #FFD54F, #FFC107) !important;
+  color: #0B0E11 !important;
+  box-shadow: 0 4px 16px rgba(255, 193, 7, 0.3);
+}
+
+body.pwa-active .main-tab-count {
+  font-size: 10px !important;
+  padding: 2px 6px !important;
+}
+
+/* Filter Pills */
+body.pwa-active .filter-pills {
+  display: flex !important;
+  gap: 6px !important;
+  overflow-x: auto !important;
+  margin-bottom: 12px;
+  scrollbar-width: none;
+}
+
+body.pwa-active .filter-pills::-webkit-scrollbar {
+  display: none;
+}
+
+body.pwa-active .filter-pill {
+  flex-shrink: 0 !important;
+  padding: 8px 14px !important;
+  font-size: 12px !important;
+  border-radius: 9999px !important;
+  font-weight: 700;
+}
+
+/* Order Cards */
+body.pwa-active .orders-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+
+body.pwa-active .order-card {
+  padding: 16px !important;
+  border-radius: 18px !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  transition: all 0.2s ease;
+}
+
+body.light .order-card {
+  background: rgba(255, 255, 255, 0.7) !important;
+  border-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+body.pwa-active .order-card:active {
+  transform: scale(0.98);
+}
+
+body.pwa-active .order-card-header {
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+body.light .order-card-header {
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+body.pwa-active .order-ref {
+  font-size: 11px !important;
+  font-family: var(--font-mono) !important;
+}
+
+body.pwa-active .order-badge {
+  font-size: 10px !important;
+  padding: 4px 10px !important;
+  border-radius: 8px !important;
+}
+
+body.pwa-active .order-amount {
+  font-size: 22px !important;
+  font-weight: 800 !important;
+  letter-spacing: -1px;
+  margin-bottom: 6px;
+}
+
+body.pwa-active .order-meta {
+  font-size: 12px !important;
+  gap: 8px;
+}
+
+body.pwa-active .order-footer {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 11px !important;
+}
+
+body.light .order-footer {
+  border-top-color: rgba(0, 0, 0, 0.06);
+}
+
+/* Empty State */
+body.pwa-active .orders-empty {
+  padding: 40px 20px !important;
+  text-align: center;
+}
+
+body.pwa-active .orders-empty-illustration {
+  width: 90px !important;
+  height: 90px !important;
+  margin: 0 auto 20px;
+}
+
+body.pwa-active .orders-empty h3 {
+  font-size: 17px !important;
+  margin-bottom: 8px;
+}
+
+body.pwa-active .orders-empty p {
+  font-size: 13px !important;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+body.pwa-active .orders-empty .btn {
+  width: 100%;
+  justify-content: center;
+  padding: 14px !important;
+  font-size: 14px !important;
+  min-height: 48px;
+}
