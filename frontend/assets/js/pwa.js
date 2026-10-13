@@ -1,17 +1,16 @@
 /* ═══════════════════════════════════════
    ARYANA CURRENCY — PWA Logic
-   Registers service worker + injects bottom nav
+   Persistent bottom nav (survives page changes)
    ═══════════════════════════════════════ */
 
 (function () {
   'use strict';
 
-  // تشخیص PWA
   const isPWA =
     window.matchMedia('(display-mode: standalone)').matches ||
     window.navigator.standalone === true;
 
-  // ثبت Service Worker
+  // ─── ثبت Service Worker ───
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker
@@ -21,20 +20,27 @@
     });
   }
 
-  // اگه PWA هست، کلاس PWA به html اضافه کن
+  // ─── اگه PWA هست ───
   if (isPWA) {
     document.documentElement.classList.add('pwa-mode');
 
-    document.addEventListener('DOMContentLoaded', () => {
-      injectBottomNav();
+    const initPWA = () => {
       document.body.classList.add('pwa-active');
-    });
+      injectBottomNav();
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initPWA);
+    } else {
+      initPWA();
+    }
   }
 
   /**
-   * منوی پایین
+   * منوی پایین (پایدار)
    */
   function injectBottomNav() {
+    // اگه از قبل هست، کاری نکن
     if (document.getElementById('pwaBottomNav')) return;
 
     const path = window.location.pathname;
@@ -43,31 +49,28 @@
 
     const prefix = isInPages ? '' : 'pages/';
 
-    // منوی کاربر
     const userNav = [
-      { href: `${prefix}dashboard.html`, icon: 'home', label: 'Home', key: 'dashboard' },
-      { href: `${prefix}exchange.html`, icon: 'trade', label: 'Trade', key: 'exchange' },
-      { href: `${prefix}orders.html`, icon: 'orders', label: 'Orders', key: 'orders' },
-      { href: `${prefix}profile.html`, icon: 'profile', label: 'Profile', key: 'profile' },
+      { href: `${prefix}dashboard.html`, icon: 'home', label: 'Home', keys: ['dashboard', 'index', ''] },
+      { href: `${prefix}exchange.html`, icon: 'trade', label: 'Trade', keys: ['exchange'] },
+      { href: `${prefix}orders.html`, icon: 'orders', label: 'Orders', keys: ['orders', 'order'] },
+      { href: `${prefix}profile.html`, icon: 'profile', label: 'Profile', keys: ['profile'] },
     ];
 
-    // منوی ادمین
     const adminNav = [
-      { href: 'index.html', icon: 'dashboard', label: 'Dashboard', key: 'index' },
-      { href: 'orders.html', icon: 'orders', label: 'Orders', key: 'orders' },
-      { href: 'users.html', icon: 'users', label: 'Users', key: 'users' },
-      { href: 'settings.html', icon: 'settings', label: 'Settings', key: 'settings' },
+      { href: 'index.html', icon: 'dashboard', label: 'Dashboard', keys: ['index', ''] },
+      { href: 'orders.html', icon: 'orders', label: 'Orders', keys: ['orders', 'order-detail'] },
+      { href: 'users.html', icon: 'users', label: 'Users', keys: ['users'] },
+      { href: 'settings.html', icon: 'settings', label: 'Settings', keys: ['settings'] },
     ];
 
     const navItems = isAdmin ? adminNav : userNav;
 
-    // تشخیص فعال
-    let currentFile = path.split('/').pop().replace('.html', '') || 'dashboard';
-    let activeKey = currentFile === 'index' ? 'dashboard' : currentFile;
+    let currentFile = path.split('/').pop().replace('.html', '');
+    if (currentFile === 'index') currentFile = 'dashboard';
 
     const navHTML = navItems
       .map((item) => {
-        const isActive = item.key === activeKey;
+        const isActive = item.keys.includes(currentFile);
         return `
           <a href="${item.href}" class="pwa-nav-item ${isActive ? 'active' : ''}">
             <div class="pwa-nav-icon">${getIcon(item.icon)}</div>
@@ -86,17 +89,23 @@
   }
 
   /**
-   * آیکون‌ها
+   * آیکون‌های سفارشی (خطوط نازک، مدرن)
    */
   function getIcon(name) {
     const icons = {
-      home: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
-      trade: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12M17 20l4-4M17 20l-4-4"/></svg>`,
-      orders: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`,
-      profile: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
-      dashboard: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>`,
-      users: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
-      settings: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
+      home: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1v-9.5z"/></svg>`,
+
+      trade: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h11l-3-3"/><path d="M20 17H9l3 3"/><path d="M4 7l3 3"/><path d="M20 17l-3-3"/></svg>`,
+
+      orders: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-3"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M8 12h8"/><path d="M8 16h5"/></svg>`,
+
+      profile: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>`,
+
+      dashboard: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg>`,
+
+      users: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6"/><circle cx="17" cy="6" r="3"/><path d="M22 21c0-3-2-5-5-5"/></svg>`,
+
+      settings: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
     };
     return icons[name] || '';
   }
@@ -119,7 +128,7 @@
     btn.id = 'pwaInstallBtn';
     btn.className = 'pwa-install-btn';
     btn.innerHTML = `
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
         <polyline points="7 10 12 15 17 10"/>
         <line x1="12" y1="15" x2="12" y2="3"/>
