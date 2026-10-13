@@ -1,21 +1,106 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Footer Loader
-   Loads contact info into all footers
+   ARYANA CURRENCY — Dynamic Footer
+   Auto-injects footer into any page
    ═══════════════════════════════════════ */
 
-document.addEventListener('DOMContentLoaded', async () => {
-  await loadFooterContact();
+document.addEventListener('DOMContentLoaded', () => {
+  injectFooter();
 });
 
-async function loadFooterContact() {
-  // اگه جای مخصوص توی صفحه نیست، کاری نکن
+function injectFooter() {
+  // اگه Footer از قبل هست، کاری نکن
+  if (document.querySelector('.home-footer')) return;
+
+  // مسیر رو تشخیص بده
+  const isInPages = window.location.pathname.includes('/pages/');
+  const isInAdmin = window.location.pathname.includes('/admin/');
+
+  // توی پنل ادمین Footer نمی‌خوایم
+  if (isInAdmin) return;
+
+  const prefix = isInPages ? '../' : '';
+
+  const footerHTML = `
+    <footer class="home-footer" id="dynamicFooter">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a href="${prefix}index.html" class="app-brand">
+              <img src="${prefix}assets/images/logo.png" alt="ARYANA CURRENCY">
+              <div class="app-brand-text">
+                ARYANA
+                <small>CURRENCY</small>
+              </div>
+            </a>
+            <p class="footer-desc" data-i18n="footerDescription">
+              A licensed digital currency exchange focused on clarity, security, and a straightforward customer experience.
+            </p>
+            <div id="footerContact"></div>
+          </div>
+
+          <div class="footer-col">
+            <h4 data-i18n="footerPlatform">Platform</h4>
+            <a href="${prefix}index.html#rates" data-i18n="navRates">Exchange Rates</a>
+            <a href="${prefix}index.html#how" data-i18n="navHow">How It Works</a>
+            <a href="${prefix}pages/register.html" data-i18n="navRegister">Register</a>
+            <a href="${prefix}pages/login.html" data-i18n="navLogin">Login</a>
+          </div>
+
+          <div class="footer-col">
+            <h4 data-i18n="footerCompany">Company</h4>
+            <a href="${prefix}pages/about.html" data-i18n="navAbout">About Us</a>
+            <a href="${prefix}pages/contact.html" data-i18n="navContact">Contact</a>
+          </div>
+
+          <div class="footer-col">
+            <h4 data-i18n="footerLegal">Information</h4>
+            <a href="${prefix}pages/privacy.html" data-i18n="footerPrivacy">Privacy Policy</a>
+            <a href="${prefix}pages/terms.html" data-i18n="footerTerms">Terms of Service</a>
+            <a href="${prefix}pages/risk.html" data-i18n="footerRisk">Risk Disclosure</a>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <span>© <span id="footerYear"></span> <strong>ARYANA CURRENCY</strong>. <span data-i18n="rights">All rights reserved.</span></span>
+          <span data-i18n="footerTagline">Clarity in every exchange.</span>
+        </div>
+      </div>
+    </footer>
+  `;
+
+  // قبل از اسکریپت‌ها اضافه کن (اگه اسکریپتی هست) یا به انتهای body
+  const scripts = document.body.querySelector('script');
+  if (scripts) {
+    scripts.insertAdjacentHTML('beforebegin', footerHTML);
+  } else {
+    document.body.insertAdjacentHTML('beforeend', footerHTML);
+  }
+
+  // سال رو پُر کن
+  const yearEl = document.getElementById('footerYear');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  // اطلاعات تماس رو بخون
+  fillContactInfo();
+
+  // i18n رو دوباره اعمال کن (چون عناصر جدید اضافه شدن)
+  if (typeof I18N !== 'undefined' && I18N.apply) {
+    setTimeout(() => I18N.apply(), 100);
+  }
+}
+
+
+/* ═══════════════════════════════════════
+        Fill Contact Info from API
+   ═══════════════════════════════════════ */
+
+async function fillContactInfo() {
   const container = document.getElementById('footerContact');
   if (!container) return;
 
   try {
     const info = await API.getContactInfo();
 
-    // اگه هیچ اطلاعاتی نیست، کل بخش رو مخفی کن
     if (!info.email && !info.telegram_channel && !info.telegram_support && !info.address) {
       container.style.display = 'none';
       return;
@@ -24,7 +109,6 @@ async function loadFooterContact() {
     let html = '<div class="footer-contact-title">Get in touch</div>';
     html += '<div class="footer-contact-list">';
 
-    // ─── Email ───
     if (info.email) {
       html += `
         <a href="mailto:${info.email}" class="footer-contact-item">
@@ -37,7 +121,6 @@ async function loadFooterContact() {
       `;
     }
 
-    // ─── Telegram Channel ───
     if (info.telegram_channel) {
       const channelName = extractTelegramName(info.telegram_channel);
       html += `
@@ -50,7 +133,6 @@ async function loadFooterContact() {
       `;
     }
 
-    // ─── Telegram Support ───
     if (info.telegram_support) {
       const username = info.telegram_support.startsWith('@')
         ? info.telegram_support
@@ -65,7 +147,6 @@ async function loadFooterContact() {
       `;
     }
 
-    // ─── Address ───
     if (info.address) {
       html += `
         <div class="footer-contact-item">
@@ -86,10 +167,6 @@ async function loadFooterContact() {
     container.style.display = 'none';
   }
 }
-
-/* ═══════════════════════════════════════
-              Helpers
-   ═══════════════════════════════════════ */
 
 function extractTelegramName(url) {
   if (!url) return '';
