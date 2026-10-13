@@ -63,11 +63,10 @@ async function loadSettings() {
     currentSettings = await API.getPlatformSettings();
 
     // Contact fields
-    setVal('contactPhone', currentSettings.contact_phone);
     setVal('contactEmail', currentSettings.contact_email);
+    setVal('contactTelegramChannel', currentSettings.contact_telegram_channel);
+    setVal('contactTelegramSupport', currentSettings.contact_telegram_support);
     setVal('contactAddress', currentSettings.contact_address);
-    setVal('contactTelegram', currentSettings.contact_telegram);
-    setVal('contactWhatsapp', currentSettings.contact_whatsapp);
 
     // Payment fields
     setVal('hesabPayNumber', currentSettings.hesab_pay_number);
@@ -104,11 +103,10 @@ async function handleContactSubmit(e) {
 
   try {
     const payload = {
-      contact_phone: getVal('contactPhone'),
-      contact_email: getVal('contactEmail'),
-      contact_address: getVal('contactAddress'),
-      contact_telegram: getVal('contactTelegram'),
-      contact_whatsapp: getVal('contactWhatsapp'),
+      contact_email: getVal('contactEmail') || null,
+      contact_telegram_channel: getVal('contactTelegramChannel') || null,
+      contact_telegram_support: getVal('contactTelegramSupport') || null,
+      contact_address: getVal('contactAddress') || null,
     };
 
     const updated = await API.updatePlatformSettings(payload);
@@ -137,11 +135,11 @@ async function handlePaymentSubmit() {
 
   try {
     const payload = {
-      hesab_pay_number: getVal('hesabPayNumber'),
-      hesab_pay_holder: getVal('hesabPayHolder'),
-      usdt_wallet_trc20: getVal('walletTrc20'),
-      usdt_wallet_bep20: getVal('walletBep20'),
-      usdt_wallet_erc20: getVal('walletErc20'),
+      hesab_pay_number: getVal('hesabPayNumber') || null,
+      hesab_pay_holder: getVal('hesabPayHolder') || null,
+      usdt_wallet_trc20: getVal('walletTrc20') || null,
+      usdt_wallet_bep20: getVal('walletBep20') || null,
+      usdt_wallet_erc20: getVal('walletErc20') || null,
       min_deposit_usdt: parseFloat(getVal('minDepositUsdt')) || 10,
       min_withdraw_usdt: parseFloat(getVal('minWithdrawUsdt')) || 10,
       min_withdraw_afn: parseFloat(getVal('minWithdrawAfn')) || 500,

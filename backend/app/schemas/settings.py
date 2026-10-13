@@ -5,11 +5,10 @@ from pydantic import BaseModel, Field
 
 class ContactInfoRead(BaseModel):
     """اطلاعات تماس عمومی."""
-    phone: str | None = None
     email: str | None = None
     address: str | None = None
-    telegram: str | None = None
-    whatsapp: str | None = None
+    telegram_channel: str | None = None
+    telegram_support: str | None = None
 
 
 class PaymentInfoRead(BaseModel):
@@ -26,11 +25,10 @@ class PaymentInfoRead(BaseModel):
 
 class PlatformSettingsRead(BaseModel):
     """تنظیمات کامل — فقط برای ادمین."""
-    contact_phone: str | None = None
     contact_email: str | None = None
+    contact_telegram_channel: str | None = None
+    contact_telegram_support: str | None = None
     contact_address: str | None = None
-    contact_telegram: str | None = None
-    contact_whatsapp: str | None = None
 
     hesab_pay_number: str | None = None
     hesab_pay_holder: str | None = None
@@ -51,11 +49,10 @@ class PlatformSettingsRead(BaseModel):
 
 class PlatformSettingsUpdate(BaseModel):
     """آپدیت تنظیمات — فقط فیلدهای ارسال‌شده تغییر می‌کنن."""
-    contact_phone: str | None = None
     contact_email: str | None = None
+    contact_telegram_channel: str | None = None
+    contact_telegram_support: str | None = None
     contact_address: str | None = None
-    contact_telegram: str | None = None
-    contact_whatsapp: str | None = None
 
     hesab_pay_number: str | None = None
     hesab_pay_holder: str | None = None

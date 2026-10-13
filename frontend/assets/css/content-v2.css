@@ -853,3 +853,9 @@ body[dir="rtl"] .doc-table th { text-align: right; }
   .doc-table th,
   .doc-table td { padding: var(--space-3); }
 }
+
+/* ═══ Telegram Icon in Contact Card ═══ */
+.contact-card-icon.telegram {
+  background: rgba(0, 136, 204, 0.12);
+  color: #0088cc;
+}

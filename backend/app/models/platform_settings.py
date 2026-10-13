@@ -12,19 +12,16 @@ class PlatformSettings(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
 
-    # ═══ Contact Info (نمایش عمومی توی سایت) ═══
-    contact_phone: Mapped[str | None] = mapped_column(String(50))
+    # ═══ Contact Info ═══
     contact_email: Mapped[str | None] = mapped_column(String(255))
+    contact_telegram_channel: Mapped[str | None] = mapped_column(String(255))
+    contact_telegram_support: Mapped[str | None] = mapped_column(String(100))
     contact_address: Mapped[str | None] = mapped_column(String(255))
-    contact_telegram: Mapped[str | None] = mapped_column(String(100))
-    contact_whatsapp: Mapped[str | None] = mapped_column(String(50))
 
-    # ═══ Payment Info (فقط توی Deposit/Withdraw) ═══
-    # Hesab Pay (برای AFN)
+    # ═══ Payment Info ═══
     hesab_pay_number: Mapped[str | None] = mapped_column(String(50))
     hesab_pay_holder: Mapped[str | None] = mapped_column(String(120))
 
-    # USDT Wallets (برای USDT)
     usdt_wallet_trc20: Mapped[str | None] = mapped_column(String(120))
     usdt_wallet_bep20: Mapped[str | None] = mapped_column(String(120))
     usdt_wallet_erc20: Mapped[str | None] = mapped_column(String(120))

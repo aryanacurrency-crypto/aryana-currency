@@ -11,16 +11,15 @@ router = APIRouter(prefix="/public", tags=["public"])
 @router.get("/contact-info", response_model=ContactInfoRead)
 def get_contact_info(db: Session = Depends(get_db)):
     """
-    اطلاعات تماس عمومی (تلفن، ایمیل، آدرس).
-    برای نمایش توی Footer و صفحه Contact.
+    اطلاعات تماس عمومی (ایمیل، آدرس، تلگرام).
+    برای نمایش توی صفحه Contact.
     """
     row = get_settings_row(db)
     return ContactInfoRead(
-        phone=row.contact_phone,
         email=row.contact_email,
         address=row.contact_address,
-        telegram=row.contact_telegram,
-        whatsapp=row.contact_whatsapp,
+        telegram_channel=row.contact_telegram_channel,
+        telegram_support=row.contact_telegram_support,
     )
 
 
