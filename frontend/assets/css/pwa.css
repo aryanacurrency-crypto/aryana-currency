@@ -19,7 +19,6 @@
   --mobile-gap: 12px;
   --mobile-radius: 20px;
 
-  /* Glass Header (Dark) */
   --header-bg: rgba(11, 14, 17, 0.72);
   --header-border: rgba(255, 255, 255, 0.08);
   --header-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
@@ -31,7 +30,6 @@ body.light {
   --pwa-gold-deep: #E65100;
   --pwa-gold-glow: rgba(245, 127, 23, 0.3);
 
-  /* Glass Header (Light) */
   --header-bg: rgba(255, 255, 255, 0.72);
   --header-border: rgba(0, 0, 0, 0.06);
   --header-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
@@ -195,7 +193,6 @@ body.light .pwa-bottom-nav {
   fill: none;
 }
 
-/* Active state: filled icon */
 .pwa-nav-item.active .pwa-nav-icon svg {
   stroke-width: 2.2;
 }
@@ -208,7 +205,6 @@ body.light .pwa-bottom-nav {
   transition: all 0.2s ease;
 }
 
-/* ─── Active Item ─── */
 .pwa-nav-item.active {
   color: var(--pwa-gold);
 }
@@ -223,7 +219,6 @@ body.light .pwa-bottom-nav {
   filter: drop-shadow(0 0 8px var(--pwa-gold-glow));
 }
 
-/* Top indicator bar (Binance-style) */
 .pwa-nav-item.active::before {
   content: "";
   position: absolute;
@@ -244,7 +239,160 @@ body.light .pwa-bottom-nav {
 }
 
 /* ═══════════════════════════════════════
-   👤 PROFILE PAGE (Mobile-First)
+   💰 Binance-style Action Buttons
+   ═══════════════════════════════════════ */
+
+body.pwa-active .balance-actions {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 8px !important;
+  margin-top: 20px !important;
+}
+
+body.pwa-active .balance-actions .btn {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 16px 8px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.2px;
+  border-radius: 16px !important;
+  min-height: 76px !important;
+  width: 100% !important;
+  text-align: center;
+  line-height: 1.2;
+}
+
+body.pwa-active .balance-actions .btn svg {
+  width: 24px !important;
+  height: 24px !important;
+  flex-shrink: 0;
+}
+
+body.pwa-active .balance-actions .btn-primary {
+  background: linear-gradient(135deg, #FFD54F 0%, #FFC107 50%, #FF8F00 100%) !important;
+  color: #0B0E11 !important;
+  box-shadow:
+    0 4px 16px rgba(255, 193, 7, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.15) inset !important;
+  border: none !important;
+}
+
+body.pwa-active .balance-actions .btn-primary:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.4) !important;
+}
+
+body.pwa-active .balance-actions .btn-secondary {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-primary) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+body.light .balance-actions .btn-secondary {
+  background: rgba(0, 0, 0, 0.03) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+body.pwa-active .balance-actions .btn-secondary:active {
+  transform: scale(0.96);
+  background: rgba(255, 193, 7, 0.1) !important;
+}
+
+/* ─── Asset Card Actions ─── */
+body.pwa-active .asset-actions {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 8px !important;
+  margin-top: 14px !important;
+}
+
+body.pwa-active .asset-actions .btn {
+  padding: 12px 16px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  border-radius: 12px !important;
+  min-height: 44px !important;
+  justify-content: center !important;
+}
+
+/* ─── Quick Actions Grid (Binance-style) ─── */
+body.pwa-active .quick-actions {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 8px !important;
+  padding: 16px 12px !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 18px !important;
+  margin-bottom: 12px;
+}
+
+body.light .quick-actions {
+  background: rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+body.pwa-active .quick-action {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 8px 4px !important;
+  border: none !important;
+  background: transparent !important;
+  border-radius: 12px !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+  text-decoration: none;
+}
+
+body.pwa-active .quick-action:active {
+  background: rgba(255, 193, 7, 0.08) !important;
+}
+
+body.pwa-active .quick-action-icon {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+body.pwa-active .quick-action-icon svg {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+body.pwa-active .quick-action-icon.green {
+  background: linear-gradient(135deg, rgba(0, 230, 118, 0.25), rgba(0, 230, 118, 0.1)) !important;
+  color: #00E676 !important;
+}
+
+body.pwa-active .quick-action-icon.red {
+  background: linear-gradient(135deg, rgba(255, 82, 82, 0.25), rgba(255, 82, 82, 0.1)) !important;
+  color: #FF5252 !important;
+}
+
+body.pwa-active .quick-action-icon.blue {
+  background: linear-gradient(135deg, rgba(68, 138, 255, 0.25), rgba(68, 138, 255, 0.1)) !important;
+  color: #448AFF !important;
+}
+
+body.pwa-active .quick-action-icon.gold {
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.3), rgba(255, 193, 7, 0.12)) !important;
+  color: #FFC107 !important;
+}
+
+/* ═══════════════════════════════════════
+   👤 PROFILE PAGE
    ═══════════════════════════════════════ */
 
 body.pwa-active .profile-layout {
@@ -258,7 +406,6 @@ body.pwa-active .profile-sidebar {
   margin-bottom: 16px;
 }
 
-/* ─── User Card (Compact) ─── */
 body.pwa-active .profile-user {
   padding: 16px !important;
   border-radius: 18px !important;
@@ -267,13 +414,6 @@ body.pwa-active .profile-user {
   gap: 14px !important;
   text-align: left !important;
   margin-bottom: 12px;
-  position: relative;
-  overflow: hidden;
-}
-
-body.pwa-active .profile-user::before {
-  left: 10%;
-  right: 10%;
 }
 
 body.pwa-active .profile-user-avatar {
@@ -284,7 +424,6 @@ body.pwa-active .profile-user-avatar {
   flex-shrink: 0;
 }
 
-/* ─── User Info Block ─── */
 body.pwa-active .profile-user > div:not(.profile-user-avatar):not(.profile-badges) {
   flex: 1;
   min-width: 0;
@@ -299,7 +438,6 @@ body.pwa-active .profile-user-name {
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   line-height: 1.2;
-  color: var(--text-primary);
 }
 
 body.pwa-active .profile-user-email {
@@ -308,7 +446,6 @@ body.pwa-active .profile-user-email {
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
-  color: var(--text-secondary);
   line-height: 1.4;
 }
 
@@ -318,7 +455,6 @@ body.pwa-active .profile-badges {
   gap: 4px !important;
   align-items: flex-end !important;
   margin-top: 0 !important;
-  justify-content: center;
   flex-shrink: 0;
 }
 
@@ -329,7 +465,6 @@ body.pwa-active .profile-badge {
   white-space: nowrap;
 }
 
-/* ─── Nav Tabs (Scrollable Pills) ─── */
 body.pwa-active .profile-nav {
   display: flex !important;
   flex-direction: row !important;
@@ -382,7 +517,6 @@ body.pwa-active .profile-nav-item.active {
   box-shadow: 0 2px 12px rgba(255, 193, 7, 0.15);
 }
 
-/* ─── Panel Content ─── */
 body.pwa-active .profile-content {
   padding: 0 !important;
 }
@@ -408,7 +542,6 @@ body.pwa-active .panel-header p {
   line-height: 1.5;
 }
 
-/* ─── Settings Items (Bigger Touch Targets) ─── */
 body.pwa-active .settings-list {
   gap: 8px !important;
 }
@@ -448,7 +581,6 @@ body.pwa-active .settings-item-arrow {
   height: 18px !important;
 }
 
-/* ─── Forms ─── */
 body.pwa-active .form-row {
   grid-template-columns: 1fr !important;
   gap: 12px !important;
@@ -475,7 +607,6 @@ body.pwa-active .field-hint {
   line-height: 1.5;
 }
 
-/* ─── Actions ─── */
 body.pwa-active .panel-actions {
   flex-direction: column-reverse;
   gap: 10px;
@@ -493,7 +624,6 @@ body.pwa-active .panel-actions .btn {
   min-height: 48px;
 }
 
-/* ─── Info List (Account) ─── */
 body.pwa-active .info-row {
   padding: 12px 0 !important;
   font-size: 13px !important;
@@ -570,28 +700,6 @@ body.pwa-active .asset-grid {
 body.pwa-active .asset-card {
   padding: 16px !important;
   border-radius: 18px !important;
-}
-
-body.pwa-active .quick-actions {
-  grid-template-columns: repeat(4, 1fr) !important;
-  gap: 6px !important;
-}
-
-body.pwa-active .quick-action {
-  padding: 12px 4px !important;
-  border-radius: 14px !important;
-  font-size: 10px !important;
-  gap: 6px !important;
-}
-
-body.pwa-active .quick-action-icon {
-  width: 36px !important;
-  height: 36px !important;
-}
-
-body.pwa-active .quick-action-icon svg {
-  width: 18px !important;
-  height: 18px !important;
 }
 
 /* ═══════════════════════════════════════
