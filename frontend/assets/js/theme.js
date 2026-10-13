@@ -1,19 +1,17 @@
 /* ═══════════════════════════════════════
    ARYANA CURRENCY — Theme (Dark/Light Mode)
-   Fixed flash on page load
+   Fixed flash + Safe Page Loader
    ═══════════════════════════════════════ */
 
 const Theme = {
   init() {
     const saved = localStorage.getItem(CONFIG.STORAGE.THEME);
 
-    // اگه کاربر قبلاً انتخاب کرده
     if (saved === 'dark') {
       this.setDark();
     } else if (saved === 'light') {
       this.setLight();
     } else {
-      // تشخیص از سیستم کاربر
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       if (prefersDark) {
         this.setDark();
@@ -22,7 +20,7 @@ const Theme = {
       }
     }
 
-    // دکمه toggle
+    // Toggle button
     const toggle = document.getElementById('themeToggle');
     if (toggle) {
       toggle.addEventListener('click', (e) => {
@@ -31,12 +29,45 @@ const Theme = {
       });
     }
 
-    // بعد از تنظیم تم، transition رو فعال کن (بدون فلاش)
+    // Enable smooth transitions
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         document.documentElement.classList.add('theme-ready');
       });
     });
+
+    // ─── Hide Page Loader (safe, always removes) ───
+    this.hidePageLoader();
+  },
+
+  hidePageLoader() {
+    const hide = () => {
+      const loader = document.getElementById('pageLoader');
+      if (!loader) return;
+      loader.classList.add('hidden');
+      loader.style.opacity = '0';
+      loader.style.visibility = 'hidden';
+      loader.style.pointerEvents = 'none';
+      setTimeout(() => {
+        if (loader.parentNode) loader.remove();
+      }, 400);
+    };
+
+    // بلافاصله تلاش کن
+    hide();
+
+    // بعد از DOM آماده
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', hide);
+    }
+
+    // بعد از لود کامل
+    window.addEventListener('load', () => {
+      setTimeout(hide, 150);
+    });
+
+    // Fallback نهایی — بعد از ۲ ثانیه حتماً حذف کن
+    setTimeout(hide, 2000);
   },
 
   toggle() {
@@ -51,7 +82,6 @@ const Theme = {
   },
 
   setDark() {
-    // هم روی html هم روی body
     document.documentElement.classList.remove('light');
     document.documentElement.classList.add('dark');
     document.body.classList.remove('light');
