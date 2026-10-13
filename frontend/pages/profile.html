@@ -8,6 +8,17 @@
 
   <title>Profile | ARYANA CURRENCY</title>
 
+<script>
+  (function() {
+    try {
+      var saved = localStorage.getItem('aryana_theme');
+      var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.classList.add(theme);
+      document.documentElement.setAttribute('data-theme', theme);
+    } catch (e) {}
+  })();
+</script>
+
   <!-- PWA -->
   <link rel="manifest" href="../manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">

@@ -3,6 +3,40 @@
    Theme (Dark by default, Light with .light class)
    ═══════════════════════════════════════ */
 
+/* ─── Prevent FOUC — Smooth theme transition ─── */
+
+html:not(.theme-ready) * {
+  transition: none !important;
+  animation: none !important;
+}
+
+html.theme-ready * {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
+}
+
+html.theme-ready img,
+html.theme-ready svg,
+html.theme-ready iframe {
+  transition: none;
+}
+
+html {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+html.light {
+  background: #F5F5F7;
+  color: #0B0E11;
+}
+
+html.dark {
+  background: #0B0E11;
+  color: #EAECEF;
+}
+
 /* ─── Dark Theme (Default) ─── */
 :root {
   /* --- Backgrounds --- */
@@ -74,8 +108,10 @@
   --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ─── Light Theme ─── */
-body.light {
+/* ─── Light Theme (html.light, body.light) ─── */
+body.light,
+html.light,
+html.light body {
   --bg-primary: #F5F5F7;
   --bg-secondary: #FFFFFF;
   --bg-tertiary: #FAFAFB;
@@ -100,7 +136,7 @@ body.light {
   --text-tertiary: #6B7280;
   --text-inverse: #FFFFFF;
 
-  --overlay-bg: rgba(255, 255, 255, 0.9);
+  --overlay-bg: rgba(255, 255, 255, 0.85);
   --overlay-light: rgba(0, 0, 0, 0.03);
   --overlay-medium: rgba(0, 0, 0, 0.06);
 
@@ -134,7 +170,6 @@ body {
   font-size: 14px;
   min-height: 100vh;
   overflow-x: hidden;
-  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 body[dir="rtl"] {
@@ -178,7 +213,6 @@ img {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-subtle);
-  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .app-header-inner {
@@ -361,22 +395,18 @@ img {
 
 /* ═══════════════════════════════════════
    Light Theme Overrides
-   (Auto-applied to all components)
    ═══════════════════════════════════════ */
 
-/* Home header */
 body.light .home-header {
   background: var(--overlay-bg);
   border-bottom-color: var(--border-subtle);
 }
 
-/* User avatar */
 body.light .user-avatar {
   background: linear-gradient(135deg, var(--gold), var(--gold-dark));
   color: #FFFFFF;
 }
 
-/* Ticker */
 body.light .ticker-section {
   background: var(--bg-secondary);
   border-color: var(--border-subtle);
@@ -386,7 +416,6 @@ body.light .ticker-item {
   border-color: var(--border-subtle);
 }
 
-/* Cards (with subtle shadow) */
 body.light .stat-box,
 body.light .rate-card,
 body.light .trust-card,
@@ -407,7 +436,6 @@ body.light .asset-card:hover {
   border-color: var(--border-strong);
 }
 
-/* Hero cards */
 body.light .hero-card,
 body.light .balance-hero {
   background: linear-gradient(135deg, #FFFFFF 0%, #F7F7F9 100%);
@@ -415,11 +443,6 @@ body.light .balance-hero {
   box-shadow: 0 10px 40px rgba(240, 185, 11, 0.1);
 }
 
-body.light .hero-card::before {
-  background: linear-gradient(135deg, rgba(240, 185, 11, 0.05) 0%, transparent 50%);
-}
-
-/* Rate rows */
 body.light .rate-row {
   background: var(--bg-tertiary);
   border-color: var(--border-subtle);
@@ -430,7 +453,6 @@ body.light .rate-currency {
   color: var(--text-secondary);
 }
 
-/* CTA Box */
 body.light .cta-box {
   background:
     radial-gradient(circle at 100% 0%, rgba(240, 185, 11, 0.1), transparent 50%),
@@ -438,11 +460,6 @@ body.light .cta-box {
   border-color: rgba(240, 185, 11, 0.3);
 }
 
-body.light .cta-box::before {
-  border-color: rgba(240, 185, 11, 0.2);
-}
-
-/* Inputs */
 body.light .field-input {
   background: var(--bg-secondary);
   border-color: var(--border-subtle);
@@ -458,7 +475,6 @@ body.light .field-input::placeholder {
   color: var(--text-tertiary);
 }
 
-/* Modals */
 body.light .confirm-modal-content {
   background: var(--bg-secondary);
   box-shadow: var(--shadow-lg);
@@ -468,12 +484,10 @@ body.light .confirm-modal {
   background: rgba(0, 0, 0, 0.4);
 }
 
-/* Callouts */
 body.light .callout {
   border-color: var(--border-subtle);
 }
 
-/* Footer */
 body.light .home-footer {
   background: var(--bg-secondary);
   border-top-color: var(--border-subtle);
@@ -487,7 +501,6 @@ body.light .footer-contact-title {
   border-top-color: var(--border-subtle);
 }
 
-/* Sidebar (admin) */
 body.light .admin-sidebar {
   background: var(--bg-secondary);
   border-right-color: var(--border-subtle);
@@ -502,13 +515,11 @@ body.light .admin-nav-item:hover {
   background: var(--bg-hover);
 }
 
-/* Badges */
 body.light .badge-neutral,
 body.light .admin-badge.gray {
   background: var(--bg-hover);
 }
 
-/* Buttons */
 body.light .btn-secondary {
   background: var(--bg-hover);
   border-color: var(--border-subtle);
@@ -518,19 +529,16 @@ body.light .btn-outline {
   border-color: var(--border-strong);
 }
 
-/* Dropdowns */
 body.light select.field-input {
   background: var(--bg-secondary);
 }
 
-/* Copy button */
 body.light .copy-btn {
   background: rgba(224, 168, 0, 0.1);
   border-color: rgba(224, 168, 0, 0.3);
   color: var(--gold-dark);
 }
 
-/* Alerts */
 body.light .alert-success {
   background: rgba(14, 165, 111, 0.08);
   border-color: rgba(14, 165, 111, 0.3);
@@ -551,7 +559,6 @@ body.light .alert-info {
   border-color: rgba(30, 136, 229, 0.3);
 }
 
-/* Documentation pages (about, privacy, terms, risk, contact) */
 body.light .doc-hero {
   background: linear-gradient(135deg, #FFFFFF 0%, #F7F7F9 100%);
   border-color: var(--border-subtle);
@@ -593,17 +600,14 @@ body.light .signature-block {
   border-color: var(--border-subtle);
 }
 
-/* Rate card in home */
 body.light .rate-icon {
   background: rgba(240, 185, 11, 0.15);
 }
 
-/* Stat values */
 body.light .stat-value {
   color: var(--text-primary);
 }
 
-/* Network logos */
 body.light .network-logo.tron {
   background: rgba(255, 60, 60, 0.15);
 }
@@ -614,18 +618,4 @@ body.light .network-logo.bnb {
 
 body.light .network-logo.eth {
   background: rgba(98, 126, 234, 0.15);
-}
-
-/* Smooth transitions when switching */
-body, body * {
-  transition-property: background-color, border-color, color;
-  transition-duration: 0.15s;
-  transition-timing-function: ease;
-}
-
-/* Disable transitions on specific heavy elements */
-body img,
-body svg,
-body iframe {
-  transition: none;
 }
