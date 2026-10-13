@@ -1,0 +1,194 @@
+/* ═══════════════════════════════════════
+   ARYANA CURRENCY — PWA Mobile Styles
+   Only applied when installed as PWA
+   ═══════════════════════════════════════ */
+
+/* ─── Base PWA Mode ─── */
+.pwa-mode body,
+body.pwa-active {
+  padding-bottom: 80px;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.pwa-mode input,
+.pwa-mode textarea {
+  user-select: text;
+}
+
+/* ─── Bottom Navigation ─── */
+.pwa-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 4px;
+  padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-subtle);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+body.light .pwa-bottom-nav {
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.pwa-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 4px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.pwa-nav-item:active {
+  transform: scale(0.95);
+}
+
+.pwa-nav-icon {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  transition: all 0.2s ease;
+}
+
+.pwa-nav-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.pwa-nav-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+/* ─── Active Item (Pill) ─── */
+.pwa-nav-item.active {
+  color: var(--gold);
+}
+
+.pwa-nav-item.active .pwa-nav-icon {
+  transform: scale(1.1);
+}
+
+.pwa-nav-item.active::before {
+  content: "";
+  position: absolute;
+  inset: 4px 20%;
+  background: rgba(240, 185, 11, 0.12);
+  border-radius: var(--radius-full);
+  z-index: -1;
+  transition: all 0.2s ease;
+}
+
+body.light .pwa-nav-item.active::before {
+  background: rgba(224, 168, 0, 0.15);
+}
+
+.pwa-nav-item.active .pwa-nav-label {
+  font-weight: 700;
+}
+
+/* ─── Install Button ─── */
+.pwa-install-btn {
+  position: fixed;
+  bottom: 90px;
+  right: 16px;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  background: var(--gold);
+  color: var(--text-inverse);
+  border: none;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(240, 185, 11, 0.4);
+  transition: all 0.2s ease;
+  animation: slideIn 0.4s ease;
+}
+
+.pwa-install-btn:hover {
+  background: var(--gold-light);
+  transform: translateY(-2px);
+}
+
+.pwa-install-btn:active {
+  transform: translateY(0);
+}
+
+.pwa-install-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── PWA UI adjustments ─── */
+
+.pwa-mode .home-footer,
+body.pwa-active .home-footer {
+  display: none !important;
+}
+
+.pwa-mode main,
+body.pwa-active main {
+  padding-bottom: 20px;
+}
+
+.pwa-mode .app-header-inner,
+body.pwa-active .app-header-inner {
+  height: 60px;
+}
+
+.pwa-mode .app-nav,
+body.pwa-active .app-nav {
+  display: none;
+}
+
+.pwa-mode .container,
+body.pwa-active .container {
+  width: calc(100% - 24px);
+}
+
+@supports (padding: env(safe-area-inset-bottom)) {
+  .pwa-bottom-nav {
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pwa-nav-item,
+  .pwa-install-btn {
+    transition: none;
+  }
+}
