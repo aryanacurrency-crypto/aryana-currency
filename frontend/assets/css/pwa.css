@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════
    ARYANA CURRENCY — PWA Mobile Experience
-   Premium mobile-first design
+   Premium Binance-inspired design
    ═══════════════════════════════════════ */
 
 /* ═══ Color Palette ═══ */
@@ -15,12 +15,14 @@
   --pwa-blue: #448AFF;
   --pwa-purple: #B388FF;
 
-  --pwa-glass: rgba(255, 255, 255, 0.06);
-  --pwa-glass-border: rgba(255, 255, 255, 0.1);
-
   --mobile-pad: 16px;
-  --mobile-gap: 14px;
+  --mobile-gap: 12px;
   --mobile-radius: 20px;
+
+  /* Glass Header (Dark) */
+  --header-bg: rgba(11, 14, 17, 0.72);
+  --header-border: rgba(255, 255, 255, 0.08);
+  --header-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
 }
 
 body.light {
@@ -29,8 +31,10 @@ body.light {
   --pwa-gold-deep: #E65100;
   --pwa-gold-glow: rgba(245, 127, 23, 0.3);
 
-  --pwa-glass: rgba(0, 0, 0, 0.03);
-  --pwa-glass-border: rgba(0, 0, 0, 0.08);
+  /* Glass Header (Light) */
+  --header-bg: rgba(255, 255, 255, 0.72);
+  --header-border: rgba(0, 0, 0, 0.06);
+  --header-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 }
 
 /* ═══════════════════════════════════════
@@ -57,7 +61,7 @@ body.pwa-active .app-main {
 }
 
 /* ═══════════════════════════════════════
-   🚫 Hide Footer & Nav
+   🚫 Hide Elements
    ═══════════════════════════════════════ */
 
 body.pwa-active .home-footer,
@@ -75,7 +79,61 @@ body.pwa-active .back-btn {
 }
 
 /* ═══════════════════════════════════════
-   🧭 BOTTOM NAVIGATION
+   💎 GLASS HEADER (Premium)
+   ═══════════════════════════════════════ */
+
+body.pwa-active .app-header {
+  position: sticky !important;
+  top: 0 !important;
+  background: var(--header-bg) !important;
+  backdrop-filter: saturate(180%) blur(20px) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
+  border-bottom: 1px solid var(--header-border) !important;
+  box-shadow: var(--header-shadow) !important;
+  z-index: 9990 !important;
+}
+
+body.pwa-active .app-header-inner {
+  height: 60px !important;
+  padding: 0 14px !important;
+}
+
+body.pwa-active .app-brand img {
+  width: 34px !important;
+  height: 34px !important;
+}
+
+body.pwa-active .app-brand-text {
+  font-size: 12px !important;
+  letter-spacing: 0.8px;
+}
+
+body.pwa-active .app-brand-text small {
+  font-size: 8px !important;
+  letter-spacing: 2px;
+}
+
+body.pwa-active .app-header-actions {
+  gap: 4px !important;
+}
+
+body.pwa-active .app-header-actions .icon-btn {
+  width: 36px !important;
+  height: 36px !important;
+}
+
+body.pwa-active .user-avatar {
+  width: 36px !important;
+  height: 36px !important;
+  font-size: 14px !important;
+}
+
+body.pwa-active .user-name {
+  display: none !important;
+}
+
+/* ═══════════════════════════════════════
+   🧭 BOTTOM NAVIGATION (Binance-style)
    ═══════════════════════════════════════ */
 
 .pwa-bottom-nav {
@@ -86,9 +144,9 @@ body.pwa-active .back-btn {
   z-index: 99999;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 2px;
-  padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
-  background: rgba(18, 20, 26, 0.95);
+  gap: 0;
+  padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px));
+  background: rgba(18, 20, 26, 0.96);
   backdrop-filter: saturate(180%) blur(24px);
   -webkit-backdrop-filter: saturate(180%) blur(24px);
   border-top: 1px solid rgba(255, 255, 255, 0.06);
@@ -96,9 +154,9 @@ body.pwa-active .back-btn {
 }
 
 body.light .pwa-bottom-nav {
-  background: rgba(255, 255, 255, 0.95);
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.96);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.06);
 }
 
 .pwa-nav-item {
@@ -108,51 +166,51 @@ body.light .pwa-bottom-nav {
   align-items: center;
   justify-content: center;
   gap: 3px;
-  padding: 8px 4px;
+  padding: 10px 2px 8px;
   border-radius: 12px;
   text-decoration: none;
-  color: var(--text-secondary);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--text-tertiary);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   -webkit-tap-highlight-color: transparent;
 }
 
 .pwa-nav-item:active {
-  transform: scale(0.92);
+  transform: scale(0.94);
 }
 
 .pwa-nav-icon {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   display: grid;
   place-items: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .pwa-nav-icon svg {
   width: 100%;
   height: 100%;
   stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+/* Active state: filled icon */
+.pwa-nav-item.active .pwa-nav-icon svg {
+  stroke-width: 2.2;
 }
 
 .pwa-nav-label {
   font-size: 10px;
   font-weight: 600;
-  letter-spacing: 0.2px;
-  opacity: 0.7;
-  transition: all 0.25s ease;
+  letter-spacing: 0.1px;
+  opacity: 0.85;
+  transition: all 0.2s ease;
 }
 
+/* ─── Active Item ─── */
 .pwa-nav-item.active {
   color: var(--pwa-gold);
-}
-
-.pwa-nav-item.active .pwa-nav-icon {
-  transform: translateY(-1px) scale(1.1);
-  filter: drop-shadow(0 0 10px var(--pwa-gold-glow));
-}
-
-.pwa-nav-item.active .pwa-nav-icon svg {
-  stroke-width: 2.2;
 }
 
 .pwa-nav-item.active .pwa-nav-label {
@@ -160,17 +218,29 @@ body.light .pwa-bottom-nav {
   opacity: 1;
 }
 
+.pwa-nav-item.active .pwa-nav-icon {
+  transform: translateY(-1px);
+  filter: drop-shadow(0 0 8px var(--pwa-gold-glow));
+}
+
+/* Top indicator bar (Binance-style) */
 .pwa-nav-item.active::before {
   content: "";
   position: absolute;
-  top: 2px;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 20px;
-  height: 2px;
+  width: 24px;
+  height: 2.5px;
   background: var(--pwa-gold);
-  border-radius: 2px;
-  box-shadow: 0 0 10px var(--pwa-gold-glow);
+  border-radius: 0 0 3px 3px;
+  box-shadow: 0 0 8px var(--pwa-gold-glow);
+  animation: navIndicator 2s ease-in-out infinite;
+}
+
+@keyframes navIndicator {
+  0%, 100% { opacity: 1; width: 24px; }
+  50% { opacity: 0.7; width: 16px; }
 }
 
 /* ═══════════════════════════════════════
@@ -179,82 +249,104 @@ body.light .pwa-bottom-nav {
 
 body.pwa-active .profile-layout {
   display: block !important;
-  grid-template-columns: 1fr !important;
-  gap: 0 !important;
   padding: 0 !important;
 }
 
 body.pwa-active .profile-sidebar {
   position: static !important;
   display: block !important;
-  gap: 0 !important;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 /* ─── User Card (Compact) ─── */
 body.pwa-active .profile-user {
-  padding: 20px 16px !important;
+  padding: 16px !important;
   border-radius: 18px !important;
   display: flex !important;
   align-items: center !important;
-  gap: 16px !important;
+  gap: 14px !important;
   text-align: left !important;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+body.pwa-active .profile-user::before {
+  left: 10%;
+  right: 10%;
 }
 
 body.pwa-active .profile-user-avatar {
-  width: 60px !important;
-  height: 60px !important;
-  font-size: 24px !important;
+  width: 56px !important;
+  height: 56px !important;
+  font-size: 22px !important;
   margin: 0 !important;
   flex-shrink: 0;
 }
 
+/* ─── User Info Block ─── */
+body.pwa-active .profile-user > div:not(.profile-user-avatar):not(.profile-badges) {
+  flex: 1;
+  min-width: 0;
+}
+
 body.pwa-active .profile-user-name {
-  font-size: 16px !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
   margin-bottom: 2px !important;
   text-align: left !important;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  line-height: 1.2;
+  color: var(--text-primary);
 }
 
 body.pwa-active .profile-user-email {
-  font-size: 12px !important;
+  font-size: 11px !important;
   text-align: left !important;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
-
-body.pwa-active .profile-user > div {
-  min-width: 0;
-  flex: 1;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  color: var(--text-secondary);
+  line-height: 1.4;
 }
 
 body.pwa-active .profile-badges {
-  justify-content: flex-start !important;
-  margin-top: 8px !important;
-  gap: 6px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+  align-items: flex-end !important;
+  margin-top: 0 !important;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 body.pwa-active .profile-badge {
-  font-size: 9px !important;
-  padding: 4px 8px !important;
+  font-size: 8px !important;
+  padding: 3px 7px !important;
+  letter-spacing: 0.5px !important;
+  white-space: nowrap;
 }
 
-/* ─── Nav (Horizontal Scroll) ─── */
+/* ─── Nav Tabs (Scrollable Pills) ─── */
 body.pwa-active .profile-nav {
   display: flex !important;
   flex-direction: row !important;
   overflow-x: auto !important;
   gap: 6px !important;
   padding: 8px !important;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 16px !important;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory;
+}
+
+body.light .profile-nav {
+  background: rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(0, 0, 0, 0.06) !important;
 }
 
 body.pwa-active .profile-nav::-webkit-scrollbar {
@@ -264,23 +356,30 @@ body.pwa-active .profile-nav::-webkit-scrollbar {
 body.pwa-active .profile-nav-item {
   flex-shrink: 0 !important;
   white-space: nowrap !important;
-  padding: 10px 14px !important;
+  padding: 8px 14px !important;
   font-size: 12px !important;
-  border-radius: 12px !important;
-  scroll-snap-align: start;
+  border-radius: 10px !important;
   display: flex !important;
   align-items: center !important;
   gap: 6px !important;
+  border: none !important;
 }
 
 body.pwa-active .profile-nav-item svg {
-  width: 16px !important;
-  height: 16px !important;
+  width: 15px !important;
+  height: 15px !important;
   flex-shrink: 0;
 }
 
 body.pwa-active .profile-nav-item span {
   font-size: 12px !important;
+  font-weight: 600;
+}
+
+body.pwa-active .profile-nav-item.active {
+  background: rgba(255, 193, 7, 0.15) !important;
+  color: var(--pwa-gold) !important;
+  box-shadow: 0 2px 12px rgba(255, 193, 7, 0.15);
 }
 
 /* ─── Panel Content ─── */
@@ -291,7 +390,7 @@ body.pwa-active .profile-content {
 body.pwa-active .panel-card {
   padding: 18px 16px !important;
   border-radius: 18px !important;
-  margin-bottom: 14px !important;
+  margin-bottom: 12px !important;
 }
 
 body.pwa-active .panel-header {
@@ -306,23 +405,26 @@ body.pwa-active .panel-header h2 {
 
 body.pwa-active .panel-header p {
   font-size: 12px !important;
+  line-height: 1.5;
 }
 
-/* ─── Settings Items ─── */
+/* ─── Settings Items (Bigger Touch Targets) ─── */
 body.pwa-active .settings-list {
-  gap: 6px !important;
+  gap: 8px !important;
 }
 
 body.pwa-active .settings-item {
-  padding: 14px !important;
-  border-radius: 14px !important;
+  padding: 14px 14px !important;
+  border-radius: 16px !important;
   gap: 12px !important;
+  min-height: 64px;
 }
 
 body.pwa-active .settings-item-icon {
   width: 42px !important;
   height: 42px !important;
-  border-radius: 12px !important;
+  border-radius: 13px !important;
+  flex-shrink: 0;
 }
 
 body.pwa-active .settings-item-icon svg {
@@ -332,10 +434,13 @@ body.pwa-active .settings-item-icon svg {
 
 body.pwa-active .settings-item-title {
   font-size: 14px !important;
+  font-weight: 700;
 }
 
 body.pwa-active .settings-item-subtitle {
   font-size: 11px !important;
+  line-height: 1.4;
+  margin-top: 2px;
 }
 
 body.pwa-active .settings-item-arrow {
@@ -343,7 +448,7 @@ body.pwa-active .settings-item-arrow {
   height: 18px !important;
 }
 
-/* ─── Form Rows (Single Column on Mobile) ─── */
+/* ─── Forms ─── */
 body.pwa-active .form-row {
   grid-template-columns: 1fr !important;
   gap: 12px !important;
@@ -355,65 +460,92 @@ body.pwa-active .panel-form {
 
 body.pwa-active .field-label {
   font-size: 12px !important;
+  font-weight: 600;
+  margin-bottom: 6px !important;
 }
 
 body.pwa-active .field-input {
-  padding: 12px 14px !important;
+  padding: 13px 14px !important;
   font-size: 14px !important;
   border-radius: 12px !important;
 }
 
 body.pwa-active .field-hint {
   font-size: 11px !important;
+  line-height: 1.5;
 }
 
-/* ─── Panel Actions ─── */
+/* ─── Actions ─── */
 body.pwa-active .panel-actions {
   flex-direction: column-reverse;
   gap: 10px;
-  padding-top: 14px !important;
+  padding-top: 16px !important;
+  margin-top: 4px;
 }
 
 body.pwa-active .panel-actions .btn {
   width: 100%;
   justify-content: center;
+  padding: 14px 20px !important;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 12px;
+  min-height: 48px;
+}
+
+/* ─── Info List (Account) ─── */
+body.pwa-active .info-row {
+  padding: 12px 0 !important;
+  font-size: 13px !important;
+}
+
+body.pwa-active .info-value {
+  font-size: 12px !important;
+  max-width: 60%;
+  text-align: right;
+  word-break: break-word;
 }
 
 /* ═══════════════════════════════════════
-   🎨 PAGE HEADER
+   🎨 PAGE HEADER (Compact)
    ═══════════════════════════════════════ */
 
 body.pwa-active .page-header-row {
-  padding: 8px 0 16px !important;
-  gap: 0 !important;
+  padding: 4px 0 14px !important;
+  display: block !important;
+  margin-bottom: 0;
 }
 
 body.pwa-active .page-header-row h1 {
   font-size: 22px !important;
   line-height: 1.2;
+  margin-bottom: 2px;
 }
 
 body.pwa-active .page-header-row p {
   font-size: 12px !important;
+  line-height: 1.4;
 }
 
 /* ═══════════════════════════════════════
-   📊 DASHBOARD / CARDS
+   📊 DASHBOARD CARDS
    ═══════════════════════════════════════ */
 
 body.pwa-active .balance-hero {
   padding: 20px 18px !important;
   border-radius: 20px !important;
-  margin-bottom: 14px !important;
+  margin-bottom: 12px !important;
 }
 
 body.pwa-active .balance-total {
-  font-size: 32px !important;
+  font-size: 30px !important;
+  letter-spacing: -1.2px;
 }
 
 body.pwa-active .stats-row {
   grid-template-columns: repeat(2, 1fr) !important;
   gap: 10px !important;
+  margin-bottom: 12px;
 }
 
 body.pwa-active .stat-block {
@@ -421,12 +553,18 @@ body.pwa-active .stat-block {
   border-radius: 14px !important;
 }
 
+body.pwa-active .stat-label {
+  font-size: 10px !important;
+  margin-bottom: 6px;
+}
+
 body.pwa-active .stat-value {
-  font-size: 18px !important;
+  font-size: 17px !important;
 }
 
 body.pwa-active .asset-grid {
   gap: 10px !important;
+  margin-bottom: 12px;
 }
 
 body.pwa-active .asset-card {
@@ -436,22 +574,28 @@ body.pwa-active .asset-card {
 
 body.pwa-active .quick-actions {
   grid-template-columns: repeat(4, 1fr) !important;
-  gap: 8px !important;
+  gap: 6px !important;
 }
 
 body.pwa-active .quick-action {
-  padding: 12px 6px !important;
+  padding: 12px 4px !important;
   border-radius: 14px !important;
   font-size: 10px !important;
+  gap: 6px !important;
 }
 
 body.pwa-active .quick-action-icon {
-  width: 38px !important;
-  height: 38px !important;
+  width: 36px !important;
+  height: 36px !important;
+}
+
+body.pwa-active .quick-action-icon svg {
+  width: 18px !important;
+  height: 18px !important;
 }
 
 /* ═══════════════════════════════════════
-   🔔 Install Button
+   🌟 Install Button
    ═══════════════════════════════════════ */
 
 .pwa-install-btn {
@@ -471,7 +615,12 @@ body.pwa-active .quick-action-icon {
   display: flex;
   align-items: center;
   gap: 8px;
+  font-family: inherit;
   animation: slideInBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.pwa-install-btn:active {
+  transform: scale(0.95);
 }
 
 @keyframes slideInBounce {
@@ -484,7 +633,7 @@ body.pwa-active .quick-action-icon {
    ═══════════════════════════════════════ */
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -503,5 +652,9 @@ body.pwa-active .profile-panel.active {
 
   body.pwa-active .quick-actions {
     grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  body.pwa-active .profile-user-name {
+    font-size: 14px !important;
   }
 }
