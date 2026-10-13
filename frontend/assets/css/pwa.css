@@ -1376,3 +1376,379 @@ body.pwa-active .orders-empty .btn {
   font-size: 14px !important;
   min-height: 48px;
 }
+
+/* ═══════════════════════════════════════
+   💰 Deposit & Withdraw Pages (Mobile)
+   ═══════════════════════════════════════ */
+
+/* ─── Currency Tabs ─── */
+body.pwa-active .currency-tabs {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 8px !important;
+  padding: 6px !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 16px !important;
+  margin-bottom: 16px;
+}
+
+body.light .currency-tabs {
+  background: rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+body.pwa-active .currency-tab {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 12px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  border-radius: 12px !important;
+  min-height: 52px !important;
+}
+
+body.pwa-active .currency-tab-icon {
+  width: 28px !important;
+  height: 28px !important;
+  font-size: 15px !important;
+  border-radius: 50% !important;
+}
+
+body.pwa-active .currency-tab.active {
+  background: linear-gradient(135deg, #FFD54F, #FFC107) !important;
+  color: #0B0E11 !important;
+  box-shadow: 0 4px 16px rgba(255, 193, 7, 0.3);
+}
+
+body.pwa-active .currency-tab.active .currency-tab-icon {
+  background: #0B0E11 !important;
+  color: #FFC107 !important;
+}
+
+/* ─── Layout ─── */
+body.pwa-active .deposit-layout {
+  display: block !important;
+  grid-template-columns: 1fr !important;
+  gap: 14px !important;
+}
+
+body.pwa-active .deposit-card {
+  padding: 20px 16px !important;
+  border-radius: 20px !important;
+  margin-bottom: 14px;
+}
+
+body.pwa-active .deposit-card-header {
+  margin-bottom: 20px !important;
+  gap: 14px !important;
+}
+
+body.pwa-active .deposit-card-icon {
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 14px !important;
+}
+
+body.pwa-active .deposit-card-title {
+  font-size: 18px !important;
+  font-weight: 800;
+}
+
+body.pwa-active .deposit-card-subtitle {
+  font-size: 13px !important;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+/* ─── Network Block ─── */
+body.pwa-active .address-label {
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-secondary) !important;
+  margin-bottom: 10px !important;
+}
+
+body.pwa-active #networkTabs,
+body.pwa-active .network-tabs {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 6px !important;
+  margin-bottom: 14px !important;
+}
+
+body.pwa-active .network-tab {
+  padding: 10px 8px !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  border-radius: 12px !important;
+  min-height: 42px;
+  letter-spacing: 0.5px;
+}
+
+body.pwa-active .network-tab.active {
+  background: linear-gradient(135deg, #FFD54F, #FFC107) !important;
+  color: #0B0E11 !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 16px rgba(255, 193, 7, 0.3);
+}
+
+/* ─── Info List ─── */
+body.pwa-active .info-list {
+  padding: 12px 14px !important;
+  border-radius: 14px !important;
+  margin-bottom: 14px;
+}
+
+body.pwa-active .info-row {
+  padding: 10px 0 !important;
+  font-size: 13px !important;
+}
+
+body.pwa-active .info-value {
+  font-size: 13px !important;
+  font-weight: 700;
+}
+
+/* ─── Address Block ─── */
+body.pwa-active .address-value {
+  padding: 14px 16px !important;
+  border-radius: 14px !important;
+  font-size: 13px !important;
+  word-break: break-all;
+  gap: 10px;
+  flex-direction: column;
+  align-items: stretch !important;
+}
+
+body.pwa-active .address-value span:first-child {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+body.pwa-active .copy-btn {
+  width: 100% !important;
+  justify-content: center !important;
+  padding: 12px !important;
+  font-size: 13px !important;
+  border-radius: 10px !important;
+  min-height: 44px;
+  margin-top: 8px;
+}
+
+/* ─── Warnings ─── */
+body.pwa-active .warning-box {
+  padding: 14px 16px !important;
+  border-radius: 14px !important;
+  font-size: 12px !important;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  gap: 10px;
+}
+
+body.pwa-active .warning-box svg {
+  width: 18px !important;
+  height: 18px !important;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ─── Visual Block (Hide on mobile) ─── */
+body.pwa-active .visual-block {
+  display: none !important;
+}
+
+body.pwa-active .deposit-main-row {
+  display: block !important;
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+}
+
+/* ─── Hide Side Card ─── */
+body.pwa-active .side-card {
+  display: none !important;
+}
+
+/* ═══════════════════════════════════════
+   📤 Withdraw Form
+   ═══════════════════════════════════════ */
+
+body.pwa-active .balance-info-card {
+  padding: 16px !important;
+  border-radius: 16px !important;
+  margin-bottom: 20px !important;
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.03)) !important;
+  border: 1px solid rgba(255, 193, 7, 0.2) !important;
+}
+
+body.light.pwa-active .balance-info-card {
+  background: linear-gradient(135deg, rgba(245, 127, 23, 0.08), rgba(245, 127, 23, 0.02)) !important;
+}
+
+body.pwa-active .balance-info-label {
+  font-size: 11px !important;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-secondary) !important;
+  margin-bottom: 6px;
+}
+
+body.pwa-active .balance-info-value {
+  font-size: 26px !important;
+  font-weight: 800 !important;
+  letter-spacing: -1px;
+  color: var(--pwa-gold);
+}
+
+body.pwa-active .balance-info-value small {
+  font-size: 14px !important;
+  opacity: 0.7;
+}
+
+/* ─── Fields ─── */
+body.pwa-active .withdraw-form .field {
+  margin-bottom: 16px !important;
+}
+
+body.pwa-active .field-label {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  font-size: 13px !important;
+  font-weight: 700;
+  margin-bottom: 8px !important;
+}
+
+body.pwa-active .field-input {
+  padding: 14px 16px !important;
+  font-size: 15px !important;
+  border-radius: 14px !important;
+  min-height: 50px;
+}
+
+body.pwa-active .field-hint {
+  font-size: 11px !important;
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* ─── Amount Input with Tag ─── */
+body.pwa-active .amount-input-wrap {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0 !important;
+  position: relative;
+}
+
+body.pwa-active .amount-input-wrap .field-input {
+  padding-right: 70px !important;
+  font-size: 18px !important;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+
+body.pwa-active .amount-input-tag {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 6px 10px;
+  background: rgba(255, 193, 7, 0.12);
+  color: var(--pwa-gold);
+  font-size: 12px;
+  font-weight: 800;
+  border-radius: 8px;
+  letter-spacing: 0.5px;
+}
+
+/* ─── Max Button ─── */
+body.pwa-active .max-btn {
+  font-size: 11px !important;
+  padding: 4px 10px !important;
+  border-radius: 8px !important;
+  font-weight: 800;
+}
+
+/* ─── Submit Button ─── */
+body.pwa-active #submitBtn {
+  padding: 16px 20px !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  border-radius: 14px !important;
+  min-height: 54px;
+  margin-top: 20px !important;
+}
+
+/* ─── Recent Withdrawals ─── */
+body.pwa-active .recent-withdrawals {
+  margin-top: 24px !important;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+body.light.pwa-active .recent-withdrawals {
+  border-top-color: rgba(0, 0, 0, 0.06);
+}
+
+body.pwa-active .recent-title {
+  font-size: 15px !important;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+
+/* ─── Confirm Modal ─── */
+body.pwa-active .confirm-modal-content {
+  padding: 24px 20px !important;
+  border-radius: 24px !important;
+  margin: 16px !important;
+  max-width: calc(100% - 32px) !important;
+}
+
+body.pwa-active .confirm-modal-icon {
+  width: 56px !important;
+  height: 56px !important;
+  margin-bottom: 14px;
+}
+
+body.pwa-active .confirm-modal-title {
+  font-size: 19px !important;
+  font-weight: 800;
+}
+
+body.pwa-active .confirm-modal-subtitle {
+  font-size: 13px !important;
+  margin-bottom: 20px;
+}
+
+body.pwa-active .confirm-modal-details {
+  padding: 16px !important;
+  border-radius: 16px !important;
+  margin-bottom: 20px;
+}
+
+body.pwa-active .confirm-modal-row {
+  padding: 10px 0 !important;
+  font-size: 13px !important;
+}
+
+body.pwa-active .confirm-modal-actions {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
+}
+
+body.pwa-active .confirm-modal-actions .btn {
+  padding: 14px !important;
+  font-size: 14px !important;
+  font-weight: 800;
+  border-radius: 12px;
+  min-height: 48px;
+}
