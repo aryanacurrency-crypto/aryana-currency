@@ -1,0 +1,14 @@
+# ARYANA CURRENCY — robots.txt
+
+User-agent: *
+Allow: /
+Disallow: /pages/dashboard.html
+Disallow: /pages/deposit.html
+Disallow: /pages/withdraw.html
+Disallow: /pages/exchange.html
+Disallow: /pages/orders.html
+Disallow: /pages/order.html
+Disallow: /pages/profile.html
+Disallow: /pages/admin/
+
+Sitemap: https://aryana-currency.vercel.app/sitemap.xml
