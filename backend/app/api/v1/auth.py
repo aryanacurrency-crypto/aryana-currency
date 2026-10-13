@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from app.api.deps import get_current_user
 from app.core.config import settings
 from app.core.database import get_db
-from app.core.email import send_password_reset_email
+from app.core.email import send_password_reset_email, send_welcome_email
 from app.core.security import (
     create_access_token,
     create_refresh_token,
@@ -41,6 +41,7 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 @router.post("/register", response_model=UserRead, status_code=status.HTTP_201_CREATED)
 def register(payload: UserCreate, db: Session = Depends(get_db)):
     """ثبت‌نام کاربر جدید."""
+    # چک ایمیل تکراری
     existing = db.query(User).filter(User.email == payload.email).first()
     if existing:
         raise HTTPException(
@@ -48,6 +49,7 @@ def register(payload: UserCreate, db: Session = Depends(get_db)):
             detail="این ایمیل قبلاً ثبت شده است",
         )
 
+    # چک شماره تلفن تکراری
     if payload.phone:
         existing_phone = db.query(User).filter(User.phone == payload.phone).first()
         if existing_phone:
@@ -56,6 +58,7 @@ def register(payload: UserCreate, db: Session = Depends(get_db)):
                 detail="این شماره تلفن قبلاً ثبت شده است",
             )
 
+    # ساخت کاربر
     user = User(
         email=payload.email,
         phone=payload.phone,
@@ -69,11 +72,20 @@ def register(payload: UserCreate, db: Session = Depends(get_db)):
     db.add(user)
     db.flush()
 
+    # ساخت دو کیف پول خالی
     for currency in (Currency.AFN, Currency.USDT):
         db.add(Wallet(user_id=user.id, currency=currency))
 
     db.commit()
     db.refresh(user)
+
+    # ─── ارسال ایمیل خوش‌آمدگویی ───
+    try:
+        send_welcome_email(user.email, user.full_name)
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Welcome email failed: {e}")
+
     return user
 
 
@@ -152,7 +164,7 @@ def forgot_password(payload: ForgotPasswordRequest, db: Session = Depends(get_db
         db.add(reset_token)
         db.commit()
 
-        # ارسال ایمیل (فعلاً فقط لاگ)
+        # ارسال ایمیل
         try:
             send_password_reset_email(user.email, token)
         except Exception as e:
@@ -238,6 +250,7 @@ def update_profile(
     ویرایش پروفایل کاربر.
     فقط فیلدهای قابل ویرایش: full_name, phone, hesab_pay_*, usdt_wallet_*
     """
+    # اگه شماره تلفن تغییر کرده، چک کن تکراری نباشه
     if payload.phone is not None and payload.phone != current_user.phone:
         existing = db.query(User).filter(
             User.phone == payload.phone,
@@ -249,6 +262,7 @@ def update_profile(
                 detail="این شماره تلفن قبلاً ثبت شده است",
             )
 
+    # آپدیت فیلدها (فقط اونایی که ارسال شدن)
     update_data = payload.model_dump(exclude_unset=True)
 
     for field, value in update_data.items():
