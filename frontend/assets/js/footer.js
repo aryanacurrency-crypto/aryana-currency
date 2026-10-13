@@ -3,18 +3,27 @@
    Auto-injects footer into any page
    ═══════════════════════════════════════ */
 
-document.addEventListener('DOMContentLoaded', () => {
-  // یه تأخیر کوچیک تا api.js آماده بشه
-  setTimeout(injectFooter, 100);
-});
+(function() {
+  // صبر کن تا همه چیز لود بشه
+  window.addEventListener('load', () => {
+    setTimeout(injectFooter, 100);
+  });
+})();
+
+let footerRetries = 0;
+const MAX_FOOTER_RETRIES = 10; // حداکثر ۱۰ بار تلاش (۲ ثانیه)
 
 function injectFooter() {
   // اگه Footer از قبل هست، کاری نکن
   if (document.querySelector('.home-footer')) return;
 
-  // اگه API آماده نیست، دوباره تلاش کن
+  // اگه API آماده نیست، چند بار تلاش کن ولی نه بی‌نهایت
   if (typeof API === 'undefined') {
-    console.warn('API not ready yet, retrying...');
+    footerRetries++;
+    if (footerRetries >= MAX_FOOTER_RETRIES) {
+      console.error('API never became available. Footer not injected.');
+      return;
+    }
     setTimeout(injectFooter, 200);
     return;
   }
@@ -23,7 +32,6 @@ function injectFooter() {
   const isInPages = window.location.pathname.includes('/pages/');
   const isInAdmin = window.location.pathname.includes('/admin/');
 
-  // توی پنل ادمین Footer نمی‌خوایم
   if (isInAdmin) return;
 
   const prefix = isInPages ? '../' : '';
@@ -76,7 +84,6 @@ function injectFooter() {
     </footer>
   `;
 
-  // قبل از اسکریپت‌ها اضافه کن
   const scripts = document.body.querySelector('script');
   if (scripts) {
     scripts.insertAdjacentHTML('beforebegin', footerHTML);
@@ -84,14 +91,11 @@ function injectFooter() {
     document.body.insertAdjacentHTML('beforeend', footerHTML);
   }
 
-  // سال رو پُر کن
   const yearEl = document.getElementById('footerYear');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // اطلاعات تماس رو بخون
   fillContactInfo();
 
-  // i18n رو دوباره اعمال کن
   if (typeof I18N !== 'undefined' && I18N.apply) {
     setTimeout(() => I18N.apply(), 100);
   }
@@ -106,9 +110,7 @@ async function fillContactInfo() {
   const container = document.getElementById('footerContact');
   if (!container) return;
 
-  // اگه API آماده نیست، صبر کن
   if (typeof API === 'undefined' || !API.getContactInfo) {
-    console.warn('API not available, skipping contact info');
     container.style.display = 'none';
     return;
   }

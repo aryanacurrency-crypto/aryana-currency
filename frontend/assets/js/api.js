@@ -322,3 +322,6 @@ const API = {
     return this.request('/kyc/admin/stats');
   },
 };
+
+// در انتهای api.js
+window.API = API;

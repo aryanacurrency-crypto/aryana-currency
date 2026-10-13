@@ -56,3 +56,5 @@ const Theme = {
     localStorage.setItem(CONFIG.STORAGE.THEME, 'light');
   },
 };
+
+window.Theme = Theme;

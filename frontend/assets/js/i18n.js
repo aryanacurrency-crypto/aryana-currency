@@ -105,3 +105,5 @@ const I18N = {
     return 'en';
   },
 };
+
+window.I18N = I18N;

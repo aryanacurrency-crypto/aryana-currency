@@ -22,3 +22,5 @@ const CONFIG = {
   APP_NAME: 'ARYANA CURRENCY',
   DEFAULT_LANG: 'en',
 };
+
+window.CONFIG = CONFIG;

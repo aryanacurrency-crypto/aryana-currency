@@ -215,3 +215,5 @@ function escapeHtml(text) {
 function escapeAttr(text) {
   return String(text).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
+
+window.Notify = Notify;
