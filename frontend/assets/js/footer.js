@@ -3,17 +3,13 @@
    ═══════════════════════════════════════ */
 
 window.addEventListener('load', function() {
-  // صبر کن ۵۰۰ میلی‌ثانیه تا همه چیز آماده بشه
   setTimeout(function() {
     injectFooter();
   }, 500);
 });
 
 function injectFooter() {
-  // اگه Footer هست، کاری نکن
   if (document.querySelector('.home-footer')) return;
-
-  // توی پنل ادمین نباشه
   if (window.location.pathname.includes('/admin/')) return;
 
   const isInPages = window.location.pathname.includes('/pages/');
@@ -72,7 +68,6 @@ function injectFooter() {
   const yearEl = document.getElementById('footerYear');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // اطلاعات تماس
   loadContact();
 }
 
@@ -80,15 +75,16 @@ async function loadContact() {
   const container = document.getElementById('footerContact');
   if (!container) return;
 
-  // اگه API نیست، مخفی کن
-  if (typeof window.API === 'undefined') {
-    console.warn('API not available');
-    container.style.display = 'none';
-    return;
+  // آدرس API رو از CONFIG بخون یا مستقیم بذار
+  let apiBase = 'https://aryana-backend.onrender.com/api/v1';
+
+  if (typeof window.CONFIG !== 'undefined' && window.CONFIG.API_BASE) {
+    apiBase = window.CONFIG.API_BASE;
   }
 
   try {
-    const info = await window.API.getContactInfo();
+    const res = await fetch(apiBase + '/public/contact-info');
+    const info = await res.json();
 
     if (!info.email && !info.telegram_channel && !info.telegram_support && !info.address) {
       container.style.display = 'none';
