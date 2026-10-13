@@ -1,8 +1,9 @@
 /* ═══════════════════════════════════════
    ARYANA CURRENCY — Design System v2
-   Theme (Dark Mode)
+   Theme (Dark by default, Light with .light class)
    ═══════════════════════════════════════ */
 
+/* ─── Dark Theme (Default) ─── */
 :root {
   /* --- Backgrounds --- */
   --bg-primary: #0B0E11;
@@ -68,6 +69,38 @@
   --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ─── Light Theme ─── */
+body.light {
+  --bg-primary: #F5F5F7;
+  --bg-secondary: #FFFFFF;
+  --bg-tertiary: #FAFAFB;
+  --bg-hover: #EFEFEF;
+
+  --border-subtle: #E5E7EB;
+  --border-strong: #D1D5DB;
+
+  --gold: #E0A800;
+  --gold-light: #F0B90B;
+  --gold-dark: #B58C0F;
+
+  --green: #0EA56F;
+  --green-bg: rgba(14, 165, 111, 0.1);
+  --red: #DC2626;
+  --red-bg: rgba(220, 38, 38, 0.1);
+  --blue: #1E88E5;
+  --blue-bg: rgba(30, 136, 229, 0.1);
+
+  --text-primary: #0B0E11;
+  --text-secondary: #4B5563;
+  --text-tertiary: #6B7280;
+  --text-inverse: #FFFFFF;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 24px rgba(240, 185, 11, 0.2);
+}
+
 /* ═══════════════════════════════════════
    Reset & Base
    ═══════════════════════════════════════ */
@@ -92,6 +125,7 @@ body {
   font-size: 14px;
   min-height: 100vh;
   overflow-x: hidden;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 body[dir="rtl"] {
@@ -134,6 +168,10 @@ img {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-subtle);
+}
+
+body.light .app-header {
+  background: rgba(255, 255, 255, 0.85);
 }
 
 .app-header-inner {
@@ -312,4 +350,88 @@ img {
     width: 36px;
     height: 36px;
   }
+}
+
+/* ═══════════════════════════════════════
+   Light Theme Overrides
+   ═══════════════════════════════════════ */
+
+body.light .home-header {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+body.light .user-avatar {
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: #FFFFFF;
+}
+
+body.light .ticker-section {
+  background: var(--bg-secondary);
+}
+
+body.light .stat-box,
+body.light .rate-card,
+body.light .trust-card,
+body.light .step-card,
+body.light .asset-card,
+body.light .stat-block,
+body.light .quick-action {
+  box-shadow: var(--shadow-sm);
+}
+
+body.light .stat-box:hover,
+body.light .rate-card:hover,
+body.light .trust-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+body.light .hero-card,
+body.light .balance-hero {
+  background: linear-gradient(135deg, #FFFFFF 0%, #F7F7F9 100%);
+  border-color: rgba(240, 185, 11, 0.3);
+  box-shadow: 0 10px 40px rgba(240, 185, 11, 0.1);
+}
+
+body.light .rate-row {
+  background: var(--bg-tertiary);
+}
+
+body.light .rate-currency {
+  background: var(--bg-primary);
+}
+
+body.light .cta-box {
+  background: linear-gradient(135deg, #FFFFFF 0%, #F7F7F9 100%);
+  border-color: rgba(240, 185, 11, 0.3);
+}
+
+body.light .field-input {
+  background: var(--bg-secondary);
+  border-color: var(--border-subtle);
+}
+
+body.light .field-input:focus {
+  background: var(--bg-primary);
+}
+
+body.light .confirm-modal-content {
+  background: var(--bg-secondary);
+  box-shadow: var(--shadow-lg);
+}
+
+body.light .callout {
+  border-color: var(--border-subtle);
+}
+
+body.light .home-footer {
+  background: var(--bg-secondary);
+  border-top-color: var(--border-subtle);
+}
+
+body.light .footer-bottom {
+  border-top-color: var(--border-subtle);
+}
+
+body.light .footer-contact-title {
+  border-top-color: var(--border-subtle);
 }
