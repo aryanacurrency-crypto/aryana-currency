@@ -1,43 +1,26 @@
 /* ═══════════════════════════════════════
    ARYANA CURRENCY — PWA Mobile Experience
-   A premium app-like mobile design
+   Premium mobile-first design
    ═══════════════════════════════════════ */
 
-/* ═══════════════════════════════════════
-   🎨 PWA Color Palette (Enhanced)
-   ═══════════════════════════════════════ */
-
+/* ═══ Color Palette ═══ */
 :root {
-  /* Vibrant Gold - visible on both light & dark */
   --pwa-gold: #FFC107;
   --pwa-gold-bright: #FFD54F;
   --pwa-gold-deep: #FF8F00;
   --pwa-gold-glow: rgba(255, 193, 7, 0.4);
 
-  /* Accent Colors */
   --pwa-green: #00E676;
   --pwa-red: #FF5252;
   --pwa-blue: #448AFF;
   --pwa-purple: #B388FF;
 
-  /* Surfaces */
-  --pwa-glass: rgba(255, 255, 255, 0.08);
-  --pwa-glass-border: rgba(255, 255, 255, 0.12);
+  --pwa-glass: rgba(255, 255, 255, 0.06);
+  --pwa-glass-border: rgba(255, 255, 255, 0.1);
 
-  /* Mobile Spacing */
   --mobile-pad: 16px;
-  --mobile-gap: 12px;
+  --mobile-gap: 14px;
   --mobile-radius: 20px;
-  --mobile-radius-sm: 14px;
-
-  /* Font Sizes (mobile-optimized) */
-  --fs-xs: 11px;
-  --fs-sm: 13px;
-  --fs-base: 15px;
-  --fs-lg: 17px;
-  --fs-xl: 22px;
-  --fs-2xl: 28px;
-  --fs-3xl: 34px;
 }
 
 body.light {
@@ -46,7 +29,7 @@ body.light {
   --pwa-gold-deep: #E65100;
   --pwa-gold-glow: rgba(245, 127, 23, 0.3);
 
-  --pwa-glass: rgba(0, 0, 0, 0.04);
+  --pwa-glass: rgba(0, 0, 0, 0.03);
   --pwa-glass-border: rgba(0, 0, 0, 0.08);
 }
 
@@ -55,11 +38,10 @@ body.light {
    ═══════════════════════════════════════ */
 
 body.pwa-active {
-  padding-bottom: 90px !important;
+  padding-bottom: 100px !important;
   overscroll-behavior-y: none;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
-  font-size: var(--fs-base);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -69,8 +51,31 @@ body.pwa-active select {
   user-select: text;
 }
 
+body.pwa-active .app-main {
+  padding: 16px !important;
+  max-width: 100% !important;
+}
+
 /* ═══════════════════════════════════════
-   🧭 BOTTOM NAVIGATION (Fixed & Persistent)
+   🚫 Hide Footer & Nav
+   ═══════════════════════════════════════ */
+
+body.pwa-active .home-footer,
+body.pwa-active footer,
+.pwa-mode .home-footer {
+  display: none !important;
+}
+
+body.pwa-active .app-nav {
+  display: none !important;
+}
+
+body.pwa-active .back-btn {
+  display: none !important;
+}
+
+/* ═══════════════════════════════════════
+   🧭 BOTTOM NAVIGATION
    ═══════════════════════════════════════ */
 
 .pwa-bottom-nav {
@@ -81,66 +86,45 @@ body.pwa-active select {
   z-index: 99999;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 4px;
-  padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
-  background: rgba(18, 20, 26, 0.92);
+  gap: 2px;
+  padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+  background: rgba(18, 20, 26, 0.95);
   backdrop-filter: saturate(180%) blur(24px);
   -webkit-backdrop-filter: saturate(180%) blur(24px);
-  border-top: 1px solid var(--pwa-glass-border);
-  box-shadow:
-    0 -8px 32px rgba(0, 0, 0, 0.4),
-    0 -1px 0 rgba(255, 255, 255, 0.05) inset;
-  transform: translateZ(0);
-  will-change: transform;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.4);
 }
 
 body.light .pwa-bottom-nav {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.95);
   border-top: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow:
-    0 -8px 32px rgba(0, 0, 0, 0.08),
-    0 -1px 0 rgba(0, 0, 0, 0.02) inset;
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.08);
 }
 
-/* ─── Nav Item ─── */
 .pwa-nav-item {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 10px 6px 8px;
-  border-radius: var(--mobile-radius-sm);
+  gap: 3px;
+  padding: 8px 4px;
+  border-radius: 12px;
   text-decoration: none;
   color: var(--text-secondary);
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
   -webkit-tap-highlight-color: transparent;
-}
-
-.pwa-nav-item::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, var(--pwa-gold-glow) 0%, transparent 70%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
 }
 
 .pwa-nav-item:active {
   transform: scale(0.92);
 }
 
-/* ─── Icon ─── */
 .pwa-nav-icon {
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   display: grid;
   place-items: center;
-  position: relative;
-  z-index: 1;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -150,29 +134,21 @@ body.light .pwa-bottom-nav {
   stroke-width: 1.8;
 }
 
-/* ─── Label ─── */
 .pwa-nav-label {
   font-size: 10px;
   font-weight: 600;
-  letter-spacing: 0.3px;
-  position: relative;
-  z-index: 1;
-  transition: all 0.25s ease;
+  letter-spacing: 0.2px;
   opacity: 0.7;
+  transition: all 0.25s ease;
 }
 
-/* ─── Active State (Glowing Pill) ─── */
 .pwa-nav-item.active {
   color: var(--pwa-gold);
 }
 
-.pwa-nav-item.active::after {
-  opacity: 0.6;
-}
-
 .pwa-nav-item.active .pwa-nav-icon {
-  transform: translateY(-2px) scale(1.08);
-  filter: drop-shadow(0 0 12px var(--pwa-gold-glow));
+  transform: translateY(-1px) scale(1.1);
+  filter: drop-shadow(0 0 10px var(--pwa-gold-glow));
 }
 
 .pwa-nav-item.active .pwa-nav-icon svg {
@@ -182,384 +158,300 @@ body.light .pwa-bottom-nav {
 .pwa-nav-item.active .pwa-nav-label {
   font-weight: 800;
   opacity: 1;
-  letter-spacing: 0.5px;
 }
 
-/* Active indicator dot */
 .pwa-nav-item.active::before {
   content: "";
   position: absolute;
-  top: 4px;
+  top: 2px;
   left: 50%;
   transform: translateX(-50%);
-  width: 22px;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, var(--pwa-gold), transparent);
+  width: 20px;
+  height: 2px;
+  background: var(--pwa-gold);
   border-radius: 2px;
-  box-shadow: 0 0 12px var(--pwa-gold-glow);
-  animation: pulseBar 2s ease-in-out infinite;
-}
-
-@keyframes pulseBar {
-  0%, 100% { opacity: 1; transform: translateX(-50%) scaleX(1); }
-  50% { opacity: 0.6; transform: translateX(-50%) scaleX(0.7); }
+  box-shadow: 0 0 10px var(--pwa-gold-glow);
 }
 
 /* ═══════════════════════════════════════
-   🎨 Enhanced Cards & Elements (Mobile)
+   👤 PROFILE PAGE (Mobile-First)
    ═══════════════════════════════════════ */
 
-/* ─── Balance Hero ─── */
-body.pwa-active .balance-hero {
-  margin: 0 0 var(--mobile-gap);
-  padding: 24px 20px;
-  border-radius: var(--mobile-radius);
-  background:
-    radial-gradient(circle at 100% 0%, rgba(255, 193, 7, 0.15), transparent 60%),
-    linear-gradient(135deg, #1a1d24 0%, #0f1115 100%);
-  border: 1px solid rgba(255, 193, 7, 0.2);
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 193, 7, 0.08) inset;
-  position: relative;
+body.pwa-active .profile-layout {
+  display: block !important;
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+  padding: 0 !important;
+}
+
+body.pwa-active .profile-sidebar {
+  position: static !important;
+  display: block !important;
+  gap: 0 !important;
+  margin-bottom: 20px;
+}
+
+/* ─── User Card (Compact) ─── */
+body.pwa-active .profile-user {
+  padding: 20px 16px !important;
+  border-radius: 18px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+  text-align: left !important;
+  margin-bottom: 16px;
+}
+
+body.pwa-active .profile-user-avatar {
+  width: 60px !important;
+  height: 60px !important;
+  font-size: 24px !important;
+  margin: 0 !important;
+  flex-shrink: 0;
+}
+
+body.pwa-active .profile-user-name {
+  font-size: 16px !important;
+  margin-bottom: 2px !important;
+  text-align: left !important;
+  white-space: nowrap;
   overflow: hidden;
-  animation: fadeInUp 0.4s ease;
+  text-overflow: ellipsis;
 }
 
-body.light.pwa-active .balance-hero {
-  background:
-    radial-gradient(circle at 100% 0%, rgba(245, 127, 23, 0.12), transparent 60%),
-    linear-gradient(135deg, #FFFFFF 0%, #FFF8E1 100%);
-  border: 1px solid rgba(245, 127, 23, 0.2);
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.06),
-    0 0 0 1px rgba(245, 127, 23, 0.1) inset;
+body.pwa-active .profile-user-email {
+  font-size: 12px !important;
+  text-align: left !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
-body.pwa-active .balance-total {
-  font-size: var(--fs-3xl);
-  font-weight: 800;
-  letter-spacing: -1.5px;
-  background: linear-gradient(135deg, var(--pwa-gold-bright), var(--pwa-gold));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin: 8px 0 4px;
+body.pwa-active .profile-user > div {
+  min-width: 0;
+  flex: 1;
 }
 
-body.pwa-active .balance-label {
-  font-size: var(--fs-sm);
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  font-weight: 700;
-  color: var(--text-secondary);
+body.pwa-active .profile-badges {
+  justify-content: flex-start !important;
+  margin-top: 8px !important;
+  gap: 6px !important;
 }
 
-/* ─── Stat Blocks ─── */
-body.pwa-active .stats-row {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--mobile-gap);
-  margin-bottom: var(--mobile-gap);
+body.pwa-active .profile-badge {
+  font-size: 9px !important;
+  padding: 4px 8px !important;
 }
 
-body.pwa-active .stat-block {
-  padding: 16px;
-  border-radius: var(--mobile-radius-sm);
-  background: var(--pwa-glass);
-  border: 1px solid var(--pwa-glass-border);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  animation: fadeInUp 0.4s ease;
-  animation-fill-mode: both;
+/* ─── Nav (Horizontal Scroll) ─── */
+body.pwa-active .profile-nav {
+  display: flex !important;
+  flex-direction: row !important;
+  overflow-x: auto !important;
+  gap: 6px !important;
+  padding: 8px !important;
+  margin-bottom: 16px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
 }
 
-body.pwa-active .stat-block:nth-child(1) { animation-delay: 0.05s; }
-body.pwa-active .stat-block:nth-child(2) { animation-delay: 0.1s; }
-body.pwa-active .stat-block:nth-child(3) { animation-delay: 0.15s; }
-body.pwa-active .stat-block:nth-child(4) { animation-delay: 0.2s; }
-
-body.pwa-active .stat-block:active {
-  transform: scale(0.97);
-  background: rgba(255, 193, 7, 0.08);
+body.pwa-active .profile-nav::-webkit-scrollbar {
+  display: none;
 }
 
-body.pwa-active .stat-label {
-  font-size: var(--fs-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  margin-bottom: 8px;
+body.pwa-active .profile-nav-item {
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+  padding: 10px 14px !important;
+  font-size: 12px !important;
+  border-radius: 12px !important;
+  scroll-snap-align: start;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
 }
 
-body.pwa-active .stat-value {
-  font-size: var(--fs-lg);
-  font-weight: 800;
-  letter-spacing: -0.5px;
+body.pwa-active .profile-nav-item svg {
+  width: 16px !important;
+  height: 16px !important;
+  flex-shrink: 0;
 }
 
-/* ─── Asset Cards ─── */
-body.pwa-active .asset-grid {
-  display: flex;
-  flex-direction: column;
-  gap: var(--mobile-gap);
-  margin-bottom: var(--mobile-gap);
+body.pwa-active .profile-nav-item span {
+  font-size: 12px !important;
 }
 
-body.pwa-active .asset-card {
-  padding: 18px;
-  border-radius: var(--mobile-radius);
-  background: var(--pwa-glass);
-  border: 1px solid var(--pwa-glass-border);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
-  animation: fadeInUp 0.5s ease;
-  animation-fill-mode: both;
+/* ─── Panel Content ─── */
+body.pwa-active .profile-content {
+  padding: 0 !important;
 }
 
-body.pwa-active .asset-card:nth-child(1) { animation-delay: 0.1s; }
-body.pwa-active .asset-card:nth-child(2) { animation-delay: 0.15s; }
-
-body.pwa-active .asset-card:active {
-  transform: scale(0.98);
+body.pwa-active .panel-card {
+  padding: 18px 16px !important;
+  border-radius: 18px !important;
+  margin-bottom: 14px !important;
 }
 
-body.pwa-active .asset-icon {
-  width: 48px !important;
-  height: 48px !important;
-  font-size: 22px !important;
+body.pwa-active .panel-header {
+  margin-bottom: 16px !important;
+  padding-bottom: 14px !important;
+}
+
+body.pwa-active .panel-header h2 {
+  font-size: 16px !important;
+  margin-bottom: 4px !important;
+}
+
+body.pwa-active .panel-header p {
+  font-size: 12px !important;
+}
+
+/* ─── Settings Items ─── */
+body.pwa-active .settings-list {
+  gap: 6px !important;
+}
+
+body.pwa-active .settings-item {
+  padding: 14px !important;
   border-radius: 14px !important;
+  gap: 12px !important;
 }
 
-body.pwa-active .asset-name {
-  font-size: var(--fs-base);
-  font-weight: 700;
+body.pwa-active .settings-item-icon {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 12px !important;
 }
 
-body.pwa-active .asset-symbol {
-  font-size: var(--fs-xs);
+body.pwa-active .settings-item-icon svg {
+  width: 20px !important;
+  height: 20px !important;
 }
 
-body.pwa-active .asset-balance {
-  font-size: var(--fs-2xl);
-  font-weight: 800;
-  letter-spacing: -1px;
-  margin: 12px 0 4px;
+body.pwa-active .settings-item-title {
+  font-size: 14px !important;
 }
 
-/* ─── Quick Actions ─── */
-body.pwa-active .quick-actions {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin-bottom: var(--mobile-gap);
+body.pwa-active .settings-item-subtitle {
+  font-size: 11px !important;
 }
 
-body.pwa-active .quick-action {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 8px;
-  border-radius: var(--mobile-radius-sm);
-  background: var(--pwa-glass);
-  border: 1px solid var(--pwa-glass-border);
-  text-decoration: none;
-  font-size: var(--fs-xs);
-  font-weight: 700;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  animation: fadeInUp 0.5s ease;
-  animation-fill-mode: both;
-  position: relative;
-  overflow: hidden;
+body.pwa-active .settings-item-arrow {
+  width: 18px !important;
+  height: 18px !important;
 }
 
-body.pwa-active .quick-action:nth-child(1) { animation-delay: 0.15s; }
-body.pwa-active .quick-action:nth-child(2) { animation-delay: 0.2s; }
-body.pwa-active .quick-action:nth-child(3) { animation-delay: 0.25s; }
-body.pwa-active .quick-action:nth-child(4) { animation-delay: 0.3s; }
-
-body.pwa-active .quick-action:active {
-  transform: scale(0.92);
-  background: rgba(255, 193, 7, 0.1);
+/* ─── Form Rows (Single Column on Mobile) ─── */
+body.pwa-active .form-row {
+  grid-template-columns: 1fr !important;
+  gap: 12px !important;
 }
 
-body.pwa-active .quick-action-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  transition: all 0.3s ease;
+body.pwa-active .panel-form {
+  gap: 14px !important;
 }
 
-body.pwa-active .quick-action-icon.green {
-  background: linear-gradient(135deg, rgba(0, 230, 118, 0.2), rgba(0, 230, 118, 0.08));
-  color: var(--pwa-green);
-  box-shadow: 0 4px 16px rgba(0, 230, 118, 0.15);
+body.pwa-active .field-label {
+  font-size: 12px !important;
 }
 
-body.pwa-active .quick-action-icon.red {
-  background: linear-gradient(135deg, rgba(255, 82, 82, 0.2), rgba(255, 82, 82, 0.08));
-  color: var(--pwa-red);
-  box-shadow: 0 4px 16px rgba(255, 82, 82, 0.15);
+body.pwa-active .field-input {
+  padding: 12px 14px !important;
+  font-size: 14px !important;
+  border-radius: 12px !important;
 }
 
-body.pwa-active .quick-action-icon.blue {
-  background: linear-gradient(135deg, rgba(68, 138, 255, 0.2), rgba(68, 138, 255, 0.08));
-  color: var(--pwa-blue);
-  box-shadow: 0 4px 16px rgba(68, 138, 255, 0.15);
+body.pwa-active .field-hint {
+  font-size: 11px !important;
 }
 
-body.pwa-active .quick-action-icon.gold {
-  background: linear-gradient(135deg, rgba(255, 193, 7, 0.25), rgba(255, 193, 7, 0.1));
-  color: var(--pwa-gold);
-  box-shadow: 0 4px 16px var(--pwa-gold-glow);
+/* ─── Panel Actions ─── */
+body.pwa-active .panel-actions {
+  flex-direction: column-reverse;
+  gap: 10px;
+  padding-top: 14px !important;
 }
 
-/* ─── Section Headers ─── */
-body.pwa-active .section-header {
-  margin: 24px 0 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+body.pwa-active .panel-actions .btn {
+  width: 100%;
+  justify-content: center;
 }
 
-body.pwa-active .section-header h2 {
-  font-size: var(--fs-xl);
-  font-weight: 800;
-  letter-spacing: -0.5px;
+/* ═══════════════════════════════════════
+   🎨 PAGE HEADER
+   ═══════════════════════════════════════ */
+
+body.pwa-active .page-header-row {
+  padding: 8px 0 16px !important;
+  gap: 0 !important;
 }
 
-body.pwa-active .section-header a {
-  font-size: var(--fs-sm);
-  font-weight: 700;
-  color: var(--pwa-gold);
-}
-
-/* ─── Page Header ─── */
-body.pwa-active .page-header {
-  padding: 16px 0 20px;
-  text-align: center;
-}
-
-body.pwa-active .page-header h1 {
-  font-size: var(--fs-2xl);
-  font-weight: 800;
-  letter-spacing: -1px;
+body.pwa-active .page-header-row h1 {
+  font-size: 22px !important;
   line-height: 1.2;
 }
 
-body.pwa-active .page-header h1 span#welcomeName {
-  background: linear-gradient(135deg, var(--pwa-gold-bright), var(--pwa-gold));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-body.pwa-active .page-header p {
-  font-size: var(--fs-sm);
-  margin-top: 6px;
-  color: var(--text-secondary);
-}
-
-/* ─── Buttons (Bigger & Better for Touch) ─── */
-body.pwa-active .btn {
-  padding: 14px 22px;
-  font-size: var(--fs-base);
-  font-weight: 700;
-  border-radius: 14px;
-  min-height: 48px;
-  transition: all 0.2s ease;
-  letter-spacing: 0.2px;
-}
-
-body.pwa-active .btn-primary {
-  background: linear-gradient(135deg, var(--pwa-gold-bright), var(--pwa-gold));
-  box-shadow:
-    0 4px 16px var(--pwa-gold-glow),
-    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-  color: #0B0E11;
-}
-
-body.pwa-active .btn-primary:active {
-  transform: scale(0.97);
-  box-shadow: 0 2px 8px var(--pwa-gold-glow);
-}
-
-body.pwa-active .btn-secondary {
-  background: var(--pwa-glass);
-  border: 1px solid var(--pwa-glass-border);
-  backdrop-filter: blur(10px);
-}
-
-body.pwa-active .btn-secondary:active {
-  transform: scale(0.97);
-  background: rgba(255, 193, 7, 0.1);
-}
-
-/* ─── Balance Actions ─── */
-body.pwa-active .balance-actions {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-top: 20px;
-}
-
-body.pwa-active .balance-actions .btn {
-  flex-direction: column;
-  gap: 6px;
-  padding: 14px 8px;
-  min-height: auto;
-  font-size: var(--fs-xs);
-}
-
-body.pwa-active .balance-actions .btn svg {
-  width: 20px;
-  height: 20px;
+body.pwa-active .page-header-row p {
+  font-size: 12px !important;
 }
 
 /* ═══════════════════════════════════════
-   🎯 Header Adjustments
+   📊 DASHBOARD / CARDS
    ═══════════════════════════════════════ */
 
-body.pwa-active .app-header {
-  background: rgba(11, 14, 17, 0.85) !important;
-  backdrop-filter: saturate(180%) blur(24px);
-  -webkit-backdrop-filter: saturate(180%) blur(24px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+body.pwa-active .balance-hero {
+  padding: 20px 18px !important;
+  border-radius: 20px !important;
+  margin-bottom: 14px !important;
 }
 
-body.light.pwa-active .app-header {
-  background: rgba(255, 255, 255, 0.85) !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+body.pwa-active .balance-total {
+  font-size: 32px !important;
 }
 
-body.pwa-active .app-header-inner {
-  height: 64px;
-  padding: 0 16px;
+body.pwa-active .stats-row {
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 10px !important;
 }
 
-body.pwa-active .app-nav {
-  display: none !important;
+body.pwa-active .stat-block {
+  padding: 14px !important;
+  border-radius: 14px !important;
 }
 
-body.pwa-active .app-brand img {
-  width: 38px;
-  height: 38px;
+body.pwa-active .stat-value {
+  font-size: 18px !important;
 }
 
-body.pwa-active .app-brand-text {
-  font-size: 13px;
+body.pwa-active .asset-grid {
+  gap: 10px !important;
 }
 
-body.pwa-active .container {
-  width: calc(100% - 32px);
-  max-width: 640px;
+body.pwa-active .asset-card {
+  padding: 16px !important;
+  border-radius: 18px !important;
+}
+
+body.pwa-active .quick-actions {
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 8px !important;
+}
+
+body.pwa-active .quick-action {
+  padding: 12px 6px !important;
+  border-radius: 14px !important;
+  font-size: 10px !important;
+}
+
+body.pwa-active .quick-action-icon {
+  width: 38px !important;
+  height: 38px !important;
 }
 
 /* ═══════════════════════════════════════
-   🌟 Install Button
+   🔔 Install Button
    ═══════════════════════════════════════ */
 
 .pwa-install-btn {
@@ -567,32 +459,19 @@ body.pwa-active .container {
   bottom: 100px;
   right: 16px;
   z-index: 99998;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 20px;
+  padding: 12px 18px;
   background: linear-gradient(135deg, var(--pwa-gold-bright), var(--pwa-gold));
   color: #0B0E11;
   border: none;
   border-radius: 9999px;
-  font-size: var(--fs-sm);
+  font-size: 13px;
   font-weight: 800;
-  font-family: inherit;
   cursor: pointer;
-  box-shadow:
-    0 8px 32px var(--pwa-gold-glow),
-    0 0 0 1px rgba(255, 255, 255, 0.15) inset;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 32px var(--pwa-gold-glow);
+  display: flex;
+  align-items: center;
+  gap: 8px;
   animation: slideInBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.pwa-install-btn:active {
-  transform: scale(0.95);
-}
-
-.pwa-install-btn svg {
-  width: 16px;
-  height: 16px;
 }
 
 @keyframes slideInBounce {
@@ -605,137 +484,24 @@ body.pwa-active .container {
    ═══════════════════════════════════════ */
 
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Page transition */
-body.pwa-active main {
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+body.pwa-active .profile-panel.active {
+  animation: fadeInUp 0.3s ease;
 }
 
 /* ═══════════════════════════════════════
-   🔒 Safe Areas
+   📱 Extra Small Phones
    ═══════════════════════════════════════ */
 
-@supports (padding: env(safe-area-inset-bottom)) {
-  .pwa-bottom-nav {
-    padding-bottom: calc(10px + env(safe-area-inset-bottom));
-  }
-}
-
-/* ═══════════════════════════════════════
-   📱 Responsive Fixes
-   ═══════════════════════════════════════ */
-
-@media (max-width: 380px) {
+@media (max-width: 360px) {
   body.pwa-active .stats-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 
   body.pwa-active .quick-actions {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr) !important;
   }
-}
-
-/* ═══════════════════════════════════════
-   ♿ Reduced Motion
-   ═══════════════════════════════════════ */
-
-@media (prefers-reduced-motion: reduce) {
-  body.pwa-active *,
-  body.pwa-active *::before,
-  body.pwa-active *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* ═══════════════════════════════════════
-   🚫 Hide Footer in PWA
-   ═══════════════════════════════════════ */
-
-body.pwa-active .home-footer,
-body.pwa-active footer.home-footer,
-.pwa-mode .home-footer {
-  display: none !important;
-}
-
-body.pwa-active main {
-  padding-bottom: 20px !important;
-}
-
-/* ═══════════════════════════════════════
-   👤 PWA Profile Adjustments
-   ═══════════════════════════════════════ */
-
-body.pwa-active .profile-layout {
-  grid-template-columns: 1fr;
-  gap: 16px;
-}
-
-body.pwa-active .profile-sidebar {
-  position: static;
-}
-
-body.pwa-active .profile-nav {
-  flex-direction: row;
-  overflow-x: auto;
-  padding: 8px;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-body.pwa-active .profile-nav::-webkit-scrollbar {
-  display: none;
-}
-
-body.pwa-active .profile-nav-item {
-  white-space: nowrap;
-  padding: 10px 14px;
-  font-size: 13px;
-  flex-shrink: 0;
-}
-
-body.pwa-active .profile-user {
-  padding: 20px 16px;
-  border-radius: 20px;
-}
-
-body.pwa-active .profile-user-avatar {
-  width: 76px;
-  height: 76px;
-  font-size: 30px;
-}
-
-body.pwa-active .panel-card {
-  padding: 20px 16px;
-  border-radius: 20px;
-}
-
-body.pwa-active .settings-item {
-  padding: 14px 14px;
-  border-radius: 16px;
-}
-
-body.pwa-active .settings-item-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-}
-
-body.pwa-active .settings-item-icon svg {
-  width: 20px;
-  height: 20px;
 }
