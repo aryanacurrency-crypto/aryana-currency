@@ -4,12 +4,20 @@
    ═══════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', () => {
-  injectFooter();
+  // یه تأخیر کوچیک تا api.js آماده بشه
+  setTimeout(injectFooter, 100);
 });
 
 function injectFooter() {
   // اگه Footer از قبل هست، کاری نکن
   if (document.querySelector('.home-footer')) return;
+
+  // اگه API آماده نیست، دوباره تلاش کن
+  if (typeof API === 'undefined') {
+    console.warn('API not ready yet, retrying...');
+    setTimeout(injectFooter, 200);
+    return;
+  }
 
   // مسیر رو تشخیص بده
   const isInPages = window.location.pathname.includes('/pages/');
@@ -68,7 +76,7 @@ function injectFooter() {
     </footer>
   `;
 
-  // قبل از اسکریپت‌ها اضافه کن (اگه اسکریپتی هست) یا به انتهای body
+  // قبل از اسکریپت‌ها اضافه کن
   const scripts = document.body.querySelector('script');
   if (scripts) {
     scripts.insertAdjacentHTML('beforebegin', footerHTML);
@@ -83,7 +91,7 @@ function injectFooter() {
   // اطلاعات تماس رو بخون
   fillContactInfo();
 
-  // i18n رو دوباره اعمال کن (چون عناصر جدید اضافه شدن)
+  // i18n رو دوباره اعمال کن
   if (typeof I18N !== 'undefined' && I18N.apply) {
     setTimeout(() => I18N.apply(), 100);
   }
@@ -97,6 +105,13 @@ function injectFooter() {
 async function fillContactInfo() {
   const container = document.getElementById('footerContact');
   if (!container) return;
+
+  // اگه API آماده نیست، صبر کن
+  if (typeof API === 'undefined' || !API.getContactInfo) {
+    console.warn('API not available, skipping contact info');
+    container.style.display = 'none';
+    return;
+  }
 
   try {
     const info = await API.getContactInfo();
