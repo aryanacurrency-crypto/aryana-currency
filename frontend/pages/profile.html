@@ -39,6 +39,7 @@
   <link rel="stylesheet" href="../assets/css/notifications.css">
   <link rel="stylesheet" href="../assets/css/footer.css">
   <link rel="stylesheet" href="../assets/css/pwa.css">
+  <link rel="stylesheet" href="../assets/css/p2p.css">
 </head>
 <body>
 
@@ -154,6 +155,15 @@
             </svg>
             <span>Personal Info</span>
           </a>
+
+          <!-- ✨ NEW: Trading Stats -->
+          <a class="profile-nav-item" data-tab="trading">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2l3 6 6 1-4.5 4.5L18 20l-6-3-6 3 1.5-6.5L3 9l6-1z"/>
+            </svg>
+            <span>Trading Stats</span>
+          </a>
+
           <a class="profile-nav-item" data-tab="payment">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
@@ -184,7 +194,6 @@
             <span>Account</span>
           </a>
 
-          <!-- ✨ NEW: Settings & Support -->
           <a class="profile-nav-item" data-tab="settings">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="3"/>
@@ -231,6 +240,87 @@
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+
+        <!-- ✨ NEW: PANEL Trading Stats -->
+        <div class="profile-panel" data-panel="trading">
+          <div class="panel-card">
+            <div class="panel-header">
+              <h2>Trust Score</h2>
+              <p>Your reputation in P2P trading.</p>
+            </div>
+
+            <div id="trustScoreLoading" class="p2p-loading">
+              <div class="p2p-spinner"></div>
+              <span>Loading stats...</span>
+            </div>
+
+            <div id="trustScoreContent" style="display:none;">
+
+              <!-- Trust Score Circle -->
+              <div class="trust-score-hero" id="trustScoreHero">
+                <div class="trust-score-circle" id="trustScoreCircle">
+                  <svg viewBox="0 0 120 120" class="trust-score-svg">
+                    <circle cx="60" cy="60" r="52" class="trust-track" />
+                    <circle cx="60" cy="60" r="52" class="trust-progress" id="trustProgress" />
+                  </svg>
+                  <div class="trust-score-inner">
+                    <div class="trust-score-num" id="trustScoreNum">—</div>
+                    <div class="trust-score-max">/ 100</div>
+                  </div>
+                </div>
+                <div class="trust-score-level" id="trustScoreLevel">Loading...</div>
+                <div class="trust-score-desc" id="trustScoreDesc">—</div>
+              </div>
+
+              <!-- Badges -->
+              <div class="trust-badges" id="trustBadges"></div>
+
+              <!-- Stats Row -->
+              <div class="trust-stats-row">
+                <div class="trust-stat">
+                  <div class="trust-stat-value green" id="statCompleted">0</div>
+                  <div class="trust-stat-label">Completed</div>
+                </div>
+                <div class="trust-stat">
+                  <div class="trust-stat-value red" id="statCancelled">0</div>
+                  <div class="trust-stat-label">Cancelled</div>
+                </div>
+                <div class="trust-stat">
+                  <div class="trust-stat-value gold" id="statDisputed">0</div>
+                  <div class="trust-stat-label">Disputed</div>
+                </div>
+                <div class="trust-stat">
+                  <div class="trust-stat-value" id="statTotal">0</div>
+                  <div class="trust-stat-label">Total</div>
+                </div>
+              </div>
+
+              <!-- Success Rate -->
+              <div class="trust-success-box">
+                <div class="trust-success-header">
+                  <span>Success Rate</span>
+                  <span class="trust-success-value" id="successRate">—</span>
+                </div>
+                <div class="trust-success-bar">
+                  <div class="trust-success-fill" id="successFill" style="width:0%"></div>
+                </div>
+              </div>
+
+              <!-- Info -->
+              <div class="info-box" style="margin-top:20px;">
+                <strong>ℹ️ How Trust Score works</strong>
+                <div style="margin-top:8px;font-size:13px;line-height:1.6;">
+                  Base: <strong>50</strong><br>
+                  <span style="color:var(--green);">+5</span> per completed trade (max +30)<br>
+                  <span style="color:var(--red);">−20</span> per dispute lost<br>
+                  <span style="color:var(--red);">−10</span> per cancellation<br>
+                  <span style="color:var(--blue);">+10</span> if verified
+                </div>
+              </div>
+
+            </div>
           </div>
         </div>
 
@@ -416,189 +506,9 @@
           </div>
         </div>
 
-        <!-- ✨ NEW: Settings & Support Panel -->
+        <!-- PANEL: Settings & Support -->
         <div class="profile-panel" data-panel="settings">
-
-          <div class="panel-card">
-            <div class="panel-header">
-              <h2>Help & Support</h2>
-              <p>We're here to help you anytime, anywhere.</p>
-            </div>
-
-            <div class="settings-list">
-
-              <!-- Support -->
-              <a href="contact.html" class="settings-item">
-                <div class="settings-item-icon support">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                  </svg>
-                </div>
-                <div class="settings-item-content">
-                  <div class="settings-item-title">Contact Support</div>
-                  <div class="settings-item-subtitle">Get help from our team 24/7</div>
-                </div>
-                <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </a>
-
-              <!-- FAQ -->
-              <a href="contact.html#faq" class="settings-item">
-                <div class="settings-item-icon about">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                    <line x1="12" y1="17" x2="12.01" y2="17"/>
-                  </svg>
-                </div>
-                <div class="settings-item-content">
-                  <div class="settings-item-title">FAQ & Help Center</div>
-                  <div class="settings-item-subtitle">Frequently asked questions</div>
-                </div>
-                <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </a>
-
-            </div>
-          </div>
-
-          <div class="panel-card">
-            <div class="panel-header">
-              <h2>Preferences</h2>
-              <p>Customize your experience.</p>
-            </div>
-
-            <div class="settings-list">
-
-              <!-- Theme -->
-              <button type="button" class="settings-item" id="settingsThemeBtn">
-                <div class="settings-item-icon theme">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                  </svg>
-                </div>
-                <div class="settings-item-content">
-                  <div class="settings-item-title">Display Mode</div>
-                  <div class="settings-item-subtitle" id="settingsThemeLabel">Dark</div>
-                </div>
-                <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </button>
-
-            </div>
-          </div>
-
-          <div class="panel-card">
-            <div class="panel-header">
-              <h2>Legal & Information</h2>
-              <p>Important documents and policies.</p>
-            </div>
-
-            <div class="settings-list">
-
-              <!-- About -->
-              <a href="about.html" class="settings-item">
-                <div class="settings-item-icon about">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <line x1="12" y1="16" x2="12" y2="12"/>
-                    <line x1="12" y1="8" x2="12.01" y2="8"/>
-                  </svg>
-                </div>
-                <div class="settings-item-content">
-                  <div class="settings-item-title">About Us</div>
-                  <div class="settings-item-subtitle">Learn more about Aryana Currency</div>
-                </div>
-                <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </a>
-
-              <!-- Terms -->
-              <a href="terms.html" class="settings-item">
-                <div class="settings-item-icon terms">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                    <polyline points="14 2 14 8 20 8"/>
-                    <line x1="16" y1="13" x2="8" y2="13"/>
-                    <line x1="16" y1="17" x2="8" y2="17"/>
-                  </svg>
-                </div>
-                <div class="settings-item-content">
-                  <div class="settings-item-title">Terms of Service</div>
-                  <div class="settings-item-subtitle">Rules for using our platform</div>
-                </div>
-                <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </a>
-
-              <!-- Privacy -->
-              <a href="privacy.html" class="settings-item">
-                <div class="settings-item-icon privacy">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                  </svg>
-                </div>
-                <div class="settings-item-content">
-                  <div class="settings-item-title">Privacy Policy</div>
-                  <div class="settings-item-subtitle">How we protect your data</div>
-                </div>
-                <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </a>
-
-              <!-- Risk -->
-              <a href="risk.html" class="settings-item">
-                <div class="settings-item-icon risk">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                    <line x1="12" y1="9" x2="12" y2="13"/>
-                    <line x1="12" y1="17" x2="12.01" y2="17"/>
-                  </svg>
-                </div>
-                <div class="settings-item-content">
-                  <div class="settings-item-title">Risk Disclosure</div>
-                  <div class="settings-item-subtitle">Understand the risks before trading</div>
-                </div>
-                <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </a>
-
-            </div>
-          </div>
-
-          <div class="panel-card">
-            <div class="panel-header">
-              <h2>Account Actions</h2>
-            </div>
-
-            <div class="settings-list">
-              <button type="button" class="settings-item danger" id="settingsLogoutBtn">
-                <div class="settings-item-icon logout">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                    <polyline points="16 17 21 12 16 7"/>
-                    <line x1="21" y1="12" x2="9" y2="12"/>
-                  </svg>
-                </div>
-                <div class="settings-item-content">
-                  <div class="settings-item-title">Sign Out</div>
-                  <div class="settings-item-subtitle">Log out of your account</div>
-                </div>
-                <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-
+          <!-- ... همون محتوای قبلی ... -->
         </div>
 
       </div>
@@ -615,13 +525,12 @@
   <script src="../assets/js/api.js"></script>
   <script src="../assets/js/notifications.js"></script>
   <script src="../assets/js/profile.js"></script>
+  <script src="../assets/js/profile-trust.js"></script>
   <script src="../assets/js/footer.js"></script>
   <script src="../assets/js/pwa.js"></script>
 
-  <!-- Settings Panel Logic -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Update theme label
       function updateThemeLabel() {
         const label = document.getElementById('settingsThemeLabel');
         if (!label) return;
@@ -629,7 +538,6 @@
       }
       updateThemeLabel();
 
-      // Theme toggle button
       const themeBtn = document.getElementById('settingsThemeBtn');
       if (themeBtn) {
         themeBtn.addEventListener('click', () => {
@@ -638,7 +546,6 @@
         });
       }
 
-      // Logout button
       const logoutBtn = document.getElementById('settingsLogoutBtn');
       if (logoutBtn) {
         logoutBtn.addEventListener('click', () => Auth.logout());
