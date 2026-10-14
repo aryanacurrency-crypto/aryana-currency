@@ -213,6 +213,11 @@ class DirectTradeOrderWithDetails(BaseModel):
     reference: str
     ad_id: int
 
+    # ═══ Buyer/Seller IDs (اضافه شد) ═══
+    buyer_id: int
+    seller_id: int
+    # ══════════════════════════════════
+
     # مقدار و نرخ
     amount_usdt: Decimal
     rate_afn_per_usdt: Decimal
