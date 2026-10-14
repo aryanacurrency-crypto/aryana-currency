@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.v1 import admin as admin_router
 from app.api.v1 import auth as auth_router
+from app.api.v1 import direct_trades as direct_trades_router
 from app.api.v1 import kyc as kyc_router
 from app.api.v1 import orders as orders_router
 from app.api.v1 import public as public_router
@@ -36,6 +37,7 @@ app.include_router(admin_router.router, prefix=API_V1_PREFIX)
 app.include_router(public_router.router, prefix=API_V1_PREFIX)
 app.include_router(kyc_router.router, prefix=API_V1_PREFIX)
 app.include_router(withdrawals_router.router, prefix=API_V1_PREFIX)
+app.include_router(direct_trades_router.router, prefix=API_V1_PREFIX)
 
 
 @app.get("/", tags=["system"])

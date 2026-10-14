@@ -321,6 +321,148 @@ const API = {
   getKycStats() {
     return this.request('/kyc/admin/stats');
   },
+
+  // ═══════════════════════════════════════
+  //     Direct Trades (Traders By Traders)
+  // ═══════════════════════════════════════
+
+  // --- Ads ---
+  getP2PAds(params = {}) {
+    const q = new URLSearchParams();
+    if (params.side) q.append('side', params.side);
+    if (params.min_amount) q.append('min_amount', params.min_amount);
+    if (params.max_amount) q.append('max_amount', params.max_amount);
+    if (params.limit) q.append('limit', params.limit);
+    if (params.offset) q.append('offset', params.offset);
+    const qs = q.toString() ? `?${q.toString()}` : '';
+    return this.request(`/direct-trades/ads/${qs}`, { skipAuth: true });
+  },
+
+  createP2PAd(payload) {
+    return this.request('/direct-trades/ads/', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  },
+
+  getMyP2PAds(statusFilter = null) {
+    const q = statusFilter ? `?status_filter=${statusFilter}` : '';
+    return this.request(`/direct-trades/ads/my${q}`);
+  },
+
+  getP2PAdDetail(adId) {
+    return this.request(`/direct-trades/ads/${adId}`, { skipAuth: true });
+  },
+
+  updateP2PAd(adId, payload) {
+    return this.request(`/direct-trades/ads/${adId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(payload),
+    });
+  },
+
+  cancelP2PAd(adId) {
+    return this.request(`/direct-trades/ads/${adId}`, { method: 'DELETE' });
+  },
+
+  // --- Orders ---
+  createP2POrder(adId, amountUsdt) {
+    return this.request('/direct-trades/orders/', {
+      method: 'POST',
+      body: JSON.stringify({
+        ad_id: adId,
+        amount_usdt: String(amountUsdt),
+      }),
+    });
+  },
+
+  getMyP2POrders(statusFilter = null, role = 'all') {
+    const q = new URLSearchParams();
+    if (statusFilter) q.append('status_filter', statusFilter);
+    if (role !== 'all') q.append('role', role);
+    const qs = q.toString() ? `?${q.toString()}` : '';
+    return this.request(`/direct-trades/orders/my${qs}`);
+  },
+
+  getMyP2POrderDetail(orderId) {
+    return this.request(`/direct-trades/orders/my/${orderId}`);
+  },
+
+  submitP2PPayment(orderId, paymentReference, note = null) {
+    return this.request(`/direct-trades/orders/${orderId}/submit-payment`, {
+      method: 'POST',
+      body: JSON.stringify({
+        payment_reference: paymentReference,
+        note,
+      }),
+    });
+  },
+
+  cancelP2POrder(orderId, reason = null) {
+    return this.request(`/direct-trades/orders/${orderId}/cancel`, {
+      method: 'POST',
+      body: JSON.stringify({ reason }),
+    });
+  },
+
+  openP2PDispute(orderId, reason, evidence = null) {
+    return this.request(`/direct-trades/orders/${orderId}/dispute`, {
+      method: 'POST',
+      body: JSON.stringify({ reason, evidence }),
+    });
+  },
+
+  // --- Stats & Reputation ---
+  getP2PStats() {
+    return this.request('/direct-trades/stats', { skipAuth: true });
+  },
+
+  getMyReputation() {
+    return this.request('/direct-trades/reputation/me');
+  },
+
+  getUserReputation(userId) {
+    return this.request(`/direct-trades/reputation/${userId}`, { skipAuth: true });
+  },
+
+  // --- Admin ---
+  getAdminP2POrders(statusFilter = null) {
+    const q = statusFilter ? `?status_filter=${statusFilter}` : '';
+    return this.request(`/direct-trades/admin/orders${q}`);
+  },
+
+  getAdminP2PPendingReview() {
+    return this.request('/direct-trades/admin/orders/pending-review');
+  },
+
+  getAdminP2PDisputed() {
+    return this.request('/direct-trades/admin/orders/disputed');
+  },
+
+  getAdminP2POrderDetail(orderId) {
+    return this.request(`/direct-trades/admin/orders/${orderId}`);
+  },
+
+  adminCompleteP2POrder(orderId, adminNote = null) {
+    return this.request(`/direct-trades/admin/orders/${orderId}/complete`, {
+      method: 'POST',
+      body: JSON.stringify({ admin_note: adminNote }),
+    });
+  },
+
+  adminRejectP2POrder(orderId, reason) {
+    return this.request(`/direct-trades/admin/orders/${orderId}/reject`, {
+      method: 'POST',
+      body: JSON.stringify({ reason }),
+    });
+  },
+
+  adminResolveP2PDispute(orderId, decision, adminNote) {
+    return this.request(`/direct-trades/admin/orders/${orderId}/resolve-dispute`, {
+      method: 'POST',
+      body: JSON.stringify({ decision, admin_note: adminNote }),
+    });
+  },
 };
 
 // در انتهای api.js

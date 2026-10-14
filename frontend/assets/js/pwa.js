@@ -58,13 +58,49 @@
     const isAdmin = path.includes('/admin/');
     const isInPages = path.includes('/pages/');
 
-    const prefix = isInPages ? '' : 'pages/';
+    // ─── اصلاح: پشتیبانی از پوشه p2p ───
+    // اگه توی /pages/p2p/ هستیم، prefix باید ../ باشه
+    const isInP2P = path.includes('/pages/p2p/');
+    let prefix = '';
+    if (isInP2P) {
+      prefix = '../';           // از /pages/p2p/ → /pages/
+    } else if (isInPages) {
+      prefix = '';              // از /pages/ → /pages/
+    } else {
+      prefix = 'pages/';        // از root → /pages/
+    }
 
     const userNav = [
-      { href: `${prefix}dashboard.html`, icon: 'home', label: 'Home', keys: ['dashboard', 'index', ''] },
-      { href: `${prefix}exchange.html`, icon: 'trade', label: 'Trade', keys: ['exchange'] },
-      { href: `${prefix}orders.html`, icon: 'orders', label: 'Orders', keys: ['orders', 'order'] },
-      { href: `${prefix}profile.html`, icon: 'profile', label: 'Profile', keys: ['profile'] },
+      {
+        href: `${prefix}dashboard.html`,
+        icon: 'home',
+        label: 'Home',
+        keys: ['dashboard', 'index', '']
+      },
+      {
+        href: `${prefix}exchange.html`,
+        icon: 'trade',
+        label: 'Trade',
+        keys: ['exchange']
+      },
+      {
+        href: isInP2P ? 'index.html' : `${prefix}p2p/index.html`,
+        icon: 'p2p',
+        label: 'P2P',
+        keys: ['index', 'create-ad', 'order', 'my-ads', 'my-orders', 'p2p']
+      },
+      {
+        href: `${prefix}orders.html`,
+        icon: 'orders',
+        label: 'Orders',
+        keys: ['orders', 'order']
+      },
+      {
+        href: `${prefix}profile.html`,
+        icon: 'profile',
+        label: 'Profile',
+        keys: ['profile']
+      },
     ];
 
     const adminNav = [
@@ -76,12 +112,24 @@
 
     const navItems = isAdmin ? adminNav : userNav;
 
+    // ─── تشخیص صفحه فعلی ───
     let currentFile = path.split('/').pop().replace('.html', '');
-    if (currentFile === 'index') currentFile = 'dashboard';
+
+    // اگه مسیر /pages/p2p/index.html باشه، currentFile می‌شه "index"
+    // ولی بخوایم P2P رو active کنیم، باید با key "p2p" یا "index" توی p2p ست بشه
+    const isP2PPage = path.includes('/pages/p2p/');
 
     const navHTML = navItems
       .map((item) => {
-        const isActive = item.keys.includes(currentFile);
+        let isActive = false;
+
+        if (isP2PPage) {
+          // توی صفحات p2p هستیم
+          isActive = item.icon === 'p2p';
+        } else {
+          isActive = item.keys.includes(currentFile);
+        }
+
         return `
           <a href="${item.href}" class="pwa-nav-item ${isActive ? 'active' : ''}">
             <div class="pwa-nav-icon">${getIcon(item.icon)}</div>
@@ -104,6 +152,8 @@
       home: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
 
       trade: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12M17 20l4-4M17 20l-4-4"/></svg>`,
+
+      p2p: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
 
       orders: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`,
 

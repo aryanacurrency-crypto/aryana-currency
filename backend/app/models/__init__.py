@@ -1,6 +1,9 @@
 from app.models.audit import AuditLog
 from app.models.enums import (
     Currency,
+    DirectTradeAdSide,
+    DirectTradeAdStatus,
+    DirectTradeOrderStatus,
     KycStatus,
     LedgerDirection,
     OrderSide,
@@ -17,9 +20,16 @@ from app.models.wallet import Wallet
 from app.models.withdrawal import Withdrawal
 from app.models.password_reset import PasswordResetToken
 from app.models.platform_settings import PlatformSettings
+from app.models.direct_trade import (
+    DirectTradeAd,
+    DirectTradeMessage,
+    DirectTradeOrder,
+    UserReputation,
+)
 
 
 __all__ = [
+    # --- Existing ---
     "AuditLog",
     "Currency",
     "KycDocument",
@@ -37,4 +47,12 @@ __all__ = [
     "WithdrawalStatus",
     "PasswordResetToken",
     "PlatformSettings",
+    # --- Direct Trade ---
+    "DirectTradeAd",
+    "DirectTradeAdSide",
+    "DirectTradeAdStatus",
+    "DirectTradeOrder",
+    "DirectTradeOrderStatus",
+    "DirectTradeMessage",
+    "UserReputation",
 ]

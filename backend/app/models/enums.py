@@ -49,3 +49,33 @@ class WithdrawalStatus(str, Enum):
     COMPLETED = "COMPLETED"         # تکمیل شده
     REJECTED = "REJECTED"           # رد شده
     CANCELLED = "CANCELLED"         # لغو شده
+
+
+# ═══════════════════════════════════════════════════════
+#          Direct Trade (Traders By Traders) Enums
+# ═══════════════════════════════════════════════════════
+
+
+class DirectTradeAdSide(str, Enum):
+    """نوع آگهی در معاملات مستقیم."""
+    SELL = "SELL"     # فروشنده تتر می‌فروشه
+    BUY = "BUY"       # خریدار تتر می‌خره (آگهی خرید)
+
+
+class DirectTradeAdStatus(str, Enum):
+    """وضعیت آگهی."""
+    ACTIVE = "ACTIVE"           # فعال و قابل مشاهده
+    PAUSED = "PAUSED"           # موقتاً غیرفعال
+    COMPLETED = "COMPLETED"     # موجودی تمام شد
+    CANCELLED = "CANCELLED"     # لغو شده توسط فروشنده
+
+
+class DirectTradeOrderStatus(str, Enum):
+    """وضعیت سفارش معامله مستقیم."""
+    PENDING_PAYMENT = "PENDING_PAYMENT"       # منتظر پرداخت خریدار
+    PAYMENT_REVIEW = "PAYMENT_REVIEW"         # پرداخت انجام شد، منتظر بررسی
+    READY_TO_RELEASE = "READY_TO_RELEASE"     # تأیید شد، آماده آزادسازی
+    COMPLETED = "COMPLETED"                   # تکمیل شده
+    CANCELLED = "CANCELLED"                   # لغو شده
+    EXPIRED = "EXPIRED"                       # منقضی شده (تایمر)
+    DISPUTED = "DISPUTED"                     # در حال بررسی اختلاف

@@ -108,59 +108,59 @@ def _short_wallet(addr: str | None, head: int = 6, tail: int = 6) -> str:
 
 
 # ═══════════════════════════════════════
-#        اعلان‌های کسب‌وکار
+#        اعلان‌های صرافی (Orders)
 # ═══════════════════════════════════════
 
 
 def notify_new_user(user) -> bool:
     """ثبت‌نام کاربر جدید."""
     text = (
-        f"🆕  <b>کاربر جدید ثبت‌نام کرد</b>\n"
+        f"🆕  <b>New User Registered</b>\n"
         f"{DIVIDER}\n"
-        f"👤  <b>نام:</b>  {_esc(user.full_name)}\n"
-        f"📧  <b>ایمیل:</b>  <code>{_esc(user.email)}</code>\n"
-        f"📱  <b>تلفن:</b>  {_esc(user.phone)}\n"
+        f"👤  <b>Name:</b>  {_esc(user.full_name)}\n"
+        f"📧  <b>Email:</b>  <code>{_esc(user.email)}</code>\n"
+        f"📱  <b>Phone:</b>  {_esc(user.phone)}\n"
         f"🕐  {_now()}"
     )
     return send_telegram_message(text)
 
 
 def notify_new_order(order, user) -> bool:
-    """سفارش جدید (خرید یا فروش)."""
+    """سفارش جدید صرافی (خرید یا فروش)."""
     side = order.side.value if hasattr(order.side, "value") else str(order.side)
 
     if side == "BUY":
-        title = "🟢  <b>سفارش خرید جدید</b>"
+        title = "🟢  <b>New BUY Order — Exchange</b>"
     else:
-        title = "🔴  <b>سفارش فروش جدید</b>"
+        title = "🔴  <b>New SELL Order — Exchange</b>"
 
     text = (
         f"{title}\n"
         f"{DIVIDER}\n"
-        f"🧾  <b>شماره:</b>  <code>{_esc(order.reference)}</code>\n"
-        f"👤  <b>کاربر:</b>  {_esc(user.full_name)}\n"
-        f"📧  <b>ایمیل:</b>  <code>{_esc(user.email)}</code>\n"
+        f"🧾  <b>Ref:</b>  <code>{_esc(order.reference)}</code>\n"
+        f"👤  <b>User:</b>  {_esc(user.full_name)}\n"
+        f"📧  <b>Email:</b>  <code>{_esc(user.email)}</code>\n"
         f"{DIVIDER}\n"
-        f"💵  <b>مقدار:</b>  {_esc(order.amount_usdt)} USDT\n"
-        f"📊  <b>نرخ:</b>  {_esc(order.rate_afn_per_usdt)} AFN\n"
-        f"💰  <b>مجموع:</b>  {_esc(order.gross_afn)} AFN\n"
+        f"💵  <b>Amount:</b>  {_esc(order.amount_usdt)} USDT\n"
+        f"📊  <b>Rate:</b>  {_esc(order.rate_afn_per_usdt)} AFN\n"
+        f"💰  <b>Total:</b>  {_esc(order.gross_afn)} AFN\n"
         f"{DIVIDER}\n"
-        f"🕐  {_time_only()}  —  منتظر پرداخت"
+        f"🕐  {_time_only()}  —  Awaiting payment"
     )
     return send_telegram_message(text)
 
 
 def notify_payment_submitted(order, user) -> bool:
-    """کاربر رسید پرداخت فرستاد."""
+    """کاربر رسید پرداخت صرافی فرستاد."""
     text = (
-        f"💸  <b>رسید پرداخت ارسال شد</b>\n"
+        f"💸  <b>Payment Submitted — Exchange</b>\n"
         f"{DIVIDER}\n"
-        f"🧾  <b>سفارش:</b>  <code>{_esc(order.reference)}</code>\n"
-        f"👤  <b>کاربر:</b>  {_esc(user.full_name)}\n"
-        f"🔖  <b>رسید:</b>  <code>{_esc(order.user_payment_reference)}</code>\n"
-        f"📝  <b>یادداشت:</b>  {_esc(order.user_note)}\n"
+        f"🧾  <b>Ref:</b>  <code>{_esc(order.reference)}</code>\n"
+        f"👤  <b>User:</b>  {_esc(user.full_name)}\n"
+        f"🔖  <b>Tx/Ref:</b>  <code>{_esc(order.user_payment_reference)}</code>\n"
+        f"📝  <b>Note:</b>  {_esc(order.user_note)}\n"
         f"{DIVIDER}\n"
-        f"⚡  <b>نیاز به بررسی ادمین</b>"
+        f"⚡  <b>Needs admin review</b>"
     )
     return send_telegram_message(text)
 
@@ -173,43 +173,148 @@ def notify_new_withdrawal(withdrawal, user) -> bool:
         else str(withdrawal.currency)
     )
 
-    # شبکه رو از destination یا currency استخراج کن
-    network = getattr(withdrawal, "network", None) or currency
-
     text = (
-        f"🏦  <b>درخواست برداشت جدید</b>\n"
+        f"🏦  <b>New Withdrawal Request</b>\n"
         f"{DIVIDER}\n"
-        f"🧾  <b>شماره:</b>  <code>#{_esc(withdrawal.id)}</code>\n"
-        f"👤  <b>کاربر:</b>  {_esc(user.full_name)}\n"
-        f"📧  <b>ایمیل:</b>  <code>{_esc(user.email)}</code>\n"
+        f"🧾  <b>ID:</b>  <code>#{_esc(withdrawal.id)}</code>\n"
+        f"👤  <b>User:</b>  {_esc(user.full_name)}\n"
+        f"📧  <b>Email:</b>  <code>{_esc(user.email)}</code>\n"
         f"{DIVIDER}\n"
-        f"💵  <b>مقدار:</b>  {_esc(withdrawal.amount)} {_esc(currency)}\n"
-        f"🌐  <b>شبکه:</b>  {_esc(network)}\n"
-        f"📍  <b>آدرس:</b>  <code>{_esc(_short_wallet(withdrawal.destination))}</code>\n"
-        f"👤  <b>صاحب:</b>  {_esc(withdrawal.destination_holder)}\n"
+        f"💵  <b>Amount:</b>  {_esc(withdrawal.amount)} {_esc(currency)}\n"
+        f"📍  <b>To:</b>  <code>{_esc(_short_wallet(withdrawal.destination))}</code>\n"
+        f"👤  <b>Holder:</b>  {_esc(withdrawal.destination_holder)}\n"
         f"{DIVIDER}\n"
-        f"⚡  <b>نیاز به بررسی ادمین</b>"
+        f"⚡  <b>Needs admin review</b>"
     )
     return send_telegram_message(text)
 
 
 def notify_new_kyc(doc, user) -> bool:
     """مدرک KYC جدید."""
-    doc_type_fa = {
-        "national_id": "تذکره / کارت ملی",
-        "passport": "پاسپورت",
-        "selfie": "سلفی",
-    }.get(doc.doc_type, doc.doc_type)
+    text = (
+        f"🪪  <b>New KYC Document</b>\n"
+        f"{DIVIDER}\n"
+        f"👤  <b>User:</b>  {_esc(user.full_name)}\n"
+        f"📧  <b>Email:</b>  <code>{_esc(user.email)}</code>\n"
+        f"{DIVIDER}\n"
+        f"📄  <b>Type:</b>  <b>{_esc(doc.doc_type)}</b>\n"
+        f"🆔  <b>Doc ID:</b>  <code>#{_esc(doc.id)}</code>\n"
+        f"{DIVIDER}\n"
+        f"⚡  <b>Needs admin review</b>"
+    )
+    return send_telegram_message(text)
+
+
+# ═══════════════════════════════════════════════════════
+#        اعلان‌های Direct Trades (Traders By Traders)
+# ═══════════════════════════════════════════════════════
+
+
+def notify_direct_trade_new_ad(ad, seller) -> bool:
+    """آگهی جدید در معاملات مستقیم."""
+    side_icon = "🔴 SELL" if ad.side.value == "SELL" else "🟢 BUY"
 
     text = (
-        f"🪪  <b>مدرک KYC جدید</b>\n"
+        f"📢  <b>New Direct Trade Ad — {side_icon}</b>\n"
         f"{DIVIDER}\n"
-        f"👤  <b>کاربر:</b>  {_esc(user.full_name)}\n"
-        f"📧  <b>ایمیل:</b>  <code>{_esc(user.email)}</code>\n"
+        f"👤  <b>Seller:</b>  {_esc(seller.full_name)}\n"
+        f"📧  <b>Email:</b>  <code>{_esc(seller.email)}</code>\n"
         f"{DIVIDER}\n"
-        f"📄  <b>نوع:</b>  {_esc(doc_type_fa)}\n"
-        f"🆔  <b>شناسه:</b>  <code>#{_esc(doc.id)}</code>\n"
+        f"💵  <b>Amount:</b>  {_esc(ad.total_amount)} USDT\n"
+        f"📊  <b>Rate:</b>  {_esc(ad.rate_afn_per_usdt)} AFN\n"
+        f"📉  <b>Min Order:</b>  {_esc(ad.min_order_usdt)} USDT\n"
+        f"📈  <b>Max Order:</b>  {_esc(ad.max_order_usdt)} USDT\n"
         f"{DIVIDER}\n"
-        f"⚡  <b>نیاز به بررسی ادمین</b>"
+        f"🕐  {_now()}"
+    )
+    return send_telegram_message(text)
+
+
+def notify_direct_trade_new_order(order, buyer) -> bool:
+    """سفارش جدید در معاملات مستقیم."""
+    text = (
+        f"🔔  <b>New Direct Trade Order</b>\n"
+        f"{DIVIDER}\n"
+        f"🧾  <b>Ref:</b>  <code>{_esc(order.reference)}</code>\n"
+        f"👤  <b>Buyer:</b>  {_esc(buyer.full_name)}\n"
+        f"📧  <b>Email:</b>  <code>{_esc(buyer.email)}</code>\n"
+        f"{DIVIDER}\n"
+        f"💵  <b>Amount:</b>  {_esc(order.amount_usdt)} USDT\n"
+        f"📊  <b>Rate:</b>  {_esc(order.rate_afn_per_usdt)} AFN\n"
+        f"{DIVIDER}\n"
+        f"📥  <b>Buyer Receives:</b>  {_esc(order.buyer_receives_usdt)} USDT\n"
+        f"💰  <b>Buyer Pays:</b>  {_esc(order.total_payment_afn)} AFN\n"
+        f"🏦  <b>Seller Gets:</b>  {_esc(order.seller_receives_afn)} AFN\n"
+        f"{DIVIDER}\n"
+        f"🕐  {_time_only()}  —  Awaiting payment"
+    )
+    return send_telegram_message(text)
+
+
+def notify_direct_trade_payment_submitted(order, buyer) -> bool:
+    """خریدار رسید پرداخت فرستاد (Direct Trade)."""
+    text = (
+        f"💸  <b>Direct Trade — Payment Submitted</b>\n"
+        f"{DIVIDER}\n"
+        f"🧾  <b>Ref:</b>  <code>{_esc(order.reference)}</code>\n"
+        f"👤  <b>Buyer:</b>  {_esc(buyer.full_name)}\n"
+        f"📧  <b>Email:</b>  <code>{_esc(buyer.email)}</code>\n"
+        f"{DIVIDER}\n"
+        f"🔖  <b>Tx/Ref:</b>  <code>{_esc(order.buyer_payment_reference)}</code>\n"
+        f"📝  <b>Note:</b>  {_esc(order.buyer_note)}\n"
+        f"{DIVIDER}\n"
+        f"⚡  <b>Needs admin review</b>"
+    )
+    return send_telegram_message(text)
+
+
+def notify_direct_trade_completed(order) -> bool:
+    """معامله مستقیم با موفقیت تکمیل شد."""
+    text = (
+        f"✅  <b>Direct Trade — Completed</b>\n"
+        f"{DIVIDER}\n"
+        f"🧾  <b>Ref:</b>  <code>{_esc(order.reference)}</code>\n"
+        f"{DIVIDER}\n"
+        f"💵  <b>Amount:</b>  {_esc(order.amount_usdt)} USDT\n"
+        f"📥  <b>Buyer Received:</b>  {_esc(order.buyer_receives_usdt)} USDT\n"
+        f"💰  <b>Seller Received:</b>  {_esc(order.seller_receives_afn)} AFN\n"
+        f"{DIVIDER}\n"
+        f"💼  <b>Platform Fees:</b>\n"
+        f"   • Seller: {_esc(order.seller_fee_usdt)} USDT\n"
+        f"   • Buyer: {_esc(order.buyer_fee_afn)} AFN\n"
+        f"{DIVIDER}\n"
+        f"🕐  {_now()}"
+    )
+    return send_telegram_message(text)
+
+
+def notify_direct_trade_dispute(order, user) -> bool:
+    """اختلاف جدید در معامله مستقیم."""
+    text = (
+        f"🚨  <b>Direct Trade — DISPUTE OPENED</b>\n"
+        f"{DIVIDER}\n"
+        f"🧾  <b>Ref:</b>  <code>{_esc(order.reference)}</code>\n"
+        f"👤  <b>Opened by:</b>  {_esc(user.full_name)}\n"
+        f"📧  <b>Email:</b>  <code>{_esc(user.email)}</code>\n"
+        f"{DIVIDER}\n"
+        f"📝  <b>Reason:</b>\n"
+        f"{_esc(order.dispute_reason)}\n"
+        f"{DIVIDER}\n"
+        f"⚡  <b>Needs admin resolution</b>\n"
+        f"🕐  {_now()}"
+    )
+    return send_telegram_message(text)
+
+
+def notify_direct_trade_expired(order) -> bool:
+    """سفارش منقضی‌شده در معامله مستقیم."""
+    text = (
+        f"⏱  <b>Direct Trade — Order Expired</b>\n"
+        f"{DIVIDER}\n"
+        f"🧾  <b>Ref:</b>  <code>{_esc(order.reference)}</code>\n"
+        f"💵  <b>Amount:</b>  {_esc(order.amount_usdt)} USDT\n"
+        f"{DIVIDER}\n"
+        f"ℹ️  <b>Escrow released automatically</b>\n"
+        f"🕐  {_now()}"
     )
     return send_telegram_message(text)
