@@ -78,7 +78,6 @@ def create_ad(
         terms=payload.terms,
     )
 
-    # اعلان تلگرام
     try:
         notify_direct_trade_new_ad(ad, current_user)
     except Exception as e:
@@ -107,7 +106,6 @@ def list_active_ads(
         offset=offset,
     )
 
-    # اضافه کردن اطلاعات فروشنده
     result = []
     for ad in ads:
         seller = db.query(User).filter(User.id == ad.seller_id).first()
@@ -218,7 +216,6 @@ def update_ad(
             detail="فقط آگهی‌های فعال قابل ویرایش هستند",
         )
 
-    # چک نرخ و محدودیت‌های جدید
     if payload.rate_afn_per_usdt is not None:
         if payload.rate_afn_per_usdt <= 0:
             raise HTTPException(
@@ -246,7 +243,6 @@ def update_ad(
     if payload.terms is not None:
         ad.terms = payload.terms
 
-    # چک منطقی
     if ad.max_order_usdt < ad.min_order_usdt:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -297,7 +293,6 @@ def create_order(
         amount_usdt=payload.amount_usdt,
     )
 
-    # اعلان تلگرام
     try:
         notify_direct_trade_new_order(order, current_user)
     except Exception as e:
@@ -379,6 +374,10 @@ def get_my_order(
         id=order.id,
         reference=order.reference,
         ad_id=order.ad_id,
+        # ═══ FIX: اضافه کردن buyer_id و seller_id ═══
+        buyer_id=order.buyer_id,
+        seller_id=order.seller_id,
+        # ═══════════════════════════════════════════
         amount_usdt=order.amount_usdt,
         rate_afn_per_usdt=order.rate_afn_per_usdt,
         seller_fee_usdt=order.seller_fee_usdt,
@@ -432,7 +431,6 @@ def submit_payment(
         note=payload.note,
     )
 
-    # اعلان تلگرام
     try:
         notify_direct_trade_payment_submitted(order, current_user)
     except Exception as e:
@@ -493,7 +491,6 @@ def open_dispute(
         reason=payload.reason,
     )
 
-    # اعلان تلگرام
     try:
         notify_direct_trade_dispute(order, current_user)
     except Exception as e:
@@ -646,7 +643,6 @@ def admin_complete_order(
         admin_note=payload.admin_note,
     )
 
-    # اعلان تلگرام
     try:
         notify_direct_trade_completed(order)
     except Exception as e:
@@ -673,7 +669,6 @@ def admin_reject_order(
             detail="سفارش یافت نشد",
         )
 
-    # آزاد کردن قفل آگهی
     ad = db.query(DirectTradeAd).filter(DirectTradeAd.id == order.ad_id).first()
     if ad:
         ad.locked_amount -= order.amount_usdt
