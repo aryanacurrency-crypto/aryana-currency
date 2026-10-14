@@ -131,7 +131,7 @@ body.pwa-active .user-name {
 }
 
 /* ═══════════════════════════════════════
-   🧭 BOTTOM NAVIGATION (Binance-style)
+   🧭 BOTTOM NAVIGATION — SINGLE ROW (FIXED)
    ═══════════════════════════════════════ */
 
 .pwa-bottom-nav {
@@ -140,9 +140,18 @@ body.pwa-active .user-name {
   left: 0;
   right: 0;
   z-index: 99999;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
+
+  /* ─── FLEX برای یک ردیف ─── */
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-around !important;
+  align-items: stretch !important;
+
+  /* Override هر grid قدیمی */
+  grid-template-columns: unset !important;
+  grid-template-rows: unset !important;
+  gap: 0 !important;
+
   padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px));
   background: rgba(18, 20, 26, 0.96);
   backdrop-filter: saturate(180%) blur(24px);
@@ -159,11 +168,17 @@ body.light .pwa-bottom-nav {
 
 .pwa-nav-item {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 3px !important;
+
+  /* ─── هر آیتم سهم برابر ─── */
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  max-width: 100px !important;
+
   padding: 10px 2px 8px;
   border-radius: 12px;
   text-decoration: none;
@@ -182,6 +197,7 @@ body.light .pwa-bottom-nav {
   display: grid;
   place-items: center;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
 }
 
 .pwa-nav-icon svg {
@@ -203,6 +219,14 @@ body.light .pwa-bottom-nav {
   letter-spacing: 0.1px;
   opacity: 0.85;
   transition: all 0.2s ease;
+
+  /* ─── Prevent overflow ─── */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  text-align: center;
+  line-height: 1.1;
 }
 
 .pwa-nav-item.active {
@@ -765,10 +789,21 @@ body.pwa-active .profile-panel.active {
   body.pwa-active .profile-user-name {
     font-size: 14px !important;
   }
+
+  /* ─── منوی PWA در گوشی‌های کوچیک ─── */
+  .pwa-nav-label {
+    font-size: 8px !important;
+  }
+
+  .pwa-nav-icon,
+  .pwa-nav-icon svg {
+    width: 22px !important;
+    height: 22px !important;
+  }
 }
 
 /* ═══════════════════════════════════════
-   💰 Binance-style Balance Hero
+   💰 Binance-style Balance Hero (Extended)
    ═══════════════════════════════════════ */
 
 body.pwa-active .balance-hero {
@@ -796,7 +831,6 @@ body.light.pwa-active .balance-hero {
     0 0 0 1px rgba(245, 127, 23, 0.08) inset !important;
 }
 
-/* ─── Label + Eye ─── */
 body.pwa-active .balance-label {
   display: flex !important;
   align-items: center !important;
@@ -831,7 +865,6 @@ body.pwa-active .balance-eye-btn:hover {
   color: var(--pwa-gold);
 }
 
-/* ─── Big Amount ─── */
 body.pwa-active .balance-amount-row {
   display: flex !important;
   align-items: baseline !important;
@@ -865,7 +898,6 @@ body.light.pwa-active .balance-currency-badge {
   background: rgba(0, 0, 0, 0.05);
 }
 
-/* ─── Equivalent + Change ─── */
 body.pwa-active .balance-equivalent-row {
   display: flex !important;
   align-items: center !important;
@@ -911,7 +943,6 @@ body.pwa-active .balance-change.down svg {
   transform: rotate(180deg);
 }
 
-/* ─── Sparkline Chart ─── */
 body.pwa-active .balance-chart {
   height: 56px !important;
   margin-bottom: 18px !important;
@@ -928,7 +959,6 @@ body.pwa-active .balance-chart .sparkline {
   overflow: visible;
 }
 
-/* ─── Action Buttons (Horizontal) ─── */
 body.pwa-active .balance-actions {
   display: grid !important;
   grid-template-columns: repeat(4, 1fr) !important;
@@ -1002,7 +1032,6 @@ body.pwa-active .balance-action:active .balance-action-icon {
   transform: scale(0.92);
 }
 
-/* ─── Balance Hidden State ─── */
 body.pwa-active .balance-hidden .balance-amount,
 body.pwa-active .balance-hidden .balance-equivalent {
   filter: blur(8px);
@@ -1181,7 +1210,6 @@ body.pwa-active .min-order-note {
   margin-top: 14px !important;
 }
 
-/* Hide side card in PWA */
 body.pwa-active .side-card {
   display: none !important;
 }
@@ -1214,7 +1242,6 @@ body.pwa-active .stat-value {
   font-size: 17px !important;
 }
 
-/* Tabs */
 body.pwa-active .main-tabs {
   display: flex !important;
   overflow-x: auto !important;
@@ -1257,7 +1284,6 @@ body.pwa-active .main-tab-count {
   padding: 2px 6px !important;
 }
 
-/* Filter Pills */
 body.pwa-active .filter-pills {
   display: flex !important;
   gap: 6px !important;
@@ -1278,7 +1304,6 @@ body.pwa-active .filter-pill {
   font-weight: 700;
 }
 
-/* Order Cards */
 body.pwa-active .orders-list {
   display: flex !important;
   flex-direction: column !important;
@@ -1346,7 +1371,6 @@ body.light .order-footer {
   border-top-color: rgba(0, 0, 0, 0.06);
 }
 
-/* Empty State */
 body.pwa-active .orders-empty {
   padding: 40px 20px !important;
   text-align: center;
@@ -1381,7 +1405,6 @@ body.pwa-active .orders-empty .btn {
    💰 Deposit & Withdraw Pages (Mobile)
    ═══════════════════════════════════════ */
 
-/* ─── Currency Tabs ─── */
 body.pwa-active .currency-tabs {
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
@@ -1428,7 +1451,6 @@ body.pwa-active .currency-tab.active .currency-tab-icon {
   color: #FFC107 !important;
 }
 
-/* ─── Layout ─── */
 body.pwa-active .deposit-layout {
   display: block !important;
   grid-template-columns: 1fr !important;
@@ -1463,7 +1485,6 @@ body.pwa-active .deposit-card-subtitle {
   margin-top: 4px;
 }
 
-/* ─── Network Block ─── */
 body.pwa-active .address-label {
   font-size: 12px !important;
   font-weight: 700 !important;
@@ -1497,7 +1518,6 @@ body.pwa-active .network-tab.active {
   box-shadow: 0 4px 16px rgba(255, 193, 7, 0.3);
 }
 
-/* ─── Info List ─── */
 body.pwa-active .info-list {
   padding: 12px 14px !important;
   border-radius: 14px !important;
@@ -1514,7 +1534,6 @@ body.pwa-active .info-value {
   font-weight: 700;
 }
 
-/* ─── Address Block ─── */
 body.pwa-active .address-value {
   padding: 14px 16px !important;
   border-radius: 14px !important;
@@ -1543,7 +1562,6 @@ body.pwa-active .copy-btn {
   margin-top: 8px;
 }
 
-/* ─── Warnings ─── */
 body.pwa-active .warning-box {
   padding: 14px 16px !important;
   border-radius: 14px !important;
@@ -1560,7 +1578,6 @@ body.pwa-active .warning-box svg {
   margin-top: 2px;
 }
 
-/* ─── Visual Block (Hide on mobile) ─── */
 body.pwa-active .visual-block {
   display: none !important;
 }
@@ -1571,7 +1588,6 @@ body.pwa-active .deposit-main-row {
   gap: 0 !important;
 }
 
-/* ─── Hide Side Card ─── */
 body.pwa-active .side-card {
   display: none !important;
 }
@@ -1613,7 +1629,6 @@ body.pwa-active .balance-info-value small {
   opacity: 0.7;
 }
 
-/* ─── Fields ─── */
 body.pwa-active .withdraw-form .field {
   margin-bottom: 16px !important;
 }
@@ -1640,7 +1655,6 @@ body.pwa-active .field-hint {
   line-height: 1.5;
 }
 
-/* ─── Amount Input with Tag ─── */
 body.pwa-active .amount-input-wrap {
   display: flex !important;
   align-items: center !important;
@@ -1669,7 +1683,6 @@ body.pwa-active .amount-input-tag {
   letter-spacing: 0.5px;
 }
 
-/* ─── Max Button ─── */
 body.pwa-active .max-btn {
   font-size: 11px !important;
   padding: 4px 10px !important;
@@ -1677,7 +1690,6 @@ body.pwa-active .max-btn {
   font-weight: 800;
 }
 
-/* ─── Submit Button ─── */
 body.pwa-active #submitBtn {
   padding: 16px 20px !important;
   font-size: 15px !important;
@@ -1687,7 +1699,6 @@ body.pwa-active #submitBtn {
   margin-top: 20px !important;
 }
 
-/* ─── Recent Withdrawals ─── */
 body.pwa-active .recent-withdrawals {
   margin-top: 24px !important;
   padding-top: 20px;
@@ -1704,7 +1715,6 @@ body.pwa-active .recent-title {
   margin-bottom: 14px;
 }
 
-/* ─── Confirm Modal ─── */
 body.pwa-active .confirm-modal-content {
   padding: 24px 20px !important;
   border-radius: 24px !important;
@@ -1757,7 +1767,6 @@ body.pwa-active .confirm-modal-actions .btn {
    💰 Deposit & Withdraw — Proper Theme Support
    ═══════════════════════════════════════ */
 
-/* ─── Main Card (adapts to theme) ─── */
 body.pwa-active .deposit-card {
   background: rgba(255, 255, 255, 0.04) !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -1771,7 +1780,6 @@ body.light.pwa-active .deposit-card {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04) !important;
 }
 
-/* ─── Card Header ─── */
 body.pwa-active .deposit-card-title {
   color: var(--text-primary) !important;
   font-size: 18px !important;
@@ -1783,7 +1791,6 @@ body.pwa-active .deposit-card-subtitle {
   font-size: 13px !important;
 }
 
-/* ─── Currency Tabs (fixed for both themes) ─── */
 body.pwa-active .currency-tabs {
   background: rgba(0, 0, 0, 0.2) !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -2118,7 +2125,6 @@ body.light.pwa-active .field-hint {
   color: #6B7280 !important;
 }
 
-/* ─── Amount Input with Tag ─── */
 body.pwa-active .amount-input-wrap {
   display: flex !important;
   align-items: center !important;
@@ -2153,7 +2159,6 @@ body.light.pwa-active .amount-input-tag {
   border-color: rgba(245, 127, 23, 0.2);
 }
 
-/* ─── Max Button ─── */
 body.pwa-active .max-btn {
   font-size: 11px !important;
   padding: 5px 12px !important;
@@ -2307,498 +2312,4 @@ body.light.pwa-active .confirm-modal-actions .btn-secondary {
 
 html:not(.theme-ready) * {
   transition: none !important;
-}
-
-/* ═══════════════════════════════════════
-   💰 Deposit & Withdraw — Theme Support
-   ═══════════════════════════════════════ */
-
-body.pwa-active .deposit-card {
-  background: rgba(255, 255, 255, 0.04) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  padding: 20px 16px !important;
-  border-radius: 20px !important;
-}
-
-body.light.pwa-active .deposit-card {
-  background: #FFFFFF !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04) !important;
-}
-
-body.pwa-active .deposit-card-title {
-  color: var(--text-primary) !important;
-  font-size: 18px !important;
-  font-weight: 800 !important;
-}
-
-body.pwa-active .deposit-card-subtitle {
-  color: var(--text-secondary) !important;
-  font-size: 13px !important;
-}
-
-/* Currency Tabs */
-body.pwa-active .currency-tabs {
-  background: rgba(0, 0, 0, 0.2) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-}
-
-body.light.pwa-active .currency-tabs {
-  background: #F5F5F7 !important;
-  border: 1px solid rgba(0, 0, 0, 0.06) !important;
-}
-
-body.pwa-active .currency-tab {
-  color: var(--text-secondary) !important;
-}
-
-body.pwa-active .currency-tab.active {
-  background: linear-gradient(135deg, #FFD54F, #FFC107) !important;
-  color: #0B0E11 !important;
-}
-
-/* Network Tabs */
-body.pwa-active #networkTabs,
-body.pwa-active .network-tabs {
-  display: grid !important;
-  grid-template-columns: repeat(3, 1fr) !important;
-  gap: 8px !important;
-  padding: 0 !important;
-  background: transparent !important;
-  border: none !important;
-  margin-bottom: 16px !important;
-}
-
-body.pwa-active .network-tab {
-  padding: 12px 8px !important;
-  font-size: 13px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.5px;
-  border-radius: 12px !important;
-  min-height: 46px !important;
-  background: rgba(255, 255, 255, 0.06) !important;
-  color: var(--text-secondary) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-body.light.pwa-active .network-tab {
-  background: #F5F5F7 !important;
-  color: #4B5563 !important;
-  border: 1px solid #E5E7EB !important;
-}
-
-body.pwa-active .network-tab.active {
-  background: linear-gradient(135deg, #FFD54F, #FFC107) !important;
-  color: #0B0E11 !important;
-  border-color: transparent !important;
-  box-shadow: 0 4px 16px rgba(255, 193, 7, 0.35);
-}
-
-/* Info List */
-body.pwa-active .info-list {
-  background: rgba(255, 255, 255, 0.04) !important;
-  border: 1px solid rgba(255, 255, 255, 0.06) !important;
-  padding: 4px 16px !important;
-  border-radius: 14px !important;
-  margin-top: 12px !important;
-}
-
-body.light.pwa-active .info-list {
-  background: #FAFAFB !important;
-  border: 1px solid #E5E7EB !important;
-}
-
-body.pwa-active .info-row {
-  padding: 12px 0 !important;
-  font-size: 13px !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-}
-
-body.light.pwa-active .info-row {
-  border-bottom-color: #F0F0F2 !important;
-}
-
-body.pwa-active .info-row:last-child {
-  border-bottom: none !important;
-}
-
-body.pwa-active .info-label {
-  color: var(--text-secondary) !important;
-  font-weight: 500;
-}
-
-body.pwa-active .info-value {
-  color: var(--text-primary) !important;
-  font-weight: 700 !important;
-}
-
-/* Address Block */
-body.pwa-active .address-label {
-  color: var(--text-secondary) !important;
-  font-size: 12px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  margin-bottom: 10px !important;
-}
-
-body.pwa-active .address-value {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 10px !important;
-  padding: 14px 16px !important;
-  background: rgba(255, 255, 255, 0.04) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  border-radius: 14px !important;
-  align-items: stretch !important;
-}
-
-body.light.pwa-active .address-value {
-  background: #FAFAFB !important;
-  border: 1px solid #E5E7EB !important;
-}
-
-body.pwa-active .address-value #addressValue {
-  font-family: var(--font-mono) !important;
-  font-size: 12px !important;
-  color: var(--text-primary) !important;
-  line-height: 1.7;
-  word-break: break-all;
-  letter-spacing: 0.3px;
-  padding: 6px 0;
-  font-weight: 500;
-}
-
-body.pwa-active .copy-btn {
-  width: 100% !important;
-  justify-content: center !important;
-  padding: 12px !important;
-  font-size: 13px !important;
-  font-weight: 800;
-  border-radius: 10px !important;
-  min-height: 44px;
-  background: rgba(255, 193, 7, 0.12) !important;
-  color: var(--pwa-gold) !important;
-  border: 1px solid rgba(255, 193, 7, 0.25) !important;
-}
-
-body.light.pwa-active .copy-btn {
-  background: rgba(245, 127, 23, 0.08) !important;
-  color: #F57F17 !important;
-  border-color: rgba(245, 127, 23, 0.25) !important;
-}
-
-body.pwa-active .copy-btn:active {
-  background: var(--pwa-gold) !important;
-  color: #0B0E11 !important;
-}
-
-/* Warnings */
-body.pwa-active .warning-box {
-  padding: 14px 16px !important;
-  border-radius: 14px !important;
-  font-size: 12px !important;
-  line-height: 1.6;
-  gap: 10px;
-  align-items: flex-start;
-  margin-bottom: 12px;
-}
-
-body.pwa-active .warning-box.danger {
-  background: rgba(255, 82, 82, 0.08) !important;
-  border: 1px solid rgba(255, 82, 82, 0.25) !important;
-  color: #FF8A80 !important;
-}
-
-body.light.pwa-active .warning-box.danger {
-  background: rgba(220, 38, 38, 0.06) !important;
-  border-color: rgba(220, 38, 38, 0.2) !important;
-  color: #DC2626 !important;
-}
-
-body.pwa-active .warning-box.warning {
-  background: rgba(255, 193, 7, 0.08) !important;
-  border: 1px solid rgba(255, 193, 7, 0.25) !important;
-  color: #FFD54F !important;
-}
-
-body.light.pwa-active .warning-box.warning {
-  background: rgba(245, 127, 23, 0.06) !important;
-  border-color: rgba(245, 127, 23, 0.2) !important;
-  color: #E65100 !important;
-}
-
-body.pwa-active .warning-box.info {
-  background: rgba(68, 138, 255, 0.08) !important;
-  border: 1px solid rgba(68, 138, 255, 0.25) !important;
-  color: #82B1FF !important;
-}
-
-body.light.pwa-active .warning-box.info {
-  background: rgba(30, 136, 229, 0.06) !important;
-  border-color: rgba(30, 136, 229, 0.2) !important;
-  color: #1565C0 !important;
-}
-
-body.pwa-active .warning-box svg {
-  width: 18px !important;
-  height: 18px !important;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-/* Balance Card (Withdraw) */
-body.pwa-active .balance-info-card {
-  padding: 18px 16px !important;
-  border-radius: 16px !important;
-  margin-bottom: 20px !important;
-  background: linear-gradient(135deg, rgba(255, 193, 7, 0.12), rgba(255, 193, 7, 0.04)) !important;
-  border: 1px solid rgba(255, 193, 7, 0.25) !important;
-}
-
-body.light.pwa-active .balance-info-card {
-  background: linear-gradient(135deg, rgba(245, 127, 23, 0.08), rgba(245, 127, 23, 0.02)) !important;
-  border: 1px solid rgba(245, 127, 23, 0.2) !important;
-}
-
-body.pwa-active .balance-info-label {
-  font-size: 11px !important;
-  font-weight: 700;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  color: var(--text-secondary) !important;
-  margin-bottom: 8px;
-}
-
-body.pwa-active .balance-info-value {
-  font-size: 28px !important;
-  font-weight: 800 !important;
-  letter-spacing: -1.2px;
-  color: var(--pwa-gold) !important;
-}
-
-body.light.pwa-active .balance-info-value {
-  color: #E65100 !important;
-}
-
-body.pwa-active .balance-info-value small {
-  font-size: 14px !important;
-  opacity: 0.8;
-}
-
-/* Form Fields */
-body.pwa-active .field-label {
-  color: var(--text-primary) !important;
-  font-size: 13px !important;
-  font-weight: 700;
-  margin-bottom: 8px !important;
-}
-
-body.pwa-active .field-input {
-  padding: 14px 16px !important;
-  font-size: 15px !important;
-  font-weight: 500;
-  border-radius: 14px !important;
-  min-height: 50px;
-  background: rgba(255, 255, 255, 0.05) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: var(--text-primary) !important;
-}
-
-body.light.pwa-active .field-input {
-  background: #FAFAFB !important;
-  border: 1px solid #E5E7EB !important;
-  color: #0B0E11 !important;
-}
-
-body.pwa-active .field-input:focus {
-  border-color: var(--pwa-gold) !important;
-  background: rgba(255, 193, 7, 0.05) !important;
-  box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1) !important;
-}
-
-body.light.pwa-active .field-input:focus {
-  background: #FFFFFF !important;
-}
-
-body.pwa-active .field-hint {
-  color: var(--text-secondary) !important;
-  font-size: 11px !important;
-  margin-top: 6px;
-}
-
-/* Amount Input */
-body.pwa-active .amount-input-wrap {
-  display: flex !important;
-  align-items: center !important;
-  position: relative;
-}
-
-body.pwa-active .amount-input-wrap .field-input {
-  padding-right: 80px !important;
-  font-size: 18px !important;
-  font-weight: 800;
-  letter-spacing: -0.3px;
-}
-
-body.pwa-active .amount-input-tag {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 6px 12px;
-  background: rgba(255, 193, 7, 0.15);
-  color: var(--pwa-gold);
-  font-size: 12px;
-  font-weight: 800;
-  border-radius: 8px;
-  letter-spacing: 0.5px;
-  border: 1px solid rgba(255, 193, 7, 0.25);
-}
-
-body.light.pwa-active .amount-input-tag {
-  background: rgba(245, 127, 23, 0.1);
-  color: #E65100;
-  border-color: rgba(245, 127, 23, 0.2);
-}
-
-/* Max Button */
-body.pwa-active .max-btn {
-  font-size: 11px !important;
-  padding: 5px 12px !important;
-  border-radius: 8px !important;
-  font-weight: 800;
-  background: rgba(255, 193, 7, 0.15);
-  color: var(--pwa-gold);
-  border: 1px solid rgba(255, 193, 7, 0.25);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-body.light.pwa-active .max-btn {
-  background: rgba(245, 127, 23, 0.1);
-  color: #E65100;
-  border-color: rgba(245, 127, 23, 0.2);
-}
-
-body.pwa-active .max-btn:active {
-  background: var(--pwa-gold);
-  color: #0B0E11;
-}
-
-/* Submit Button */
-body.pwa-active #submitBtn,
-body.pwa-active .trade-submit {
-  padding: 16px 20px !important;
-  font-size: 15px !important;
-  font-weight: 800 !important;
-  border-radius: 14px !important;
-  min-height: 54px;
-  margin-top: 20px !important;
-  background: linear-gradient(135deg, #FFD54F, #FFC107) !important;
-  color: #0B0E11 !important;
-  border: none !important;
-  box-shadow: 0 4px 16px rgba(255, 193, 7, 0.35) !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-body.pwa-active #submitBtn:active,
-body.pwa-active .trade-submit:active {
-  transform: scale(0.98);
-}
-
-/* Recent Withdrawals */
-body.pwa-active .recent-withdrawals {
-  margin-top: 24px !important;
-  padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-body.light.pwa-active .recent-withdrawals {
-  border-top-color: #F0F0F2;
-}
-
-body.pwa-active .recent-title {
-  color: var(--text-primary) !important;
-  font-size: 15px !important;
-  font-weight: 800;
-  margin-bottom: 14px;
-}
-
-body.pwa-active .withdrawals-empty {
-  padding: 30px 20px;
-  text-align: center;
-  color: var(--text-tertiary) !important;
-  font-size: 13px;
-}
-
-/* Confirm Modal */
-body.pwa-active .confirm-modal {
-  background: rgba(0, 0, 0, 0.6) !important;
-  backdrop-filter: blur(8px);
-}
-
-body.pwa-active .confirm-modal-content {
-  background: #181A20 !important;
-  padding: 24px 20px !important;
-  border-radius: 24px !important;
-  margin: 16px !important;
-  max-width: calc(100% - 32px) !important;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-}
-
-body.light.pwa-active .confirm-modal-content {
-  background: #FFFFFF !important;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-}
-
-body.pwa-active .confirm-modal-title {
-  color: var(--text-primary) !important;
-  font-size: 19px !important;
-  font-weight: 800;
-}
-
-body.pwa-active .confirm-modal-subtitle {
-  color: var(--text-secondary) !important;
-  font-size: 13px !important;
-}
-
-body.pwa-active .confirm-modal-details {
-  background: rgba(255, 255, 255, 0.04) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  padding: 16px !important;
-  border-radius: 16px !important;
-}
-
-body.light.pwa-active .confirm-modal-details {
-  background: #FAFAFB !important;
-  border-color: #E5E7EB !important;
-}
-
-body.pwa-active .confirm-modal-row {
-  color: var(--text-secondary) !important;
-  padding: 10px 0 !important;
-  font-size: 13px !important;
-}
-
-body.pwa-active .confirm-modal-row span:last-child {
-  color: var(--text-primary) !important;
-  font-weight: 700;
-}
-
-body.pwa-active .confirm-modal-actions .btn-secondary {
-  background: rgba(255, 255, 255, 0.06) !important;
-  color: var(--text-primary) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-body.light.pwa-active .confirm-modal-actions .btn-secondary {
-  background: #F5F5F7 !important;
-  color: #0B0E11 !important;
-  border-color: #E5E7EB !important;
 }

@@ -169,7 +169,6 @@
 
 .p2p-ad-card:hover::before { opacity: 1; }
 
-/* --- Seller Row --- */
 .p2p-ad-seller {
   display: flex;
   align-items: center;
@@ -231,7 +230,6 @@
 
 .p2p-trust-score svg { width: 12px; height: 12px; }
 
-/* --- Ad Details --- */
 .p2p-ad-divider { height: 1px; background: var(--border-subtle); margin: var(--space-4) 0; }
 
 .p2p-ad-rows { display: flex; flex-direction: column; gap: var(--space-3); margin-bottom: var(--space-4); }
@@ -249,7 +247,6 @@
 
 .p2p-ad-value.gold { color: var(--gold); font-size: 15px; font-weight: 800; }
 
-/* --- Ad Action --- */
 .p2p-ad-action {
   display: flex;
   align-items: center;
@@ -292,7 +289,6 @@
 .p2p-form-title { font-size: 18px; font-weight: 800; margin-bottom: var(--space-2); letter-spacing: -0.3px; }
 .p2p-form-subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: var(--space-6); }
 
-/* --- Field --- */
 .p2p-field { margin-bottom: var(--space-4); }
 
 .p2p-field-label {
@@ -360,7 +356,6 @@
 
 .p2p-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
 
-/* --- Summary Box --- */
 .p2p-summary-box {
   background: var(--bg-tertiary);
   border: 1px solid var(--border-subtle);
@@ -395,7 +390,6 @@
 
 .p2p-summary-row.total span:last-child { color: var(--gold); font-size: 17px; }
 
-/* --- Submit Button --- */
 .p2p-submit-btn {
   width: 100%;
   padding: 16px;
@@ -528,7 +522,7 @@
 .p2p-timer svg { width: 16px; height: 16px; }
 .p2p-timer-value { font-family: var(--font-mono); font-size: 15px; margin-left: auto; }
 
-/* ─── Loading Spinner ─── */
+/* ─── Loading ─── */
 .p2p-loading {
   display: flex;
   align-items: center;
@@ -555,7 +549,7 @@
 }
 
 /* ═══════════════════════════════════════
-   P2P Modal (جایگزین prompt زشت)
+   P2P Modal — FIXED (Sticky Footer)
    ═══════════════════════════════════════ */
 
 .p2p-modal-overlay {
@@ -567,7 +561,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 16px;
   z-index: 9999;
   animation: fadeIn 0.2s ease;
 }
@@ -578,8 +572,10 @@
   border-radius: 20px;
   width: 100%;
   max-width: 460px;
-  max-height: 90vh;
-  overflow-y: auto;
+  max-height: calc(100vh - 32px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   animation: fadeInUp 0.25s ease;
 }
@@ -588,11 +584,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 24px;
+  padding: 18px 22px;
   border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  background: var(--bg-secondary);
 }
 
-.p2p-modal-header h3 { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; }
+.p2p-modal-header h3 { font-size: 17px; font-weight: 800; letter-spacing: -0.3px; }
 
 .p2p-modal-close {
   width: 32px;
@@ -610,39 +608,44 @@
 .p2p-modal-close:hover { background: var(--bg-hover); color: var(--text-primary); }
 .p2p-modal-close svg { width: 18px; height: 18px; }
 
-.p2p-modal-body { padding: 24px; }
+.p2p-modal-body {
+  padding: 20px 22px;
+  overflow-y: auto;
+  flex: 1 1 auto;
+  -webkit-overflow-scrolling: touch;
+}
 
 .p2p-modal-seller {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px;
+  padding: 12px;
   background: var(--bg-tertiary);
   border-radius: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .p2p-modal-info {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
-.p2p-modal-info > div { padding: 10px 14px; background: var(--bg-tertiary); border-radius: 10px; }
+.p2p-modal-info > div { padding: 10px 12px; background: var(--bg-tertiary); border-radius: 10px; }
 
 .p2p-modal-info span {
   display: block;
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .p2p-modal-info strong {
   display: block;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-primary);
   font-weight: 700;
   font-family: var(--font-mono);
@@ -650,14 +653,16 @@
 
 .p2p-modal-footer {
   display: flex;
-  gap: 12px;
-  padding: 20px 24px;
+  gap: 10px;
+  padding: 16px 22px;
   border-top: 1px solid var(--border-subtle);
+  background: var(--bg-secondary);
+  flex-shrink: 0;
 }
 
 .p2p-btn-secondary {
   flex: 1;
-  padding: 14px;
+  padding: 13px;
   border-radius: 12px;
   background: var(--bg-tertiary);
   color: var(--text-primary);
@@ -672,7 +677,7 @@
 
 .p2p-btn-primary {
   flex: 1;
-  padding: 14px;
+  padding: 13px;
   border-radius: 12px;
   background: var(--gold);
   color: var(--text-inverse);
@@ -700,4 +705,7 @@
   .p2p-tabs { max-width: 100%; }
   .p2p-tab { font-size: 13px; padding: 10px 8px; }
   .p2p-modal-info { grid-template-columns: 1fr; }
+  .p2p-modal-body { padding: 16px; }
+  .p2p-modal-header { padding: 14px 16px; }
+  .p2p-modal-footer { padding: 12px 16px; }
 }
