@@ -3,9 +3,10 @@
    ═══════════════════════════════════════ */
 
 const P2P = {
-  // ⚠️ این رو با شماره واقعی Hesab Pay صرافی عوض کن!
-  ARYANA_ESCROW_HESAB_PAY: '0700-000-0000',
-  ARYANA_ESCROW_NAME: 'ARYANA CURRENCY',
+  // مقادیر از /public/payment-info لود می‌شن
+  escrowHesabPay: '',
+  escrowName: 'ARYANA CURRENCY',
+  escrowLoaded: false,
 
   state: {
     side: 'BUY',
@@ -27,6 +28,8 @@ const P2P = {
       return;
     }
 
+    await this.loadEscrowSettings();
+
     this.setupHeader();
     this.setupThemeToggle();
 
@@ -44,6 +47,25 @@ const P2P = {
       this.setupTabs();
       this.setupFilterButton();
       await Promise.all([this.loadStats(), this.loadAds()]);
+    }
+  },
+
+  async loadEscrowSettings() {
+    try {
+      const settings = await API.getPublicPaymentInfo();
+
+      // ← از فیلدهای PaymentInfoRead در بک‌اند
+      this.escrowHesabPay = settings.hesab_pay || '';
+      this.escrowName = settings.hesab_pay_holder || 'ARYANA CURRENCY';
+      this.escrowLoaded = true;
+
+      console.log('✅ Escrow settings loaded:', this.escrowHesabPay, '|', this.escrowName);
+    } catch (err) {
+      console.warn('⚠️ Failed to load escrow settings:', err);
+      // Fallback
+      this.escrowHesabPay = '0700-000-0000';
+      this.escrowName = 'ARYANA CURRENCY';
+      this.escrowLoaded = true;
     }
   },
 
@@ -77,7 +99,6 @@ const P2P = {
   // ═══════════════════════════════════════
 
   showToast(message, type = 'info', duration = 3000) {
-    // حذف toast قدیمی
     document.querySelectorAll('.p2p-toast').forEach(t => t.remove());
 
     const icons = {
@@ -99,8 +120,7 @@ const P2P = {
 
     document.body.appendChild(toast);
 
-    const closeBtn = toast.querySelector('.p2p-toast-close');
-    closeBtn.addEventListener('click', () => {
+    toast.querySelector('.p2p-toast-close').addEventListener('click', () => {
       toast.classList.add('p2p-toast-out');
       setTimeout(() => toast.remove(), 300);
     });
@@ -496,7 +516,7 @@ const P2P = {
     submitBtn.innerHTML = '<div class="p2p-spinner" style="border-top-color:var(--text-inverse);"></div><span>Creating...</span>';
 
     try {
-      const ad = await API.createP2PAd({
+      await API.createP2PAd({
         side: 'SELL',
         total_amount: totalAmount,
         rate_afn_per_usdt: rate,
@@ -581,7 +601,6 @@ const P2P = {
     const showReviewSection = isBuyer && order.status === 'PAYMENT_REVIEW';
     const showCompleted = order.status === 'COMPLETED';
 
-    // اگر پرداخت قبلاً ثبت شده، Reference رو پیش‌پر کن
     const existingRef = order.buyer_payment_reference || '';
     const existingNote = order.buyer_note || '';
 
@@ -689,8 +708,8 @@ const P2P = {
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--gold); font-weight:700; margin-bottom:8px;">Pay To ARYANA Escrow</div>
           <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
             <div>
-              <div style="font-family:var(--font-mono); font-size:20px; font-weight:800; color:var(--text-primary); letter-spacing:1px;" id="escrowAddress">${this.ARYANA_ESCROW_HESAB_PAY}</div>
-              <div style="font-size:12px; color:var(--text-secondary); margin-top:4px;">${this.ARYANA_ESCROW_NAME}</div>
+              <div style="font-family:var(--font-mono); font-size:20px; font-weight:800; color:var(--text-primary); letter-spacing:1px;" id="escrowAddress">${this.escapeHtml(this.escrowHesabPay)}</div>
+              <div style="font-size:12px; color:var(--text-secondary); margin-top:4px;">${this.escapeHtml(this.escrowName)}</div>
             </div>
             <button type="button" class="p2p-filter-btn" id="copyAddressBtn" style="flex-shrink:0;">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -774,8 +793,6 @@ const P2P = {
   async cancelOrder() {
     const order = this.state.currentOrder;
     if (!order) return;
-
-    // Modal تأیید به جای confirm() زشت
     if (!confirm('Are you sure you want to cancel this order?')) return;
 
     try {
@@ -930,13 +947,6 @@ const P2P = {
   escapeHtml(str) {
     if (!str) return '';
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-  },
-
-  showAlert(box, type, msg) {
-    if (!box) return;
-    box.style.display = 'block';
-    box.className = `p2p-alert ${type}`;
-    box.innerHTML = `<span>${this.escapeHtml(msg)}</span>`;
   },
 };
 

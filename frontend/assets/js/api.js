@@ -136,6 +136,10 @@ const API = {
     return this.request('/public/payment-info', { skipAuth: true });
   },
 
+  getPublicPaymentInfo() {
+    return this.request('/public/payment-info', { skipAuth: true });
+  },
+
   getContactInfo() {
     return this.request('/public/contact-info', { skipAuth: true });
   },

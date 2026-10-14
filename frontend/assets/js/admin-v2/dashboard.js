@@ -43,6 +43,7 @@ async function loadAll() {
       loadPendingOrders(),
       loadKycStats(),
       loadWithdrawalStats(),
+      loadP2PStats(),
     ]);
 
     document.getElementById('loadingBox').style.display = 'none';
@@ -129,8 +130,42 @@ async function loadWithdrawalStats() {
     }
   } catch (err) {
     console.error('Withdrawal stats load failed:', err);
-    // اگه endpoint نبود، صفر بذار
     setText('statWithdrawalsPending', '0');
+  }
+}
+
+/* ═══════════════════════════════════════
+              P2P Stats
+   ═══════════════════════════════════════ */
+
+async function loadP2PStats() {
+  try {
+    const [pending, disputed] = await Promise.all([
+      API.getAdminP2PPendingReview().catch(() => []),
+      API.getAdminP2PDisputed().catch(() => []),
+    ]);
+
+    const totalPending = pending.length + disputed.length;
+
+    // Badge توی sidebar
+    const badge = document.getElementById('countP2P');
+    if (badge) {
+      if (totalPending > 0) {
+        badge.textContent = totalPending;
+        badge.style.display = 'inline-block';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+
+    // Stat cards
+    setText('statP2PPending', pending.length);
+    setText('statP2PDisputed', disputed.length);
+
+  } catch (err) {
+    console.error('P2P stats load failed:', err);
+    setText('statP2PPending', '0');
+    setText('statP2PDisputed', '0');
   }
 }
 
