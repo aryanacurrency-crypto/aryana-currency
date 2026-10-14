@@ -5,6 +5,10 @@ Endpoints:
 - Ads: ساخت، لیست، جزئیات، ویرایش، لغو
 - Orders: ساخت، پرداخت، لغو، اختلاف
 - Admin: تأیید، رد، حل اختلاف
+
+⚠️ نکته مهم درباره ترتیب endpointها:
+   routeهای ثابت (مثل /reputation/me) باید قبل از
+   routeهای پویا (مثل /reputation/{user_id}) تعریف بشن.
 """
 
 from decimal import Decimal
@@ -467,31 +471,7 @@ def get_stats(db: Session = Depends(get_db)):
     return dt_service.get_ad_stats(db)
 
 
-@router.get("/reputation/{user_id}", response_model=UserReputationPublic)
-def get_user_reputation(
-    user_id: int,
-    db: Session = Depends(get_db),
-):
-    """اطلاعات اعتبار کاربر."""
-    user = db.query(User).filter(User.id == user_id).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="کاربر یافت نشد")
-
-    rep = db.query(UserReputation).filter(
-        UserReputation.user_id == user_id
-    ).first()
-
-    return UserReputationPublic(
-        user_id=user_id,
-        full_name=user.full_name,
-        trust_score=rep.trust_score if rep and rep.trust_score is not None else 50,
-        completed_trades=rep.completed_trades if rep and rep.completed_trades is not None else 0,
-        is_verified=user.is_verified,
-        is_blocked=rep.is_blocked if rep and rep.is_blocked is not None else False,
-    )
-
-
-# ═══ این Endpoint رو کاملاً بازنویسی کردیم ═══
+# ⚠️⚠️⚠️ ترتیب مهم: /reputation/me باید قبل از /reputation/{user_id} باشه ⚠️⚠️⚠️
 @router.get("/reputation/me")
 def get_my_reputation(
     db: Session = Depends(get_db),
@@ -501,8 +481,6 @@ def get_my_reputation(
     اعتبار من — بدون response_model و بدون وابستگی به service.
 
     همه فیلدها با مقدار پیش‌فرض امن برگردانده می‌شن.
-    حتی اگه رکورد در دیتابیس وجود نداشته باشه یا فیلدها None باشن،
-    این تابع به‌صورت مستقیم مقادیر امن برمی‌گردونه.
     """
     try:
         rep = db.query(UserReputation).filter(
@@ -549,7 +527,6 @@ def get_my_reputation(
             f"get_my_reputation error:\n{traceback.format_exc()}"
         )
 
-        # حتی در صورت خطا، مقادیر پیش‌فرض برمی‌گردونیم تا فرانت خراب نشه
         return {
             "user_id": int(current_user.id),
             "total_trades": 0,
@@ -564,6 +541,31 @@ def get_my_reputation(
             "is_blocked": False,
             "updated_at": None,
         }
+
+
+# ⚠️ این باید بعد از /reputation/me باشه
+@router.get("/reputation/{user_id}", response_model=UserReputationPublic)
+def get_user_reputation(
+    user_id: int,
+    db: Session = Depends(get_db),
+):
+    """اطلاعات اعتبار کاربر."""
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="کاربر یافت نشد")
+
+    rep = db.query(UserReputation).filter(
+        UserReputation.user_id == user_id
+    ).first()
+
+    return UserReputationPublic(
+        user_id=user_id,
+        full_name=user.full_name,
+        trust_score=rep.trust_score if rep and rep.trust_score is not None else 50,
+        completed_trades=rep.completed_trades if rep and rep.completed_trades is not None else 0,
+        is_verified=user.is_verified,
+        is_blocked=rep.is_blocked if rep and rep.is_blocked is not None else False,
+    )
 
 
 # ═══════════════════════════════════════════════════════
