@@ -3,17 +3,14 @@
    ═══════════════════════════════════════ */
 
 const P2P = {
-  // State
   state: {
     side: 'BUY',
     ads: [],
     stats: null,
-    filters: {
-      minAmount: null,
-      maxAmount: null,
-    },
+    filters: { minAmount: null, maxAmount: null },
     currentOrder: null,
     timerInterval: null,
+    selectedAd: null,
   },
 
   // ═══════════════════════════════════════
@@ -29,7 +26,6 @@ const P2P = {
     this.setupHeader();
     this.setupThemeToggle();
 
-    // Detect page
     const path = window.location.pathname;
 
     if (path.includes('create-ad')) {
@@ -41,7 +37,6 @@ const P2P = {
     } else if (path.includes('my-orders')) {
       this.initMyOrdersPage();
     } else {
-      // index.html
       this.setupTabs();
       this.setupFilterButton();
       await Promise.all([this.loadStats(), this.loadAds()]);
@@ -56,10 +51,7 @@ const P2P = {
       if (avatar) avatar.textContent = (user.full_name || user.email || 'U')[0].toUpperCase();
       if (name) name.textContent = user.full_name || user.email || 'User';
     }
-
-    document.getElementById('logoutBtn')?.addEventListener('click', () => {
-      Auth.logout();
-    });
+    document.getElementById('logoutBtn')?.addEventListener('click', () => Auth.logout());
   },
 
   setupThemeToggle() {
@@ -77,7 +69,7 @@ const P2P = {
   },
 
   // ═══════════════════════════════════════
-  //           INDEX PAGE — Tabs
+  //           INDEX PAGE
   // ═══════════════════════════════════════
 
   setupTabs() {
@@ -95,32 +87,24 @@ const P2P = {
   setupFilterButton() {
     const btn = document.getElementById('filterBtn');
     if (!btn) return;
-
     btn.addEventListener('click', () => {
       const minStr = prompt('Minimum amount (USDT):', this.state.filters.minAmount || '');
       if (minStr === null) return;
       const maxStr = prompt('Maximum amount (USDT):', this.state.filters.maxAmount || '');
       if (maxStr === null) return;
-
       this.state.filters.minAmount = minStr ? parseFloat(minStr) : null;
       this.state.filters.maxAmount = maxStr ? parseFloat(maxStr) : null;
       this.loadAds();
     });
   },
 
-  // ═══════════════════════════════════════
-  //              Load Stats
-  // ═══════════════════════════════════════
-
   async loadStats() {
     try {
       const stats = await API.getP2PStats();
       this.state.stats = stats;
-
       const adsEl = document.getElementById('statAds');
       const tradesEl = document.getElementById('statTrades');
       const volEl = document.getElementById('statVolume');
-
       if (adsEl) adsEl.textContent = stats.active_ads || 0;
       if (tradesEl) tradesEl.textContent = stats.completed_orders || 0;
       if (volEl) volEl.textContent = this.formatNumber(stats.total_volume_usdt || 0, 0);
@@ -129,20 +113,10 @@ const P2P = {
     }
   },
 
-  // ═══════════════════════════════════════
-  //              Load Ads
-  // ═══════════════════════════════════════
-
   async loadAds() {
     const container = document.getElementById('adsContainer');
     if (!container) return;
-
-    container.innerHTML = `
-      <div class="p2p-loading">
-        <div class="p2p-spinner"></div>
-        <span>Loading ads...</span>
-      </div>
-    `;
+    container.innerHTML = `<div class="p2p-loading"><div class="p2p-spinner"></div><span>Loading ads...</span></div>`;
 
     try {
       const params = {
@@ -157,23 +131,13 @@ const P2P = {
       this.renderAds();
     } catch (err) {
       console.error('Failed to load ads:', err);
-      container.innerHTML = `
-        <div class="p2p-alert danger">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="12" y1="8" x2="12" y2="12"/>
-            <line x1="12" y1="16" x2="12.01" y2="16"/>
-          </svg>
-          <span>Failed to load ads. Please try again.</span>
-        </div>
-      `;
+      container.innerHTML = `<div class="p2p-alert danger"><span>Failed to load ads.</span></div>`;
     }
   },
 
   renderAds() {
     const container = document.getElementById('adsContainer');
     if (!container) return;
-
     const ads = this.state.ads;
 
     if (!ads.length) {
@@ -183,8 +147,6 @@ const P2P = {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
               <circle cx="9" cy="7" r="4"/>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
             </svg>
           </div>
           <h3>No ads available</h3>
@@ -201,7 +163,7 @@ const P2P = {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         const adId = parseInt(btn.dataset.adId);
-        this.openOrderModal(adId);
+        this.openBuyModal(adId);
       });
     });
   },
@@ -209,13 +171,11 @@ const P2P = {
   renderAdCard(ad) {
     const sideClass = ad.side === 'SELL' ? 'sell' : 'buy';
     const actionText = ad.side === 'SELL' ? 'Buy' : 'Sell';
-
     const sellerName = ad.seller_full_name || 'Anonymous';
     const initials = sellerName[0].toUpperCase();
     const trustScore = ad.seller_trust_score || 50;
     const completedTrades = ad.completed_trades || 0;
     const verified = ad.seller_is_verified;
-
     const available = this.formatNumber(ad.available_amount, 2);
     const rate = this.formatNumber(ad.rate_afn_per_usdt, 2);
     const minOrder = this.formatNumber(ad.min_order_usdt, 2);
@@ -223,8 +183,7 @@ const P2P = {
 
     const verifiedIcon = verified ? `
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M9 12l2 2 4-4"/>
-        <circle cx="12" cy="12" r="10"/>
+        <path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/>
       </svg>
     ` : '';
 
@@ -234,92 +193,130 @@ const P2P = {
           <div class="p2p-seller-info">
             <div class="p2p-seller-avatar">${initials}</div>
             <div>
-              <div class="p2p-seller-name">
-                ${this.escapeHtml(sellerName)}
-                ${verifiedIcon}
-              </div>
+              <div class="p2p-seller-name">${this.escapeHtml(sellerName)}${verifiedIcon}</div>
               <div class="p2p-seller-trades">${completedTrades} trades</div>
             </div>
           </div>
           <div class="p2p-trust-score">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             ${trustScore}%
           </div>
         </div>
-
         <div class="p2p-ad-divider"></div>
-
         <div class="p2p-ad-rows">
-          <div class="p2p-ad-row">
-            <span class="p2p-ad-label">Available</span>
-            <span class="p2p-ad-value">${available} USDT</span>
-          </div>
-          <div class="p2p-ad-row">
-            <span class="p2p-ad-label">Rate</span>
-            <span class="p2p-ad-value gold">${rate} AFN</span>
-          </div>
-          <div class="p2p-ad-row">
-            <span class="p2p-ad-label">Order Range</span>
-            <span class="p2p-ad-value">${minOrder} - ${maxOrder}</span>
-          </div>
+          <div class="p2p-ad-row"><span class="p2p-ad-label">Available</span><span class="p2p-ad-value">${available} USDT</span></div>
+          <div class="p2p-ad-row"><span class="p2p-ad-label">Rate</span><span class="p2p-ad-value gold">${rate} AFN</span></div>
+          <div class="p2p-ad-row"><span class="p2p-ad-label">Order Range</span><span class="p2p-ad-value">${minOrder} - ${maxOrder}</span></div>
         </div>
-
         <div class="p2p-ad-action">
           <div class="p2p-ad-method">
-            <svg class="p2p-ad-method-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-              <line x1="1" y1="10" x2="23" y2="10"/>
-            </svg>
+            <svg class="p2p-ad-method-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
             ${this.escapeHtml(ad.payment_method || 'Hesab Pay')}
           </div>
-          <button class="p2p-ad-buy-btn" data-ad-id="${ad.id}">
-            ${actionText}
-          </button>
+          <button class="p2p-ad-buy-btn" data-ad-id="${ad.id}">${actionText}</button>
         </div>
       </div>
     `;
   },
 
-  openOrderModal(adId) {
+  // ═══════════════════════════════════════
+  //          Buy Modal (شیک)
+  // ═══════════════════════════════════════
+
+  openBuyModal(adId) {
     const ad = this.state.ads.find(a => a.id === adId);
-    if (!ad) {
-      alert('Ad not found');
-      return;
-    }
+    if (!ad) return;
+    this.state.selectedAd = ad;
 
     const maxAvailable = Math.min(ad.max_order_usdt, ad.available_amount);
 
-    const amountStr = prompt(
-      `Enter amount of USDT to ${ad.side === 'SELL' ? 'buy' : 'sell'}:\n` +
-      `Min: ${this.formatNumber(ad.min_order_usdt, 2)}\n` +
-      `Max: ${this.formatNumber(maxAvailable, 2)}`
-    );
+    const modal = document.createElement('div');
+    modal.className = 'p2p-modal-overlay';
+    modal.id = 'p2pBuyModal';
+    modal.innerHTML = `
+      <div class="p2p-modal">
+        <div class="p2p-modal-header">
+          <h3>Buy USDT</h3>
+          <button class="p2p-modal-close" id="p2pModalClose">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
 
-    if (amountStr === null) return;
+        <div class="p2p-modal-body">
+          <div class="p2p-modal-seller">
+            <div class="p2p-seller-avatar">${(ad.seller_full_name || 'A')[0].toUpperCase()}</div>
+            <div>
+              <div class="p2p-seller-name">${this.escapeHtml(ad.seller_full_name || 'Anonymous')}</div>
+              <div class="p2p-seller-trades">${ad.completed_trades || 0} trades · ⭐ ${ad.seller_trust_score || 50}%</div>
+            </div>
+          </div>
 
-    const amount = parseFloat(amountStr);
-    if (isNaN(amount) || amount <= 0) {
-      alert('Please enter a valid amount');
-      return;
-    }
+          <div class="p2p-modal-info">
+            <div><span>Rate</span><strong>${this.formatNumber(ad.rate_afn_per_usdt, 2)} AFN</strong></div>
+            <div><span>Available</span><strong>${this.formatNumber(ad.available_amount, 2)} USDT</strong></div>
+            <div><span>Min</span><strong>${this.formatNumber(ad.min_order_usdt, 2)} USDT</strong></div>
+            <div><span>Max</span><strong>${this.formatNumber(maxAvailable, 2)} USDT</strong></div>
+          </div>
 
-    if (amount < ad.min_order_usdt) {
-      alert(`Minimum order is ${ad.min_order_usdt} USDT`);
-      return;
-    }
+          <div class="p2p-field">
+            <div class="p2p-field-label">
+              <span>Amount to Buy</span>
+              <span class="p2p-field-hint" id="amountHint">${this.formatNumber(ad.min_order_usdt, 2)} - ${this.formatNumber(maxAvailable, 2)} USDT</span>
+            </div>
+            <div class="p2p-field-input-wrap">
+              <input type="text" id="buyAmountInput" class="p2p-field-input" inputmode="decimal" placeholder="0" autocomplete="off">
+              <div class="p2p-field-suffix">USDT</div>
+            </div>
+          </div>
 
-    if (amount > ad.max_order_usdt) {
-      alert(`Maximum order is ${ad.max_order_usdt} USDT`);
-      return;
-    }
+          <div class="p2p-summary-box" id="buySummaryBox" style="display:none;">
+            <div class="p2p-summary-row"><span>You Receive</span><span id="sumYouReceive">—</span></div>
+            <div class="p2p-summary-row"><span>Total Payment</span><span id="sumTotalPay">—</span></div>
+            <div class="p2p-summary-row"><span>Platform Fee</span><span id="sumFee">—</span></div>
+          </div>
 
-    if (amount > ad.available_amount) {
-      alert(`Only ${ad.available_amount} USDT available`);
-      return;
-    }
+          <div class="p2p-alert danger" id="modalAlert" style="display:none;"></div>
+        </div>
 
+        <div class="p2p-modal-footer">
+          <button class="p2p-btn-secondary" id="p2pModalCancel">Cancel</button>
+          <button class="p2p-btn-primary" id="p2pModalConfirm">Continue</button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    const input = document.getElementById('buyAmountInput');
+    const summaryBox = document.getElementById('buySummaryBox');
+
+    input.focus();
+
+    input.addEventListener('input', () => {
+      const amount = parseFloat(input.value) || 0;
+      if (amount > 0) {
+        this.updateBuySummary(amount, ad);
+        summaryBox.style.display = 'block';
+      } else {
+        summaryBox.style.display = 'none';
+      }
+    });
+
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') this.confirmBuyModal();
+    });
+
+    document.getElementById('p2pModalClose').onclick = () => this.closeBuyModal();
+    document.getElementById('p2pModalCancel').onclick = () => this.closeBuyModal();
+    document.getElementById('p2pModalConfirm').onclick = () => this.confirmBuyModal();
+    modal.addEventListener('click', (e) => { if (e.target === modal) this.closeBuyModal(); });
+  },
+
+  closeBuyModal() {
+    document.getElementById('p2pBuyModal')?.remove();
+  },
+
+  updateBuySummary(amount, ad) {
     const rate = parseFloat(ad.rate_afn_per_usdt);
     const feePct = this.getFeePercent(amount);
     const sellerFee = amount * (feePct / 100);
@@ -328,27 +325,57 @@ const P2P = {
     const buyerFeeAfn = baseAfn * (feePct / 100);
     const totalPay = baseAfn + buyerFeeAfn;
 
-    const confirmMsg =
-      `Confirm order:\n\n` +
-      `Amount: ${amount.toFixed(2)} USDT\n` +
-      `Rate: ${rate.toFixed(2)} AFN\n` +
-      `You receive: ${buyerReceives.toFixed(2)} USDT\n` +
-      `You pay: ${this.formatNumber(totalPay, 2)} AFN\n\n` +
-      `Proceed?`;
-
-    if (!confirm(confirmMsg)) return;
-
-    this.createOrder(adId, amount);
+    document.getElementById('sumYouReceive').textContent = `${buyerReceives.toFixed(2)} USDT`;
+    document.getElementById('sumTotalPay').textContent = `${this.formatNumber(totalPay, 2)} AFN`;
+    document.getElementById('sumFee').textContent = `${feePct.toFixed(2)}%`;
   },
 
-  async createOrder(adId, amount) {
+  async confirmBuyModal() {
+    const ad = this.state.selectedAd;
+    if (!ad) return;
+
+    const input = document.getElementById('buyAmountInput');
+    const amount = parseFloat(input.value);
+    const maxAvailable = Math.min(ad.max_order_usdt, ad.available_amount);
+
+    if (isNaN(amount) || amount <= 0) {
+      this.showModalAlert('Please enter a valid amount');
+      return;
+    }
+    if (amount < ad.min_order_usdt) {
+      this.showModalAlert(`Minimum order is ${this.formatNumber(ad.min_order_usdt, 2)} USDT`);
+      return;
+    }
+    if (amount > maxAvailable) {
+      this.showModalAlert(`Maximum order is ${this.formatNumber(maxAvailable, 2)} USDT`);
+      return;
+    }
+
+    const btn = document.getElementById('p2pModalConfirm');
+    btn.disabled = true;
+    btn.innerHTML = '<div class="p2p-spinner" style="border-top-color:var(--text-inverse);width:14px;height:14px;"></div> Creating...';
+
     try {
-      const order = await API.createP2POrder(adId, amount);
+      const order = await API.createP2POrder(ad.id, amount);
       window.location.href = `order.html?id=${order.id}`;
     } catch (err) {
       console.error('Create order failed:', err);
-      alert(err.detail || 'Failed to create order');
+      this.showModalAlert(err.detail || 'Failed to create order');
+      btn.disabled = false;
+      btn.textContent = 'Continue';
     }
+  },
+
+  showModalAlert(msg) {
+    const box = document.getElementById('modalAlert');
+    if (!box) return;
+    box.style.display = 'flex';
+    box.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <span>${this.escapeHtml(msg)}</span>
+    `;
   },
 
   // ═══════════════════════════════════════
@@ -359,8 +386,7 @@ const P2P = {
     const form = document.getElementById('createAdForm');
     if (!form) return;
 
-    const inputs = ['totalAmount', 'rate', 'minOrder', 'maxOrder'];
-    inputs.forEach(id => {
+    ['totalAmount', 'rate', 'minOrder', 'maxOrder'].forEach(id => {
       document.getElementById(id)?.addEventListener('input', () => this.updateCreateAdSummary());
     });
 
@@ -382,10 +408,7 @@ const P2P = {
     const sellerReceivesEl = document.getElementById('sumSellerReceives');
 
     if (!totalAmount || !rate) {
-      if (feePercentEl) feePercentEl.textContent = '—';
-      if (feeAmountEl) feeAmountEl.textContent = '—';
-      if (buyerReceivesEl) buyerReceivesEl.textContent = '—';
-      if (sellerReceivesEl) sellerReceivesEl.textContent = '—';
+      [feePercentEl, feeAmountEl, buyerReceivesEl, sellerReceivesEl].forEach(el => { if (el) el.textContent = '—'; });
       return;
     }
 
@@ -410,7 +433,6 @@ const P2P = {
     const maxOrder = parseFloat(document.getElementById('maxOrder')?.value) || 0;
     const terms = document.getElementById('terms')?.value || null;
 
-    // Validation
     const errors = [];
     if (totalAmount < 10) errors.push('Minimum amount is 10 USDT');
     if (rate <= 0) errors.push('Rate must be greater than 0');
@@ -424,10 +446,7 @@ const P2P = {
     }
 
     submitBtn.disabled = true;
-    submitBtn.innerHTML = `
-      <div class="p2p-spinner" style="border-top-color: var(--text-inverse);"></div>
-      <span>Creating...</span>
-    `;
+    submitBtn.innerHTML = '<div class="p2p-spinner" style="border-top-color:var(--text-inverse);"></div><span>Creating...</span>';
 
     try {
       const ad = await API.createP2PAd({
@@ -441,21 +460,11 @@ const P2P = {
       });
 
       this.showAlert(alertBox, 'success', 'Ad created successfully! Redirecting...');
-
-      setTimeout(() => {
-        window.location.href = 'my-ads.html';
-      }, 1200);
+      setTimeout(() => { window.location.href = 'my-ads.html'; }, 1200);
     } catch (err) {
-      console.error('Create ad failed:', err);
       this.showAlert(alertBox, 'danger', err.detail || 'Failed to create ad');
       submitBtn.disabled = false;
-      submitBtn.innerHTML = `
-        <span>Create Ad</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"/>
-          <polyline points="12 5 19 12 12 19"/>
-        </svg>
-      `;
+      submitBtn.innerHTML = '<span>Create Ad</span>';
     }
   },
 
@@ -471,7 +480,6 @@ const P2P = {
       this.showOrderError('Order ID not found');
       return;
     }
-
     await this.loadOrderDetail(orderId);
   },
 
@@ -482,10 +490,7 @@ const P2P = {
     try {
       const order = await API.getMyP2POrderDetail(orderId);
       this.state.currentOrder = order;
-
-      const refEl = document.getElementById('orderRef');
-      if (refEl) refEl.textContent = order.reference;
-
+      document.getElementById('orderRef').textContent = order.reference;
       this.renderOrderDetail(order);
       this.startTimer(order);
     } catch (err) {
@@ -500,7 +505,6 @@ const P2P = {
 
     const currentUserId = Auth.getUser()?.id;
     const isBuyer = order.buyer_id === currentUserId;
-    const isSeller = order.seller_id === currentUserId;
 
     const statusLabels = {
       'PENDING_PAYMENT': 'Awaiting Payment',
@@ -511,7 +515,6 @@ const P2P = {
       'EXPIRED': 'Expired',
       'DISPUTED': 'In Dispute',
     };
-
     const statusClasses = {
       'PENDING_PAYMENT': 'pending',
       'PAYMENT_REVIEW': 'review',
@@ -524,44 +527,27 @@ const P2P = {
 
     const statusLabel = statusLabels[order.status] || order.status;
     const statusClass = statusClasses[order.status] || 'pending';
-
-    // Timer (only for pending payment)
     const showTimer = order.status === 'PENDING_PAYMENT';
-
-    // Payment info section (only for buyer, only when PENDING_PAYMENT)
     const showPaymentSection = isBuyer && order.status === 'PENDING_PAYMENT';
-
-    // Payment review (buyer, after submit)
     const showReviewSection = isBuyer && order.status === 'PAYMENT_REVIEW';
-
-    // Seller waiting section
-    const showSellerWait = isSeller && (
-      order.status === 'PENDING_PAYMENT' ||
-      order.status === 'PAYMENT_REVIEW' ||
-      order.status === 'READY_TO_RELEASE'
-    );
-
-    // Completed section
     const showCompleted = order.status === 'COMPLETED';
 
     const html = `
-      <div style="max-width: 640px; margin: 0 auto;">
+      <div style="max-width:640px;margin:0 auto;">
 
         <div class="p2p-timer ${showTimer ? '' : 'danger'}" id="timerBox" style="${showTimer ? '' : 'display:none;'}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <polyline points="12 6 12 12 16 14"/>
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
           </svg>
           <span>Time remaining</span>
           <span class="p2p-timer-value" id="timerValue">--:--</span>
         </div>
 
-        <div class="p2p-form-card" style="max-width: 100%; margin-bottom: 16px;">
-
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div class="p2p-form-card" style="max-width:100%;margin-bottom:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
             <div>
-              <div style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Status</div>
-              <div style="font-size: 18px; font-weight: 800;">${statusLabel}</div>
+              <div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">Status</div>
+              <div style="font-size:18px;font-weight:800;">${statusLabel}</div>
             </div>
             <div class="p2p-status-badge ${statusClass}">${order.status.replace(/_/g, ' ')}</div>
           </div>
@@ -569,71 +555,38 @@ const P2P = {
           <div class="p2p-ad-divider"></div>
 
           <div class="p2p-ad-rows">
-            <div class="p2p-ad-row">
-              <span class="p2p-ad-label">Amount</span>
-              <span class="p2p-ad-value">${this.formatNumber(order.amount_usdt, 2)} USDT</span>
-            </div>
-            <div class="p2p-ad-row">
-              <span class="p2p-ad-label">Rate</span>
-              <span class="p2p-ad-value">${this.formatNumber(order.rate_afn_per_usdt, 2)} AFN</span>
-            </div>
-            <div class="p2p-ad-row">
-              <span class="p2p-ad-label">Buyer Receives</span>
-              <span class="p2p-ad-value gold">${this.formatNumber(order.buyer_receives_usdt, 2)} USDT</span>
-            </div>
-            <div class="p2p-ad-row">
-              <span class="p2p-ad-label">Total Payment</span>
-              <span class="p2p-ad-value">${this.formatNumber(order.total_payment_afn, 2)} AFN</span>
-            </div>
+            <div class="p2p-ad-row"><span class="p2p-ad-label">Amount</span><span class="p2p-ad-value">${this.formatNumber(order.amount_usdt, 2)} USDT</span></div>
+            <div class="p2p-ad-row"><span class="p2p-ad-label">Rate</span><span class="p2p-ad-value">${this.formatNumber(order.rate_afn_per_usdt, 2)} AFN</span></div>
+            <div class="p2p-ad-row"><span class="p2p-ad-label">Buyer Receives</span><span class="p2p-ad-value gold">${this.formatNumber(order.buyer_receives_usdt, 2)} USDT</span></div>
+            <div class="p2p-ad-row"><span class="p2p-ad-label">Total Payment</span><span class="p2p-ad-value">${this.formatNumber(order.total_payment_afn, 2)} AFN</span></div>
           </div>
 
           <div class="p2p-ad-divider"></div>
 
           <div class="p2p-ad-rows">
-            <div class="p2p-ad-row">
-              <span class="p2p-ad-label">Buyer</span>
-              <span class="p2p-ad-value">${this.escapeHtml(order.buyer_full_name || '—')} ${isBuyer ? '(You)' : ''}</span>
-            </div>
-            <div class="p2p-ad-row">
-              <span class="p2p-ad-label">Seller</span>
-              <span class="p2p-ad-value">${this.escapeHtml(order.seller_full_name || '—')} ${isSeller ? '(You)' : ''}</span>
-            </div>
+            <div class="p2p-ad-row"><span class="p2p-ad-label">Buyer</span><span class="p2p-ad-value">${this.escapeHtml(order.buyer_full_name || '—')} ${isBuyer ? '(You)' : ''}</span></div>
+            <div class="p2p-ad-row"><span class="p2p-ad-label">Seller</span><span class="p2p-ad-value">${this.escapeHtml(order.seller_full_name || '—')}</span></div>
           </div>
-
         </div>
 
         ${showPaymentSection ? this.renderPaymentSection(order) : ''}
 
         ${showReviewSection ? `
-          <div class="p2p-form-card" style="max-width: 100%;">
-            <div class="p2p-alert info" style="margin: 0;">
+          <div class="p2p-form-card" style="max-width:100%;">
+            <div class="p2p-alert info" style="margin:0;">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12 6 12 12 16 14"/>
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
               </svg>
               <span>Your payment is under review. Please wait for admin confirmation.</span>
             </div>
           </div>
         ` : ''}
 
-        ${showSellerWait ? `
-          <div class="p2p-form-card" style="max-width: 100%;">
-            <div class="p2p-alert warning" style="margin: 0;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12 6 12 12 16 14"/>
-              </svg>
-              <span>Waiting for buyer to complete payment.</span>
-            </div>
-          </div>
-        ` : ''}
-
         ${showCompleted ? `
-          <div class="p2p-form-card" style="max-width: 100%;">
-            <div class="p2p-alert success" style="margin: 0;">
+          <div class="p2p-form-card" style="max-width:100%;">
+            <div class="p2p-alert success" style="margin:0;">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
               </svg>
               <span>Trade completed successfully!</span>
             </div>
@@ -645,7 +598,6 @@ const P2P = {
 
     container.innerHTML = html;
 
-    // Attach event handlers
     if (showPaymentSection) {
       document.getElementById('submitPaymentBtn')?.addEventListener('click', () => this.submitPayment());
       document.getElementById('copyAddressBtn')?.addEventListener('click', () => this.copyAddress());
@@ -654,66 +606,69 @@ const P2P = {
   },
 
   renderPaymentSection(order) {
-    return `
-      <div class="p2p-form-card" style="max-width: 100%;">
+    // ⚠️ آدرس حساب امانی ARYANA - این رو با شماره واقعی عوض کن!
+    const ARYANA_HESAB_PAY = '0700-000-0000';
 
-        <div style="font-size: 15px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-          <span style="display: inline-flex; width: 24px; height: 24px; border-radius: 50%; background: var(--gold); color: var(--text-inverse); align-items: center; justify-content: center; font-size: 13px; font-weight: 800;">1</span>
+    return `
+      <div class="p2p-form-card" style="max-width:100%;">
+
+        <div style="font-size:15px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+          <span style="display:inline-flex;width:24px;height:24px;border-radius:50%;background:var(--gold);color:var(--text-inverse);align-items:center;justify-content:center;font-size:13px;font-weight:800;">1</span>
           Complete Your Payment
         </div>
 
         <div class="p2p-alert warning">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="12" y1="8" x2="12" y2="12"/>
-            <line x1="12" y1="16" x2="12.01" y2="16"/>
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
           </svg>
-          <span>Send exactly <strong>${this.formatNumber(order.total_payment_afn, 2)} AFN</strong> to the ARYANA escrow account below.</span>
+          <span>Send exactly <strong>${this.formatNumber(order.total_payment_afn, 2)} AFN</strong> to ARYANA escrow account below.</span>
         </div>
 
         <div class="p2p-summary-box">
           <div class="p2p-summary-row">
             <span>Amount to Pay</span>
-            <span style="color: var(--gold); font-weight: 800; font-size: 16px;">${this.formatNumber(order.total_payment_afn, 2)} AFN</span>
+            <span style="color:var(--gold);font-weight:800;font-size:16px;">${this.formatNumber(order.total_payment_afn, 2)} AFN</span>
           </div>
           <div class="p2p-summary-row">
             <span>Payment Method</span>
             <span>${this.escapeHtml(order.seller_payment_method || 'Hesab Pay')}</span>
           </div>
-          <div class="p2p-summary-row">
-            <span>Account</span>
-            <span style="font-family: var(--font-mono);">ARYANA ESCROW</span>
+        </div>
+
+        <!-- آدرس امانی ARYANA -->
+        <div style="background: linear-gradient(135deg, rgba(240,185,11,0.1), rgba(240,185,11,0.03)); border:1px solid rgba(240,185,11,0.3); border-radius:12px; padding:20px; margin-bottom:20px;">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--gold); font-weight:700; margin-bottom:8px;">Pay To ARYANA Escrow</div>
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+            <div>
+              <div style="font-family:var(--font-mono); font-size:20px; font-weight:800; color:var(--text-primary); letter-spacing:1px;" id="escrowAddress">${ARYANA_HESAB_PAY}</div>
+              <div style="font-size:12px; color:var(--text-secondary); margin-top:4px;">ARYANA CURRENCY</div>
+            </div>
+            <button type="button" class="p2p-filter-btn" id="copyAddressBtn" style="flex-shrink:0;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              Copy
+            </button>
+          </div>
+        </div>
+
+        <div style="font-size:15px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+          <span style="display:inline-flex;width:24px;height:24px;border-radius:50%;background:var(--gold);color:var(--text-inverse);align-items:center;justify-content:center;font-size:13px;font-weight:800;">2</span>
+          Submit Payment Proof
+        </div>
+
+        <div class="p2p-field">
+          <div class="p2p-field-label"><span>Payment Reference (TxID / Receipt #)</span></div>
+          <div class="p2p-field-input-wrap">
+            <input type="text" id="paymentReference" class="p2p-field-input" placeholder="Enter transaction reference" autocomplete="off">
           </div>
         </div>
 
         <div class="p2p-field">
-          <div class="p2p-field-label">
-            <span>Payment Reference (TxID / Receipt #)</span>
-          </div>
+          <div class="p2p-field-label"><span>Note (optional)</span></div>
           <div class="p2p-field-input-wrap">
-            <input
-              type="text"
-              id="paymentReference"
-              class="p2p-field-input"
-              placeholder="Enter transaction reference"
-              autocomplete="off"
-            >
-          </div>
-        </div>
-
-        <div class="p2p-field">
-          <div class="p2p-field-label">
-            <span>Note (optional)</span>
-          </div>
-          <div class="p2p-field-input-wrap">
-            <input
-              type="text"
-              id="paymentNote"
-              class="p2p-field-input"
-              placeholder="Additional info"
-              maxlength="200"
-              autocomplete="off"
-            >
+            <input type="text" id="paymentNote" class="p2p-field-input" placeholder="Additional info" maxlength="200" autocomplete="off">
           </div>
         </div>
 
@@ -724,11 +679,24 @@ const P2P = {
           </svg>
         </button>
 
-        <button type="button" class="p2p-filter-btn" id="cancelOrderBtn" style="width: 100%; justify-content: center; margin-top: 12px;">
+        <button type="button" class="p2p-filter-btn" id="cancelOrderBtn" style="width:100%;justify-content:center;margin-top:12px;">
           Cancel Order
         </button>
       </div>
     `;
+  },
+
+  copyAddress() {
+    const addr = document.getElementById('escrowAddress')?.textContent;
+    if (!addr) return;
+    navigator.clipboard.writeText(addr).then(() => {
+      const btn = document.getElementById('copyAddressBtn');
+      if (btn) {
+        const original = btn.innerHTML;
+        btn.innerHTML = '<span style="color:var(--green);">✓ Copied!</span>';
+        setTimeout(() => { btn.innerHTML = original; }, 1500);
+      }
+    });
   },
 
   async submitPayment() {
@@ -745,7 +713,7 @@ const P2P = {
 
     const btn = document.getElementById('submitPaymentBtn');
     btn.disabled = true;
-    btn.innerHTML = `<div class="p2p-spinner" style="border-top-color: var(--text-inverse);"></div><span>Submitting...</span>`;
+    btn.innerHTML = '<div class="p2p-spinner" style="border-top-color:var(--text-inverse);"></div><span>Submitting...</span>';
 
     try {
       await API.submitP2PPayment(order.id, ref, note);
@@ -755,14 +723,13 @@ const P2P = {
       console.error('Submit payment failed:', err);
       alert(err.detail || 'Failed to submit payment');
       btn.disabled = false;
-      btn.innerHTML = `<span>I've Paid</span>`;
+      btn.innerHTML = '<span>I\'ve Paid</span>';
     }
   },
 
   async cancelOrder() {
     const order = this.state.currentOrder;
     if (!order) return;
-
     if (!confirm('Are you sure you want to cancel this order?')) return;
 
     try {
@@ -782,7 +749,6 @@ const P2P = {
     const tick = () => {
       const now = Date.now();
       const diff = expiresAt - now;
-
       const timerValue = document.getElementById('timerValue');
       const timerBox = document.getElementById('timerBox');
 
@@ -797,10 +763,7 @@ const P2P = {
       const mins = Math.floor(diff / 60000);
       const secs = Math.floor((diff % 60000) / 1000);
       if (timerValue) timerValue.textContent = `${mins}:${String(secs).padStart(2, '0')}`;
-
-      if (diff < 120000 && timerBox) {
-        timerBox.classList.add('danger');
-      }
+      if (diff < 120000 && timerBox) timerBox.classList.add('danger');
     };
 
     tick();
@@ -810,27 +773,17 @@ const P2P = {
   showOrderError(msg) {
     const container = document.getElementById('orderContainer');
     if (container) {
-      container.innerHTML = `
-        <div class="p2p-alert danger">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="12" y1="8" x2="12" y2="12"/>
-            <line x1="12" y1="16" x2="12.01" y2="16"/>
-          </svg>
-          <span>${this.escapeHtml(msg)}</span>
-        </div>
-      `;
+      container.innerHTML = `<div class="p2p-alert danger"><span>${this.escapeHtml(msg)}</span></div>`;
     }
   },
 
   // ═══════════════════════════════════════
-  //           MY ADS / MY ORDERS (placeholders)
+  //           MY ADS / MY ORDERS
   // ═══════════════════════════════════════
 
   async initMyAdsPage() {
     const container = document.getElementById('myAdsContainer');
     if (!container) return;
-
     try {
       const ads = await API.getMyP2PAds();
       this.renderMyAds(ads || []);
@@ -842,15 +795,11 @@ const P2P = {
   renderMyAds(ads) {
     const container = document.getElementById('myAdsContainer');
     if (!container) return;
-
     if (!ads.length) {
       container.innerHTML = `
         <div class="p2p-empty">
           <div class="p2p-empty-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
           </div>
           <h3>No ads yet</h3>
           <p>You haven't created any ads.</p>
@@ -859,14 +808,12 @@ const P2P = {
       `;
       return;
     }
-
     container.innerHTML = `<div class="p2p-list">${ads.map(ad => this.renderAdCard(ad)).join('')}</div>`;
   },
 
   async initMyOrdersPage() {
     const container = document.getElementById('myOrdersContainer');
     if (!container) return;
-
     try {
       const orders = await API.getMyP2POrders();
       this.renderMyOrders(orders || []);
@@ -878,15 +825,11 @@ const P2P = {
   renderMyOrders(orders) {
     const container = document.getElementById('myOrdersContainer');
     if (!container) return;
-
     if (!orders.length) {
       container.innerHTML = `
         <div class="p2p-empty">
           <div class="p2p-empty-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
           </div>
           <h3>No orders yet</h3>
           <p>You haven't made any P2P orders.</p>
@@ -895,7 +838,6 @@ const P2P = {
       `;
       return;
     }
-
     container.innerHTML = `<div class="p2p-orders-list">${orders.map(o => this.renderOrderCard(o)).join('')}</div>`;
   },
 
@@ -917,14 +859,8 @@ const P2P = {
           <span class="p2p-status-badge ${statusClass}">${order.status.replace(/_/g, ' ')}</span>
         </div>
         <div class="p2p-ad-rows">
-          <div class="p2p-ad-row">
-            <span class="p2p-ad-label">Amount</span>
-            <span class="p2p-ad-value">${this.formatNumber(order.amount_usdt, 2)} USDT</span>
-          </div>
-          <div class="p2p-ad-row">
-            <span class="p2p-ad-label">Total</span>
-            <span class="p2p-ad-value gold">${this.formatNumber(order.total_payment_afn, 2)} AFN</span>
-          </div>
+          <div class="p2p-ad-row"><span class="p2p-ad-label">Amount</span><span class="p2p-ad-value">${this.formatNumber(order.amount_usdt, 2)} USDT</span></div>
+          <div class="p2p-ad-row"><span class="p2p-ad-label">Total</span><span class="p2p-ad-value gold">${this.formatNumber(order.total_payment_afn, 2)} AFN</span></div>
         </div>
       </a>
     `;
@@ -942,39 +878,21 @@ const P2P = {
 
   formatNumber(value, decimals = 2) {
     const num = parseFloat(value) || 0;
-    return num.toLocaleString('en-US', {
-      minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals,
-    });
+    return num.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
   },
 
   escapeHtml(str) {
     if (!str) return '';
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   },
 
   showAlert(box, type, msg) {
     if (!box) return;
     box.style.display = 'block';
     box.className = `p2p-alert ${type}`;
-    box.innerHTML = `
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <line x1="12" y1="16" x2="12" y2="12"/>
-        <line x1="12" y1="8" x2="12.01" y2="8"/>
-      </svg>
-      <span>${this.escapeHtml(msg)}</span>
-    `;
+    box.innerHTML = `<span>${this.escapeHtml(msg)}</span>`;
   },
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-  P2P.init();
-});
-
+document.addEventListener('DOMContentLoaded', () => { P2P.init(); });
 window.P2P = P2P;
