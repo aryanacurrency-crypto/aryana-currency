@@ -661,7 +661,7 @@
 .p2p-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
 
 /* ═══════════════════════════════════════
-   Confirm Dialog (شیک)
+   Confirm Dialog
    ═══════════════════════════════════════ */
 
 .p2p-confirm-overlay {
@@ -795,22 +795,26 @@
 .p2p-confirm-btn.success:hover { background: #0eb876; transform: translateY(-1px); }
 
 /* ═══════════════════════════════════════
-   Admin Action Buttons (شیک)
+   Admin Action Buttons — FIXED SVG SIZE
    ═══════════════════════════════════════ */
 
 .p2p-admin-actions {
-  display: flex;
+  display: flex !important;
   gap: 12px;
   flex-wrap: wrap;
 }
 
 .p2p-admin-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 22px;
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+
+  padding: 14px 22px !important;
   border-radius: 14px;
-  font-size: 14px;
+
+  font-size: 14px !important;
   font-weight: 700;
   font-family: inherit;
   border: none;
@@ -819,12 +823,22 @@
   letter-spacing: 0.2px;
   position: relative;
   overflow: hidden;
+  line-height: 1 !important;
+  white-space: nowrap;
+  text-decoration: none;
 }
 
+/* ═══ مهم: فیکس کردن اندازه SVG ═══ */
 .p2p-admin-btn svg {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+  max-width: 18px !important;
+  max-height: 18px !important;
+  flex-shrink: 0 !important;
+  display: block !important;
+  stroke-width: 2.5 !important;
 }
 
 .p2p-admin-btn::before {
@@ -838,6 +852,7 @@
   background: rgba(255, 255, 255, 0.15);
   transform: translate(-50%, -50%);
   transition: width 0.4s ease, height 0.4s ease;
+  pointer-events: none;
 }
 
 .p2p-admin-btn:active::before {
@@ -856,9 +871,7 @@
   box-shadow: 0 8px 24px rgba(14, 203, 129, 0.4);
 }
 
-.p2p-admin-btn.success:active {
-  transform: translateY(0);
-}
+.p2p-admin-btn.success:active { transform: translateY(0); }
 
 .p2p-admin-btn.danger {
   background: linear-gradient(135deg, #F6465D 0%, #C73049 100%);
@@ -871,9 +884,7 @@
   box-shadow: 0 8px 24px rgba(246, 70, 93, 0.4);
 }
 
-.p2p-admin-btn.danger:active {
-  transform: translateY(0);
-}
+.p2p-admin-btn.danger:active { transform: translateY(0); }
 
 .p2p-admin-btn.outline {
   background: transparent;
