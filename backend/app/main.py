@@ -19,14 +19,32 @@ app = FastAPI(
     description="صرافی دیجیتال آریانا — API",
 )
 
-if settings.cors_origins_list:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=settings.cors_origins_list,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+# ═══════════════════════════════════════
+#              CORS — همیشه فعال
+# ═══════════════════════════════════════
+
+# دامنه‌های پیش‌فرض (اگه Environment Variable نباشه، از اینا استفاده می‌شه)
+DEFAULT_CORS_ORIGINS = [
+    "https://aryana-currency.vercel.app",
+    "https://www.aryana-currency.vercel.app",
+    "http://localhost:3000",
+    "http://localhost:5500",
+    "http://localhost:8000",
+    "http://127.0.0.1:5500",
+    "http://127.0.0.1:8000",
+]
+
+# اگه توی .env یا Environment Variable ست شده باشه، از اون استفاده کن
+cors_origins = settings.cors_origins_list or DEFAULT_CORS_ORIGINS
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=cors_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["*"],
+)
 
 API_V1_PREFIX = "/api/v1"
 app.include_router(auth_router.router, prefix=API_V1_PREFIX)
