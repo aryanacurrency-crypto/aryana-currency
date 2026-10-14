@@ -27,32 +27,12 @@ class DirectTradeAdCreate(BaseModel):
         default=DirectTradeAdSide.SELL,
         description="نوع آگهی: SELL (فروش تتر) یا BUY (خرید تتر)"
     )
-    total_amount: Decimal = Field(
-        gt=0,
-        description="مقدار کل تتر برای فروش"
-    )
-    rate_afn_per_usdt: Decimal = Field(
-        gt=0,
-        description="نرخ تبدیل (افغانی به ازای هر تتر)"
-    )
-    min_order_usdt: Decimal = Field(
-        default=Decimal("10"),
-        gt=0,
-        description="حداقل مقدار خرید برای هر سفارش"
-    )
-    max_order_usdt: Decimal = Field(
-        gt=0,
-        description="حداکثر مقدار خرید برای هر سفارش"
-    )
-    payment_method: str = Field(
-        default="Hesab Pay",
-        max_length=50
-    )
-    terms: str | None = Field(
-        default=None,
-        max_length=1000,
-        description="شرایط اختیاری فروشنده"
-    )
+    total_amount: Decimal = Field(gt=0, description="مقدار کل تتر برای فروش")
+    rate_afn_per_usdt: Decimal = Field(gt=0, description="نرخ تبدیل (افغانی به ازای هر تتر)")
+    min_order_usdt: Decimal = Field(default=Decimal("10"), gt=0, description="حداقل مقدار خرید برای هر سفارش")
+    max_order_usdt: Decimal = Field(gt=0, description="حداکثر مقدار خرید برای هر سفارش")
+    payment_method: str = Field(default="Hesab Pay", max_length=50)
+    terms: str | None = Field(default=None, max_length=1000, description="شرایط اختیاری فروشنده")
 
 
 class DirectTradeAdUpdate(BaseModel):
@@ -70,43 +50,25 @@ class DirectTradeAdRead(BaseModel):
     id: int
     seller_id: int
     side: DirectTradeAdSide
-
-    # مقادیر
     total_amount: Decimal
     available_amount: Decimal
     locked_amount: Decimal
-
-    # نرخ
     rate_afn_per_usdt: Decimal
-
-    # محدودیت‌ها
     min_order_usdt: Decimal
     max_order_usdt: Decimal
-
-    # پرداخت
     payment_method: str
     terms: str | None = None
-
-    # وضعیت
     status: DirectTradeAdStatus
-
-    # آمار
-    total_trades: int
-    completed_trades: int
-
-    # زمان‌ها
+    total_trades: int = 0
+    completed_trades: int = 0
     created_at: datetime
     updated_at: datetime
 
 
 class DirectTradeAdWithSeller(BaseModel):
-    """
-    آگهی همراه با اطلاعات فروشنده.
-    برای نمایش در لیست خریدار.
-    """
+    """آگهی همراه با اطلاعات فروشنده."""
     model_config = ConfigDict(from_attributes=True)
 
-    # آگهی
     id: int
     side: DirectTradeAdSide
     available_amount: Decimal
@@ -117,8 +79,8 @@ class DirectTradeAdWithSeller(BaseModel):
     payment_method: str
     terms: str | None = None
     status: DirectTradeAdStatus
-    total_trades: int
-    completed_trades: int
+    total_trades: int = 0
+    completed_trades: int = 0
     created_at: datetime
 
     # فروشنده (اطلاعات عمومی فقط)
@@ -135,10 +97,7 @@ class DirectTradeAdWithSeller(BaseModel):
 class DirectTradeOrderCreate(BaseModel):
     """ورودی ساخت سفارش جدید (خریدار)."""
     ad_id: int = Field(gt=0)
-    amount_usdt: Decimal = Field(
-        gt=0,
-        description="مقدار تتر درخواستی (قبل از کسر کمیسیون)"
-    )
+    amount_usdt: Decimal = Field(gt=0, description="مقدار تتر درخواستی (قبل از کسر کمیسیون)")
 
 
 class DirectTradeOrderRead(BaseModel):
@@ -147,54 +106,39 @@ class DirectTradeOrderRead(BaseModel):
 
     id: int
     reference: str
-
-    # ارتباط‌ها
     ad_id: int
     buyer_id: int
     seller_id: int
 
-    # مقادیر اصلی
     amount_usdt: Decimal
     rate_afn_per_usdt: Decimal
 
-    # کمیسیون‌ها
     seller_fee_percent: Decimal
     buyer_fee_percent: Decimal
-
-    # مبالغ محاسبه‌شده (USDT)
     seller_fee_usdt: Decimal
     buyer_receives_usdt: Decimal
 
-    # مبالغ محاسبه‌شده (AFN)
     base_amount_afn: Decimal
     buyer_fee_afn: Decimal
     total_payment_afn: Decimal
     seller_receives_afn: Decimal
 
-    # وضعیت
     status: DirectTradeOrderStatus
 
-    # اطلاعات پرداخت خریدار
     buyer_payment_reference: str | None = None
     buyer_payment_proof: str | None = None
     buyer_note: str | None = None
 
-    # تأیید ادمین
     admin_note: str | None = None
     reviewed_at: datetime | None = None
-
-    # آزادسازی
     released_at: datetime | None = None
 
-    # اختلاف
     dispute_reason: str | None = None
     dispute_opened_at: datetime | None = None
     dispute_decision: str | None = None
 
-    # تایمر
     expires_at: datetime
 
-    # زمان‌ها
     created_at: datetime
     paid_at: datetime | None = None
     completed_at: datetime | None = None
@@ -202,27 +146,19 @@ class DirectTradeOrderRead(BaseModel):
 
 
 class DirectTradeOrderWithDetails(BaseModel):
-    """
-    سفارش با اطلاعات کامل خریدار و فروشنده.
-    برای صفحه معامله فعال.
-    """
+    """سفارش با اطلاعات کامل خریدار و فروشنده."""
     model_config = ConfigDict(from_attributes=True)
 
-    # سفارش
     id: int
     reference: str
     ad_id: int
 
-    # ═══ Buyer/Seller IDs (اضافه شد) ═══
     buyer_id: int
     seller_id: int
-    # ══════════════════════════════════
 
-    # مقدار و نرخ
     amount_usdt: Decimal
     rate_afn_per_usdt: Decimal
 
-    # کمیسیون‌ها و مبالغ
     seller_fee_usdt: Decimal
     buyer_receives_usdt: Decimal
     base_amount_afn: Decimal
@@ -230,28 +166,22 @@ class DirectTradeOrderWithDetails(BaseModel):
     total_payment_afn: Decimal
     seller_receives_afn: Decimal
 
-    # وضعیت
     status: DirectTradeOrderStatus
 
-    # اطلاعات پرداخت
     buyer_payment_reference: str | None = None
     buyer_payment_proof: str | None = None
     buyer_note: str | None = None
 
-    # تایمر
     expires_at: datetime
 
-    # زمان‌ها
     created_at: datetime
     paid_at: datetime | None = None
     completed_at: datetime | None = None
 
-    # اطلاعات خریدار
     buyer_full_name: str | None = None
     buyer_is_verified: bool = False
     buyer_trust_score: int = 50
 
-    # اطلاعات فروشنده
     seller_full_name: str | None = None
     seller_is_verified: bool = False
     seller_trust_score: int = 50
@@ -260,16 +190,8 @@ class DirectTradeOrderWithDetails(BaseModel):
 
 class DirectTradePaymentSubmit(BaseModel):
     """ورودی خریدار بعد از پرداخت."""
-    payment_reference: str = Field(
-        min_length=3,
-        max_length=120,
-        description="شماره رسید یا TXID"
-    )
-    payment_proof: str | None = Field(
-        default=None,
-        max_length=255,
-        description="لینک/آدرس عکس رسید (اختیاری)"
-    )
+    payment_reference: str = Field(min_length=3, max_length=120, description="شماره رسید یا TXID")
+    payment_proof: str | None = Field(default=None, max_length=255, description="لینک/آدرس عکس رسید (اختیاری)")
     note: str | None = Field(default=None, max_length=500)
 
 
@@ -290,24 +212,13 @@ class DirectTradeOrderCancel(BaseModel):
 
 class DirectTradeDisputeCreate(BaseModel):
     """باز کردن اختلاف."""
-    reason: str = Field(
-        min_length=10,
-        max_length=1000,
-        description="دلیل اختلاف"
-    )
-    evidence: str | None = Field(
-        default=None,
-        max_length=500,
-        description="لینک مدارک (اختیاری)"
-    )
+    reason: str = Field(min_length=10, max_length=1000, description="دلیل اختلاف")
+    evidence: str | None = Field(default=None, max_length=500, description="لینک مدارک (اختیاری)")
 
 
 class DirectTradeDisputeResolve(BaseModel):
     """ادمین برای حل اختلاف."""
-    decision: str = Field(
-        pattern="^(BUYER|SELLER)$",
-        description="تصمیم: BUYER (به نفع خریدار) یا SELLER (به نفع فروشنده)"
-    )
+    decision: str = Field(pattern="^(BUYER|SELLER)$", description="تصمیم: BUYER یا SELLER")
     admin_note: str = Field(min_length=3, max_length=1000)
 
 
@@ -329,8 +240,8 @@ class DirectTradeMessageRead(BaseModel):
     order_id: int
     sender_id: int
     message: str
-    is_system: bool
-    is_read: bool
+    is_system: bool = False
+    is_read: bool = False
     created_at: datetime
 
 
@@ -344,23 +255,21 @@ class UserReputationRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     user_id: int
-    total_trades: int
-    completed_trades: int
-    cancelled_trades: int
-    disputed_trades: int
-    positive_ratings: int
-    negative_ratings: int
-    trust_score: int
-    avg_response_time: int
-    is_verified: bool
-    is_blocked: bool
-    updated_at: datetime
+    total_trades: int = 0
+    completed_trades: int = 0
+    cancelled_trades: int = 0
+    disputed_trades: int = 0
+    positive_ratings: int = 0
+    negative_ratings: int = 0
+    trust_score: int = 50
+    avg_response_time: int = 0
+    is_verified: bool = False
+    is_blocked: bool = False
+    updated_at: datetime | None = None
 
 
 class UserReputationPublic(BaseModel):
-    """
-    اطلاعات عمومی اعتبار کاربر (برای نمایش به دیگران).
-    """
+    """اطلاعات عمومی اعتبار کاربر (برای نمایش به دیگران)."""
     user_id: int
     full_name: str | None = None
     trust_score: int = 50

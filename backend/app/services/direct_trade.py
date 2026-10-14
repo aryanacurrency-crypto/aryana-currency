@@ -34,18 +34,18 @@ from app.models.enums import (
 from app.services import ledger as ledger_service
 
 
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 #                    CONSTANTS
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 
 ORDER_EXPIRY_MINUTES = 15
 MIN_AD_AMOUNT_USDT = Decimal("10")
 MAX_AD_AMOUNT_USDT = Decimal("100000")
 
 
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 #               Reference Generator
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 
 
 def generate_order_reference() -> str:
@@ -55,9 +55,9 @@ def generate_order_reference() -> str:
     return f"DT-{year}-{short}"
 
 
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 #               Fee Calculation
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 
 
 def calculate_fee_percent(amount_usdt: Decimal) -> Decimal:
@@ -144,9 +144,9 @@ def calculate_trade(
     }
 
 
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 #               Reputation
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 
 
 def get_or_create_reputation(db: Session, user_id: int) -> UserReputation:
@@ -156,9 +156,43 @@ def get_or_create_reputation(db: Session, user_id: int) -> UserReputation:
     ).first()
 
     if not rep:
-        rep = UserReputation(user_id=user_id)
+        rep = UserReputation(
+            user_id=user_id,
+            total_trades=0,
+            completed_trades=0,
+            cancelled_trades=0,
+            disputed_trades=0,
+            positive_ratings=0,
+            negative_ratings=0,
+            trust_score=50,
+            avg_response_time=0,
+            is_verified=False,
+            is_blocked=False,
+        )
         db.add(rep)
         db.flush()
+
+    # اطمینان از اینکه هیچ فیلدی None نباشه
+    if rep.total_trades is None:
+        rep.total_trades = 0
+    if rep.completed_trades is None:
+        rep.completed_trades = 0
+    if rep.cancelled_trades is None:
+        rep.cancelled_trades = 0
+    if rep.disputed_trades is None:
+        rep.disputed_trades = 0
+    if rep.positive_ratings is None:
+        rep.positive_ratings = 0
+    if rep.negative_ratings is None:
+        rep.negative_ratings = 0
+    if rep.trust_score is None:
+        rep.trust_score = 50
+    if rep.avg_response_time is None:
+        rep.avg_response_time = 0
+    if rep.is_verified is None:
+        rep.is_verified = False
+    if rep.is_blocked is None:
+        rep.is_blocked = False
 
     return rep
 
@@ -171,7 +205,7 @@ def recalculate_trust_score(rep: UserReputation) -> int:
     - پایه: 50
     - +5 به ازای هر معامله موفق (حداکثر +30)
     - -20 به ازای هر اختلاف باخته
-    - -10 به ازای هر لغو بعد پرداخت
+    - -10 به ازای هر لغو
     - +10 اگر verified
     - 0 اگر blocked
     """
@@ -181,14 +215,14 @@ def recalculate_trust_score(rep: UserReputation) -> int:
     score = 50
 
     # پاداش معاملات موفق
-    completed_bonus = min(rep.completed_trades * 5, 30)
+    completed_bonus = min((rep.completed_trades or 0) * 5, 30)
     score += completed_bonus
 
     # جریمه اختلافات
-    score -= rep.disputed_trades * 20
+    score -= (rep.disputed_trades or 0) * 20
 
     # جریمه لغوها
-    score -= rep.cancelled_trades * 10
+    score -= (rep.cancelled_trades or 0) * 10
 
     # پاداش verify
     if rep.is_verified:
@@ -201,22 +235,22 @@ def recalculate_trust_score(rep: UserReputation) -> int:
 def update_reputation_on_complete(db: Session, user_id: int) -> None:
     """آپدیت اعتبار بعد از معامله موفق."""
     rep = get_or_create_reputation(db, user_id)
-    rep.total_trades += 1
-    rep.completed_trades += 1
+    rep.total_trades = (rep.total_trades or 0) + 1
+    rep.completed_trades = (rep.completed_trades or 0) + 1
     rep.trust_score = recalculate_trust_score(rep)
 
 
 def update_reputation_on_cancel(db: Session, user_id: int) -> None:
     """آپدیت اعتبار بعد از لغو."""
     rep = get_or_create_reputation(db, user_id)
-    rep.total_trades += 1
-    rep.cancelled_trades += 1
+    rep.total_trades = (rep.total_trades or 0) + 1
+    rep.cancelled_trades = (rep.cancelled_trades or 0) + 1
     rep.trust_score = recalculate_trust_score(rep)
 
 
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 #                   AD — Create
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 
 
 def create_ad(
@@ -312,9 +346,9 @@ def create_ad(
     return ad
 
 
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 #                   AD — Cancel
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 
 
 def cancel_ad(db: Session, ad: DirectTradeAd, seller: User) -> DirectTradeAd:
@@ -366,9 +400,9 @@ def cancel_ad(db: Session, ad: DirectTradeAd, seller: User) -> DirectTradeAd:
     return ad
 
 
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 #                   ORDER — Create
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 
 
 def create_order(
@@ -466,9 +500,9 @@ def create_order(
     return order
 
 
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 #                   ORDER — Submit Payment
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 
 
 def submit_payment(
@@ -515,9 +549,9 @@ def submit_payment(
     return order
 
 
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 #           ORDER — Complete (Release Escrow)
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 
 
 def complete_order(
@@ -583,8 +617,8 @@ def complete_order(
     # 2. آپدیت آگهی
     ad.locked_amount -= order.amount_usdt
     ad.available_amount -= order.amount_usdt
-    ad.total_trades += 1
-    ad.completed_trades += 1
+    ad.total_trades = (ad.total_trades or 0) + 1
+    ad.completed_trades = (ad.completed_trades or 0) + 1
 
     if ad.available_amount <= 0:
         ad.status = DirectTradeAdStatus.COMPLETED
@@ -592,7 +626,6 @@ def complete_order(
     # 3. ثبت در دفتر کل
     tx_id = ledger_service.new_transaction_id()
 
-    # فروشنده تتر می‌ده
     ledger_service.record_entry(
         db, tx_id,
         ledger_service.user_wallet_account(order.seller_id),
@@ -603,7 +636,6 @@ def complete_order(
         description=f"فروش تتر در معامله {order.reference}",
     )
 
-    # خریدار تتر می‌گیرد
     ledger_service.record_entry(
         db, tx_id,
         ledger_service.user_wallet_account(order.buyer_id),
@@ -614,7 +646,6 @@ def complete_order(
         description=f"خرید تتر در معامله {order.reference}",
     )
 
-    # کمیسیون فروشنده به پلتفرم (USDT)
     if order.seller_fee_usdt > 0:
         ledger_service.record_entry(
             db, tx_id,
@@ -625,7 +656,6 @@ def complete_order(
             description=f"کمیسیون فروشنده — {order.reference}",
         )
 
-    # چک توازن USDT
     if not ledger_service.verify_balance(db, tx_id):
         db.rollback()
         raise HTTPException(
@@ -651,9 +681,9 @@ def complete_order(
     return order
 
 
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 #                   ORDER — Cancel
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 
 
 def cancel_order(
@@ -662,10 +692,7 @@ def cancel_order(
     user: User,
     reason: str | None = None,
 ) -> DirectTradeOrder:
-    """
-    لغو سفارش توسط خریدار یا فروشنده.
-    تتر قفل‌شده آزاد می‌شود.
-    """
+    """لغو سفارش توسط خریدار یا فروشنده."""
     if order.buyer_id != user.id and order.seller_id != user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -696,16 +723,13 @@ def cancel_order(
     return order
 
 
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 #                   ORDER — Expire Stale
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 
 
 def expire_stale_orders(db: Session) -> int:
-    """
-    منقضی کردن سفارش‌های PENDING_PAYMENT که تایمرشون تموم شده.
-    تتر قفل‌شده آزاد می‌شود.
-    """
+    """منقضی کردن سفارش‌های PENDING_PAYMENT که تایمرشون تموم شده."""
     now = datetime.now(timezone.utc)
 
     stale = db.query(DirectTradeOrder).filter(
@@ -728,9 +752,9 @@ def expire_stale_orders(db: Session) -> int:
     return count
 
 
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 #                   ORDER — Dispute
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 
 
 def open_dispute(
@@ -822,7 +846,7 @@ def resolve_dispute(
 
     if decision == "BUYER":
         ad.available_amount -= order.amount_usdt
-        ad.total_trades += 1
+        ad.total_trades = (ad.total_trades or 0) + 1
         update_reputation_on_complete(db, order.buyer_id)
         update_reputation_on_complete(db, order.seller_id)
     else:
@@ -840,9 +864,9 @@ def resolve_dispute(
     return order
 
 
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 #                   Query Helpers
-# ═══════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 
 
 def get_active_ads(

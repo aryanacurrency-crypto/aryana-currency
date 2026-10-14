@@ -8,7 +8,6 @@
   let loaded = false;
 
   function init() {
-    // وقتی کاربر روی تب Trading Stats کلیک کرد، بارگذاری کن
     const tradingTab = document.querySelector('.profile-nav-item[data-tab="trading"]');
     if (!tradingTab) return;
 
@@ -48,11 +47,8 @@
     const isVerified = Boolean(data.is_verified);
     const isBlocked = Boolean(data.is_blocked);
 
-    // ─── Trust Score Number ───
     const scoreNum = document.getElementById('trustScoreNum');
-    if (scoreNum) scoreNum.textContent = score;
 
-    // ─── Progress Circle ───
     const progress = document.getElementById('trustProgress');
     if (progress) {
       const radius = 52;
@@ -62,19 +58,15 @@
       progress.style.strokeDasharray = `${circumference}`;
       progress.style.strokeDashoffset = offset;
 
-      // رنگ بر اساس امتیاز
-      let color = '#F6465D'; // red
-      if (score >= 80) color = '#0ECB81'; // green
-      else if (score >= 60) color = '#F0B90B'; // gold
-      else if (score >= 40) color = '#FF9800'; // orange
+      let color = '#F6465D';
+      if (score >= 80) color = '#0ECB81';
+      else if (score >= 60) color = '#F0B90B';
+      else if (score >= 40) color = '#FF9800';
 
       progress.style.stroke = color;
-
-      // animate number
       animateNumber(scoreNum, score);
     }
 
-    // ─── Level & Description ───
     const levelEl = document.getElementById('trustScoreLevel');
     const descEl = document.getElementById('trustScoreDesc');
 
@@ -108,7 +100,6 @@
     }
     if (descEl) descEl.textContent = desc;
 
-    // ─── Badges ───
     const badgesEl = document.getElementById('trustBadges');
     if (badgesEl) {
       const badges = [];
@@ -141,13 +132,11 @@
       badgesEl.innerHTML = badges.join('') || '<span class="trust-badge neutral">No badges yet</span>';
     }
 
-    // ─── Stats Numbers ───
     setText('statCompleted', completed);
     setText('statCancelled', cancelled);
     setText('statDisputed', disputed);
     setText('statTotal', total);
 
-    // ─── Success Rate ───
     let successRate = 0;
     if (total > 0) {
       successRate = Math.round((completed / total) * 100);
@@ -195,7 +184,6 @@
     if (el) el.textContent = value;
   }
 
-  // Init
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
