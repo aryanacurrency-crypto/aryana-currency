@@ -491,33 +491,79 @@ def get_user_reputation(
     )
 
 
+# ═══ این Endpoint رو کاملاً بازنویسی کردیم ═══
 @router.get("/reputation/me")
 def get_my_reputation(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
     """
-    اعتبار من (بدون response_model برای جلوگیری از خطای 422).
-    همه فیلدها با `or 0` مقداردهی می‌شن تا هیچوقت None نرن.
-    """
-    rep = dt_service.get_or_create_reputation(db, current_user.id)
-    db.commit()
-    db.refresh(rep)
+    اعتبار من — بدون response_model و بدون وابستگی به service.
 
-    return {
-        "user_id": rep.user_id,
-        "total_trades": rep.total_trades or 0,
-        "completed_trades": rep.completed_trades or 0,
-        "cancelled_trades": rep.cancelled_trades or 0,
-        "disputed_trades": rep.disputed_trades or 0,
-        "positive_ratings": rep.positive_ratings or 0,
-        "negative_ratings": rep.negative_ratings or 0,
-        "trust_score": rep.trust_score if rep.trust_score is not None else 50,
-        "avg_response_time": rep.avg_response_time or 0,
-        "is_verified": bool(rep.is_verified),
-        "is_blocked": bool(rep.is_blocked),
-        "updated_at": rep.updated_at.isoformat() if rep.updated_at else None,
-    }
+    همه فیلدها با مقدار پیش‌فرض امن برگردانده می‌شن.
+    حتی اگه رکورد در دیتابیس وجود نداشته باشه یا فیلدها None باشن،
+    این تابع به‌صورت مستقیم مقادیر امن برمی‌گردونه.
+    """
+    try:
+        rep = db.query(UserReputation).filter(
+            UserReputation.user_id == current_user.id
+        ).first()
+
+        if not rep:
+            rep = UserReputation(
+                user_id=current_user.id,
+                total_trades=0,
+                completed_trades=0,
+                cancelled_trades=0,
+                disputed_trades=0,
+                positive_ratings=0,
+                negative_ratings=0,
+                trust_score=50,
+                avg_response_time=0,
+                is_verified=False,
+                is_blocked=False,
+            )
+            db.add(rep)
+            db.commit()
+            db.refresh(rep)
+
+        return {
+            "user_id": int(rep.user_id),
+            "total_trades": int(rep.total_trades or 0),
+            "completed_trades": int(rep.completed_trades or 0),
+            "cancelled_trades": int(rep.cancelled_trades or 0),
+            "disputed_trades": int(rep.disputed_trades or 0),
+            "positive_ratings": int(rep.positive_ratings or 0),
+            "negative_ratings": int(rep.negative_ratings or 0),
+            "trust_score": int(rep.trust_score) if rep.trust_score is not None else 50,
+            "avg_response_time": int(rep.avg_response_time or 0),
+            "is_verified": bool(rep.is_verified),
+            "is_blocked": bool(rep.is_blocked),
+            "updated_at": str(rep.updated_at) if rep.updated_at else None,
+        }
+
+    except Exception as e:
+        import traceback
+        import logging
+        logging.getLogger(__name__).error(
+            f"get_my_reputation error:\n{traceback.format_exc()}"
+        )
+
+        # حتی در صورت خطا، مقادیر پیش‌فرض برمی‌گردونیم تا فرانت خراب نشه
+        return {
+            "user_id": int(current_user.id),
+            "total_trades": 0,
+            "completed_trades": 0,
+            "cancelled_trades": 0,
+            "disputed_trades": 0,
+            "positive_ratings": 0,
+            "negative_ratings": 0,
+            "trust_score": 50,
+            "avg_response_time": 0,
+            "is_verified": False,
+            "is_blocked": False,
+            "updated_at": None,
+        }
 
 
 # ═══════════════════════════════════════════════════════
