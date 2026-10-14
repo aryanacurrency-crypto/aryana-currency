@@ -83,7 +83,6 @@ class DirectTradeAdWithSeller(BaseModel):
     completed_trades: int = 0
     created_at: datetime
 
-    # فروشنده (اطلاعات عمومی فقط)
     seller_full_name: str | None = None
     seller_is_verified: bool = False
     seller_trust_score: int = 50

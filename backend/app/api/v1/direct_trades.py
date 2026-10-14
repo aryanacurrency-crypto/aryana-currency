@@ -124,12 +124,12 @@ def list_active_ads(
             payment_method=ad.payment_method,
             terms=ad.terms,
             status=ad.status,
-            total_trades=ad.total_trades,
-            completed_trades=ad.completed_trades,
+            total_trades=ad.total_trades or 0,
+            completed_trades=ad.completed_trades or 0,
             created_at=ad.created_at,
             seller_full_name=seller.full_name if seller else None,
             seller_is_verified=seller.is_verified if seller else False,
-            seller_trust_score=rep.trust_score if rep else 50,
+            seller_trust_score=rep.trust_score if rep and rep.trust_score is not None else 50,
         ))
 
     return result
@@ -180,12 +180,12 @@ def get_ad_detail(
         payment_method=ad.payment_method,
         terms=ad.terms,
         status=ad.status,
-        total_trades=ad.total_trades,
-        completed_trades=ad.completed_trades,
+        total_trades=ad.total_trades or 0,
+        completed_trades=ad.completed_trades or 0,
         created_at=ad.created_at,
         seller_full_name=seller.full_name if seller else None,
         seller_is_verified=seller.is_verified if seller else False,
-        seller_trust_score=rep.trust_score if rep else 50,
+        seller_trust_score=rep.trust_score if rep and rep.trust_score is not None else 50,
     )
 
 
@@ -199,55 +199,34 @@ def update_ad(
     """ویرایش آگهی."""
     ad = db.query(DirectTradeAd).filter(DirectTradeAd.id == ad_id).first()
     if not ad:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="آگهی یافت نشد",
-        )
+        raise HTTPException(status_code=404, detail="آگهی یافت نشد")
 
     if ad.seller_id != current_user.id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="شما صاحب این آگهی نیستید",
-        )
+        raise HTTPException(status_code=403, detail="شما صاحب این آگهی نیستید")
 
     if ad.status != DirectTradeAdStatus.ACTIVE:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="فقط آگهی‌های فعال قابل ویرایش هستند",
-        )
+        raise HTTPException(status_code=400, detail="فقط آگهی‌های فعال قابل ویرایش هستند")
 
     if payload.rate_afn_per_usdt is not None:
         if payload.rate_afn_per_usdt <= 0:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="نرخ نامعتبر است",
-            )
+            raise HTTPException(status_code=400, detail="نرخ نامعتبر است")
         ad.rate_afn_per_usdt = payload.rate_afn_per_usdt
 
     if payload.min_order_usdt is not None:
         if payload.min_order_usdt <= 0:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="حداقل سفارش نامعتبر است",
-            )
+            raise HTTPException(status_code=400, detail="حداقل سفارش نامعتبر است")
         ad.min_order_usdt = payload.min_order_usdt
 
     if payload.max_order_usdt is not None:
         if payload.max_order_usdt <= 0:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="حداکثر سفارش نامعتبر است",
-            )
+            raise HTTPException(status_code=400, detail="حداکثر سفارش نامعتبر است")
         ad.max_order_usdt = payload.max_order_usdt
 
     if payload.terms is not None:
         ad.terms = payload.terms
 
     if ad.max_order_usdt < ad.min_order_usdt:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="حداکثر سفارش نمی‌تواند کمتر از حداقل باشد",
-        )
+        raise HTTPException(status_code=400, detail="حداکثر سفارش نمی‌تواند کمتر از حداقل باشد")
 
     db.commit()
     db.refresh(ad)
@@ -263,10 +242,7 @@ def cancel_ad(
     """لغو آگهی."""
     ad = db.query(DirectTradeAd).filter(DirectTradeAd.id == ad_id).first()
     if not ad:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="آگهی یافت نشد",
-        )
+        raise HTTPException(status_code=404, detail="آگهی یافت نشد")
     return dt_service.cancel_ad(db, ad, current_user)
 
 
@@ -344,40 +320,29 @@ def get_my_order(
     ).first()
 
     if not order:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="سفارش یافت نشد",
-        )
+        raise HTTPException(status_code=404, detail="سفارش یافت نشد")
 
     if order.buyer_id != current_user.id and order.seller_id != current_user.id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="شما به این سفارش دسترسی ندارید",
-        )
+        raise HTTPException(status_code=403, detail="شما به این سفارش دسترسی ندارید")
 
-    # اطلاعات خریدار
     buyer = db.query(User).filter(User.id == order.buyer_id).first()
     buyer_rep = db.query(UserReputation).filter(
         UserReputation.user_id == order.buyer_id
     ).first()
 
-    # اطلاعات فروشنده
     seller = db.query(User).filter(User.id == order.seller_id).first()
     seller_rep = db.query(UserReputation).filter(
         UserReputation.user_id == order.seller_id
     ).first()
 
-    # اطلاعات آگهی (برای payment_method)
     ad = db.query(DirectTradeAd).filter(DirectTradeAd.id == order.ad_id).first()
 
     return DirectTradeOrderWithDetails(
         id=order.id,
         reference=order.reference,
         ad_id=order.ad_id,
-        # ═══ FIX: اضافه کردن buyer_id و seller_id ═══
         buyer_id=order.buyer_id,
         seller_id=order.seller_id,
-        # ═══════════════════════════════════════════
         amount_usdt=order.amount_usdt,
         rate_afn_per_usdt=order.rate_afn_per_usdt,
         seller_fee_usdt=order.seller_fee_usdt,
@@ -396,10 +361,10 @@ def get_my_order(
         completed_at=order.completed_at,
         buyer_full_name=buyer.full_name if buyer else None,
         buyer_is_verified=buyer.is_verified if buyer else False,
-        buyer_trust_score=buyer_rep.trust_score if buyer_rep else 50,
+        buyer_trust_score=buyer_rep.trust_score if buyer_rep and buyer_rep.trust_score is not None else 50,
         seller_full_name=seller.full_name if seller else None,
         seller_is_verified=seller.is_verified if seller else False,
-        seller_trust_score=seller_rep.trust_score if seller_rep else 50,
+        seller_trust_score=seller_rep.trust_score if seller_rep and seller_rep.trust_score is not None else 50,
         seller_payment_method=ad.payment_method if ad else None,
     )
 
@@ -417,10 +382,7 @@ def submit_payment(
     ).first()
 
     if not order:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="سفارش یافت نشد",
-        )
+        raise HTTPException(status_code=404, detail="سفارش یافت نشد")
 
     order = dt_service.submit_payment(
         db=db,
@@ -453,10 +415,7 @@ def cancel_order(
     ).first()
 
     if not order:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="سفارش یافت نشد",
-        )
+        raise HTTPException(status_code=404, detail="سفارش یافت نشد")
 
     return dt_service.cancel_order(
         db=db,
@@ -479,10 +438,7 @@ def open_dispute(
     ).first()
 
     if not order:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="سفارش یافت نشد",
-        )
+        raise HTTPException(status_code=404, detail="سفارش یافت نشد")
 
     order = dt_service.open_dispute(
         db=db,
@@ -519,10 +475,7 @@ def get_user_reputation(
     """اطلاعات اعتبار کاربر."""
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="کاربر یافت نشد",
-        )
+        raise HTTPException(status_code=404, detail="کاربر یافت نشد")
 
     rep = db.query(UserReputation).filter(
         UserReputation.user_id == user_id
@@ -531,23 +484,40 @@ def get_user_reputation(
     return UserReputationPublic(
         user_id=user_id,
         full_name=user.full_name,
-        trust_score=rep.trust_score if rep else 50,
-        completed_trades=rep.completed_trades if rep else 0,
+        trust_score=rep.trust_score if rep and rep.trust_score is not None else 50,
+        completed_trades=rep.completed_trades if rep and rep.completed_trades is not None else 0,
         is_verified=user.is_verified,
-        is_blocked=rep.is_blocked if rep else False,
+        is_blocked=rep.is_blocked if rep and rep.is_blocked is not None else False,
     )
 
 
-@router.get("/reputation/me", response_model=UserReputationRead)
+@router.get("/reputation/me")
 def get_my_reputation(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """اعتبار من."""
+    """
+    اعتبار من (بدون response_model برای جلوگیری از خطای 422).
+    همه فیلدها با `or 0` مقداردهی می‌شن تا هیچوقت None نرن.
+    """
     rep = dt_service.get_or_create_reputation(db, current_user.id)
     db.commit()
     db.refresh(rep)
-    return rep
+
+    return {
+        "user_id": rep.user_id,
+        "total_trades": rep.total_trades or 0,
+        "completed_trades": rep.completed_trades or 0,
+        "cancelled_trades": rep.cancelled_trades or 0,
+        "disputed_trades": rep.disputed_trades or 0,
+        "positive_ratings": rep.positive_ratings or 0,
+        "negative_ratings": rep.negative_ratings or 0,
+        "trust_score": rep.trust_score if rep.trust_score is not None else 50,
+        "avg_response_time": rep.avg_response_time or 0,
+        "is_verified": bool(rep.is_verified),
+        "is_blocked": bool(rep.is_blocked),
+        "updated_at": rep.updated_at.isoformat() if rep.updated_at else None,
+    }
 
 
 # ═══════════════════════════════════════════════════════
@@ -612,10 +582,7 @@ def admin_get_order(
         DirectTradeOrder.id == order_id
     ).first()
     if not order:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="سفارش یافت نشد",
-        )
+        raise HTTPException(status_code=404, detail="سفارش یافت نشد")
     return order
 
 
@@ -631,10 +598,7 @@ def admin_complete_order(
         DirectTradeOrder.id == order_id
     ).first()
     if not order:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="سفارش یافت نشد",
-        )
+        raise HTTPException(status_code=404, detail="سفارش یافت نشد")
 
     order = dt_service.complete_order(
         db=db,
@@ -664,10 +628,7 @@ def admin_reject_order(
         DirectTradeOrder.id == order_id
     ).first()
     if not order:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="سفارش یافت نشد",
-        )
+        raise HTTPException(status_code=404, detail="سفارش یافت نشد")
 
     ad = db.query(DirectTradeAd).filter(DirectTradeAd.id == order.ad_id).first()
     if ad:
@@ -698,10 +659,7 @@ def admin_resolve_dispute(
         DirectTradeOrder.id == order_id
     ).first()
     if not order:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="سفارش یافت نشد",
-        )
+        raise HTTPException(status_code=404, detail="سفارش یافت نشد")
 
     return dt_service.resolve_dispute(
         db=db,
