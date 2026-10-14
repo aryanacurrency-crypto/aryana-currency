@@ -50,6 +50,10 @@ class Settings(BaseSettings):
     BREVO_FROM_EMAIL: str = "aryanaacurrency@gmail.com"
     SMTP_FROM_NAME: str = "Aryana Currency"
 
+    # --- Telegram (اعلان‌های ادمین) ---
+    TELEGRAM_BOT_TOKEN: str = ""
+    TELEGRAM_CHAT_ID: str = ""
+
     @property
     def cors_origins_list(self) -> list[str]:
         """تبدیل رشته CORS به لیست."""

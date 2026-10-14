@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from app.api.deps import get_current_admin, get_current_user
 from app.core.database import get_db
 from app.core.email import send_order_completed_email
+from app.core.telegram import notify_new_order, notify_payment_submitted
 from app.models import Order, User, Wallet
 from app.models.enums import Currency, OrderSide, OrderStatus
 from app.schemas.order import (
@@ -37,12 +38,21 @@ def create_new_order(
     - BUY:  کاربر افغانی میده، تتر میگیره
     - SELL: کاربر تتر میده، افغانی میگیره
     """
-    return order_service.create_order(
+    order = order_service.create_order(
         db=db,
         user=current_user,
         side=payload.side,
         amount_usdt=payload.amount_usdt,
     )
+
+    # ─── اعلان تلگرام ───
+    try:
+        notify_new_order(order, current_user)
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Telegram notify failed: {e}")
+
+    return order
 
 
 @router.get("/my", response_model=list[OrderRead])
@@ -111,6 +121,14 @@ def submit_payment(
 
     db.commit()
     db.refresh(order)
+
+    # ─── اعلان تلگرام ───
+    try:
+        notify_payment_submitted(order, current_user)
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Telegram notify failed: {e}")
+
     return order
 
 

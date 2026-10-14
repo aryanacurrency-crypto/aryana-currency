@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_admin, get_current_user
 from app.core.database import get_db
+from app.core.telegram import notify_new_withdrawal
 from app.models import User, Withdrawal
 from app.models.enums import WithdrawalStatus
 from app.schemas.withdrawal import (
@@ -28,7 +29,7 @@ def create_withdrawal_request(
     current_user: User = Depends(get_current_user),
 ):
     """ساخت درخواست برداشت."""
-    return withdrawal_service.create_withdrawal(
+    w = withdrawal_service.create_withdrawal(
         db=db,
         user=current_user,
         currency=payload.currency,
@@ -36,6 +37,15 @@ def create_withdrawal_request(
         destination=payload.destination,
         destination_holder=payload.destination_holder,
     )
+
+    # ─── اعلان تلگرام ───
+    try:
+        notify_new_withdrawal(w, current_user)
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Telegram notify failed: {e}")
+
+    return w
 
 
 @router.get("/my", response_model=list[WithdrawalRead])

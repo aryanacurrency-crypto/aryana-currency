@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_admin, get_current_user
 from app.core.database import get_db
+from app.core.telegram import notify_new_kyc
 from app.models import KycDocument, User
 from app.models.enums import KycStatus
 
@@ -107,6 +108,13 @@ async def upload_kyc_document(
     db.add(doc)
     db.commit()
     db.refresh(doc)
+
+    # ─── اعلان تلگرام ───
+    try:
+        notify_new_kyc(doc, current_user)
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Telegram notify failed: {e}")
 
     return {
         "id": doc.id,

@@ -15,6 +15,7 @@ from app.core.security import (
     hash_password,
     verify_password,
 )
+from app.core.telegram import notify_new_user
 from app.models import User, Wallet
 from app.models.enums import Currency
 from app.models.password_reset import PasswordResetToken
@@ -85,6 +86,13 @@ def register(payload: UserCreate, db: Session = Depends(get_db)):
     except Exception as e:
         import logging
         logging.getLogger(__name__).error(f"Welcome email failed: {e}")
+
+    # ─── اعلان تلگرام ───
+    try:
+        notify_new_user(user)
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Telegram notify failed: {e}")
 
     return user
 
