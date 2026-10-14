@@ -158,8 +158,13 @@ function renderOrder(order) {
 
       <!-- ═══ Messages from User ═══ -->
       <div class="admin-detail-card" style="grid-column:1/-1;">
-        <div class="admin-detail-card-title">Messages from User</div>
-        <div id="messagesContainer" style="margin-top:12px;min-height:60px;">
+        <div class="admin-detail-card-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-3px;margin-right:6px;">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          Messages with User
+        </div>
+        <div id="messagesContainer" style="margin-top:12px;min-height:80px;">
           <div style="text-align:center;padding:20px;color:var(--text-secondary);font-size:13px;">Loading messages...</div>
         </div>
 
@@ -197,8 +202,8 @@ function renderOrder(order) {
               display:grid;
               place-items:center;
               flex-shrink:0;
-              font-weight:800;
             "
+            title="Send message"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
               <line x1="22" y1="2" x2="11" y2="13"/>
@@ -270,36 +275,44 @@ function renderMessages(messages) {
   if (!messages || messages.length === 0) {
     container.innerHTML = `
       <div style="text-align:center;padding:30px 20px;color:var(--text-secondary);font-size:13px;">
-        No messages from user yet.
+        No messages yet. User hasn't sent anything.
       </div>
     `;
     return;
   }
 
+  const currentUser = Auth.getUser();
+  const currentUserId = currentUser ? Number(currentUser.id) : null;
+
   container.innerHTML = `
-    <div id="messagesScroll" style="display:flex;flex-direction:column;gap:10px;max-height:320px;overflow-y:auto;padding:4px;">
+    <div id="messagesScroll" style="display:flex;flex-direction:column;gap:10px;max-height:340px;overflow-y:auto;padding:4px;">
       ${messages.map(msg => {
-        const isAdmin = msg.is_admin;
+        const isMine = Number(msg.sender_id) === currentUserId;
+
         const time = msg.created_at ? new Date(msg.created_at).toLocaleString('en-US', {
           month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
         }) : '';
 
+        const senderLabel = isMine ? 'You (Admin)' : (msg.sender_name || 'User');
+
         return `
-          <div style="display:flex;justify-content:${isAdmin ? 'flex-end' : 'flex-start'};">
+          <div style="display:flex;justify-content:${isMine ? 'flex-end' : 'flex-start'};">
             <div style="
               max-width:78%;
               padding:10px 14px;
               border-radius:14px;
-              background:${isAdmin ? 'linear-gradient(135deg,#FFD54F,#FFC107)' : 'var(--bg-tertiary)'};
-              color:${isAdmin ? '#0B0E11' : 'var(--text-primary)'};
-              border:${isAdmin ? 'none' : '1px solid var(--border-subtle)'};
+              background:${isMine ? 'linear-gradient(135deg,#FFD54F,#FFC107)' : 'var(--bg-tertiary)'};
+              color:${isMine ? '#0B0E11' : 'var(--text-primary)'};
+              border:${isMine ? 'none' : '1px solid var(--border-subtle)'};
               font-size:13px;
               line-height:1.5;
               word-wrap:break-word;
             ">
-              ${!isAdmin ? `<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#64B5F6;margin-bottom:4px;">${escapeHtml(msg.sender_name)}</div>` : ''}
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:${isMine ? 'rgba(11,14,17,0.7)' : '#64B5F6'};margin-bottom:4px;">
+                ${escapeHtml(senderLabel)}
+              </div>
               <div style="white-space:pre-wrap;word-break:break-word;">${escapeHtml(msg.message)}</div>
-              <div style="font-size:10px;margin-top:4px;opacity:0.6;font-family:var(--font-mono);text-align:${isAdmin ? 'right' : 'left'};">${time}</div>
+              <div style="font-size:10px;margin-top:4px;opacity:0.6;font-family:var(--font-mono);text-align:${isMine ? 'right' : 'left'};">${time}</div>
             </div>
           </div>
         `;

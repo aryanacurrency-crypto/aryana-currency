@@ -927,7 +927,7 @@ const P2P = {
     const input = document.getElementById('p2pChatInput');
     input.addEventListener('input', () => {
       input.style.height = 'auto';
-      input.style.height = Math.min(input.scrollHeight, 100) + 'px';
+      input.style.height = Math.min(input.scrollHeight, 80) + 'px';
     });
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
@@ -980,13 +980,20 @@ const P2P = {
     const currentUserId = currentUser ? Number(currentUser.id) : null;
 
     body.innerHTML = messages.map(msg => {
-      const isMe = Number(msg.sender_id) === currentUserId;
+      // پیام من = پیام کسی که sender_id اون = user_id من
+      const isMine = Number(msg.sender_id) === currentUserId;
+
       const time = msg.created_at ? new Date(msg.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '';
 
+      // اسم فرستنده
+      const senderLabel = isMine ? 'You' : (msg.sender_name || (msg.is_admin ? 'Support' : 'User'));
+
       return `
-        <div class="p2p-chat-msg ${isMe ? 'mine' : 'theirs'}">
+        <div class="p2p-chat-msg ${isMine ? 'mine' : 'theirs'}">
           <div class="p2p-chat-bubble">
-            ${!isMe ? `<div class="p2p-chat-sender">${this.escapeHtml(msg.sender_name || 'Support')}</div>` : ''}
+            <div class="p2p-chat-sender" style="color: ${isMine ? 'rgba(11,14,17,0.7)' : '#64B5F6'};">
+              ${this.escapeHtml(senderLabel)}
+            </div>
             <div class="p2p-chat-text">${this.escapeHtml(msg.message)}</div>
             <div class="p2p-chat-time">${time}</div>
           </div>
@@ -1021,6 +1028,7 @@ const P2P = {
       body.insertAdjacentHTML('beforeend', `
         <div class="p2p-chat-msg mine">
           <div class="p2p-chat-bubble">
+            <div class="p2p-chat-sender" style="color:rgba(11,14,17,0.7);">You</div>
             <div class="p2p-chat-text">${this.escapeHtml(msg.message)}</div>
             <div class="p2p-chat-time">${time}</div>
           </div>
