@@ -53,16 +53,12 @@ const P2P = {
   async loadEscrowSettings() {
     try {
       const settings = await API.getPublicPaymentInfo();
-
-      // ← از فیلدهای PaymentInfoRead در بک‌اند
       this.escrowHesabPay = settings.hesab_pay || '';
       this.escrowName = settings.hesab_pay_holder || 'ARYANA CURRENCY';
       this.escrowLoaded = true;
-
-      console.log('✅ Escrow settings loaded:', this.escrowHesabPay, '|', this.escrowName);
+      console.log('✅ Escrow loaded:', this.escrowHesabPay);
     } catch (err) {
-      console.warn('⚠️ Failed to load escrow settings:', err);
-      // Fallback
+      console.warn('⚠️ Escrow load failed:', err);
       this.escrowHesabPay = '0700-000-0000';
       this.escrowName = 'ARYANA CURRENCY';
       this.escrowLoaded = true;
@@ -95,7 +91,7 @@ const P2P = {
   },
 
   // ═══════════════════════════════════════
-  //     Toast Notification (جایگزین alert)
+  //     Toast Notification
   // ═══════════════════════════════════════
 
   showToast(message, type = 'info', duration = 3000) {
@@ -133,6 +129,113 @@ const P2P = {
         }
       }, duration);
     }
+  },
+
+  // ═══════════════════════════════════════
+  //     Confirm Dialog (جایگزین confirm)
+  // ═══════════════════════════════════════
+
+  showConfirm(options) {
+    return new Promise((resolve) => {
+      const {
+        icon = 'warning',
+        title = 'Are you sure?',
+        message = '',
+        inputPlaceholder = null,
+        inputRequired = false,
+        confirmText = 'Confirm',
+        cancelText = 'Cancel',
+        confirmStyle = 'primary',
+      } = options;
+
+      const icons = {
+        warning: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+        danger: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
+        info: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`,
+        success: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
+      };
+
+      const overlay = document.createElement('div');
+      overlay.className = 'p2p-confirm-overlay';
+      overlay.innerHTML = `
+        <div class="p2p-confirm">
+          <div class="p2p-confirm-icon ${icon}">
+            ${icons[icon] || icons.warning}
+          </div>
+          <div class="p2p-confirm-title">${this.escapeHtml(title)}</div>
+          ${message ? `<div class="p2p-confirm-message">${this.escapeHtml(message)}</div>` : ''}
+          ${inputPlaceholder ? `
+            <textarea
+              class="p2p-confirm-input"
+              placeholder="${this.escapeHtml(inputPlaceholder)}"
+              id="p2pConfirmInput"
+            ></textarea>
+          ` : ''}
+          <div class="p2p-confirm-actions">
+            <button class="p2p-confirm-btn cancel" id="p2pConfirmCancel">
+              ${this.escapeHtml(cancelText)}
+            </button>
+            <button class="p2p-confirm-btn ${confirmStyle}" id="p2pConfirmOk">
+              ${this.escapeHtml(confirmText)}
+            </button>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(overlay);
+
+      const input = document.getElementById('p2pConfirmInput');
+      const okBtn = document.getElementById('p2pConfirmOk');
+      const cancelBtn = document.getElementById('p2pConfirmCancel');
+
+      if (input) {
+        input.focus();
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+            e.preventDefault();
+            okBtn.click();
+          }
+        });
+      } else {
+        okBtn.focus();
+      }
+
+      const close = (result) => {
+        overlay.remove();
+        resolve(result);
+      };
+
+      cancelBtn.onclick = () => close(inputPlaceholder ? null : false);
+
+      okBtn.onclick = () => {
+        if (inputPlaceholder && inputRequired) {
+          const val = (input?.value || '').trim();
+          if (val.length < 3) {
+            input?.focus();
+            input.style.borderColor = 'var(--red)';
+            setTimeout(() => { input.style.borderColor = ''; }, 1500);
+            return;
+          }
+          close(val);
+        } else if (inputPlaceholder) {
+          close((input?.value || '').trim() || '');
+        } else {
+          close(true);
+        }
+      };
+
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) close(inputPlaceholder ? null : false);
+      });
+
+      const escHandler = (e) => {
+        if (e.key === 'Escape') {
+          document.removeEventListener('keydown', escHandler);
+          close(inputPlaceholder ? null : false);
+        }
+      };
+      document.addEventListener('keydown', escHandler);
+    });
   },
 
   // ═══════════════════════════════════════
@@ -793,7 +896,17 @@ const P2P = {
   async cancelOrder() {
     const order = this.state.currentOrder;
     if (!order) return;
-    if (!confirm('Are you sure you want to cancel this order?')) return;
+
+    const confirmed = await this.showConfirm({
+      icon: 'warning',
+      title: 'Cancel Order?',
+      message: 'Are you sure you want to cancel this order? This action cannot be undone.',
+      confirmText: 'Yes, Cancel',
+      cancelText: 'Keep Order',
+      confirmStyle: 'danger',
+    });
+
+    if (!confirmed) return;
 
     try {
       await API.cancelP2POrder(order.id, 'Cancelled by user');

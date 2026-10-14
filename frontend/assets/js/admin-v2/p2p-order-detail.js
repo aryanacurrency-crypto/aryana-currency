@@ -31,6 +31,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadOrder(orderId);
 });
 
+/* ═══════════════════════════════════════
+             Load Order
+   ═══════════════════════════════════════ */
+
 async function loadOrder(orderId) {
   const loadingBox = document.getElementById('loadingBox');
   const contentBox = document.getElementById('contentBox');
@@ -69,33 +73,46 @@ function renderOrder(order) {
   }) : '—';
 
   let actionsHtml = '';
+
   if (order.status === 'PAYMENT_REVIEW' || order.status === 'READY_TO_RELEASE') {
     actionsHtml = `
-      <button class="admin-btn green" id="completeBtn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-          <polyline points="22 4 12 14.01 9 11.01"/>
-        </svg>
-        Complete & Release Escrow
-      </button>
-      <button class="admin-btn red" id="rejectBtn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="15" y1="9" x2="9" y2="15"/>
-          <line x1="9" y1="9" x2="15" y2="15"/>
-        </svg>
-        Reject Order
-      </button>
+      <div class="p2p-admin-actions">
+        <button class="p2p-admin-btn success" id="completeBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          Complete & Release Escrow
+        </button>
+        <button class="p2p-admin-btn danger" id="rejectBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="15" y1="9" x2="9" y2="15"/>
+            <line x1="9" y1="9" x2="15" y2="15"/>
+          </svg>
+          Reject Order
+        </button>
+      </div>
     `;
   } else if (order.status === 'DISPUTED') {
     actionsHtml = `
-      <div style="background:var(--red-bg);border:1px solid rgba(246,70,93,0.3);border-radius:12px;padding:16px;margin-bottom:16px;width:100%;">
+      <div style="background:var(--red-bg);border:1px solid rgba(246,70,93,0.3);border-radius:12px;padding:16px;margin-bottom:16px;">
         <div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:6px;">⚠️ Dispute Reason</div>
         <div style="font-size:13px;color:var(--text-primary);line-height:1.6;">${escapeHtml(order.dispute_reason || '—')}</div>
       </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;width:100%;">
-        <button class="admin-btn green" id="resolveBuyerBtn">✓ Resolve for Buyer</button>
-        <button class="admin-btn red" id="resolveSellerBtn">✓ Resolve for Seller</button>
+      <div class="p2p-admin-actions">
+        <button class="p2p-admin-btn success" id="resolveBuyerBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Resolve for Buyer
+        </button>
+        <button class="p2p-admin-btn danger" id="resolveSellerBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Resolve for Seller
+        </button>
       </div>
     `;
   }
@@ -164,9 +181,7 @@ function renderOrder(order) {
     ${actionsHtml ? `
       <div class="admin-detail-card">
         <div class="admin-detail-card-title">Admin Actions</div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          ${actionsHtml}
-        </div>
+        ${actionsHtml}
       </div>
     ` : ''}
   `;
@@ -177,53 +192,239 @@ function renderOrder(order) {
   document.getElementById('resolveSellerBtn')?.addEventListener('click', () => resolveDispute('SELLER'));
 }
 
+/* ═══════════════════════════════════════
+             Actions
+   ═══════════════════════════════════════ */
+
 async function completeOrder() {
   if (!currentOrder) return;
-  const note = prompt('Admin note (optional):', '');
-  if (note === null) return;
+
+  const confirmed = await showConfirm({
+    icon: 'success',
+    title: 'Complete & Release Escrow?',
+    message: `This will release ${Number(currentOrder.buyer_receives_usdt).toFixed(2)} USDT to the buyer and credit the seller. This action cannot be undone.`,
+    confirmText: 'Complete',
+    cancelText: 'Cancel',
+    confirmStyle: 'success',
+  });
+
+  if (!confirmed) return;
+
+  const btn = document.getElementById('completeBtn');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<div class="p2p-spinner" style="border-top-color:white;"></div> Processing...';
+  }
 
   try {
-    await API.adminCompleteP2POrder(currentOrder.id, note || null);
-    Notify.success('Order completed and escrow released');
+    await API.adminCompleteP2POrder(currentOrder.id, 'Completed via admin panel');
+    showToast('Order completed! Escrow released.', 'success');
     setTimeout(() => window.location.reload(), 1200);
   } catch (err) {
     console.error('Complete failed:', err);
-    Notify.error(err.detail || 'Failed to complete order');
+    showToast(err.detail || 'Failed to complete order', 'error');
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Complete & Release Escrow`;
+    }
   }
 }
 
 async function rejectOrder() {
   if (!currentOrder) return;
-  const reason = prompt('Rejection reason:');
-  if (!reason || reason.length < 3) {
-    Notify.error('Please enter a valid reason');
-    return;
+
+  const reason = await showConfirm({
+    icon: 'danger',
+    title: 'Reject Order?',
+    message: 'Please provide a reason for rejecting this order. The buyer will be notified.',
+    inputPlaceholder: 'e.g., Payment not received, invalid receipt...',
+    inputRequired: true,
+    confirmText: 'Reject Order',
+    cancelText: 'Cancel',
+    confirmStyle: 'danger',
+  });
+
+  if (!reason) return;
+
+  const btn = document.getElementById('rejectBtn');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<div class="p2p-spinner" style="border-top-color:white;"></div> Rejecting...';
   }
 
   try {
     await API.adminRejectP2POrder(currentOrder.id, reason);
-    Notify.success('Order rejected');
+    showToast('Order rejected', 'warning');
     setTimeout(() => window.location.reload(), 1200);
   } catch (err) {
     console.error('Reject failed:', err);
-    Notify.error(err.detail || 'Failed to reject order');
+    showToast(err.detail || 'Failed to reject order', 'error');
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Reject Order`;
+    }
   }
 }
 
 async function resolveDispute(decision) {
   if (!currentOrder) return;
-  const note = prompt(`Admin note for resolving to ${decision}:`);
-  if (note === null) return;
+
+  const isBuyer = decision === 'BUYER';
+
+  const note = await showConfirm({
+    icon: isBuyer ? 'success' : 'danger',
+    title: isBuyer ? 'Resolve for Buyer?' : 'Resolve for Seller?',
+    message: isBuyer
+      ? 'The escrowed USDT will be released to the buyer. The seller will not receive funds.'
+      : 'The escrowed USDT will be returned to the seller. The buyer will not receive USDT.',
+    inputPlaceholder: 'Admin note (required)...',
+    inputRequired: true,
+    confirmText: isBuyer ? 'Resolve for Buyer' : 'Resolve for Seller',
+    cancelText: 'Cancel',
+    confirmStyle: isBuyer ? 'success' : 'danger',
+  });
+
+  if (!note) return;
 
   try {
-    await API.adminResolveP2PDispute(currentOrder.id, decision, note || 'Resolved by admin');
-    Notify.success(`Dispute resolved for ${decision}`);
+    await API.adminResolveP2PDispute(currentOrder.id, decision, note);
+    showToast(`Dispute resolved for ${decision}`, 'success');
     setTimeout(() => window.location.reload(), 1200);
   } catch (err) {
     console.error('Resolve failed:', err);
-    Notify.error(err.detail || 'Failed to resolve dispute');
+    showToast(err.detail || 'Failed to resolve dispute', 'error');
   }
 }
+
+/* ═══════════════════════════════════════
+             Confirm Dialog
+   ═══════════════════════════════════════ */
+
+function showConfirm(options) {
+  return new Promise((resolve) => {
+    const {
+      icon = 'warning',
+      title = 'Are you sure?',
+      message = '',
+      inputPlaceholder = null,
+      inputRequired = false,
+      confirmText = 'Confirm',
+      cancelText = 'Cancel',
+      confirmStyle = 'primary',
+    } = options;
+
+    const icons = {
+      warning: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+      danger: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
+      info: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`,
+      success: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
+    };
+
+    const overlay = document.createElement('div');
+    overlay.className = 'p2p-confirm-overlay';
+    overlay.innerHTML = `
+      <div class="p2p-confirm">
+        <div class="p2p-confirm-icon ${icon}">${icons[icon] || icons.warning}</div>
+        <div class="p2p-confirm-title">${escapeHtml(title)}</div>
+        ${message ? `<div class="p2p-confirm-message">${escapeHtml(message)}</div>` : ''}
+        ${inputPlaceholder ? `<textarea class="p2p-confirm-input" placeholder="${escapeHtml(inputPlaceholder)}" id="p2pConfirmInput"></textarea>` : ''}
+        <div class="p2p-confirm-actions">
+          <button class="p2p-confirm-btn cancel" id="p2pConfirmCancel">${escapeHtml(cancelText)}</button>
+          <button class="p2p-confirm-btn ${confirmStyle}" id="p2pConfirmOk">${escapeHtml(confirmText)}</button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    const input = document.getElementById('p2pConfirmInput');
+    const okBtn = document.getElementById('p2pConfirmOk');
+    const cancelBtn = document.getElementById('p2pConfirmCancel');
+
+    if (input) input.focus(); else okBtn.focus();
+
+    const close = (result) => {
+      overlay.remove();
+      resolve(result);
+    };
+
+    cancelBtn.onclick = () => close(inputPlaceholder ? null : false);
+
+    okBtn.onclick = () => {
+      if (inputPlaceholder && inputRequired) {
+        const val = (input?.value || '').trim();
+        if (val.length < 3) {
+          input?.focus();
+          input.style.borderColor = 'var(--red)';
+          setTimeout(() => { input.style.borderColor = ''; }, 1500);
+          return;
+        }
+        close(val);
+      } else if (inputPlaceholder) {
+        close((input?.value || '').trim() || '');
+      } else {
+        close(true);
+      }
+    };
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) close(inputPlaceholder ? null : false);
+    });
+
+    const escHandler = (e) => {
+      if (e.key === 'Escape') {
+        document.removeEventListener('keydown', escHandler);
+        close(inputPlaceholder ? null : false);
+      }
+    };
+    document.addEventListener('keydown', escHandler);
+  });
+}
+
+/* ═══════════════════════════════════════
+             Toast Notification
+   ═══════════════════════════════════════ */
+
+function showToast(message, type = 'info', duration = 3000) {
+  document.querySelectorAll('.p2p-toast').forEach(t => t.remove());
+
+  const icons = {
+    success: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
+    error: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+    info: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`,
+    warning: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+  };
+
+  const toast = document.createElement('div');
+  toast.className = `p2p-toast p2p-toast-${type}`;
+  toast.innerHTML = `
+    <div class="p2p-toast-icon">${icons[type] || icons.info}</div>
+    <div class="p2p-toast-message">${escapeHtml(message)}</div>
+    <button class="p2p-toast-close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  `;
+
+  document.body.appendChild(toast);
+
+  toast.querySelector('.p2p-toast-close').addEventListener('click', () => {
+    toast.classList.add('p2p-toast-out');
+    setTimeout(() => toast.remove(), 300);
+  });
+
+  if (duration > 0) {
+    setTimeout(() => {
+      if (document.body.contains(toast)) {
+        toast.classList.add('p2p-toast-out');
+        setTimeout(() => toast.remove(), 300);
+      }
+    }, duration);
+  }
+}
+
+/* ═══════════════════════════════════════
+             Helpers
+   ═══════════════════════════════════════ */
 
 function escapeHtml(str) {
   if (!str) return '';
