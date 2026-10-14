@@ -220,7 +220,7 @@ const P2P = {
   },
 
   // ═══════════════════════════════════════
-  //          Buy Modal (شیک)
+  //          Buy Modal
   // ═══════════════════════════════════════
 
   openBuyModal(adId) {
@@ -503,8 +503,21 @@ const P2P = {
     const container = document.getElementById('orderContainer');
     if (!container) return;
 
-    const currentUserId = Auth.getUser()?.id;
-    const isBuyer = order.buyer_id === currentUserId;
+    // ═══ FIX: تشخیص isBuyer با Number ═══
+    const currentUser = Auth.getUser();
+    const currentUserId = currentUser ? Number(currentUser.id) : null;
+    const isBuyer = Number(order.buyer_id) === currentUserId;
+    const isSeller = Number(order.seller_id) === currentUserId;
+
+    console.log('=== ORDER DEBUG ===');
+    console.log('Current User:', currentUser);
+    console.log('Current User ID:', currentUserId);
+    console.log('Order buyer_id:', order.buyer_id);
+    console.log('Order seller_id:', order.seller_id);
+    console.log('isBuyer:', isBuyer);
+    console.log('isSeller:', isSeller);
+    console.log('Order status:', order.status);
+    console.log('==================');
 
     const statusLabels = {
       'PENDING_PAYMENT': 'Awaiting Payment',
@@ -532,8 +545,24 @@ const P2P = {
     const showReviewSection = isBuyer && order.status === 'PAYMENT_REVIEW';
     const showCompleted = order.status === 'COMPLETED';
 
+    // DEBUG PANEL (موقت برای پیدا کردن مشکل)
+    const debugPanel = `
+      <div style="background:#1a1a1a;color:#fff;padding:12px;border-radius:8px;margin-bottom:16px;font-size:11px;font-family:monospace;direction:ltr;text-align:left;border:1px solid #333;">
+        <div style="color:#FFC107;font-weight:bold;margin-bottom:6px;">DEBUG PANEL</div>
+        <div>user.id: <b style="color:#FFC107;">${currentUser?.id}</b> (${typeof currentUser?.id})</div>
+        <div>buyer_id: <b style="color:#FFC107;">${order.buyer_id}</b> (${typeof order.buyer_id})</div>
+        <div>seller_id: <b style="color:#FFC107;">${order.seller_id}</b> (${typeof order.seller_id})</div>
+        <div>isBuyer: <b style="color:${isBuyer ? '#0ECB81' : '#F6465D'};">${isBuyer}</b></div>
+        <div>isSeller: <b style="color:${isSeller ? '#0ECB81' : '#F6465D'};">${isSeller}</b></div>
+        <div>status: <b style="color:#FFC107;">${order.status}</b></div>
+        <div>showPaymentSection: <b style="color:${showPaymentSection ? '#0ECB81' : '#F6465D'};">${showPaymentSection}</b></div>
+      </div>
+    `;
+
     const html = `
       <div style="max-width:640px;margin:0 auto;">
+
+        ${debugPanel}
 
         <div class="p2p-timer ${showTimer ? '' : 'danger'}" id="timerBox" style="${showTimer ? '' : 'display:none;'}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -565,7 +594,7 @@ const P2P = {
 
           <div class="p2p-ad-rows">
             <div class="p2p-ad-row"><span class="p2p-ad-label">Buyer</span><span class="p2p-ad-value">${this.escapeHtml(order.buyer_full_name || '—')} ${isBuyer ? '(You)' : ''}</span></div>
-            <div class="p2p-ad-row"><span class="p2p-ad-label">Seller</span><span class="p2p-ad-value">${this.escapeHtml(order.seller_full_name || '—')}</span></div>
+            <div class="p2p-ad-row"><span class="p2p-ad-label">Seller</span><span class="p2p-ad-value">${this.escapeHtml(order.seller_full_name || '—')} ${isSeller ? '(You)' : ''}</span></div>
           </div>
         </div>
 
@@ -635,7 +664,6 @@ const P2P = {
           </div>
         </div>
 
-        <!-- آدرس امانی ARYANA -->
         <div style="background: linear-gradient(135deg, rgba(240,185,11,0.1), rgba(240,185,11,0.03)); border:1px solid rgba(240,185,11,0.3); border-radius:12px; padding:20px; margin-bottom:20px;">
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--gold); font-weight:700; margin-bottom:8px;">Pay To ARYANA Escrow</div>
           <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
