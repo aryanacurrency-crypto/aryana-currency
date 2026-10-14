@@ -3,6 +3,10 @@
    ═══════════════════════════════════════ */
 
 const P2P = {
+  // ⚠️ این رو با شماره واقعی Hesab Pay صرافی عوض کن!
+  ARYANA_ESCROW_HESAB_PAY: '0700-000-0000',
+  ARYANA_ESCROW_NAME: 'ARYANA CURRENCY',
+
   state: {
     side: 'BUY',
     ads: [],
@@ -19,7 +23,7 @@ const P2P = {
 
   async init() {
     if (!Auth.isLoggedIn()) {
-      window.location.href = '../login.html';
+      window.location.href = '/pages/login.html';
       return;
     }
 
@@ -66,6 +70,49 @@ const P2P = {
         localStorage.setItem('aryana_theme', isLight ? 'dark' : 'light');
       }
     });
+  },
+
+  // ═══════════════════════════════════════
+  //     Toast Notification (جایگزین alert)
+  // ═══════════════════════════════════════
+
+  showToast(message, type = 'info', duration = 3000) {
+    // حذف toast قدیمی
+    document.querySelectorAll('.p2p-toast').forEach(t => t.remove());
+
+    const icons = {
+      success: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
+      error: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+      info: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`,
+      warning: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+    };
+
+    const toast = document.createElement('div');
+    toast.className = `p2p-toast p2p-toast-${type}`;
+    toast.innerHTML = `
+      <div class="p2p-toast-icon">${icons[type] || icons.info}</div>
+      <div class="p2p-toast-message">${this.escapeHtml(message)}</div>
+      <button class="p2p-toast-close" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    `;
+
+    document.body.appendChild(toast);
+
+    const closeBtn = toast.querySelector('.p2p-toast-close');
+    closeBtn.addEventListener('click', () => {
+      toast.classList.add('p2p-toast-out');
+      setTimeout(() => toast.remove(), 300);
+    });
+
+    if (duration > 0) {
+      setTimeout(() => {
+        if (document.body.contains(toast)) {
+          toast.classList.add('p2p-toast-out');
+          setTimeout(() => toast.remove(), 300);
+        }
+      }, duration);
+    }
   },
 
   // ═══════════════════════════════════════
@@ -441,7 +488,7 @@ const P2P = {
     if (maxOrder > totalAmount) errors.push('Max order cannot exceed total amount');
 
     if (errors.length) {
-      this.showAlert(alertBox, 'danger', errors.join('. '));
+      this.showToast(errors.join('. '), 'error');
       return;
     }
 
@@ -459,10 +506,10 @@ const P2P = {
         terms: terms,
       });
 
-      this.showAlert(alertBox, 'success', 'Ad created successfully! Redirecting...');
+      this.showToast('Ad created successfully! Redirecting...', 'success');
       setTimeout(() => { window.location.href = 'my-ads.html'; }, 1200);
     } catch (err) {
-      this.showAlert(alertBox, 'danger', err.detail || 'Failed to create ad');
+      this.showToast(err.detail || 'Failed to create ad', 'error');
       submitBtn.disabled = false;
       submitBtn.innerHTML = '<span>Create Ad</span>';
     }
@@ -503,21 +550,10 @@ const P2P = {
     const container = document.getElementById('orderContainer');
     if (!container) return;
 
-    // ═══ FIX: تشخیص isBuyer با Number ═══
     const currentUser = Auth.getUser();
     const currentUserId = currentUser ? Number(currentUser.id) : null;
     const isBuyer = Number(order.buyer_id) === currentUserId;
     const isSeller = Number(order.seller_id) === currentUserId;
-
-    console.log('=== ORDER DEBUG ===');
-    console.log('Current User:', currentUser);
-    console.log('Current User ID:', currentUserId);
-    console.log('Order buyer_id:', order.buyer_id);
-    console.log('Order seller_id:', order.seller_id);
-    console.log('isBuyer:', isBuyer);
-    console.log('isSeller:', isSeller);
-    console.log('Order status:', order.status);
-    console.log('==================');
 
     const statusLabels = {
       'PENDING_PAYMENT': 'Awaiting Payment',
@@ -545,24 +581,12 @@ const P2P = {
     const showReviewSection = isBuyer && order.status === 'PAYMENT_REVIEW';
     const showCompleted = order.status === 'COMPLETED';
 
-    // DEBUG PANEL (موقت برای پیدا کردن مشکل)
-    const debugPanel = `
-      <div style="background:#1a1a1a;color:#fff;padding:12px;border-radius:8px;margin-bottom:16px;font-size:11px;font-family:monospace;direction:ltr;text-align:left;border:1px solid #333;">
-        <div style="color:#FFC107;font-weight:bold;margin-bottom:6px;">DEBUG PANEL</div>
-        <div>user.id: <b style="color:#FFC107;">${currentUser?.id}</b> (${typeof currentUser?.id})</div>
-        <div>buyer_id: <b style="color:#FFC107;">${order.buyer_id}</b> (${typeof order.buyer_id})</div>
-        <div>seller_id: <b style="color:#FFC107;">${order.seller_id}</b> (${typeof order.seller_id})</div>
-        <div>isBuyer: <b style="color:${isBuyer ? '#0ECB81' : '#F6465D'};">${isBuyer}</b></div>
-        <div>isSeller: <b style="color:${isSeller ? '#0ECB81' : '#F6465D'};">${isSeller}</b></div>
-        <div>status: <b style="color:#FFC107;">${order.status}</b></div>
-        <div>showPaymentSection: <b style="color:${showPaymentSection ? '#0ECB81' : '#F6465D'};">${showPaymentSection}</b></div>
-      </div>
-    `;
+    // اگر پرداخت قبلاً ثبت شده، Reference رو پیش‌پر کن
+    const existingRef = order.buyer_payment_reference || '';
+    const existingNote = order.buyer_note || '';
 
     const html = `
       <div style="max-width:640px;margin:0 auto;">
-
-        ${debugPanel}
 
         <div class="p2p-timer ${showTimer ? '' : 'danger'}" id="timerBox" style="${showTimer ? '' : 'display:none;'}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -598,7 +622,7 @@ const P2P = {
           </div>
         </div>
 
-        ${showPaymentSection ? this.renderPaymentSection(order) : ''}
+        ${showPaymentSection ? this.renderPaymentSection(order, existingRef, existingNote) : ''}
 
         ${showReviewSection ? `
           <div class="p2p-form-card" style="max-width:100%;">
@@ -634,10 +658,7 @@ const P2P = {
     }
   },
 
-  renderPaymentSection(order) {
-    // ⚠️ آدرس حساب امانی ARYANA - این رو با شماره واقعی عوض کن!
-    const ARYANA_HESAB_PAY = '0700-000-0000';
-
+  renderPaymentSection(order, existingRef = '', existingNote = '') {
     return `
       <div class="p2p-form-card" style="max-width:100%;">
 
@@ -668,8 +689,8 @@ const P2P = {
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--gold); font-weight:700; margin-bottom:8px;">Pay To ARYANA Escrow</div>
           <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
             <div>
-              <div style="font-family:var(--font-mono); font-size:20px; font-weight:800; color:var(--text-primary); letter-spacing:1px;" id="escrowAddress">${ARYANA_HESAB_PAY}</div>
-              <div style="font-size:12px; color:var(--text-secondary); margin-top:4px;">ARYANA CURRENCY</div>
+              <div style="font-family:var(--font-mono); font-size:20px; font-weight:800; color:var(--text-primary); letter-spacing:1px;" id="escrowAddress">${this.ARYANA_ESCROW_HESAB_PAY}</div>
+              <div style="font-size:12px; color:var(--text-secondary); margin-top:4px;">${this.ARYANA_ESCROW_NAME}</div>
             </div>
             <button type="button" class="p2p-filter-btn" id="copyAddressBtn" style="flex-shrink:0;">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -689,14 +710,14 @@ const P2P = {
         <div class="p2p-field">
           <div class="p2p-field-label"><span>Payment Reference (TxID / Receipt #)</span></div>
           <div class="p2p-field-input-wrap">
-            <input type="text" id="paymentReference" class="p2p-field-input" placeholder="Enter transaction reference" autocomplete="off">
+            <input type="text" id="paymentReference" class="p2p-field-input" placeholder="Enter transaction reference" autocomplete="off" value="${this.escapeHtml(existingRef)}">
           </div>
         </div>
 
         <div class="p2p-field">
           <div class="p2p-field-label"><span>Note (optional)</span></div>
           <div class="p2p-field-input-wrap">
-            <input type="text" id="paymentNote" class="p2p-field-input" placeholder="Additional info" maxlength="200" autocomplete="off">
+            <input type="text" id="paymentNote" class="p2p-field-input" placeholder="Additional info" maxlength="200" autocomplete="off" value="${this.escapeHtml(existingNote)}">
           </div>
         </div>
 
@@ -718,12 +739,7 @@ const P2P = {
     const addr = document.getElementById('escrowAddress')?.textContent;
     if (!addr) return;
     navigator.clipboard.writeText(addr).then(() => {
-      const btn = document.getElementById('copyAddressBtn');
-      if (btn) {
-        const original = btn.innerHTML;
-        btn.innerHTML = '<span style="color:var(--green);">✓ Copied!</span>';
-        setTimeout(() => { btn.innerHTML = original; }, 1500);
-      }
+      this.showToast('Address copied to clipboard', 'success', 2000);
     });
   },
 
@@ -735,7 +751,7 @@ const P2P = {
     const note = document.getElementById('paymentNote')?.value?.trim() || null;
 
     if (!ref || ref.length < 3) {
-      alert('Please enter a valid payment reference');
+      this.showToast('Please enter a valid payment reference', 'error');
       return;
     }
 
@@ -745,11 +761,11 @@ const P2P = {
 
     try {
       await API.submitP2PPayment(order.id, ref, note);
-      alert('Payment submitted! Waiting for admin review.');
-      window.location.reload();
+      this.showToast('Payment submitted! Waiting for admin review.', 'success', 2500);
+      setTimeout(() => { window.location.reload(); }, 2000);
     } catch (err) {
       console.error('Submit payment failed:', err);
-      alert(err.detail || 'Failed to submit payment');
+      this.showToast(err.detail || 'Failed to submit payment', 'error');
       btn.disabled = false;
       btn.innerHTML = '<span>I\'ve Paid</span>';
     }
@@ -758,14 +774,16 @@ const P2P = {
   async cancelOrder() {
     const order = this.state.currentOrder;
     if (!order) return;
+
+    // Modal تأیید به جای confirm() زشت
     if (!confirm('Are you sure you want to cancel this order?')) return;
 
     try {
       await API.cancelP2POrder(order.id, 'Cancelled by user');
-      alert('Order cancelled');
-      window.location.href = 'my-orders.html';
+      this.showToast('Order cancelled', 'info');
+      setTimeout(() => { window.location.href = 'my-orders.html'; }, 1200);
     } catch (err) {
-      alert(err.detail || 'Failed to cancel');
+      this.showToast(err.detail || 'Failed to cancel', 'error');
     }
   },
 
