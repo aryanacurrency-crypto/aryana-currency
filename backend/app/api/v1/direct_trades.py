@@ -3,8 +3,9 @@ API معاملات مستقیم (Traders By Traders).
 
 Endpoints:
 - Ads: ساخت، لیست، جزئیات، ویرایش، لغو
-- Orders: ساخت، پرداخت، لغو، اختلاف
-- Admin: تأیید، رد، حل اختلاف
+- Orders: ساخت، پرداخت، لغو
+- Messages: چت با پشتیبانی
+- Admin: تأیید، رد، پیام‌ها
 
 ⚠️ نکته مهم درباره ترتیب endpointها:
    routeهای ثابت (مثل /reputation/me) باید قبل از
@@ -23,9 +24,14 @@ from app.core.telegram import (
     notify_direct_trade_new_order,
     notify_direct_trade_payment_submitted,
     notify_direct_trade_completed,
-    notify_direct_trade_dispute,
 )
-from app.models import DirectTradeAd, DirectTradeOrder, User, UserReputation
+from app.models import (
+    DirectTradeAd,
+    DirectTradeMessage,
+    DirectTradeOrder,
+    User,
+    UserReputation,
+)
 from app.models.enums import (
     DirectTradeAdSide,
     DirectTradeAdStatus,
@@ -36,8 +42,6 @@ from app.schemas.direct_trade import (
     DirectTradeAdRead,
     DirectTradeAdUpdate,
     DirectTradeAdWithSeller,
-    DirectTradeDisputeCreate,
-    DirectTradeDisputeResolve,
     DirectTradeOrderCancel,
     DirectTradeOrderComplete,
     DirectTradeOrderCreate,
@@ -429,14 +433,18 @@ def cancel_order(
     )
 
 
-@router.post("/orders/{order_id}/dispute", response_model=DirectTradeOrderRead)
-def open_dispute(
+# ═══════════════════════════════════════════════════════
+#                MESSAGES — Chat with Support (User)
+# ═══════════════════════════════════════════════════════
+
+
+@router.get("/orders/my/{order_id}/messages")
+def get_my_order_messages(
     order_id: int,
-    payload: DirectTradeDisputeCreate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """باز کردن اختلاف."""
+    """پیام‌های چت با پشتیبانی (فقط خریدار یا فروشنده)."""
     order = db.query(DirectTradeOrder).filter(
         DirectTradeOrder.id == order_id
     ).first()
@@ -444,20 +452,85 @@ def open_dispute(
     if not order:
         raise HTTPException(status_code=404, detail="سفارش یافت نشد")
 
-    order = dt_service.open_dispute(
-        db=db,
-        order=order,
-        user=current_user,
-        reason=payload.reason,
+    if order.buyer_id != current_user.id and order.seller_id != current_user.id:
+        raise HTTPException(status_code=403, detail="شما به این سفارش دسترسی ندارید")
+
+    messages = db.query(DirectTradeMessage).filter(
+        DirectTradeMessage.order_id == order_id
+    ).order_by(DirectTradeMessage.created_at.asc()).all()
+
+    result = []
+    for msg in messages:
+        sender = db.query(User).filter(User.id == msg.sender_id).first()
+        is_admin = False
+        if sender:
+            try:
+                is_admin = sender.role.value == "ADMIN"
+            except Exception:
+                is_admin = False
+
+        result.append({
+            "id": msg.id,
+            "order_id": msg.order_id,
+            "sender_id": msg.sender_id,
+            "sender_name": sender.full_name if sender else "User",
+            "is_admin": is_admin,
+            "message": msg.message,
+            "is_system": bool(msg.is_system),
+            "is_read": bool(msg.is_read),
+            "created_at": msg.created_at.isoformat() if msg.created_at else None,
+        })
+
+    return result
+
+
+@router.post("/orders/my/{order_id}/messages")
+def send_my_order_message(
+    order_id: int,
+    payload: dict,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """ارسال پیام به پشتیبانی (کاربر)."""
+    order = db.query(DirectTradeOrder).filter(
+        DirectTradeOrder.id == order_id
+    ).first()
+
+    if not order:
+        raise HTTPException(status_code=404, detail="سفارش یافت نشد")
+
+    if order.buyer_id != current_user.id and order.seller_id != current_user.id:
+        raise HTTPException(status_code=403, detail="شما به این سفارش دسترسی ندارید")
+
+    message_text = (payload.get("message") or "").strip()
+    if len(message_text) < 1:
+        raise HTTPException(status_code=400, detail="پیام نمی‌تواند خالی باشد")
+
+    if len(message_text) > 2000:
+        raise HTTPException(status_code=400, detail="پیام طولانی است")
+
+    msg = DirectTradeMessage(
+        order_id=order_id,
+        sender_id=current_user.id,
+        message=message_text,
+        is_system=False,
+        is_read=False,
     )
+    db.add(msg)
+    db.commit()
+    db.refresh(msg)
 
-    try:
-        notify_direct_trade_dispute(order, current_user)
-    except Exception as e:
-        import logging
-        logging.getLogger(__name__).error(f"Telegram notify failed: {e}")
-
-    return order
+    return {
+        "id": msg.id,
+        "order_id": msg.order_id,
+        "sender_id": msg.sender_id,
+        "sender_name": current_user.full_name,
+        "is_admin": False,
+        "message": msg.message,
+        "is_system": False,
+        "is_read": False,
+        "created_at": msg.created_at.isoformat() if msg.created_at else None,
+    }
 
 
 # ═══════════════════════════════════════════════════════
@@ -479,7 +552,6 @@ def get_my_reputation(
 ):
     """
     اعتبار من — بدون response_model و بدون وابستگی به service.
-
     همه فیلدها با مقدار پیش‌فرض امن برگردانده می‌شن.
     """
     try:
@@ -603,22 +675,6 @@ def admin_list_pending_review(
     )
 
 
-@router.get("/admin/orders/disputed", response_model=list[DirectTradeOrderRead])
-def admin_list_disputed(
-    limit: int = Query(default=50, le=200),
-    db: Session = Depends(get_db),
-    admin: User = Depends(get_current_admin),
-):
-    """سفارش‌های دارای اختلاف."""
-    return (
-        db.query(DirectTradeOrder)
-        .filter(DirectTradeOrder.status == DirectTradeOrderStatus.DISPUTED)
-        .order_by(DirectTradeOrder.dispute_opened_at.asc())
-        .limit(limit)
-        .all()
-    )
-
-
 @router.get("/admin/orders/{order_id}", response_model=DirectTradeOrderRead)
 def admin_get_order(
     order_id: int,
@@ -692,30 +748,98 @@ def admin_reject_order(
     return order
 
 
-@router.post(
-    "/admin/orders/{order_id}/resolve-dispute",
-    response_model=DirectTradeOrderRead,
-)
-def admin_resolve_dispute(
+# ═══════════════════════════════════════════════════════
+#              ADMIN — Messages
+# ═══════════════════════════════════════════════════════
+
+
+@router.get("/admin/orders/{order_id}/messages")
+def admin_get_order_messages(
     order_id: int,
-    payload: DirectTradeDisputeResolve,
     db: Session = Depends(get_db),
     admin: User = Depends(get_current_admin),
 ):
-    """حل اختلاف."""
+    """پیام‌های چت یک سفارش (ادمین)."""
     order = db.query(DirectTradeOrder).filter(
         DirectTradeOrder.id == order_id
     ).first()
+
     if not order:
         raise HTTPException(status_code=404, detail="سفارش یافت نشد")
 
-    return dt_service.resolve_dispute(
-        db=db,
-        order=order,
-        admin_user=admin,
-        decision=payload.decision,
-        admin_note=payload.admin_note,
+    messages = db.query(DirectTradeMessage).filter(
+        DirectTradeMessage.order_id == order_id
+    ).order_by(DirectTradeMessage.created_at.asc()).all()
+
+    result = []
+    for msg in messages:
+        sender = db.query(User).filter(User.id == msg.sender_id).first()
+        is_admin = False
+        if sender:
+            try:
+                is_admin = sender.role.value == "ADMIN"
+            except Exception:
+                is_admin = False
+
+        result.append({
+            "id": msg.id,
+            "order_id": msg.order_id,
+            "sender_id": msg.sender_id,
+            "sender_name": sender.full_name if sender else "User",
+            "is_admin": is_admin,
+            "message": msg.message,
+            "is_system": bool(msg.is_system),
+            "is_read": bool(msg.is_read),
+            "created_at": msg.created_at.isoformat() if msg.created_at else None,
+        })
+
+    return result
+
+
+@router.post("/admin/orders/{order_id}/messages")
+def admin_send_order_message(
+    order_id: int,
+    payload: dict,
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_current_admin),
+):
+    """ارسال پاسخ پشتیبانی (ادمین)."""
+    order = db.query(DirectTradeOrder).filter(
+        DirectTradeOrder.id == order_id
+    ).first()
+
+    if not order:
+        raise HTTPException(status_code=404, detail="سفارش یافت نشد")
+
+    message_text = (payload.get("message") or "").strip()
+    if len(message_text) < 1:
+        raise HTTPException(status_code=400, detail="پیام نمی‌تواند خالی باشد")
+
+    if len(message_text) > 2000:
+        raise HTTPException(status_code=400, detail="پیام طولانی است")
+
+    msg = DirectTradeMessage(
+        order_id=order_id,
+        sender_id=admin.id,
+        message=message_text,
+        is_system=False,
+        is_read=True,
     )
+    db.add(msg)
+    db.commit()
+    db.refresh(msg)
+
+    return {
+        "id": msg.id,
+        "order_id": msg.order_id,
+        "sender_id": msg.sender_id,
+        "sender_name": admin.full_name,
+        "is_admin": True,
+        "message": msg.message,
+        "is_system": False,
+        "is_read": True,
+        "created_at": msg.created_at.isoformat() if msg.created_at else None,
+    }
 
 
 @router.post("/admin/expire-stale")

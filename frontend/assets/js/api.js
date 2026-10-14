@@ -429,7 +429,36 @@ const API = {
     return this.request(`/direct-trades/reputation/${userId}`, { skipAuth: true });
   },
 
-  // --- Admin ---
+  // ═══════════════════════════════════════
+  //     Messages (Chat with Support)
+  // ═══════════════════════════════════════
+
+  getP2POrderMessages(orderId) {
+    return this.request(`/direct-trades/orders/my/${orderId}/messages`);
+  },
+
+  sendP2POrderMessage(orderId, message) {
+    return this.request(`/direct-trades/orders/my/${orderId}/messages`, {
+      method: 'POST',
+      body: JSON.stringify({ message }),
+    });
+  },
+
+  getAdminP2POrderMessages(orderId) {
+    return this.request(`/direct-trades/admin/orders/${orderId}/messages`);
+  },
+
+  adminSendP2POrderMessage(orderId, message) {
+    return this.request(`/direct-trades/admin/orders/${orderId}/messages`, {
+      method: 'POST',
+      body: JSON.stringify({ message }),
+    });
+  },
+
+  // ═══════════════════════════════════════
+  //     Admin P2P
+  // ═══════════════════════════════════════
+
   getAdminP2POrders(statusFilter = null) {
     const q = statusFilter ? `?status_filter=${statusFilter}` : '';
     return this.request(`/direct-trades/admin/orders${q}`);

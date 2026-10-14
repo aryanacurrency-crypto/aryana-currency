@@ -3,7 +3,6 @@
    ═══════════════════════════════════════ */
 
 const P2P = {
-  // مقادیر از /public/payment-info لود می‌شن
   escrowHesabPay: '',
   escrowName: 'ARYANA CURRENCY',
   escrowLoaded: false,
@@ -132,7 +131,7 @@ const P2P = {
   },
 
   // ═══════════════════════════════════════
-  //     Confirm Dialog (جایگزین confirm)
+  //     Confirm Dialog
   // ═══════════════════════════════════════
 
   showConfirm(options) {
@@ -685,7 +684,6 @@ const P2P = {
       'COMPLETED': 'Completed',
       'CANCELLED': 'Cancelled',
       'EXPIRED': 'Expired',
-      'DISPUTED': 'In Dispute',
     };
     const statusClasses = {
       'PENDING_PAYMENT': 'pending',
@@ -694,7 +692,6 @@ const P2P = {
       'COMPLETED': 'completed',
       'CANCELLED': 'cancelled',
       'EXPIRED': 'cancelled',
-      'DISPUTED': 'disputed',
     };
 
     const statusLabel = statusLabels[order.status] || order.status;
@@ -754,6 +751,13 @@ const P2P = {
               </svg>
               <span>Your payment is under review. Please wait for admin confirmation.</span>
             </div>
+
+            <button type="button" class="p2p-filter-btn" id="chatSupportBtn" style="width:100%;justify-content:center;margin-top:12px;border-color:var(--blue);color:var(--blue);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              Chat with Support
+            </button>
           </div>
         ` : ''}
 
@@ -777,6 +781,11 @@ const P2P = {
       document.getElementById('submitPaymentBtn')?.addEventListener('click', () => this.submitPayment());
       document.getElementById('copyAddressBtn')?.addEventListener('click', () => this.copyAddress());
       document.getElementById('cancelOrderBtn')?.addEventListener('click', () => this.cancelOrder());
+      document.getElementById('chatSupportBtn')?.addEventListener('click', () => this.openSupportChat());
+    }
+
+    if (showReviewSection) {
+      document.getElementById('chatSupportBtn')?.addEventListener('click', () => this.openSupportChat());
     }
   },
 
@@ -850,12 +859,190 @@ const P2P = {
           </svg>
         </button>
 
+        <button type="button" class="p2p-filter-btn" id="chatSupportBtn" style="width:100%;justify-content:center;margin-top:12px;border-color:var(--blue);color:var(--blue);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          Chat with Support
+        </button>
+
         <button type="button" class="p2p-filter-btn" id="cancelOrderBtn" style="width:100%;justify-content:center;margin-top:12px;">
           Cancel Order
         </button>
       </div>
     `;
   },
+
+  // ═══════════════════════════════════════
+  //     Chat with Support
+  // ═══════════════════════════════════════
+
+  async openSupportChat() {
+    const order = this.state.currentOrder;
+    if (!order) return;
+
+    const modal = document.createElement('div');
+    modal.className = 'p2p-modal-overlay';
+    modal.id = 'p2pChatModal';
+    modal.innerHTML = `
+      <div class="p2p-chat-modal">
+        <div class="p2p-chat-header">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="p2p-chat-support-avatar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <div style="font-size:14px;font-weight:800;">ARYANA Support</div>
+              <div style="font-size:11px;color:var(--text-secondary);">Usually replies within minutes</div>
+            </div>
+          </div>
+          <button class="p2p-modal-close" id="p2pChatClose">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+
+        <div class="p2p-chat-body" id="p2pChatBody">
+          <div class="p2p-chat-loading"><div class="p2p-spinner"></div><span>Loading messages...</span></div>
+        </div>
+
+        <div class="p2p-chat-footer">
+          <textarea id="p2pChatInput" class="p2p-chat-input" placeholder="Type your message..." rows="1"></textarea>
+          <button class="p2p-chat-send" id="p2pChatSend">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    document.getElementById('p2pChatClose').onclick = () => document.getElementById('p2pChatModal')?.remove();
+    modal.addEventListener('click', (e) => { if (e.target === modal) document.getElementById('p2pChatModal')?.remove(); });
+
+    const input = document.getElementById('p2pChatInput');
+    input.addEventListener('input', () => {
+      input.style.height = 'auto';
+      input.style.height = Math.min(input.scrollHeight, 100) + 'px';
+    });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        this.sendSupportMessage();
+      }
+    });
+
+    document.getElementById('p2pChatSend').onclick = () => this.sendSupportMessage();
+
+    await this.loadSupportMessages();
+    setTimeout(() => input.focus(), 300);
+  },
+
+  async loadSupportMessages() {
+    const body = document.getElementById('p2pChatBody');
+    const order = this.state.currentOrder;
+    if (!body || !order) return;
+
+    try {
+      const messages = await API.getP2POrderMessages(order.id);
+
+      if (!messages || messages.length === 0) {
+        body.innerHTML = `
+          <div class="p2p-chat-empty">
+            <div class="p2p-chat-empty-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:32px;height:32px;">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+            </div>
+            <h3>No messages yet</h3>
+            <p>Send your first message to our support team.</p>
+          </div>
+        `;
+        return;
+      }
+
+      this.renderSupportMessages(messages);
+    } catch (err) {
+      console.error('Load messages failed:', err);
+      body.innerHTML = `<div class="p2p-alert danger" style="margin:0;"><span>Failed to load messages</span></div>`;
+    }
+  },
+
+  renderSupportMessages(messages) {
+    const body = document.getElementById('p2pChatBody');
+    if (!body) return;
+
+    const currentUser = Auth.getUser();
+    const currentUserId = currentUser ? Number(currentUser.id) : null;
+
+    body.innerHTML = messages.map(msg => {
+      const isMe = Number(msg.sender_id) === currentUserId;
+      const time = msg.created_at ? new Date(msg.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '';
+
+      return `
+        <div class="p2p-chat-msg ${isMe ? 'mine' : 'theirs'}">
+          <div class="p2p-chat-bubble">
+            ${!isMe ? `<div class="p2p-chat-sender">${this.escapeHtml(msg.sender_name || 'Support')}</div>` : ''}
+            <div class="p2p-chat-text">${this.escapeHtml(msg.message)}</div>
+            <div class="p2p-chat-time">${time}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    body.scrollTop = body.scrollHeight;
+  },
+
+  async sendSupportMessage() {
+    const input = document.getElementById('p2pChatInput');
+    const sendBtn = document.getElementById('p2pChatSend');
+    const order = this.state.currentOrder;
+
+    if (!input || !order) return;
+
+    const text = input.value.trim();
+    if (!text) return;
+
+    sendBtn.disabled = true;
+    input.disabled = true;
+
+    try {
+      const msg = await API.sendP2POrderMessage(order.id, text);
+      const body = document.getElementById('p2pChatBody');
+      const emptyEl = body.querySelector('.p2p-chat-empty');
+      if (emptyEl) emptyEl.remove();
+
+      const time = new Date(msg.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+      body.insertAdjacentHTML('beforeend', `
+        <div class="p2p-chat-msg mine">
+          <div class="p2p-chat-bubble">
+            <div class="p2p-chat-text">${this.escapeHtml(msg.message)}</div>
+            <div class="p2p-chat-time">${time}</div>
+          </div>
+        </div>
+      `);
+
+      body.scrollTop = body.scrollHeight;
+      input.value = '';
+      input.style.height = 'auto';
+    } catch (err) {
+      console.error('Send message failed:', err);
+      this.showToast(err.detail || 'Failed to send message', 'error');
+    } finally {
+      sendBtn.disabled = false;
+      input.disabled = false;
+      input.focus();
+    }
+  },
+
+  // ═══════════════════════════════════════
+  //     Copy Address / Submit / Cancel
+  // ═══════════════════════════════════════
 
   copyAddress() {
     const addr = document.getElementById('escrowAddress')?.textContent;
@@ -1025,7 +1212,6 @@ const P2P = {
       'COMPLETED': 'completed',
       'CANCELLED': 'cancelled',
       'EXPIRED': 'cancelled',
-      'DISPUTED': 'disputed',
     }[order.status] || 'pending';
 
     return `

@@ -61,7 +61,6 @@ function renderOrder(order) {
     'COMPLETED': 'green',
     'CANCELLED': 'gray',
     'EXPIRED': 'gray',
-    'DISPUTED': 'red',
   }[order.status] || 'gray';
 
   const fmt = (n, d = 2) => Number(n).toLocaleString('en-US', {
@@ -72,7 +71,6 @@ function renderOrder(order) {
     month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
   }) : '—';
 
-  // ═══ SVG inline style (اجباری) ═══
   const SVG_STYLE = 'width:18px;height:18px;max-width:18px;max-height:18px;min-width:18px;min-height:18px;flex-shrink:0;display:block;';
 
   let actionsHtml = '';
@@ -94,27 +92,6 @@ function renderOrder(order) {
             <line x1="9" y1="9" x2="15" y2="15"/>
           </svg>
           Reject Order
-        </button>
-      </div>
-    `;
-  } else if (order.status === 'DISPUTED') {
-    actionsHtml = `
-      <div style="background:var(--red-bg);border:1px solid rgba(246,70,93,0.3);border-radius:12px;padding:16px;margin-bottom:16px;">
-        <div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:6px;">⚠️ Dispute Reason</div>
-        <div style="font-size:13px;color:var(--text-primary);line-height:1.6;">${escapeHtml(order.dispute_reason || '—')}</div>
-      </div>
-      <div class="p2p-admin-actions">
-        <button class="p2p-admin-btn success" id="resolveBuyerBtn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="${SVG_STYLE}">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-          Resolve for Buyer
-        </button>
-        <button class="p2p-admin-btn danger" id="resolveSellerBtn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="${SVG_STYLE}">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-          Resolve for Seller
         </button>
       </div>
     `;
@@ -179,6 +156,58 @@ function renderOrder(order) {
         </div>
       </div>
 
+      <!-- ═══ Messages from User ═══ -->
+      <div class="admin-detail-card" style="grid-column:1/-1;">
+        <div class="admin-detail-card-title">Messages from User</div>
+        <div id="messagesContainer" style="margin-top:12px;min-height:60px;">
+          <div style="text-align:center;padding:20px;color:var(--text-secondary);font-size:13px;">Loading messages...</div>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border-subtle);">
+          <textarea
+            id="adminMessageInput"
+            placeholder="Reply to user..."
+            style="
+              flex:1;
+              padding:10px 14px;
+              border-radius:12px;
+              background:var(--bg-tertiary);
+              border:1px solid var(--border-subtle);
+              color:var(--text-primary);
+              font-size:13px;
+              font-family:inherit;
+              resize:none;
+              outline:none;
+              min-height:42px;
+              max-height:100px;
+              line-height:1.4;
+            "
+            rows="1"
+          ></textarea>
+          <button
+            id="adminSendMessageBtn"
+            style="
+              width:42px;
+              height:42px;
+              border-radius:12px;
+              background:linear-gradient(135deg,#FFD54F,#FFC107);
+              color:#0B0E11;
+              border:none;
+              cursor:pointer;
+              display:grid;
+              place-items:center;
+              flex-shrink:0;
+              font-weight:800;
+            "
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
     </div>
 
     ${actionsHtml ? `
@@ -191,10 +220,125 @@ function renderOrder(order) {
     ` : ''}
   `;
 
+  // Event listeners
   document.getElementById('completeBtn')?.addEventListener('click', () => completeOrder());
   document.getElementById('rejectBtn')?.addEventListener('click', () => rejectOrder());
-  document.getElementById('resolveBuyerBtn')?.addEventListener('click', () => resolveDispute('BUYER'));
-  document.getElementById('resolveSellerBtn')?.addEventListener('click', () => resolveDispute('SELLER'));
+
+  // Messages
+  document.getElementById('adminSendMessageBtn')?.addEventListener('click', () => sendAdminMessage());
+
+  const msgInput = document.getElementById('adminMessageInput');
+  if (msgInput) {
+    msgInput.addEventListener('input', () => {
+      msgInput.style.height = 'auto';
+      msgInput.style.height = Math.min(msgInput.scrollHeight, 100) + 'px';
+    });
+
+    msgInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendAdminMessage();
+      }
+    });
+  }
+
+  // Load messages
+  loadMessages();
+}
+
+/* ═══════════════════════════════════════
+             Messages / Chat
+   ═══════════════════════════════════════ */
+
+async function loadMessages() {
+  const container = document.getElementById('messagesContainer');
+  if (!container || !currentOrder) return;
+
+  try {
+    const messages = await API.getAdminP2POrderMessages(currentOrder.id);
+    renderMessages(messages);
+  } catch (err) {
+    console.error('Load messages failed:', err);
+    container.innerHTML = `<div style="text-align:center;padding:20px;color:var(--red);font-size:13px;">Failed to load messages</div>`;
+  }
+}
+
+function renderMessages(messages) {
+  const container = document.getElementById('messagesContainer');
+  if (!container) return;
+
+  if (!messages || messages.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center;padding:30px 20px;color:var(--text-secondary);font-size:13px;">
+        No messages from user yet.
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div id="messagesScroll" style="display:flex;flex-direction:column;gap:10px;max-height:320px;overflow-y:auto;padding:4px;">
+      ${messages.map(msg => {
+        const isAdmin = msg.is_admin;
+        const time = msg.created_at ? new Date(msg.created_at).toLocaleString('en-US', {
+          month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
+        }) : '';
+
+        return `
+          <div style="display:flex;justify-content:${isAdmin ? 'flex-end' : 'flex-start'};">
+            <div style="
+              max-width:78%;
+              padding:10px 14px;
+              border-radius:14px;
+              background:${isAdmin ? 'linear-gradient(135deg,#FFD54F,#FFC107)' : 'var(--bg-tertiary)'};
+              color:${isAdmin ? '#0B0E11' : 'var(--text-primary)'};
+              border:${isAdmin ? 'none' : '1px solid var(--border-subtle)'};
+              font-size:13px;
+              line-height:1.5;
+              word-wrap:break-word;
+            ">
+              ${!isAdmin ? `<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#64B5F6;margin-bottom:4px;">${escapeHtml(msg.sender_name)}</div>` : ''}
+              <div style="white-space:pre-wrap;word-break:break-word;">${escapeHtml(msg.message)}</div>
+              <div style="font-size:10px;margin-top:4px;opacity:0.6;font-family:var(--font-mono);text-align:${isAdmin ? 'right' : 'left'};">${time}</div>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+
+  const scrollBox = document.getElementById('messagesScroll');
+  if (scrollBox) scrollBox.scrollTop = scrollBox.scrollHeight;
+}
+
+async function sendAdminMessage() {
+  if (!currentOrder) return;
+
+  const input = document.getElementById('adminMessageInput');
+  const sendBtn = document.getElementById('adminSendMessageBtn');
+
+  if (!input) return;
+
+  const text = input.value.trim();
+  if (!text) return;
+
+  sendBtn.disabled = true;
+  input.disabled = true;
+
+  try {
+    await API.adminSendP2POrderMessage(currentOrder.id, text);
+    input.value = '';
+    input.style.height = 'auto';
+    await loadMessages();
+    showToast('Message sent', 'success');
+  } catch (err) {
+    console.error('Send message failed:', err);
+    showToast(err.detail || 'Failed to send message', 'error');
+  } finally {
+    sendBtn.disabled = false;
+    input.disabled = false;
+    input.focus();
+  }
 }
 
 /* ═══════════════════════════════════════
@@ -268,36 +412,6 @@ async function rejectOrder() {
       btn.disabled = false;
       btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;max-width:18px;max-height:18px;"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Reject Order`;
     }
-  }
-}
-
-async function resolveDispute(decision) {
-  if (!currentOrder) return;
-
-  const isBuyer = decision === 'BUYER';
-
-  const note = await showConfirm({
-    icon: isBuyer ? 'success' : 'danger',
-    title: isBuyer ? 'Resolve for Buyer?' : 'Resolve for Seller?',
-    message: isBuyer
-      ? 'The escrowed USDT will be released to the buyer. The seller will not receive funds.'
-      : 'The escrowed USDT will be returned to the seller. The buyer will not receive USDT.',
-    inputPlaceholder: 'Admin note (required)...',
-    inputRequired: true,
-    confirmText: isBuyer ? 'Resolve for Buyer' : 'Resolve for Seller',
-    cancelText: 'Cancel',
-    confirmStyle: isBuyer ? 'success' : 'danger',
-  });
-
-  if (!note) return;
-
-  try {
-    await API.adminResolveP2PDispute(currentOrder.id, decision, note);
-    showToast(`Dispute resolved for ${decision}`, 'success');
-    setTimeout(() => window.location.reload(), 1200);
-  } catch (err) {
-    console.error('Resolve failed:', err);
-    showToast(err.detail || 'Failed to resolve dispute', 'error');
   }
 }
 
