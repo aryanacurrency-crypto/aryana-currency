@@ -1,31 +1,41 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Footer Styles
-   Used on all pages
+   ARYANA CURRENCY — Footer (Light Theme)
    ═══════════════════════════════════════ */
 
 .home-footer {
-  border-top: 1px solid var(--border-subtle);
-  padding-block: var(--space-10) var(--space-6);
-  background: var(--bg-secondary);
+  border-top: 1px solid #E2E8F0;
+  padding-block: 60px 32px;
+  background: #FFFFFF;
   margin-top: 60px;
+  position: relative;
+}
+
+.home-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
 }
 
 .footer-grid {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: var(--space-8);
-  margin-bottom: var(--space-8);
+  gap: 60px;
+  margin-bottom: 48px;
 }
 
 .footer-brand {
-  max-width: 320px;
+  max-width: 340px;
 }
 
 .footer-brand .app-brand {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  margin-bottom: var(--space-4);
+  gap: 12px;
+  margin-bottom: 16px;
   text-decoration: none;
 }
 
@@ -33,7 +43,7 @@
   width: 42px;
   height: 42px;
   object-fit: contain;
-  border-radius: var(--radius-md);
+  border-radius: 10px;
 }
 
 .footer-brand .app-brand-text {
@@ -41,61 +51,62 @@
   font-weight: 800;
   letter-spacing: 1px;
   line-height: 1.2;
-  color: var(--text-primary);
+  color: #0F172A;
 }
 
 .footer-brand .app-brand-text small {
   display: block;
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 2.5px;
-  color: var(--gold);
+  color: #3B82F6;
   margin-top: 2px;
 }
 
 .footer-desc {
   font-size: 13px;
   line-height: 1.8;
-  color: var(--text-secondary);
-  margin: 0 0 var(--space-4);
+  color: #64748B;
+  margin: 0 0 16px;
 }
 
 .footer-col h4 {
   font-size: 13px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #0F172A;
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-bottom: var(--space-4);
+  margin-bottom: 18px;
 }
 
 .footer-col a {
   display: block;
   font-size: 13px;
-  color: var(--text-secondary);
-  margin-bottom: var(--space-3);
-  transition: color var(--transition-fast);
+  color: #64748B;
+  margin-bottom: 12px;
+  transition: color 0.2s ease;
   text-decoration: none;
+  font-weight: 500;
 }
 
 .footer-col a:hover {
-  color: var(--gold);
+  color: #3B82F6;
 }
 
 .footer-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: var(--space-4);
-  padding-top: var(--space-6);
-  border-top: 1px solid var(--border-subtle);
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid #F1F5F9;
   font-size: 12px;
-  color: var(--text-tertiary);
+  color: #94A3B8;
   flex-wrap: wrap;
 }
 
 .footer-bottom strong {
-  color: var(--text-primary);
+  color: #0F172A;
 }
 
 /* ═══ Footer Contact ═══ */
@@ -103,13 +114,13 @@
 .footer-contact-title {
   font-size: 12px;
   font-weight: 700;
-  color: var(--gold);
+  color: #3B82F6;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  margin-top: var(--space-5);
-  margin-bottom: var(--space-3);
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--border-subtle);
+  margin-top: 20px;
+  margin-bottom: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #F1F5F9;
 }
 
 .footer-contact-list {
@@ -123,20 +134,21 @@
   align-items: center;
   gap: 10px;
   font-size: 13px;
-  color: var(--text-secondary);
-  transition: color var(--transition-fast);
+  color: #64748B;
+  transition: color 0.2s ease;
   text-decoration: none;
+  font-weight: 500;
 }
 
 .footer-contact-item:hover {
-  color: var(--gold);
+  color: #3B82F6;
 }
 
 .footer-contact-item svg {
   width: 15px;
   height: 15px;
   flex-shrink: 0;
-  color: var(--gold);
+  color: #3B82F6;
 }
 
 .footer-contact-item span {
@@ -150,13 +162,14 @@
 @media (max-width: 1000px) {
   .footer-grid {
     grid-template-columns: 1fr 1fr;
+    gap: 40px;
   }
 }
 
 @media (max-width: 640px) {
   .footer-grid {
     grid-template-columns: 1fr;
-    gap: var(--space-6);
+    gap: 32px;
   }
 
   .footer-bottom {

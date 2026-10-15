@@ -1,24 +1,12 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Aryana Currency — Buy & sell USDT at the best rate. A licensed digital currency exchange.">
-  <meta name="theme-color" content="#0B0E11">
+  <meta name="theme-color" content="#FAFBFF">
 
   <title>ARYANA CURRENCY | Digital Exchange</title>
-
-  <!-- Prevent theme flash -->
-  <script>
-    (function() {
-      try {
-        var saved = localStorage.getItem('aryana_theme');
-        var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.classList.add(theme);
-        document.documentElement.setAttribute('data-theme', theme);
-      } catch (e) {}
-    })();
-  </script>
 
   <link rel="icon" type="image/png" href="assets/images/logo.png">
 
@@ -32,7 +20,7 @@
   <link rel="stylesheet" href="assets/css/footer.css">
   <link rel="stylesheet" href="assets/css/notifications.css">
 </head>
-<body>
+<body class="home-body">
 
   <!-- Announcement -->
   <div class="announcement-bar">
@@ -53,6 +41,7 @@
       <nav class="home-nav">
         <a href="#rates" data-i18n="navRates">Exchange Rates</a>
         <a href="#how" data-i18n="navHow">How It Works</a>
+        <a href="#app" data-i18n="navApp">Mobile App</a>
         <a href="pages/about.html" data-i18n="navAbout">About Us</a>
         <a href="pages/contact.html" data-i18n="navContact">Contact</a>
       </nav>
@@ -66,7 +55,7 @@
 
   <main>
 
-    <!-- Hero -->
+    <!-- ═══ HERO ═══ -->
     <section class="hero-section">
       <div class="container hero-grid">
 
@@ -145,12 +134,12 @@
       </div>
     </section>
 
-    <!-- Ticker -->
+    <!-- ═══ TICKER ═══ -->
     <div class="ticker-section">
       <div class="ticker-track" id="tickerTrack"></div>
     </div>
 
-    <!-- Stats -->
+    <!-- ═══ STATS ═══ -->
     <section class="stats-section">
       <div class="container">
         <div class="stats-grid">
@@ -174,7 +163,7 @@
       </div>
     </section>
 
-    <!-- Rates -->
+    <!-- ═══ RATES ═══ -->
     <section class="section" id="rates">
       <div class="container">
         <div class="section-header">
@@ -238,7 +227,6 @@
             </div>
           </div>
 
-          <!-- Network Card -->
           <div class="rate-card">
             <div class="rate-card-header">
               <div class="rate-icon">
@@ -254,8 +242,6 @@
               </div>
             </div>
             <div class="network-list">
-
-              <!-- TRC20 (Tron) -->
               <div class="network-item">
                 <div class="network-logo tron">
                   <svg viewBox="0 0 24 24" fill="currentColor">
@@ -265,8 +251,6 @@
                 <span class="network-name">TRC20</span>
                 <span class="network-sub">Tron</span>
               </div>
-
-              <!-- BEP20 (BNB Chain) -->
               <div class="network-item">
                 <div class="network-logo bnb">
                   <svg viewBox="0 0 24 24" fill="currentColor">
@@ -276,19 +260,15 @@
                 <span class="network-name">BEP20</span>
                 <span class="network-sub">BNB Chain</span>
               </div>
-
-              <!-- ERC20 (Ethereum) -->
               <div class="network-item">
                 <div class="network-logo eth">
                   <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 1.5L5.5 11.2 12 15l6.5-3.8L12 1.5zM12 16.2L5.5 12.4 12 22l6.5-9.6L12 16.2z" opacity=".9"/>
-                    <path d="M12 1.5v13.5l6.5-3.8L12 1.5z" opacity=".6"/>
                   </svg>
                 </div>
                 <span class="network-name">ERC20</span>
                 <span class="network-sub">Ethereum</span>
               </div>
-
             </div>
             <div class="rate-card-unit" style="margin-top: 14px;" data-i18n="networkUnit">Choose your network</div>
             <div class="rate-card-footer">
@@ -300,13 +280,13 @@
       </div>
     </section>
 
-    <!-- Trust -->
+    <!-- ═══ TRUST ═══ -->
     <section class="section" style="padding-top:0;">
       <div class="container">
         <div class="trust-grid">
           <div class="trust-card">
             <div class="trust-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               </svg>
             </div>
@@ -316,7 +296,7 @@
 
           <div class="trust-card">
             <div class="trust-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
                 <polyline points="22 4 12 14.01 9 11.01"/>
               </svg>
@@ -327,7 +307,7 @@
 
           <div class="trust-card">
             <div class="trust-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                 <circle cx="12" cy="7" r="4"/>
               </svg>
@@ -339,7 +319,7 @@
       </div>
     </section>
 
-    <!-- How it Works -->
+    <!-- ═══ HOW IT WORKS ═══ -->
     <section class="section" id="how" style="padding-top:0;">
       <div class="container">
         <div class="section-header">
@@ -370,7 +350,129 @@
       </div>
     </section>
 
-    <!-- CTA -->
+    <!-- ═══ 📱 APP PREVIEW — Two iPhone 18 ═══ -->
+    <section class="app-preview-section" id="app">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-kicker" data-i18n="appKicker">EXPERIENCE ARYANA</div>
+          <h2 class="section-title" data-i18n="appTitle">Your exchange, on every screen</h2>
+          <p class="section-desc" data-i18n="appDescription">Log in, register and trade — designed with mobile-first in mind.</p>
+        </div>
+
+        <div class="app-preview-grid">
+
+          <!-- iPhone 1: Login -->
+          <div class="iphone-wrap float-1">
+            <div class="iphone">
+              <div class="dynamic-island"></div>
+              <div class="iphone-screen">
+                <div class="screen-content">
+
+                  <div class="screen-logo">A</div>
+
+                  <div class="screen-badge">Secure Access</div>
+
+                  <div class="screen-title">
+                    Welcome<br><span>Back.</span>
+                  </div>
+
+                  <div class="screen-subtitle">Sign in to your exchange dashboard.</div>
+
+                  <div class="screen-input">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                      <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    you@example.com
+                  </div>
+
+                  <div class="screen-input">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    ••••••••
+                  </div>
+
+                  <div class="screen-btn">Sign In →</div>
+
+                  <div class="screen-footer">
+                    No account? <strong>Register</strong>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="iphone-label">Login</div>
+              <div class="iphone-label-sub">Fast and secure</div>
+            </div>
+          </div>
+
+          <!-- iPhone 2: Register -->
+          <div class="iphone-wrap float-2">
+            <div class="iphone-badge">NEW</div>
+            <div class="iphone">
+              <div class="dynamic-island"></div>
+              <div class="iphone-screen">
+                <div class="screen-content">
+
+                  <div class="screen-logo">A</div>
+
+                  <div class="screen-badge">Start Trading</div>
+
+                  <div class="screen-title">
+                    Create<br><span>Account.</span>
+                  </div>
+
+                  <div class="screen-subtitle">Join in less than a minute.</div>
+
+                  <div class="screen-input">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                      <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    Ahmad Rahimi
+                  </div>
+
+                  <div class="screen-input">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                      <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    you@example.com
+                  </div>
+
+                  <div class="screen-referral">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                      <circle cx="8.5" cy="7" r="4"/>
+                      <line x1="20" y1="8" x2="20" y2="14"/>
+                      <line x1="23" y1="11" x2="17" y2="11"/>
+                    </svg>
+                    REFERRAL: ALI123
+                  </div>
+
+                  <div class="screen-btn">Create →</div>
+
+                  <div class="screen-footer">
+                    Have an account? <strong>Login</strong>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="iphone-label">Register</div>
+              <div class="iphone-label-sub">Invite code supported</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CTA ═══ -->
     <section class="cta-section">
       <div class="container">
         <div class="cta-box">
@@ -386,7 +488,7 @@
 
   </main>
 
-  <!-- Footer (auto-injected by footer.js) -->
+  <!-- Footer auto-injected -->
 
   <script src="assets/js/config.js"></script>
   <script src="assets/js/i18n.js"></script>

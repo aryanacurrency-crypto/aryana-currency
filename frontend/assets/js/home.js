@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Home v2 Logic
+   ARYANA CURRENCY — Home Logic
    ═══════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -9,17 +9,26 @@ document.addEventListener('DOMContentLoaded', async () => {
   await I18N.load(initialLang);
   I18N.apply();
 
-  // سال جاری
   const yearEl = document.getElementById('currentYear');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // ساخت ticker
   await initTicker();
-
-  // لود نرخ زنده
   await loadLiveRates();
 
-  // هر ۶۰ ثانیه آپدیت
+  // Smooth scroll for hash links
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const target = link.getAttribute('href');
+      if (target === '#') return;
+      const el = document.querySelector(target);
+      if (el) {
+        e.preventDefault();
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Live update every 60s
   setInterval(() => {
     initTicker();
     loadLiveRates();
@@ -27,16 +36,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 /**
- * ساخت ticker خودکار (دو نسخه برای انیمیشن بی‌نهایت)
+ * Ticker — live market prices
  */
 async function initTicker() {
   const track = document.getElementById('tickerTrack');
   if (!track) return;
 
-  // مقادیر پیشفرض (اگه API کار نکرد)
   const defaultPrices = {
     USDT: '70.50',
-    USD: '70.50',
     EUR: '76.50',
     GBP: '89.20',
     AED: '19.20',
@@ -48,7 +55,6 @@ async function initTicker() {
 
   let usdtPrice = defaultPrices.USDT;
 
-  // از API خودمون نرخ زنده USDT/AFN بگیر
   try {
     const rate = await API.getCurrentRate();
     usdtPrice = Number(rate.sell_price_afn).toLocaleString('en-US', {
@@ -59,17 +65,16 @@ async function initTicker() {
     console.error('Ticker rate load failed:', err);
   }
 
-  // آیتم‌های Ticker — ارزهای فیات + USDT
   const items = [
-    { symbol: 'USDT/AFN', price: usdtPrice,         change: '+0.45%', up: true },
-    { symbol: 'USD/AFN',  price: usdtPrice,         change: '+0.12%', up: true },
-    { symbol: 'EUR/AFN',  price: defaultPrices.EUR, change: '+0.18%', up: true },
-    { symbol: 'GBP/AFN',  price: defaultPrices.GBP, change: '−0.09%', up: false },
-    { symbol: 'AED/AFN',  price: defaultPrices.AED, change: '+0.09%', up: true },
-    { symbol: 'IRT/AFN',  price: defaultPrices.IRT, change: '+0.05%', up: true },
-    { symbol: 'PKR/AFN',  price: defaultPrices.PKR, change: '−0.15%', up: false },
-    { symbol: 'CHF/AFN',  price: defaultPrices.CHF, change: '+0.22%', up: true },
-    { symbol: 'AUD/AFN',  price: defaultPrices.AUD, change: '−0.07%', up: false },
+    { symbol: 'USDT/AFN', price: usdtPrice,          change: '+0.45%', up: true },
+    { symbol: 'USD/AFN',  price: usdtPrice,          change: '+0.12%', up: true },
+    { symbol: 'EUR/AFN',  price: defaultPrices.EUR,  change: '+0.18%', up: true },
+    { symbol: 'GBP/AFN',  price: defaultPrices.GBP,  change: '−0.09%', up: false },
+    { symbol: 'AED/AFN',  price: defaultPrices.AED,  change: '+0.09%', up: true },
+    { symbol: 'IRT/AFN',  price: defaultPrices.IRT,  change: '+0.05%', up: true },
+    { symbol: 'PKR/AFN',  price: defaultPrices.PKR,  change: '−0.15%', up: false },
+    { symbol: 'CHF/AFN',  price: defaultPrices.CHF,  change: '+0.22%', up: true },
+    { symbol: 'AUD/AFN',  price: defaultPrices.AUD,  change: '−0.07%', up: false },
   ];
 
   const buildItem = (item) => `
@@ -81,13 +86,11 @@ async function initTicker() {
   `;
 
   const groupHtml = items.map(buildItem).join('');
-
-  // دو نسخه برای انیمیشن بی‌نهایت
   track.innerHTML = groupHtml + groupHtml;
 }
 
 /**
- * لود نرخ زنده از API
+ * Load live rates
  */
 async function loadLiveRates() {
   try {
@@ -98,15 +101,11 @@ async function loadLiveRates() {
       maximumFractionDigits: 2,
     });
 
-    // کارت hero
     setText('liveSellPrice', `${fmt(rate.sell_price_afn)} AFN`);
     setText('liveBuyPrice', `${fmt(rate.buy_price_afn)} AFN`);
-
-    // کارت‌های rates
     setText('rateSellCard', `${fmt(rate.sell_price_afn)} AFN`);
     setText('rateBuyCard', `${fmt(rate.buy_price_afn)} AFN`);
 
-    // آپدیت ticker (USDT/AFN و USD/AFN زنده)
     const tickerItems = document.querySelectorAll('.ticker-item');
     tickerItems.forEach(item => {
       const symbolEl = item.querySelector('.symbol');
@@ -125,15 +124,12 @@ async function loadLiveRates() {
     const badge = document.querySelector('.live-badge');
     if (badge) {
       badge.textContent = '—';
-      badge.style.background = 'rgba(132, 142, 156, 0.1)';
-      badge.style.color = 'var(--text-tertiary)';
+      badge.style.background = 'rgba(148, 163, 184, 0.15)';
+      badge.style.color = '#94A3B8';
     }
   }
 }
 
-/**
- * Helper: تنظیم متن
- */
 function setText(id, value) {
   const el = document.getElementById(id);
   if (el) el.textContent = value;
