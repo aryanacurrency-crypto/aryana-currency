@@ -38,62 +38,59 @@ const AVATAR_GRADIENTS = [
 
 // ═══ 50 Testimonials ═══
 const TESTIMONIALS = [
-  // FA Dari
-  { name: 'احمد رضایی', city: 'کابل', rating: 5, lang: 'fa', text: 'قبلاً از نفرهای نامعلوم داخل تلگرام آنلاین خرید می‌کردم. بعد از اینکه پول می‌فرستادم، بلاکم می‌کردند. حالا جای خوشی است که این صرافی مشکل ما تریدرهای کوچک را حل کرده. از وقتی که تترهای خود را در صرافی آریانا نقد می‌کنم، نه هر روز در گروپ‌ها پشت صراف می‌گردم، نه کمیشن زیاد می‌دهم.' },
-  { name: 'نصرالله قادری', city: 'فاریاب', rating: 5, lang: 'fa', text: 'تا حساب دو طرف خریدار و فروشنده به هم نرسیده و تسویه نشده، کسی نمی‌تواند با رسید فیک و تتر فیک فریب‌کاری کند. این خیلی مهم است برای ما که سرمایه زیاد نداریم.' },
-  { name: 'علی نوری', city: 'جلال‌آباد', rating: 5, lang: 'fa', text: 'ما که سرمایه زیاد نداریم، از بازار چند دالر سود می‌کنیم. دفه اول که اومدم، کمی گیج شدم ولی حالا راحتم. از وقتی که اینجا کار می‌کنم، دیگه لازم نیست هر روز پشت صراف بگردم.' },
-  { name: 'حسین جعفری', city: 'غزنی', rating: 5, lang: 'fa', text: 'قبلاً فقط از گروپ‌های تلگرام تتر می‌خریدم. یک بار پول فرستادم، بلاکم کرد. حالا اینجا مشخص است کی فروشنده‌ست و صرافی خودش واسطه‌ست.' },
-  { name: 'نجیب الله صادقی', city: 'مزار شریف', rating: 5, lang: 'fa', text: 'رفقام را دعوت کردم به این صرافی. هر دفه که یک نفر از زیرمجموعه‌هام معامله می‌کنه، یک تیکت به من می‌رسه. تا حالا دوتا ۱۰۰ افغانی و یکی ۵۰ افغانی برنده شدم.' },
-  { name: 'فرید صادقی', city: 'هرات', rating: 5, lang: 'fa', text: 'قبلاً برای زیرمجموعه گرفتن چیزی نمی‌دادن. اینجا هم ۱۵ افغانی می‌دن، هم تیکت بخت‌آزمایی. من ۸ نفر آوردم و از دایره شانس هم ۲۰۰ افغانی گرفتم.' },
-  { name: 'عزیز الرحمن', city: 'غزنی', rating: 5, lang: 'fa', text: 'من ۱۵ نفر زیرمجموعه دارم. با هر بار معاملات آنها یک تیکت بخت‌آزمایی دریافت می‌کنم. همین دیروز ۱۰۰۰ افغانی در دایره شانس برنده شدم.' },
-  { name: 'حکمت الله رحیمی', city: 'غزنی', rating: 5, lang: 'fa', text: 'هر وقت که زیرمجموعه‌هام معامله می‌کنن، برام یک تیکت میاد. هفته پیش دوتا ۵۰ افغانی و یک تیکت رایگان برنده شدم.' },
-  { name: 'یوسف اکبری', city: 'پروان', rating: 5, lang: 'fa', text: '۵ نفر زیرمجموعه دارم. هر معامله‌ای که می‌کنن، ۱۵ افغانی به حساب قفل‌شده‌ام میاد و یک تیکت هم می‌گیرم. هفته پیش ۱۰۰ افغانی از دایره شانس برنده شدم.' },
-  { name: 'نصیر احمد', city: 'کابل', rating: 5, lang: 'fa', text: 'قبلاً چند بار از نفرهای نامعلوم داخل تلگرام تتر خریدم. یک بار پول فرستادم، بلاکم کرد. حالا اینجا راحتم. صرافی خودش ضامن است.' },
-  { name: 'عبدالله نوری', city: 'مزار شریف', rating: 5, lang: 'fa', text: 'کارشون خوبه. پول سریع می‌رسه. تازه از دایره شانس هم چیزهای خوبی برنده شدم.' },
-  { name: 'حبیب الله صادقی', city: 'جلال‌آباد', rating: 5, lang: 'fa', text: 'دفه اول یه کم استرس داشتم ولی حالا دیگه کاملاً راحتم. چند بار معامله کردم و همه‌شون درست بود.' },
-  { name: 'شفیع الله نوری', city: 'کابل', rating: 5, lang: 'fa', text: 'من تریدر کوچک هستم. قبلاً از بازار چند دالر سود می‌کردم ولی نقد کردنش سخت بود. حالا اینجا خیلی راحت‌تره.' },
-  { name: 'محمد احمدی', city: 'مزار شریف', rating: 5, lang: 'fa', text: 'P2P اینجا خیلی خوبه. فروشنده‌ها مشخص است، امتیاز دارن. اگه مشکلی شود، صرافی پیگیری می‌کنه.' },
-  { name: 'وحید کریمی', city: 'کابل', rating: 5, lang: 'fa', text: 'کارشون خوبه. فقط بعضی وقت‌ها کمی صبر می‌خواد تا فروشنده مناسب پیدا شود.' },
-  { name: 'عبدالله کریمی', city: 'مزار شریف', rating: 5, lang: 'fa', text: 'من دفه اول کمی گیج شدم. راهنما باید واضح‌تر باشد. حالا دیگه یاد گرفتم ولی دفه اول سخت بود.' },
-  { name: 'رامین نظری', city: 'هرات', rating: 5, lang: 'fa', text: 'از وقتی که اینجا حساب باز کردم، دیگه از تلگرام خرید نمی‌کنم. امنیتش خیلی بهتره.' },
-  { name: 'سهیل کاظمی', city: 'کابل', rating: 5, lang: 'fa', text: 'چند بار معامله کردم. هر بار درست بود. نرخ‌ها هم منصفانه است.' },
-  { name: 'فواد باقری', city: 'قندهار', rating: 4, lang: 'fa', text: 'خوب کار می‌کنه. فقط کاش تعداد فروشنده‌ها زیادتر بود تا بیشتر انتخاب داشته باشیم.' },
-  { name: 'مسعود عباسی', city: 'هرات', rating: 5, lang: 'fa', text: 'قبلاً از یک جای مشخص تتر می‌خریدم، سه چهار فیصد کمیسیون می‌گرفت. حالا اینجا کمتر حساب می‌کنه و خودم می‌تونم نرخ را ببینم.' },
-  { name: 'جاوید زمانی', city: 'هرات', rating: 5, lang: 'fa', text: 'کمیشن اینجا از جایی که قبلاً کار می‌کردم کمتره. از وقتی که اینجا هستم، دیگه لازم نیست کمیشن زیاد بدم.' },
-  { name: 'بصیر قاسمی', city: 'قندهار', rating: 4, lang: 'fa', text: 'نرخ‌ها خوبه. پول سریع می‌رسه. فقط بعضی وقت‌ها باید کمی صبر کنم.' },
-  { name: 'ظاهر شریفی', city: 'مزار شریف', rating: 4, lang: 'fa', text: 'کارشون خوبه. کمیسیون هم منصفانه است. راضی یم.' },
-  { name: 'ناصر مرادی', city: 'کابل', rating: 4, lang: 'fa', text: 'خدمتشون خوبه. فقط کاش پشتیبانی یه کم سریع‌تر جواب می‌داد.' },
-  { name: 'رامین سلطانی', city: 'کابل', rating: 5, lang: 'fa', text: 'برای تریدرهای کوچک مثل من خیلی خوبه. نرخ‌ها شفافه و کمیشن کمه.' },
-  { name: 'داوود عزیزی', city: 'کابل', rating: 3, lang: 'fa', text: 'کار می‌کند ولی پشتیبانی کمی دیر جواب می‌ده. شاید بهتر شود بعداً.' },
-  { name: 'یاسین صالحی', city: 'هرات', rating: 3, lang: 'fa', text: 'خوب است ولی کاش شبکه‌های USDT زیادتر بود. من فقط با TRC20 کار می‌کنم.' },
-  { name: 'ادریس فرجی', city: 'قندهار', rating: 3, lang: 'fa', text: 'کارشون خوبه ولی کاش یه راهنمای واضح‌تر برای تازه‌کارها داشت.' },
-  { name: 'زکریا بهرامی', city: 'مزار شریف', rating: 3, lang: 'fa', text: 'خوبه. فقط بعضی وقت‌ها نرخ‌ها کمی بالا و پایین می‌شه.' },
-  { name: 'نبی خالقی', city: 'کابل', rating: 2, lang: 'fa', text: 'دفه اول یه کم سخت بود. حالا دیگه یاد گرفتم ولی اولش گیج شدم.' },
-  { name: 'ولی روحانی', city: 'هرات', rating: 2, lang: 'fa', text: 'کار می‌کنه ولی چیز خاصی نداره که منو جذب کنه.' },
-  { name: 'نیاز نادری', city: 'کابل', rating: 1, lang: 'fa', text: 'من تازه عضو شدم و راستش خیلی استرس دارم. نمی‌دانم باید چطور شروع کنم. کاشکی یک راهنما برای تازه‌کارها بود.' },
-  { name: 'گل محمد قریشی', city: 'مزار شریف', rating: 1, lang: 'fa', text: 'بار اولمه اینجا معامله می‌کنم. کمی می‌ترسم. اگه یک راهنما برای تازه‌کارها بود، خیلی کمک می‌کرد.' },
-  { name: 'زهرا حسینی', city: 'قندهار', rating: 5, lang: 'fa', text: 'من از خونه معامله می‌کنم. فروشنده‌ها تأیید شده‌ن و من از کسی می‌خرم که امتیازش بالاست. خیلی راحت‌تر از تلگرامه.' },
-  { name: 'فاطمه کریمی', city: 'هرات', rating: 5, lang: 'fa', text: 'چند بار از تلگرام خرید کردم و ضرر کردم. حالا که اینجا هستم، راحت‌تر شدم. دفه اول کمی سخت بود ولی حالا یاد گرفتم.' },
-  { name: 'مریم صادقی', city: 'کندز', rating: 4, lang: 'fa', text: 'خوب شده که این امکان رو گذاشتن. قبلاً کمیسیون‌ها بالا بود، حالا خودم انتخاب می‌کنم از کی بخرم.' },
-  { name: 'شکیبا نوری', city: 'لوگر', rating: 5, lang: 'fa', text: 'برای من که تازه‌کار هستم، این صرافی خیلی کمک کرده. حساب پی من سریع پر می‌شه و دیگه نگران نیستم.' },
-  { name: 'نجیبه رحیمی', city: 'ننگرهار', rating: 5, lang: 'fa', text: 'فروشنده‌های اینجا رتبه و امتیاز دارن. من از کسی می‌خرم که امتیازش بالاست و معامله‌های قبلی‌اش موفق بوده.' },
-  // PS Pashto
-  { name: 'نصیر احمد', city: 'کابل', rating: 5, lang: 'ps', text: 'پخوا مې د تلګرام له نامعلومو خلکو تتر اخیست. یو ځل مې پیسې ولېږلې، بیا یې بلاک کړم. حالا چې دلته یم، زما زړه ارام دی.' },
-  { name: 'شفیقه کریمی', city: 'هرات', rating: 5, lang: 'ps', text: 'موږ کوچني سوداګر وو. د تلګرام له لارې به مو تتر اخیست. کله کله به دوکه کېدل. اوس چې دې صرافي دا ستونزه حل کړې، ډېر خوشحاله یو.' },
-  { name: 'مرسل جعفری', city: 'کندز', rating: 4, lang: 'ps', text: 'زما میړه او زه دواړه له دې پلیټفارم کار اخلو. پخوا مو له نامعلومو خلکو سره معامله کوله او ډار و. اوس ډاډه یو.' },
-  { name: 'عبدالله نوری', city: 'مزار شریف', rating: 5, lang: 'ps', text: 'زما ۱۰ ملګري رابلل. هر ځل چې دوی معامله کوي، زه یو ټکټ اخلم. پرون مې ۱۰۰ افغانۍ وګټلې.' },
-  { name: 'حبیب الله صادقی', city: 'جلال‌آباد', rating: 5, lang: 'ps', text: 'د تلګرام له نامعلومو خلکو سره مو معامله کوله. یو ځل مو پیسې ورکړې او بلاک شوو. اوس چې آریانا ده، ډاډه یو.' },
-  { name: 'زلیخا احمدی', city: 'قندهار', rating: 5, lang: 'ps', text: 'زه کور ته ناسته یم او معامله کوم. پیسې هم ژر رسېږي. د ښځو لپاره ډېر اسان دی.' },
-  { name: 'عزیز الرحمن', city: 'غزنی', rating: 4, lang: 'ps', text: 'ښه کار کوي. یوازې کله کله د مناسب پیرودونکي پیدا کول وخت نیسي.' },
-  { name: 'پریسا حسینی', city: 'بامیان', rating: 5, lang: 'ps', text: 'پخوا مو له بهرنیو خلکو معامله کوله او ډار و. اوس چې پوهیږو صرافي ضامنه ده، ډاډه یو.' },
-  { name: 'حکمت الله رحیمی', city: 'غزنی', rating: 5, lang: 'ps', text: 'د پخوا په پرتله ډېر ښه دی. کمیسیون کم دی او د مرستې ټیم ژر ځواب وایي.' },
-  { name: 'نصرالله قادری', city: 'فاریاب', rating: 5, lang: 'ps', text: 'هر ځل چې زما ماشومان معامله کوي، زه ټکټ اخلم. دې دوی ته ښه انګیزه ورکړې ده.' },
-  // EN
-  { name: 'Sarah K.', city: 'Dubai', rating: 5, lang: 'en', text: 'Been using Aryana for a few months. The P2P option is really helpful — the platform holds the funds until both sides confirm. Used to get scammed on Telegram groups before.' },
-  { name: 'Michael R.', city: 'Frankfurt', rating: 4, lang: 'en', text: 'Simple platform, works well. I mostly use P2P. KYC took a day but that\'s normal.' },
-  { name: 'Zahra A.', city: 'Hamburg', rating: 5, lang: 'en', text: 'I use Aryana mostly to send money to my family back in Afghanistan. The P2P is simple and the funds are safe. My brother received his money in a few hours.' },
-  { name: 'David A.', city: 'Istanbul', rating: 5, lang: 'en', text: 'Used to buy USDT from random Telegram sellers and got scammed once. With Aryana\'s P2P, funds are held safely until both sides confirm. Much better.' },
-  { name: 'Kaveh S.', city: 'Toronto', rating: 5, lang: 'en', text: 'Good experience. P2P works smoothly and fees are lower than elsewhere. Recommended for small traders.' },
+  { name: 'احمد رضایی', city: 'کابل، افغانستان', rating: 5, lang: 'fa', text: 'قبلاً از نفرهای نامعلوم داخل تلگرام آنلاین خرید می‌کردم. بعد از اینکه پول می‌فرستادم، بلاکم می‌کردند. حالا جای خوشی است که این صرافی مشکل ما تریدرهای کوچک را حل کرده. از وقتی که تترهای خود را در صرافی آریانا نقد می‌کنم، نه هر روز در گروپ‌ها پشت صراف می‌گردم، نه کمیشن زیاد می‌دهم.' },
+  { name: 'نصرالله قادری', city: 'فاریاب، افغانستان', rating: 5, lang: 'fa', text: 'تا حساب دو طرف خریدار و فروشنده به هم نرسیده و تسویه نشده، کسی نمی‌تواند با رسید فیک و تتر فیک فریب‌کاری کند. این خیلی مهم است برای ما که سرمایه زیاد نداریم.' },
+  { name: 'علی نوری', city: 'جلال‌آباد، افغانستان', rating: 5, lang: 'fa', text: 'ما که سرمایه زیاد نداریم، از بازار چند دالر سود می‌کنیم. دفه اول که اومدم، کمی گیج شدم ولی حالا راحتم. از وقتی که اینجا کار می‌کنم، دیگه لازم نیست هر روز پشت صراف بگردم.' },
+  { name: 'حسین جعفری', city: 'غزنی، افغانستان', rating: 5, lang: 'fa', text: 'قبلاً فقط از گروپ‌های تلگرام تتر می‌خریدم. یک بار پول فرستادم، بلاکم کرد. حالا اینجا مشخص است کی فروشنده‌ست و صرافی خودش واسطه‌ست.' },
+  { name: 'نجیب الله صادقی', city: 'مزار شریف، افغانستان', rating: 5, lang: 'fa', text: 'رفقام را دعوت کردم به این صرافی. هر دفه که یک نفر از زیرمجموعه‌هام معامله می‌کنه، یک تیکت به من می‌رسه. تا حالا دوتا ۱۰۰ افغانی و یکی ۵۰ افغانی برنده شدم.' },
+  { name: 'فرید صادقی', city: 'هرات، افغانستان', rating: 5, lang: 'fa', text: 'قبلاً برای زیرمجموعه گرفتن چیزی نمی‌دادن. اینجا هم ۱۵ افغانی می‌دن، هم تیکت بخت‌آزمایی. من ۸ نفر آوردم و از دایره شانس هم ۲۰۰ افغانی گرفتم.' },
+  { name: 'عزیز الرحمن', city: 'غزنی، افغانستان', rating: 5, lang: 'fa', text: 'من ۱۵ نفر زیرمجموعه دارم. با هر بار معاملات آنها یک تیکت بخت‌آزمایی دریافت می‌کنم. همین دیروز ۱۰۰۰ افغانی در دایره شانس برنده شدم.' },
+  { name: 'حکمت الله رحیمی', city: 'غزنی، افغانستان', rating: 5, lang: 'fa', text: 'هر وقت که زیرمجموعه‌هام معامله می‌کنن، برام یک تیکت میاد. هفته پیش دوتا ۵۰ افغانی و یک تیکت رایگان برنده شدم.' },
+  { name: 'یوسف اکبری', city: 'پروان، افغانستان', rating: 5, lang: 'fa', text: '۵ نفر زیرمجموعه دارم. هر معامله‌ای که می‌کنن، ۱۵ افغانی به حساب قفل‌شده‌ام میاد و یک تیکت هم می‌گیرم. هفته پیش ۱۰۰ افغانی از دایره شانس برنده شدم.' },
+  { name: 'نصیر احمد', city: 'کابل، افغانستان', rating: 5, lang: 'fa', text: 'قبلاً چند بار از نفرهای نامعلوم داخل تلگرام تتر خریدم. یک بار پول فرستادم، بلاکم کرد. حالا اینجا راحتم. صرافی خودش ضامن است.' },
+  { name: 'عبدالله نوری', city: 'مزار شریف، افغانستان', rating: 5, lang: 'fa', text: 'کارشون خوبه. پول سریع می‌رسه. تازه از دایره شانس هم چیزهای خوبی برنده شدم.' },
+  { name: 'حبیب الله صادقی', city: 'جلال‌آباد، افغانستان', rating: 5, lang: 'fa', text: 'دفه اول یه کم استرس داشتم ولی حالا دیگه کاملاً راحتم. چند بار معامله کردم و همه‌شون درست بود.' },
+  { name: 'شفیع الله نوری', city: 'کابل، افغانستان', rating: 5, lang: 'fa', text: 'من تریدر کوچک هستم. قبلاً از بازار چند دالر سود می‌کردم ولی نقد کردنش سخت بود. حالا اینجا خیلی راحت‌تره.' },
+  { name: 'محمد احمدی', city: 'مزار شریف، افغانستان', rating: 5, lang: 'fa', text: 'P2P اینجا خیلی خوبه. فروشنده‌ها مشخص است، امتیاز دارن. اگه مشکلی شود، صرافی پیگیری می‌کنه.' },
+  { name: 'وحید کریمی', city: 'کابل، افغانستان', rating: 4, lang: 'fa', text: 'کارشون خوبه. فقط بعضی وقت‌ها کمی صبر می‌خواد تا فروشنده مناسب پیدا شود.' },
+  { name: 'عبدالله کریمی', city: 'مزار شریف، افغانستان', rating: 3, lang: 'fa', text: 'من دفه اول کمی گیج شدم. راهنما باید واضح‌تر باشد. حالا دیگه یاد گرفتم ولی دفه اول سخت بود.' },
+  { name: 'رامین نظری', city: 'هرات، افغانستان', rating: 5, lang: 'fa', text: 'از وقتی که اینجا حساب باز کردم، دیگه از تلگرام خرید نمی‌کنم. امنیتش خیلی بهتره.' },
+  { name: 'سهیل کاظمی', city: 'کابل، افغانستان', rating: 5, lang: 'fa', text: 'چند بار معامله کردم. هر بار درست بود. نرخ‌ها هم منصفانه است.' },
+  { name: 'فواد باقری', city: 'قندهار، افغانستان', rating: 4, lang: 'fa', text: 'خوب کار می‌کنه. فقط کاش تعداد فروشنده‌ها زیادتر بود تا بیشتر انتخاب داشته باشیم.' },
+  { name: 'مسعود عباسی', city: 'هرات، افغانستان', rating: 5, lang: 'fa', text: 'قبلاً از یک جای مشخص تتر می‌خریدم، سه چهار فیصد کمیسیون می‌گرفت. حالا اینجا کمتر حساب می‌کنه و خودم می‌تونم نرخ را ببینم.' },
+  { name: 'جاوید زمانی', city: 'هرات، افغانستان', rating: 5, lang: 'fa', text: 'کمیشن اینجا از جایی که قبلاً کار می‌کردم کمتره. از وقتی که اینجا هستم، دیگه لازم نیست کمیشن زیاد بدم.' },
+  { name: 'بصیر قاسمی', city: 'قندهار، افغانستان', rating: 4, lang: 'fa', text: 'نرخ‌ها خوبه. پول سریع می‌رسه. فقط بعضی وقت‌ها باید کمی صبر کنم.' },
+  { name: 'ظاهر شریفی', city: 'مزار شریف، افغانستان', rating: 4, lang: 'fa', text: 'کارشون خوبه. کمیسیون هم منصفانه است. راضی یم.' },
+  { name: 'ناصر مرادی', city: 'کابل، افغانستان', rating: 4, lang: 'fa', text: 'خدمتشون خوبه. فقط کاش پشتیبانی یه کم سریع‌تر جواب می‌داد.' },
+  { name: 'رامین سلطانی', city: 'کابل، افغانستان', rating: 5, lang: 'fa', text: 'برای تریدرهای کوچک مثل من خیلی خوبه. نرخ‌ها شفافه و کمیشن کمه.' },
+  { name: 'داوود عزیزی', city: 'کابل، افغانستان', rating: 3, lang: 'fa', text: 'کار می‌کند ولی پشتیبانی کمی دیر جواب می‌ده. شاید بهتر شود بعداً.' },
+  { name: 'یاسین صالحی', city: 'هرات، افغانستان', rating: 3, lang: 'fa', text: 'خوب است ولی کاش شبکه‌های USDT زیادتر بود. من فقط با TRC20 کار می‌کنم.' },
+  { name: 'ادریس فرجی', city: 'قندهار، افغانستان', rating: 3, lang: 'fa', text: 'کارشون خوبه ولی کاش یه راهنمای واضح‌تر برای تازه‌کارها داشت.' },
+  { name: 'زکریا بهرامی', city: 'مزار شریف، افغانستان', rating: 3, lang: 'fa', text: 'خوبه. فقط بعضی وقت‌ها نرخ‌ها کمی بالا و پایین می‌شه.' },
+  { name: 'نبی خالقی', city: 'کابل، افغانستان', rating: 2, lang: 'fa', text: 'دفه اول یه کم سخت بود. حالا دیگه یاد گرفتم ولی اولش گیج شدم.' },
+  { name: 'ولی روحانی', city: 'هرات، افغانستان', rating: 2, lang: 'fa', text: 'کار می‌کنه ولی چیز خاصی نداره که منو جذب کنه.' },
+  { name: 'نیاز نادری', city: 'کابل، افغانستان', rating: 1, lang: 'fa', text: 'من تازه عضو شدم و راستش خیلی استرس دارم. نمی‌دانم باید چطور شروع کنم. کاشکی یک راهنما برای تازه‌کارها بود.' },
+  { name: 'گل محمد قریشی', city: 'مزار شریف، افغانستان', rating: 1, lang: 'fa', text: 'بار اولمه اینجا معامله می‌کنم. کمی می‌ترسم. اگه یک راهنما برای تازه‌کارها بود، خیلی کمک می‌کرد.' },
+  { name: 'زهرا حسینی', city: 'قندهار، افغانستان', rating: 5, lang: 'fa', text: 'من از خونه معامله می‌کنم. فروشنده‌ها تأیید شده‌ن و من از کسی می‌خرم که امتیازش بالاست. خیلی راحت‌تر از تلگرامه.' },
+  { name: 'فاطمه کریمی', city: 'هرات، افغانستان', rating: 5, lang: 'fa', text: 'چند بار از تلگرام خرید کردم و ضرر کردم. حالا که اینجا هستم، راحت‌تر شدم. دفه اول کمی سخت بود ولی حالا یاد گرفتم.' },
+  { name: 'مریم صادقی', city: 'کندز، افغانستان', rating: 4, lang: 'fa', text: 'خوب شده که این امکان رو گذاشتن. قبلاً کمیسیون‌ها بالا بود، حالا خودم انتخاب می‌کنم از کی بخرم.' },
+  { name: 'شکیبا نوری', city: 'لوگر، افغانستان', rating: 5, lang: 'fa', text: 'برای من که تازه‌کار هستم، این صرافی خیلی کمک کرده. حساب پی من سریع پر می‌شه و دیگه نگران نیستم.' },
+  { name: 'نجیبه رحیمی', city: 'ننگرهار، افغانستان', rating: 5, lang: 'fa', text: 'فروشنده‌های اینجا رتبه و امتیاز دارن. من از کسی می‌خرم که امتیازش بالاست و معامله‌های قبلی‌اش موفق بوده.' },
+  { name: 'نصیر احمد', city: 'کابل، افغانستان', rating: 5, lang: 'ps', text: 'پخوا مې د تلګرام له نامعلومو خلکو تتر اخیست. یو ځل مې پیسې ولېږلې، بیا یې بلاک کړم. حالا چې دلته یم، زما زړه ارام دی.' },
+  { name: 'شفیقه کریمی', city: 'هرات، افغانستان', rating: 5, lang: 'ps', text: 'موږ کوچني سوداګر وو. د تلګرام له لارې به مو تتر اخیست. کله کله به دوکه کېدل. اوس چې دې صرافي دا ستونزه حل کړې، ډېر خوشحاله یو.' },
+  { name: 'مرسل جعفری', city: 'کندز، افغانستان', rating: 4, lang: 'ps', text: 'زما میړه او زه دواړه له دې پلیټفارم کار اخلو. پخوا مو له نامعلومو خلکو سره معامله کوله او ډار و. اوس ډاډه یو.' },
+  { name: 'عبدالله نوری', city: 'مزار شریف، افغانستان', rating: 5, lang: 'ps', text: 'زما ۱۰ ملګري رابلل. هر ځل چې دوی معامله کوي، زه یو ټکټ اخلم. پرون مې ۱۰۰ افغانۍ وګټلې.' },
+  { name: 'حبیب الله صادقی', city: 'جلال‌آباد، افغانستان', rating: 5, lang: 'ps', text: 'د تلګرام له نامعلومو خلکو سره مو معامله کوله. یو ځل مو پیسې ورکړې او بلاک شوو. اوس چې آریانا ده، ډاډه یو.' },
+  { name: 'زلیخا احمدی', city: 'قندهار، افغانستان', rating: 5, lang: 'ps', text: 'زه کور ته ناسته یم او معامله کوم. پیسې هم ژر رسېږي. د ښځو لپاره ډېر اسان دی.' },
+  { name: 'عزیز الرحمن', city: 'غزنی، افغانستان', rating: 4, lang: 'ps', text: 'ښه کار کوي. یوازې کله کله د مناسب پیرودونکي پیدا کول وخت نیسي.' },
+  { name: 'پریسا حسینی', city: 'بامیان، افغانستان', rating: 5, lang: 'ps', text: 'پخوا مو له بهرنیو خلکو معامله کوله او ډار و. اوس چې پوهیږو صرافي ضامنه ده، ډاډه یو.' },
+  { name: 'حکمت الله رحیمی', city: 'غزنی، افغانستان', rating: 5, lang: 'ps', text: 'د پخوا په پرتله ډېر ښه دی. کمیسیون کم دی او د مرستې ټیم ژر ځواب وایي.' },
+  { name: 'نصرالله قادری', city: 'فاریاب، افغانستان', rating: 5, lang: 'ps', text: 'هر ځل چې زما ماشومان معامله کوي، زه ټکټ اخلم. دې دوی ته ښه انګیزه ورکړې ده.' },
+  { name: 'Sarah K.', city: 'Dubai, UAE', rating: 5, lang: 'en', text: 'Been using Aryana for a few months. The P2P option is really helpful — the platform holds the funds until both sides confirm. Used to get scammed on Telegram groups before.' },
+  { name: 'Michael R.', city: 'Frankfurt, Germany', rating: 4, lang: 'en', text: 'Simple platform, works well. I mostly use P2P. KYC took a day but that\'s normal.' },
+  { name: 'Zahra A.', city: 'Hamburg, Germany', rating: 5, lang: 'en', text: 'I use Aryana mostly to send money to my family back in Afghanistan. The P2P is simple and the funds are safe. My brother received his money in a few hours.' },
+  { name: 'David A.', city: 'Istanbul, Turkey', rating: 5, lang: 'en', text: 'Used to buy USDT from random Telegram sellers and got scammed once. With Aryana\'s P2P, funds are held safely until both sides confirm. Much better.' },
+  { name: 'Kaveh S.', city: 'Toronto, Canada', rating: 5, lang: 'en', text: 'Good experience. P2P works smoothly and fees are lower than elsewhere. Recommended for small traders.' },
 ];
 
 // ═══ FAQ ═══
@@ -396,7 +393,10 @@ function updateCalculator() {
   result.textContent = total.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 }
 
-// ═══ Testimonials ═══
+// ═══════════════════════════════════════
+//   Testimonials — JS Infinite Scroll
+// ═══════════════════════════════════════
+
 function generateStars(rating) {
   let stars = '';
   for (let i = 1; i <= 5; i++) {
@@ -406,31 +406,53 @@ function generateStars(rating) {
   return stars;
 }
 
+function randomDate() {
+  const daysAgo = Math.floor(Math.random() * 30) + 1;
+  const hours = String(Math.floor(Math.random() * 24)).padStart(2, '0');
+  const minutes = String(Math.floor(Math.random() * 60)).padStart(2, '0');
+
+  let dateText;
+  if (daysAgo === 1) dateText = 'Yesterday';
+  else if (daysAgo < 7) dateText = `${daysAgo} days ago`;
+  else if (daysAgo < 30) {
+    const weeks = Math.floor(daysAgo / 7);
+    dateText = `${weeks} week${weeks > 1 ? 's' : ''} ago`;
+  }
+  else dateText = '1 month ago';
+
+  return { date: dateText, time: `${hours}:${minutes}` };
+}
+
 function createTestimonialCard(t) {
   const gradient = randomFrom(AVATAR_GRADIENTS);
   const dir = t.lang === 'en' ? 'ltr' : 'rtl';
+  const { date, time } = randomDate();
+
   return `
     <div class="testimonial-card">
-      <div class="testimonial-quote">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h9.983zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z"/>
-        </svg>
-      </div>
-      <div class="testimonial-stars">${generateStars(t.rating)}</div>
-      <div class="testimonial-text" dir="${dir}" lang="${t.lang}">${t.text}</div>
-      <div class="testimonial-footer">
-        <div class="testimonial-avatar" lang="${t.lang}" style="background: linear-gradient(135deg, ${gradient[0]}, ${gradient[1]});">${t.name.charAt(0)}</div>
-        <div class="testimonial-author">
-          <div class="testimonial-name" dir="${dir}" lang="${t.lang}">${t.name}</div>
-          <div class="testimonial-location" dir="${dir}" lang="${t.lang}">
+      <div class="tc-head">
+        <div class="tc-avatar" lang="${t.lang}" style="background: linear-gradient(135deg, ${gradient[0]}, ${gradient[1]});">
+          ${t.name.charAt(0)}
+        </div>
+        <div class="tc-meta">
+          <div class="tc-name" dir="${dir}" lang="${t.lang}">${t.name}</div>
+          <div class="tc-location" dir="${dir}" lang="${t.lang}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
               <circle cx="12" cy="10" r="3"/>
             </svg>
-            ${t.city}
+            <span>${t.city}</span>
           </div>
         </div>
+        <div class="tc-date">
+          <div class="tc-date-text">${date}</div>
+          <div class="tc-time-text">${time}</div>
+        </div>
       </div>
+
+      <div class="tc-stars">${generateStars(t.rating)}</div>
+
+      <div class="tc-text" dir="${dir}" lang="${t.lang}">${t.text}</div>
     </div>
   `;
 }
@@ -438,12 +460,62 @@ function createTestimonialCard(t) {
 function initTestimonials() {
   const scroll = document.getElementById('testimonialsScroll');
   if (!scroll) return;
+
   const shuffled = [...TESTIMONIALS].sort(() => Math.random() - 0.5);
   const cardsHtml = shuffled.map(createTestimonialCard).join('');
-  scroll.innerHTML = cardsHtml + cardsHtml;
+
+  // First render
+  scroll.innerHTML = cardsHtml;
+
+  // Wait for layout then duplicate + start animation
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      scroll.innerHTML += cardsHtml;
+      startTestimonialAnimation(scroll);
+    });
+  });
 }
 
-// ═══ FAQ ═══
+function startTestimonialAnimation(scroll) {
+  let scrollY = 0;
+  const SPEED = 0.6; // px per frame ≈ 36px/s
+  let paused = false;
+  let halfHeight = 0;
+
+  function measure() {
+    halfHeight = scroll.scrollHeight / 2;
+  }
+
+  measure();
+  window.addEventListener('resize', measure);
+
+  function tick() {
+    if (!paused && halfHeight > 0) {
+      scrollY += SPEED;
+
+      if (scrollY >= halfHeight) {
+        scrollY = 0;
+      }
+
+      scroll.style.transform = `translate3d(0, ${-scrollY}px, 0)`;
+    }
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+
+  // Pause on hover
+  const wrapper = scroll.closest('.testimonials-scroll-wrapper');
+  if (wrapper) {
+    wrapper.addEventListener('mouseenter', () => { paused = true; });
+    wrapper.addEventListener('mouseleave', () => { paused = false; });
+  }
+}
+
+// ═══════════════════════════════════════
+//              FAQ
+// ═══════════════════════════════════════
+
 const FAQ_ICONS = {
   user: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
   shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
