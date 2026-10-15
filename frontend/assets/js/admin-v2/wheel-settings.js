@@ -4,6 +4,31 @@
 
 window.ADMIN_SKIP_AUTO_INIT = true;
 
+// ═══ Safe Notifications Wrapper ═══
+const Toast = {
+  success(msg) {
+    if (typeof Notifications !== 'undefined' && Notifications.success) {
+      Notifications.success(msg);
+    } else {
+      console.log('[OK]', msg);
+    }
+  },
+  error(msg) {
+    if (typeof Notifications !== 'undefined' && Notifications.error) {
+      Notifications.error(msg);
+    } else {
+      console.error('[ERROR]', msg);
+    }
+  },
+  info(msg) {
+    if (typeof Notifications !== 'undefined' && Notifications.info) {
+      Notifications.info(msg);
+    } else {
+      console.log('[INFO]', msg);
+    }
+  },
+};
+
 document.addEventListener('DOMContentLoaded', async () => {
   await AdminCommon.init();
 
@@ -71,7 +96,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     } catch (e) {
       console.error('Settings load failed:', e);
-      Notifications.error('Failed to load settings');
+      Toast.error('Failed to load settings');
     }
   }
 
@@ -108,10 +133,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         body: JSON.stringify(payload),
       });
 
-      Notifications.success('✅ Settings saved');
+      Toast.success('Settings saved');
     } catch (e) {
       console.error(e);
-      Notifications.error(e.detail || 'Failed to save');
+      Toast.error(e.detail || 'Failed to save');
     } finally {
       btn.disabled = false;
     }
@@ -129,7 +154,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       updateProbabilityTotal(data.total_probability);
     } catch (e) {
       console.error('Prizes load failed:', e);
-      Notifications.error('Failed to load prizes');
+      Toast.error('Failed to load prizes');
     }
   }
 
@@ -148,20 +173,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         <td style="font-size:20px;">${p.icon || '—'}</td>
         <td><strong>${escapeHtml(p.label)}</strong></td>
         <td><span class="admin-badge ${p.prize_type === 'cash' ? 'gold' : p.prize_type === 'ticket' ? 'red' : 'gray'}">${p.prize_type}</span></td>
-        <td><strong>${p.prize_type === 'cash' ? p.amount + ' AFN' : p.prize_type === 'ticket' ? p.ticket_count + ' 🎟️' : '—'}</strong></td>
+        <td><strong>${p.prize_type === 'cash' ? p.amount + ' AFN' : p.prize_type === 'ticket' ? p.ticket_count + ' tickets' : '—'}</strong></td>
         <td><strong style="color:${p.probability_percent > 0 ? 'var(--gold)' : 'var(--text-tertiary)'};">${p.probability_percent.toFixed(4)}%</strong></td>
         <td>${p.is_active ? '<span class="admin-badge green">Active</span>' : '<span class="admin-badge gray">Inactive</span>'}</td>
         <td>
           <div class="admin-actions">
-            <button class="admin-btn secondary" data-action="edit" data-id="${p.id}">✏️ Edit</button>
+            <button class="admin-btn secondary" data-action="edit" data-id="${p.id}">Edit</button>
             <button class="admin-btn ${p.is_active ? 'danger' : 'primary'}" data-action="toggle" data-id="${p.id}">${p.is_active ? 'Off' : 'On'}</button>
-            <button class="admin-btn danger" data-action="delete" data-id="${p.id}">🗑️</button>
+            <button class="admin-btn danger" data-action="delete" data-id="${p.id}">Delete</button>
           </div>
         </td>
       </tr>
     `).join('');
 
-    // Event listeners
     body.querySelectorAll('[data-action]').forEach(btn => {
       btn.addEventListener('click', () => {
         const id = parseInt(btn.dataset.id, 10);
@@ -183,13 +207,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (Math.abs(total - 100) < 0.01) {
       el.style.color = 'var(--green)';
-      status.textContent = '✅';
+      if (status) status.textContent = 'Complete';
     } else if (total > 100) {
       el.style.color = 'var(--red)';
-      status.textContent = '❌ Too high';
+      if (status) status.textContent = 'Exceeds 100%';
     } else {
       el.style.color = 'var(--gold)';
-      status.textContent = '⚠️';
+      if (status) status.textContent = 'Incomplete';
     }
   }
 
@@ -214,7 +238,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const p = state.prizes.find(x => x.id === prizeId);
       if (!p) return;
 
-      title.textContent = '✏️ Edit Prize';
+      title.textContent = 'Edit Prize';
       hiddenId.value = p.id;
 
       document.getElementById('prizeType').value = p.prize_type;
@@ -230,12 +254,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('prizeIsActive').checked = p.is_active;
 
     } else {
-      title.textContent = '🎁 Add Prize';
+      title.textContent = 'Add Prize';
       hiddenId.value = '';
 
       document.getElementById('prizeType').value = 'cash';
       document.getElementById('prizeSortOrder').value = state.prizes.length;
-      document.getElementById('prizeIcon').value = '🏆';
+      document.getElementById('prizeIcon').value = '';
       document.getElementById('prizeColor').value = '#FFD700';
       document.getElementById('prizeLabel').value = '';
       document.getElementById('prizeAmount').value = '10';
@@ -253,7 +277,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     prizeModal.style.display = 'none';
   }
 
-  // Save prize
   document.getElementById('savePrizeBtn')?.addEventListener('click', async () => {
     const id = document.getElementById('prizeId').value;
     const isEdit = !!id;
@@ -278,7 +301,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (maxUser) payload.max_wins_per_user = parseInt(maxUser, 10);
 
     if (!payload.label) {
-      Notifications.error('Label is required');
+      Toast.error('Label is required');
       return;
     }
 
@@ -290,45 +313,43 @@ document.addEventListener('DOMContentLoaded', async () => {
           method: 'PUT',
           body: JSON.stringify(payload),
         });
-        Notifications.success('✅ Prize updated');
+        Toast.success('Prize updated');
       } else {
         await API.request('/admin/wheel/prizes', {
           method: 'POST',
           body: JSON.stringify(payload),
         });
-        Notifications.success('✅ Prize created');
+        Toast.success('Prize created');
       }
 
       closePrizeModal();
       await loadPrizes();
     } catch (e) {
       console.error(e);
-      Notifications.error(e.detail || 'Failed to save prize');
+      Toast.error(e.detail || 'Failed to save prize');
     } finally {
       btn.disabled = false;
     }
   });
 
-  // Toggle prize
   async function togglePrize(id) {
     try {
       await API.request(`/admin/wheel/prizes/${id}/toggle`, { method: 'PATCH' });
       await loadPrizes();
     } catch (e) {
-      Notifications.error(e.detail || 'Failed to toggle');
+      Toast.error(e.detail || 'Failed to toggle');
     }
   }
 
-  // Delete prize
   async function deletePrize(id) {
     if (!confirm('Delete this prize?')) return;
 
     try {
       await API.request(`/admin/wheel/prizes/${id}`, { method: 'DELETE' });
-      Notifications.success('✅ Prize deleted');
+      Toast.success('Prize deleted');
       await loadPrizes();
     } catch (e) {
-      Notifications.error(e.detail || 'Failed to delete');
+      Toast.error(e.detail || 'Failed to delete');
     }
   }
 

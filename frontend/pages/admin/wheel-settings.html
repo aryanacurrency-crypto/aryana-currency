@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Lucky Wheel Settings — Aryana Currency Admin">
+  <meta name="description" content="Rewards Wheel Settings — Aryana Currency Admin">
   <meta name="theme-color" content="#0B0E11">
 
-  <title>Lucky Wheel | Admin — ARYANA CURRENCY</title>
+  <title>Rewards Wheel | Admin — ARYANA CURRENCY</title>
 
   <link rel="icon" type="image/png" href="../../assets/images/logo.png">
 
@@ -62,7 +62,7 @@
     <main class="admin-main">
 
       <div class="admin-page-header">
-        <h1>🎡 Lucky Wheel</h1>
+        <h1>Rewards Wheel</h1>
         <p>Configure prizes, probabilities, and tickets</p>
       </div>
 
@@ -72,14 +72,14 @@
 
       <div id="contentBox" style="display:none;">
 
-        <!-- Stats -->
         <div class="admin-stats-grid">
           <div class="admin-stat-card blue">
             <div class="admin-stat-header">
               <div class="admin-stat-icon blue">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="10"/>
-                  <path d="M12 2v20M2 12h20"/>
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>
                 </svg>
               </div>
             </div>
@@ -127,13 +127,20 @@
           </div>
         </div>
 
-        <!-- Tabs -->
         <div class="settings-tabs">
           <button type="button" class="settings-tab active" data-tab="settings">
-            ⚙️ Settings
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            Settings
           </button>
           <button type="button" class="settings-tab" data-tab="prizes">
-            🎁 Prizes
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            Prizes
           </button>
         </div>
 
@@ -142,7 +149,7 @@
 
           <div class="admin-detail-card">
             <div class="admin-detail-card-title">
-              🎡 General Settings
+              General Settings
             </div>
 
             <div class="settings-grid">
@@ -175,7 +182,7 @@
               </div>
 
               <div class="field">
-                <label class="field-label" for="setSoundEnabled">Sound Enabled</label>
+                <label class="field-label">Sound Enabled</label>
                 <label class="switch">
                   <input type="checkbox" id="setSoundEnabled">
                   <span class="slider"></span>
@@ -186,7 +193,7 @@
 
           <div class="admin-detail-card">
             <div class="admin-detail-card-title">
-              🎟️ Free Ticket Sources
+              Free Ticket Sources
             </div>
 
             <div class="settings-grid">
@@ -228,7 +235,7 @@
 
           <div class="admin-detail-card">
             <div class="admin-detail-card-title">
-              🎬 Animation & Security
+              Animation & Security
             </div>
 
             <div class="settings-grid">
@@ -266,7 +273,12 @@
 
           <div class="settings-actions">
             <button type="button" class="admin-btn gold" id="saveSettingsBtn">
-              💾 Save Settings
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                <polyline points="17 21 17 13 7 13 7 21"/>
+                <polyline points="7 3 7 8 15 8"/>
+              </svg>
+              Save Settings
             </button>
           </div>
         </div>
@@ -276,7 +288,7 @@
 
           <div class="prizes-header">
             <div>
-              <h2>🎁 Wheel Prizes</h2>
+              <h2>Wheel Prizes</h2>
               <p class="prizes-subtitle">
                 Total Probability: <strong id="totalProb" class="prob-total">0%</strong>
                 <span id="probStatus"></span>
@@ -316,7 +328,7 @@
   <div class="modal-overlay" id="prizeModal" style="display:none;">
     <div class="modal modal-lg">
       <div class="modal-header">
-        <h3 id="prizeModalTitle">🎁 Add Prize</h3>
+        <h3 id="prizeModalTitle">Add Prize</h3>
         <button class="modal-close" id="closePrizeModal">×</button>
       </div>
 
@@ -327,9 +339,9 @@
           <div class="field">
             <label class="field-label">Type</label>
             <select id="prizeType" class="field-input">
-              <option value="cash">💰 Cash</option>
-              <option value="ticket">🎟️ Ticket</option>
-              <option value="empty">❌ Empty</option>
+              <option value="cash">Cash</option>
+              <option value="ticket">Ticket</option>
+              <option value="empty">Empty</option>
             </select>
           </div>
 
@@ -339,8 +351,8 @@
           </div>
 
           <div class="field">
-            <label class="field-label">Icon (emoji)</label>
-            <input type="text" id="prizeIcon" class="field-input" maxlength="4" placeholder="🏆">
+            <label class="field-label">Icon (emoji or leave empty)</label>
+            <input type="text" id="prizeIcon" class="field-input" maxlength="4" placeholder="">
           </div>
 
           <div class="field">
@@ -350,7 +362,7 @@
 
           <div class="field full-width">
             <label class="field-label">Label (EN)</label>
-            <input type="text" id="prizeLabel" class="field-input" placeholder="1000 AFN">
+            <input type="text" id="prizeLabel" class="field-input" placeholder="1000">
           </div>
 
           <div class="field">
