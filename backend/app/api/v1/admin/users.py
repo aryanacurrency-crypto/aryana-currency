@@ -11,7 +11,7 @@ from app.api.deps import get_current_admin
 from app.core.database import get_db
 from app.models import Referral, User
 
-router = APIRouter(prefix="/admin/users", tags=["admin-users-vip"])
+router = APIRouter(prefix="/users", tags=["admin-users-vip"])
 
 
 class VIPUpdate(BaseModel):
@@ -60,7 +60,6 @@ def get_user_vip_info(
     if not user:
         raise HTTPException(404, "کاربر یافت نشد")
 
-    # تعداد زیرمجموعه‌های موفق
     total_referrals = db.query(Referral).filter(
         Referral.referrer_id == user_id
     ).count()

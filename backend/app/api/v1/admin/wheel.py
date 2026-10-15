@@ -5,7 +5,7 @@ import json
 from decimal import Decimal
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
@@ -15,13 +15,12 @@ from app.models import (
     User,
     WheelAuditLog,
     WheelPrize,
-    WheelSettings,
     WheelSpin,
     WheelTicket,
 )
 from app.services.wheel import get_wheel_settings
 
-router = APIRouter(prefix="/admin/wheel", tags=["admin-wheel"])
+router = APIRouter(prefix="/wheel", tags=["admin-wheel"])
 
 
 # ═══════════════════════════════════════
@@ -51,7 +50,7 @@ class WheelSettingsUpdate(BaseModel):
 
 class WheelPrizeCreate(BaseModel):
     sort_order: int = 0
-    prize_type: str  # cash / empty / ticket
+    prize_type: str
     label: str
     label_fa: str | None = None
     label_ps: str | None = None
@@ -145,14 +144,10 @@ def update_admin_wheel_settings(
     update_data = payload.model_dump(exclude_unset=True)
 
     for field, value in update_data.items():
-        if field == "ticket_currency" and isinstance(value, str):
-            from app.models.enums import Currency
-            value = Currency(value)
         setattr(settings, field, value)
 
     settings.updated_by = admin.id
 
-    # ثبت لاگ
     log = WheelAuditLog(
         admin_id=admin.id,
         action="update_settings",
@@ -306,7 +301,6 @@ def delete_prize(
     if not prize:
         raise HTTPException(404, "جایزه یافت نشد")
 
-    # چک: حداقل ۲ جایزه باید بمونه
     total = db.query(func.count(WheelPrize.id)).scalar()
     if total <= 2:
         raise HTTPException(400, "حداقل ۲ جایزه باید باقی بماند")
@@ -339,16 +333,6 @@ def get_wheel_stats(
         WheelSpin.result_type == "cash",
         WheelSpin.status == "completed",
     ).scalar()
-
-    # تعداد برنده‌های هر جایزه
-    from sqlalchemy import desc
-    top_prizes = (
-        db.query(WheelSpin.prize_id, func.count(WheelSpin.id).label("cnt"))
-        .group_by(WheelSpin.prize_id)
-        .order_by(desc("cnt"))
-        .limit(5)
-        .all()
-    )
 
     return {
         "total_spins": total_spins,

@@ -12,8 +12,6 @@ from app.api.v1 import referral as referral_router
 from app.api.v1 import wallet as wallet_router
 from app.api.v1 import wheel as wheel_router
 from app.api.v1 import withdrawals as withdrawals_router
-from app.api.v1.admin import users as admin_users_router
-from app.api.v1.admin import wheel as admin_wheel_router
 from app.core.config import settings
 
 app = FastAPI(
@@ -24,7 +22,7 @@ app = FastAPI(
 )
 
 # ═══════════════════════════════════════
-#              CORS — همیشه فعال
+#              CORS
 # ═══════════════════════════════════════
 
 DEFAULT_CORS_ORIGINS = [
@@ -50,7 +48,11 @@ app.add_middleware(
 
 API_V1_PREFIX = "/api/v1"
 
-# ─── Core routers ───
+# ═══════════════════════════════════════
+#              Routers
+# ═══════════════════════════════════════
+
+# Core
 app.include_router(auth_router.router, prefix=API_V1_PREFIX)
 app.include_router(rates_router.router, prefix=API_V1_PREFIX)
 app.include_router(wallet_router.router, prefix=API_V1_PREFIX)
@@ -60,14 +62,12 @@ app.include_router(kyc_router.router, prefix=API_V1_PREFIX)
 app.include_router(withdrawals_router.router, prefix=API_V1_PREFIX)
 app.include_router(direct_trades_router.router, prefix=API_V1_PREFIX)
 
-# ─── Referral & Wheel (User) ───
+# Referral & Wheel (User)
 app.include_router(referral_router.router, prefix=API_V1_PREFIX)
 app.include_router(wheel_router.router, prefix=API_V1_PREFIX)
 
-# ─── Admin routers ───
+# Admin (router اصلی که wheel و users رو هم داخلش include کرده)
 app.include_router(admin_router.router, prefix=API_V1_PREFIX)
-app.include_router(admin_wheel_router.router, prefix=API_V1_PREFIX)
-app.include_router(admin_users_router.router, prefix=API_V1_PREFIX)
 
 
 @app.get("/", tags=["system"])
