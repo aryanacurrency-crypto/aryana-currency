@@ -872,7 +872,7 @@ main {
 }
 
 /* ═══════════════════════════════════════
-   📱 DEVICE SHOWCASE — 3 Devices
+   📱 DEVICE SHOWCASE — 3 Devices (DARK frames)
    ═══════════════════════════════════════ */
 
 .device-showcase-section {
@@ -943,35 +943,37 @@ main {
 
 .device-wrap:hover .device-frame { transform: scale(1.02); }
 
-/* iPhone 18 Pro — Titanium Silver */
+/* ═══ iPhone 18 Pro — Graphite Dark (سیاه گرافیتی) ═══ */
+
 .device-iphone-pro {
-  background: linear-gradient(145deg, #F8FAFC 0%, #E2E8F0 50%, #CBD5E1 100%);
+  background: linear-gradient(145deg, #3D4551 0%, #2A313B 40%, #1A1F26 100%);
   box-shadow:
-    0 0 0 2px #FFFFFF inset,
-    0 0 0 5px #94A3B8 inset,
-    0 30px 60px -15px rgba(15, 23, 42, 0.25),
-    0 0 0 1px rgba(148, 163, 184, 0.4),
-    0 0 100px -20px rgba(59, 130, 246, 0.3);
+    0 0 0 2px #4A525E inset,
+    0 0 0 5px #0F1318 inset,
+    0 30px 60px -15px rgba(15, 23, 42, 0.5),
+    0 0 0 1px rgba(74, 82, 94, 0.6),
+    0 0 100px -20px rgba(59, 130, 246, 0.4);
 }
 
 .device-iphone-pro::before {
   content: "";
   position: absolute;
   inset: 4px;
-  background: linear-gradient(145deg, #FFFFFF, #F1F5F9);
+  background: linear-gradient(145deg, #2A313B, #1A1F26);
   border-radius: 40px;
   z-index: 0;
 }
 
-/* Samsung S23 Ultra — Phantom Black */
+/* ═══ Samsung S23 Ultra — Phantom Black ═══ */
+
 .device-samsung {
-  background: linear-gradient(145deg, #475569 0%, #1E293B 50%, #0F172A 100%);
+  background: linear-gradient(145deg, #2A313B 0%, #1A1F26 50%, #0A0E14 100%);
   box-shadow:
-    0 0 0 2px #64748B inset,
-    0 0 0 5px #0F172A inset,
-    0 30px 60px -15px rgba(15, 23, 42, 0.35),
-    0 0 0 1px rgba(100, 116, 139, 0.4),
-    0 0 100px -20px rgba(139, 92, 246, 0.3);
+    0 0 0 2px #3D4551 inset,
+    0 0 0 5px #0A0E14 inset,
+    0 30px 60px -15px rgba(15, 23, 42, 0.55),
+    0 0 0 1px rgba(61, 69, 81, 0.6),
+    0 0 100px -20px rgba(139, 92, 246, 0.4);
   border-radius: 32px;
 }
 
@@ -979,20 +981,21 @@ main {
   content: "";
   position: absolute;
   inset: 4px;
-  background: linear-gradient(145deg, #1E293B, #0F172A);
+  background: linear-gradient(145deg, #1A1F26, #0A0E14);
   border-radius: 28px;
   z-index: 0;
 }
 
-/* Samsung S10+ — Prism White */
+/* ═══ Samsung S10+ — Piano Black (مشکی براق) ═══ */
+
 .device-samsung-s10 {
-  background: linear-gradient(145deg, #FFFFFF 0%, #F1F5F9 40%, #E2E8F0 70%, #CBD5E1 100%);
+  background: linear-gradient(145deg, #38404C 0%, #222831 40%, #12161D 100%);
   box-shadow:
-    0 0 0 2px #FFFFFF inset,
-    0 0 0 5px #E2E8F0 inset,
-    0 30px 60px -15px rgba(15, 23, 42, 0.2),
-    0 0 0 1px rgba(203, 213, 225, 0.5),
-    0 0 100px -20px rgba(20, 184, 166, 0.3);
+    0 0 0 2px #4A525E inset,
+    0 0 0 5px #12161D inset,
+    0 30px 60px -15px rgba(15, 23, 42, 0.5),
+    0 0 0 1px rgba(74, 82, 94, 0.6),
+    0 0 100px -20px rgba(20, 184, 166, 0.35);
   border-radius: 36px;
 }
 
@@ -1000,7 +1003,7 @@ main {
   content: "";
   position: absolute;
   inset: 4px;
-  background: linear-gradient(145deg, #FFFFFF, #F8FAFC);
+  background: linear-gradient(145deg, #222831, #12161D);
   border-radius: 32px;
   z-index: 0;
 }
@@ -1053,7 +1056,7 @@ main {
   right: 20px;
   width: 70px;
   height: 18px;
-  background: #0F172A;
+  background: #0A0E14;
   border-radius: 999px;
   z-index: 10;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.9);
@@ -1084,7 +1087,7 @@ main {
   z-index: 1;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08) inset;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15) inset;
 }
 
 .device-samsung .device-screen { border-radius: 24px; }
