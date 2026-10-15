@@ -2,54 +2,55 @@
    ARYANA CURRENCY — Login Page Logic
    ═══════════════════════════════════════ */
 
-document.addEventListener('DOMContentLoaded', async () => {
-  Theme.init();
-
-  const initialLang = I18N.detectInitialLang();
-  await I18N.load(initialLang);
-  I18N.apply();
-
+document.addEventListener('DOMContentLoaded', () => {
   const yearEl = document.getElementById('currentYear');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  Auth.redirectIfLoggedIn();
+  // Redirect if already logged in
+  if (typeof Auth !== 'undefined' && Auth.redirectIfLoggedIn) {
+    Auth.redirectIfLoggedIn();
+  }
 
   const form = document.getElementById('loginForm');
   const submitBtn = document.getElementById('submitBtn');
   const errorBox = document.getElementById('errorBox');
   const emailInput = document.getElementById('email');
-
-  // ─── فقط انگلیسی توی ایمیل ───
-  preventNonEnglish(emailInput);
+  const passwordInput = document.getElementById('password');
+  const passwordToggle = document.getElementById('passwordToggle');
 
   // ─── Show/Hide Password ───
-  attachPasswordToggle('password', 'passwordToggle');
+  if (passwordToggle && passwordInput) {
+    passwordToggle.addEventListener('click', () => {
+      const isPassword = passwordInput.type === 'password';
+      passwordInput.type = isPassword ? 'text' : 'password';
+      passwordToggle.style.color = isPassword ? 'var(--gold)' : '';
+    });
+  }
 
+  // ─── فقط انگلیسی توی ایمیل ───
+  if (typeof preventNonEnglish === 'function') {
+    preventNonEnglish(emailInput);
+  }
+
+  // ─── Submit ───
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    errorBox.style.display = 'none';
-    errorBox.textContent = '';
+    if (errorBox) errorBox.classList.remove('show');
 
     const email = form.email.value.trim();
     const password = form.password.value;
 
-    // اعتبارسنجی
     if (!email || !password) {
-      showError(I18N.t('loginErrorEmpty') || 'Please fill in all fields.');
-      return;
+      return showError('Please enter your email and password.');
     }
 
     if (!isValidEmail(email)) {
-      showError(I18N.currentLang === 'en' ? 'Please enter a valid email address.'
-            : I18N.currentLang === 'fa' ? 'لطفاً یک ایمیل معتبر وارد کنید.'
-            : 'مهرباني وکړئ یو سم ایمیل ولیکئ.');
-      return;
+      return showError('Please enter a valid email address.');
     }
 
     submitBtn.disabled = true;
-    const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<span class="spinner"></span>';
+    submitBtn.classList.add('loading');
 
     try {
       const tokens = await API.login(email, password);
@@ -58,34 +59,35 @@ document.addEventListener('DOMContentLoaded', async () => {
       const user = await API.me();
       Auth.setUser(user);
 
-      window.location.href = 'dashboard.html';
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 400);
+
     } catch (err) {
       console.error('Login error:', err);
       let msg = err.detail || 'Login failed. Please try again.';
 
-      if (msg.includes('ایمیل یا پسورد')) {
-        msg = I18N.currentLang === 'en' ? 'Invalid email or password.'
-            : I18N.currentLang === 'fa' ? 'ایمیل یا پسورد اشتباه است.'
-            : 'ناسم یا پټنوم غلط دی.';
-      } else if (msg.includes('غیرفعال')) {
-        msg = I18N.currentLang === 'en' ? 'Account is disabled.'
-            : I18N.currentLang === 'fa' ? 'حساب کاربری غیرفعال است.'
-            : 'حساب غیر فعال دی.';
+      if (msg.includes('اشتباه') || msg.includes('incorrect') || msg.includes('Invalid')) {
+        msg = 'Email or password is incorrect.';
+      } else if (msg.includes('غیرفعال') || msg.includes('disabled')) {
+        msg = 'Your account is disabled. Contact support.';
       } else if (err.status === 0) {
-        msg = I18N.currentLang === 'en' ? 'Cannot connect to server.'
-            : I18N.currentLang === 'fa' ? 'اتصال به سرور برقرار نشد.'
-            : 'سرور سره اړیکه نشوه.';
+        msg = 'Cannot connect to server. Check your internet.';
       }
 
       showError(msg);
       submitBtn.disabled = false;
-      submitBtn.innerHTML = originalText;
+      submitBtn.classList.remove('loading');
     }
   });
 
   function showError(message) {
+    if (!errorBox) {
+      alert(message);
+      return;
+    }
     errorBox.textContent = message;
-    errorBox.style.display = 'block';
+    errorBox.classList.add('show');
     errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });

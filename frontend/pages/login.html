@@ -1,23 +1,12 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Login to your Aryana Currency account.">
-  <meta name="theme-color" content="#0B0E11">
+  <meta name="theme-color" content="#0A0612">
 
   <title>Login | ARYANA CURRENCY</title>
-
-<script>
-  (function() {
-    try {
-      var saved = localStorage.getItem('aryana_theme');
-      var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      document.documentElement.classList.add(theme);
-      document.documentElement.setAttribute('data-theme', theme);
-    } catch (e) {}
-  })();
-</script>
 
   <link rel="icon" type="image/png" href="../assets/images/logo.png">
 
@@ -29,209 +18,151 @@
   <link rel="stylesheet" href="../assets/css/ui-v2.css">
   <link rel="stylesheet" href="../assets/css/auth-v2.css">
   <link rel="stylesheet" href="../assets/css/notifications.css">
-  <link rel="stylesheet" href="../assets/css/footer.css">
 </head>
 <body>
 
   <div class="auth-page">
 
-    <!-- Left: Form -->
-    <main class="auth-form-panel">
-      <div class="auth-form-container">
+    <!-- Background -->
+    <div class="auth-bg">
+      <div class="auth-bg-glow glow-1"></div>
+      <div class="auth-bg-glow glow-2"></div>
+      <div class="auth-bg-grid"></div>
+    </div>
 
-        <div class="auth-form-header">
-          <div class="section-kicker">WELCOME BACK</div>
-          <h1>Sign in</h1>
-          <p>
-            Don't have an account?
-            <a href="register.html">Register</a>
-          </p>
+    <!-- Back -->
+    <a href="../index.html" class="auth-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"/>
+        <polyline points="12 19 5 12 12 5"/>
+      </svg>
+      <span>Back to Home</span>
+    </a>
+
+    <!-- Container -->
+    <main class="auth-container">
+
+      <!-- Brand -->
+      <div class="auth-brand">
+        <img src="../assets/images/logo.png" alt="ARYANA CURRENCY">
+        <div class="auth-brand-text">
+          ARYANA
+          <small>CURRENCY</small>
         </div>
+      </div>
 
-        <div class="alert alert-danger" id="errorBox" style="display:none;"></div>
+      <!-- Card -->
+      <section class="auth-card">
 
-        <form class="auth-form" id="loginForm" novalidate>
-
-          <div class="field">
-            <label class="field-label" for="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              class="field-input"
-              placeholder="you@example.com"
-              autocomplete="email"
-              required
-            >
+        <div class="auth-heading">
+          <div class="auth-badge">
+            <span class="auth-badge-dot"></span>
+            Secure Access
           </div>
 
-          <div class="field">
-            <label class="field-label" for="password">
+          <h1>Welcome <span>Back.</span></h1>
+
+          <p>Sign in to access your exchange dashboard, wallet and orders.</p>
+        </div>
+
+        <div class="auth-message error" id="errorBox"></div>
+
+        <form class="auth-form" id="loginForm" autocomplete="on">
+
+          <!-- Email -->
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address</label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+              </span>
+              <input
+                type="email"
+                id="email"
+                class="form-input"
+                placeholder="you@example.com"
+                autocomplete="email"
+                required
+              >
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <div class="form-label">
               <span>Password</span>
               <a href="forgot-password.html">Forgot?</a>
-            </label>
-            <div class="password-input-wrap">
+            </div>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </span>
               <input
                 type="password"
                 id="password"
-                class="field-input"
-                placeholder="••••••••"
+                class="form-input"
+                placeholder="Enter your password"
                 autocomplete="current-password"
                 minlength="8"
                 required
               >
-              <button type="button" class="password-toggle" id="passwordToggle" aria-label="Show password"></button>
+              <button type="button" class="password-toggle" id="passwordToggle" aria-label="Show password">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
             </div>
           </div>
 
-          <button type="submit" class="btn btn-primary" id="submitBtn">
-            <span>Sign in</span>
+          <!-- Remember -->
+          <div class="remember-row">
+            <label class="checkbox-label">
+              <input type="checkbox" id="rememberMe">
+              <span class="custom-checkbox"></span>
+              <span>Remember me</span>
+            </label>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn-primary" id="submitBtn">
+            <span class="btn-text">Sign In</span>
+            <span class="btn-loader"></span>
+            <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
           </button>
 
         </form>
 
-        <p class="auth-terms">
-          By signing in, you agree to our
-          <a href="terms.html">Terms of Service</a>
-          and
-          <a href="privacy.html">Privacy Policy</a>.
-        </p>
+        <div class="auth-switch">
+          <span>Don't have an account?</span>
+          <a href="register.html">Create Account</a>
+        </div>
 
+      </section>
+
+      <!-- Footer -->
+      <div class="auth-footer">
+        <span>© <span id="currentYear"></span> ARYANA CURRENCY</span>
+        <span class="separator">•</span>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
       </div>
+
     </main>
-
-    <!-- Right: Brand -->
-    <aside class="auth-brand-panel">
-
-      <div class="auth-brand-top">
-        <a href="../index.html" class="app-brand">
-          <img src="../assets/images/logo.png" alt="ARYANA CURRENCY">
-          <div class="app-brand-text">
-            ARYANA
-            <small>CURRENCY</small>
-          </div>
-        </a>
-      </div>
-
-      <div class="auth-brand-content">
-
-        <h2 class="auth-brand-title">
-          The trusted exchange<br>
-          <span class="gold">for USDT ↔ AFN.</span>
-        </h2>
-
-        <p class="auth-brand-subtitle">
-          Licensed, secure, and built for Afghanistan.
-        </p>
-
-        <!-- Mock Dashboard -->
-        <div class="mock-dashboard">
-          <div class="mock-header">
-            <div class="mock-brand">
-              <div class="mock-brand-dot"></div>
-              ARYANA
-            </div>
-            <div class="mock-live">LIVE</div>
-          </div>
-
-          <div class="mock-balance-label">Total Balance</div>
-          <div class="mock-balance">$1,234.56</div>
-          <div class="mock-balance-sub">≈ 1,234.56 USDT</div>
-
-          <div class="mock-rates">
-            <div class="mock-rate">
-              <div>
-                <div class="mock-rate-symbol">USDT/AFN</div>
-              </div>
-              <div style="display:flex; align-items:center; gap:8px;">
-                <div class="mock-rate-value">70.50</div>
-                <div class="mock-rate-change up">▲ 0.45%</div>
-              </div>
-            </div>
-            <div class="mock-rate">
-              <div>
-                <div class="mock-rate-symbol">AFN/USDT</div>
-              </div>
-              <div style="display:flex; align-items:center; gap:8px;">
-                <div class="mock-rate-value">0.0143</div>
-                <div class="mock-rate-change down">▼ 0.02%</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="mock-actions">
-            <div class="mock-btn primary">Deposit</div>
-            <div class="mock-btn secondary">Withdraw</div>
-          </div>
-        </div>
-
-        <!-- Stats -->
-        <div class="auth-stats">
-          <div class="auth-stat">
-            <div class="auth-stat-value">2,500+</div>
-            <div class="auth-stat-label">Users</div>
-          </div>
-          <div class="auth-stat">
-            <div class="auth-stat-value">$450K</div>
-            <div class="auth-stat-label">Volume</div>
-          </div>
-          <div class="auth-stat">
-            <div class="auth-stat-value">1.5%</div>
-            <div class="auth-stat-label">Fee</div>
-          </div>
-        </div>
-
-        <!-- Testimonial -->
-        <div class="auth-testimonial">
-          <div class="auth-testimonial-stars">★★★★★</div>
-          <p class="auth-testimonial-text">
-            "Fast, clear, and reliable. Best rates I've found in Kabul."
-          </p>
-          <div class="auth-testimonial-author">
-            <div class="auth-testimonial-avatar">A</div>
-            <div>
-              <div class="auth-testimonial-name">Ahmad R.</div>
-              <div class="auth-testimonial-location">Kabul, Afghanistan</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Trust -->
-        <div class="auth-trust">
-          <div class="auth-trust-item">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-            Licensed
-          </div>
-          <div class="auth-trust-item">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-            Verified
-          </div>
-          <div class="auth-trust-item">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-            </svg>
-            Secure
-          </div>
-        </div>
-
-      </div>
-
-      <div class="auth-brand-footer">
-        © <span id="currentYear"></span> ARYANA CURRENCY
-      </div>
-
-    </aside>
 
   </div>
 
   <script src="../assets/js/config.js"></script>
   <script src="../assets/js/i18n.js"></script>
-  <script src="../assets/js/theme.js"></script>
   <script src="../assets/js/auth.js"></script>
   <script src="../assets/js/api.js"></script>
   <script src="../assets/js/notifications.js"></script>

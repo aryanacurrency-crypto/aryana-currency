@@ -3,163 +3,184 @@
    ═══════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', async () => {
-  Theme.init();
-
-  const initialLang = I18N.detectInitialLang();
-  await I18N.load(initialLang);
-  I18N.apply();
-
   const yearEl = document.getElementById('currentYear');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-  Auth.redirectIfLoggedIn();
 
   const form = document.getElementById('registerForm');
   const submitBtn = document.getElementById('submitBtn');
   const errorBox = document.getElementById('errorBox');
-  const successBox = document.getElementById('successBox');
   const emailInput = document.getElementById('email');
   const fullNameInput = document.getElementById('fullName');
+  const phoneInput = document.getElementById('phone');
+  const passwordInput = document.getElementById('password');
+  const passwordConfirmInput = document.getElementById('passwordConfirm');
   const referralInput = document.getElementById('referralCode');
   const referralStatus = document.getElementById('referralStatus');
+  const passwordStrength = document.getElementById('passwordStrength');
 
   // ─── فقط انگلیسی توی ایمیل ───
-  preventNonEnglish(emailInput);
-
-  // ─── اسم: فقط حروف انگلیسی و فاصله ───
-  preventNonEnglish(fullNameInput, { mode: 'name' });
+  if (typeof preventNonEnglish === 'function') {
+    preventNonEnglish(emailInput);
+    preventNonEnglish(fullNameInput, { mode: 'name' });
+  }
 
   // ─── Show/Hide Password ───
-  attachPasswordToggle('password', 'passwordToggle');
-  attachPasswordToggle('passwordConfirm', 'passwordConfirmToggle');
+  setupPasswordToggle('passwordToggle', passwordInput);
+  setupPasswordToggle('passwordConfirmToggle', passwordConfirmInput);
+
+  function setupPasswordToggle(btnId, input) {
+    const btn = document.getElementById(btnId);
+    if (!btn || !input) return;
+
+    btn.addEventListener('click', () => {
+      const isPassword = input.type === 'password';
+      input.type = isPassword ? 'text' : 'password';
+      btn.style.color = isPassword ? 'var(--gold)' : '';
+    });
+  }
 
   // ═══════════════════════════════════════
-  //   🎁 Referral Code — Auto-fill از URL
+  //   Referral Code — Auto-fill & Validate
   // ═══════════════════════════════════════
   const urlParams = new URLSearchParams(window.location.search);
-  const refFromUrl =
-    urlParams.get('ref') ||
-    urlParams.get('referral') ||
-    urlParams.get('partner');
+  const refFromUrl = urlParams.get('ref') || urlParams.get('referral') || urlParams.get('partner');
 
   if (refFromUrl && referralInput) {
     referralInput.value = refFromUrl.toUpperCase();
     validateReferralCode(referralInput.value);
   }
 
-  // ═══════════════════════════════════════
-  //   🎁 Referral Code — Validation زنده
-  // ═══════════════════════════════════════
-  let referralCheckTimeout;
+  let referralTimeout;
 
   if (referralInput) {
-    // فقط حروف و اعداد انگلیسی، خودکار uppercase
     referralInput.addEventListener('input', (e) => {
       e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-
       const code = e.target.value.trim();
-      referralStatus.className = 'referral-status';
+      if (referralStatus) referralStatus.className = 'referral-status';
 
-      if (!code) {
-        return;
-      }
+      if (!code || code.length < 4) return;
 
-      if (code.length < 4) {
-        return;
-      }
+      clearTimeout(referralTimeout);
+      if (referralStatus) referralStatus.classList.add('checking');
 
-      clearTimeout(referralCheckTimeout);
-      referralStatus.classList.add('checking');
-
-      referralCheckTimeout = setTimeout(() => {
-        validateReferralCode(code);
-      }, 500);
+      referralTimeout = setTimeout(() => validateReferralCode(code), 500);
     });
   }
 
   async function validateReferralCode(code) {
     try {
-      const res = await fetch(`${CONFIG.API_BASE}/referral/validate/${encodeURIComponent(code)}`, {
-        method: 'GET',
-        headers: { 'Accept': 'application/json' },
-      });
-
+      const res = await fetch(`${CONFIG.API_BASE}/referral/validate/${encodeURIComponent(code)}`);
       const data = await res.json();
 
       if (res.ok && data.valid) {
-        referralStatus.className = 'referral-status valid';
-        referralStatus.title = `Invited by: ${data.referrer_name}`;
+        if (referralStatus) {
+          referralStatus.className = 'referral-status valid';
+          referralStatus.textContent = '✓';
+        }
       } else {
-        referralStatus.className = 'referral-status invalid';
+        if (referralStatus) {
+          referralStatus.className = 'referral-status invalid';
+          referralStatus.textContent = '✕';
+        }
       }
     } catch (err) {
       console.error('Referral validation error:', err);
-      referralStatus.className = 'referral-status';
+      if (referralStatus) referralStatus.className = 'referral-status';
     }
   }
 
   // ═══════════════════════════════════════
-  //              Form Submit
+  //         Password Strength
+  // ═══════════════════════════════════════
+  if (passwordInput && passwordStrength) {
+    passwordInput.addEventListener('input', () => {
+      const val = passwordInput.value;
+      if (!val) {
+        passwordStrength.style.display = 'none';
+        return;
+      }
+
+      passwordStrength.style.display = 'flex';
+      const { level, text } = checkPasswordStrength(val);
+
+      const bars = passwordStrength.querySelector('.strength-bars');
+      const textEl = passwordStrength.querySelector('.strength-text');
+
+      bars.className = 'strength-bars ' + level;
+      textEl.className = 'strength-text ' + level;
+      textEl.textContent = text;
+    });
+  }
+
+  function checkPasswordStrength(password) {
+    let score = 0;
+    if (password.length >= 8) score++;
+    if (/[a-z]/.test(password)) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^a-zA-Z0-9]/.test(password)) score++;
+
+    if (password.length < 6) return { level: 'weak', text: 'Weak' };
+    if (score <= 2) return { level: 'weak', text: 'Weak' };
+    if (score === 3) return { level: 'fair', text: 'Fair' };
+    if (score === 4) return { level: 'good', text: 'Good' };
+    return { level: 'strong', text: 'Strong' };
+  }
+
+  // ═══════════════════════════════════════
+  //              Submit
   // ═══════════════════════════════════════
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    errorBox.style.display = 'none';
-    successBox.style.display = 'none';
+    if (errorBox) errorBox.classList.remove('show');
 
     const fullName = form.fullName.value.trim();
     const email = form.email.value.trim();
-    const phone = form.phone.value.trim() || null;
+    const country = form.country.value;
+    const phone = form.phone.value.trim();
     const password = form.password.value;
     const passwordConfirm = form.passwordConfirm.value;
-    const referralCode = referralInput ? referralInput.value.trim().toUpperCase() : null;
+    const referralCode = referralInput ? referralInput.value.trim().toUpperCase() : '';
+    const agreeTerms = document.getElementById('agreeTerms').checked;
 
-    // اعتبارسنجی
-    if (!fullName || !email || !password) {
-      showError(I18N.t('registerErrorEmpty') || 'Please fill in required fields.');
-      return;
+    // Validation
+    if (!fullName || !email || !country || !phone || !password) {
+      return showError('Please fill in all required fields.');
     }
 
     if (!isValidEmail(email)) {
-      showError(I18N.currentLang === 'en' ? 'Please enter a valid email address.'
-            : I18N.currentLang === 'fa' ? 'لطفاً یک ایمیل معتبر وارد کنید.'
-            : 'مهرباني وکړئ یو سم ایمیل ولیکئ.');
-      return;
+      return showError('Please enter a valid email address.');
     }
 
-    if (phone && !isValidPhone(phone)) {
-      showError(I18N.currentLang === 'en' ? 'Please enter a valid phone number.'
-            : I18N.currentLang === 'fa' ? 'لطفاً یک شماره تلفن معتبر وارد کنید.'
-            : 'مهرباني وکړئ یو سم تلیفون شمېره ولیکئ.');
-      return;
+    if (!isValidPhone(phone)) {
+      return showError('Please enter a valid phone number.');
     }
 
     if (password.length < 8) {
-      showError(I18N.t('registerErrorPasswordShort') || 'Password must be at least 8 characters.');
-      return;
+      return showError('Password must be at least 8 characters.');
     }
 
     if (password !== passwordConfirm) {
-      showError(I18N.t('registerErrorPasswordMatch') || 'Passwords do not match.');
-      return;
+      return showError('Passwords do not match.');
+    }
+
+    if (!agreeTerms) {
+      return showError('Please accept the Terms of Service and Privacy Policy.');
     }
 
     submitBtn.disabled = true;
-    const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<span class="spinner"></span>';
+    submitBtn.classList.add('loading');
 
     try {
       const payload = {
         email,
         password,
         full_name: fullName,
-        phone,
+        phone: `${country}|${phone}`,
       };
 
-      // 🎁 Referral Code (فقط اگه پر بود)
-      if (referralCode) {
-        payload.referral_code = referralCode;
-      }
+      if (referralCode) payload.referral_code = referralCode;
 
       await API.register(payload);
 
@@ -169,50 +190,41 @@ document.addEventListener('DOMContentLoaded', async () => {
       const user = await API.me();
       Auth.setUser(user);
 
-      showSuccess(I18N.t('registerSuccess') || 'Account created! Redirecting...');
-
       setTimeout(() => {
         window.location.href = 'dashboard.html';
-      }, 900);
+      }, 600);
 
     } catch (err) {
       console.error('Register error:', err);
       let msg = err.detail || 'Registration failed. Please try again.';
 
-      if (msg.includes('کد دعوت') || msg.includes('referral') || msg.includes('code')) {
-        msg = I18N.currentLang === 'en' ? 'Invalid referral code.'
-            : I18N.currentLang === 'fa' ? 'کد دعوت نامعتبر است.'
-            : 'د بلنې کوډ سم نه دی.';
-        referralStatus.className = 'referral-status invalid';
-      } else if (msg.includes('ایمیل')) {
-        msg = I18N.currentLang === 'en' ? 'This email is already registered.'
-            : I18N.currentLang === 'fa' ? 'این ایمیل قبلاً ثبت شده است.'
-            : 'دا ایمیل لا دمخه ثبت شوی دی.';
-      } else if (msg.includes('تلفن')) {
-        msg = I18N.currentLang === 'en' ? 'This phone number is already registered.'
-            : I18N.currentLang === 'fa' ? 'این شماره تلفن قبلاً ثبت شده است.'
-            : 'دا تلیفون شمېره لا دمخه ثبت شوې ده.';
+      if (msg.includes('referral') || msg.includes('کد دعوت')) {
+        msg = 'Invalid referral code.';
+        if (referralStatus) {
+          referralStatus.className = 'referral-status invalid';
+          referralStatus.textContent = '✕';
+        }
+      } else if (msg.includes('ایمیل') || msg.includes('email')) {
+        msg = 'This email is already registered.';
+      } else if (msg.includes('تلفن') || msg.includes('phone')) {
+        msg = 'This phone number is already registered.';
       } else if (err.status === 0) {
-        msg = I18N.currentLang === 'en' ? 'Cannot connect to server.'
-            : I18N.currentLang === 'fa' ? 'اتصال به سرور برقرار نشد.'
-            : 'سرور سره اړیکه نشوه.';
+        msg = 'Cannot connect to server. Check your internet.';
       }
 
       showError(msg);
       submitBtn.disabled = false;
-      submitBtn.innerHTML = originalText;
+      submitBtn.classList.remove('loading');
     }
   });
 
   function showError(message) {
+    if (!errorBox) {
+      alert(message);
+      return;
+    }
     errorBox.textContent = message;
-    errorBox.style.display = 'block';
+    errorBox.classList.add('show');
     errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-
-  function showSuccess(message) {
-    successBox.textContent = message;
-    successBox.style.display = 'block';
-    successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
