@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
@@ -67,6 +67,15 @@
             <path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12M17 20l4-4M17 20l-4-4"/>
           </svg>
           <span>Trade</span>
+        </a>
+        <a href="p2p/index.html" class="app-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span>P2P</span>
         </a>
         <a href="orders.html" class="app-nav-link">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -144,6 +153,7 @@
         </div>
 
         <nav class="profile-nav">
+
           <a class="profile-nav-item active" data-tab="personal">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -166,6 +176,28 @@
             </svg>
             <span>Payment</span>
           </a>
+
+          <!-- Referral Program -->
+          <a class="profile-nav-item" data-tab="referral">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="8.5" cy="7" r="4"/>
+              <line x1="20" y1="8" x2="20" y2="14"/>
+              <line x1="23" y1="11" x2="17" y2="11"/>
+            </svg>
+            <span>Referral Program</span>
+          </a>
+
+          <!-- Rewards Wheel -->
+          <a class="profile-nav-item" data-tab="wheel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5L19 19M19 5l-2.5 2.5M7.5 16.5L5 19"/>
+            </svg>
+            <span>Rewards Wheel</span>
+          </a>
+
           <a class="profile-nav-item" data-tab="kyc">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M9 12l2 2 4-4"/>
@@ -173,6 +205,7 @@
             </svg>
             <span>KYC</span>
           </a>
+
           <a class="profile-nav-item" data-tab="security">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
@@ -180,6 +213,7 @@
             </svg>
             <span>Security</span>
           </a>
+
           <a class="profile-nav-item" data-tab="account">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"/>
@@ -196,12 +230,15 @@
             </svg>
             <span>Settings & Support</span>
           </a>
+
         </nav>
       </aside>
 
       <div class="profile-content">
 
-        <!-- PANEL: Personal -->
+        <!-- ═══════════════════════════════════════
+             PANEL: Personal Info
+             ═══════════════════════════════════════ -->
         <div class="profile-panel active" data-panel="personal">
           <div class="panel-card">
             <div class="panel-header">
@@ -236,7 +273,9 @@
           </div>
         </div>
 
-        <!-- PANEL: Trading Stats -->
+        <!-- ═══════════════════════════════════════
+             PANEL: Trading Stats
+             ═══════════════════════════════════════ -->
         <div class="profile-panel" data-panel="trading">
           <div class="panel-card">
             <div class="panel-header">
@@ -251,7 +290,6 @@
 
             <div id="trustScoreContent" style="display:none;">
 
-              <!-- Trust Score Circle -->
               <div class="trust-score-hero">
                 <div class="trust-score-circle">
                   <svg viewBox="0 0 120 120" class="trust-score-svg">
@@ -267,10 +305,8 @@
                 <div class="trust-score-desc" id="trustScoreDesc">—</div>
               </div>
 
-              <!-- Badges -->
               <div class="trust-badges" id="trustBadges"></div>
 
-              <!-- Stats Row -->
               <div class="trust-stats-row">
                 <div class="trust-stat">
                   <div class="trust-stat-value green" id="statCompleted">0</div>
@@ -285,31 +321,8 @@
                   <div class="trust-stat-label">Disputed</div>
                 </div>
                 <div class="trust-stat">
-                  <div class="trust-stat-value" id="statTotal">0</div>
-                  <div class="trust-stat-label">Total</div>
-                </div>
-              </div>
-
-              <!-- Success Rate -->
-              <div class="trust-success-box">
-                <div class="trust-success-header">
-                  <span>Success Rate</span>
-                  <span class="trust-success-value" id="successRate">—</span>
-                </div>
-                <div class="trust-success-bar">
-                  <div class="trust-success-fill" id="successFill" style="width:0%"></div>
-                </div>
-              </div>
-
-              <!-- Info -->
-              <div class="info-box" style="margin-top:20px;">
-                <strong>ℹ️ How Trust Score works</strong>
-                <div style="margin-top:8px;font-size:13px;line-height:1.6;">
-                  Base: <strong>50</strong><br>
-                  <span style="color:var(--green);">+5</span> per completed trade (max +30)<br>
-                  <span style="color:var(--red);">−20</span> per dispute lost<br>
-                  <span style="color:var(--red);">−10</span> per cancellation<br>
-                  <span style="color:var(--blue);">+10</span> if verified
+                  <div class="trust-stat-value" id="statRating">0.0</div>
+                  <div class="trust-stat-label">Rating</div>
                 </div>
               </div>
 
@@ -317,148 +330,397 @@
           </div>
         </div>
 
-        <!-- PANEL: Payment -->
+        <!-- ═══════════════════════════════════════
+             PANEL: Payment
+             ═══════════════════════════════════════ -->
         <div class="profile-panel" data-panel="payment">
           <div class="panel-card">
             <div class="panel-header">
-              <h2>Hesab Pay Details</h2>
-              <p>This is where we send AFN when you sell USDT.</p>
+              <h2>Payment Information</h2>
+              <p>Manage your Hesab Pay and USDT wallet details.</p>
             </div>
 
             <form class="panel-form" id="paymentForm">
               <div class="form-row">
                 <div class="field">
-                  <label class="field-label" for="hesabPay">Hesab Pay number</label>
-                  <input type="text" id="hesabPay" class="field-input" placeholder="07XX XXX XXX">
+                  <label class="field-label" for="hesabPayNumber">Hesab Pay Number</label>
+                  <input type="text" id="hesabPayNumber" class="field-input" placeholder="0700 123 456">
                 </div>
                 <div class="field">
-                  <label class="field-label" for="hesabHolder">Account holder name</label>
-                  <input type="text" id="hesabHolder" class="field-input" placeholder="Ahmad Rahimi">
+                  <label class="field-label" for="hesabPayHolder">Hesab Pay Holder Name</label>
+                  <input type="text" id="hesabPayHolder" class="field-input" placeholder="Ahmad Rahimi">
                 </div>
               </div>
-            </form>
-          </div>
 
-          <div class="panel-card">
-            <div class="panel-header">
-              <h2>USDT Wallet</h2>
-              <p>This is where we send USDT when you buy.</p>
-            </div>
-
-            <form class="panel-form" id="walletForm">
               <div class="field">
-                <label class="field-label" for="usdtWallet">Wallet address</label>
-                <input type="text" id="usdtWallet" class="field-input" placeholder="T...">
-                <div class="field-hint">Must be a valid TRC20 (Tron) address.</div>
+                <label class="field-label" for="usdtWalletAddress">USDT Wallet Address</label>
+                <input type="text" id="usdtWalletAddress" class="field-input" placeholder="TQ... (TRC20)">
               </div>
 
               <div class="field">
-                <label class="field-label" for="usdtNetwork">Network</label>
-                <select id="usdtNetwork" class="field-input">
+                <label class="field-label" for="usdtWalletNetwork">USDT Network</label>
+                <select id="usdtWalletNetwork" class="field-input">
+                  <option value="">— Select network —</option>
                   <option value="TRC20">TRC20 (Tron)</option>
                   <option value="BEP20">BEP20 (BNB Chain)</option>
                   <option value="ERC20">ERC20 (Ethereum)</option>
                 </select>
-                <div class="field-hint">⚠ Wrong network = lost funds.</div>
               </div>
 
               <div class="panel-actions">
                 <button type="submit" class="btn btn-primary" id="savePaymentBtn">
-                  <span>Save Changes</span>
+                  <span>Save Payment Info</span>
                 </button>
               </div>
             </form>
           </div>
         </div>
 
-        <!-- PANEL: KYC -->
+        <!-- ═══════════════════════════════════════
+             PANEL: Referral Program
+             ═══════════════════════════════════════ -->
+        <div class="profile-panel" data-panel="referral">
+
+          <div class="panel-card ref-code-card">
+            <div class="panel-header">
+              <div class="panel-header-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                  <circle cx="8.5" cy="7" r="4"/>
+                  <line x1="20" y1="8" x2="20" y2="14"/>
+                  <line x1="23" y1="11" x2="17" y2="11"/>
+                </svg>
+              </div>
+              <div>
+                <h2>Referral Program</h2>
+                <p class="panel-subtitle">Earn <strong>15 AFN</strong> for every qualified referral</p>
+              </div>
+            </div>
+
+            <div class="ref-code-block">
+              <label class="ref-mini-label">YOUR REFERRAL CODE</label>
+              <div class="ref-code-display">
+                <div class="ref-code-value" id="profileReferralCode">—</div>
+                <button class="ref-copy-action" id="profileCopyCode" aria-label="Copy code">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                  </svg>
+                  <span>Copy</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="ref-code-block">
+              <label class="ref-mini-label">YOUR INVITE LINK</label>
+              <div class="ref-link-display">
+                <input type="text" class="ref-link-input" id="profileReferralLink" readonly value="—">
+                <button class="ref-copy-action" id="profileCopyLink" aria-label="Copy link">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                  </svg>
+                  <span>Copy</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="ref-share-row">
+              <button class="ref-share-btn telegram" data-share="telegram">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                </svg>
+                Telegram
+              </button>
+              <button class="ref-share-btn whatsapp" data-share="whatsapp">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 0 1 8.413 3.488 11.82 11.82 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24z"/>
+                </svg>
+                WhatsApp
+              </button>
+              <button class="ref-share-btn copy" data-share="copy">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+                Copy Link
+              </button>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-header">
+              <h2>Performance Overview</h2>
+            </div>
+
+            <div class="ref-stats-grid">
+              <div class="ref-stat-box">
+                <div class="ref-stat-label">Total Referrals</div>
+                <div class="ref-stat-value" id="profileTotalReferrals">0</div>
+              </div>
+              <div class="ref-stat-box">
+                <div class="ref-stat-label">Pending Reward</div>
+                <div class="ref-stat-value gold" id="profileLocked">0 AFN</div>
+              </div>
+              <div class="ref-stat-box">
+                <div class="ref-stat-label">Available Balance</div>
+                <div class="ref-stat-value green" id="profileReleased">0 AFN</div>
+              </div>
+              <div class="ref-stat-box">
+                <div class="ref-stat-label">Lifetime Earned</div>
+                <div class="ref-stat-value" id="profileEarned">0 AFN</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-header">
+              <h2>Program Terms</h2>
+            </div>
+
+            <div class="ref-terms-list">
+              <div class="ref-term-item">
+                <span class="ref-term-num">1</span>
+                <div class="ref-term-text">
+                  <strong>Share your referral link</strong>
+                  <span>Send your unique link to friends and colleagues</span>
+                </div>
+              </div>
+              <div class="ref-term-item">
+                <span class="ref-term-num">2</span>
+                <div class="ref-term-text">
+                  <strong>Friend completes registration</strong>
+                  <span>They sign up using your link</span>
+                </div>
+              </div>
+              <div class="ref-term-item">
+                <span class="ref-term-num">3</span>
+                <div class="ref-term-text">
+                  <strong>Verification + first trade</strong>
+                  <span>They pass KYC and complete their first exchange</span>
+                </div>
+              </div>
+              <div class="ref-term-item">
+                <span class="ref-term-num">4</span>
+                <div class="ref-term-text">
+                  <strong>Reward credited</strong>
+                  <span><strong>15 AFN</strong> released to your available balance</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="ref-terms-note">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="16" x2="12" y2="12"/>
+                <line x1="12" y1="8" x2="12.01" y2="8"/>
+              </svg>
+              <span>Reward remains in locked balance until both conditions are met. This ensures genuine, active referrals.</span>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-header">
+              <h2>Your Referrals</h2>
+            </div>
+
+            <div id="profileReferralsList">
+              <div class="ref-empty-state">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                  <circle cx="8.5" cy="7" r="4"/>
+                  <line x1="20" y1="8" x2="20" y2="14"/>
+                  <line x1="23" y1="11" x2="17" y2="11"/>
+                </svg>
+                <p>No referrals yet</p>
+                <span>Share your link to start earning</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ═══════════════════════════════════════
+             PANEL: Rewards Wheel
+             ═══════════════════════════════════════ -->
+        <div class="profile-panel" data-panel="wheel">
+
+          <div class="panel-card">
+            <div class="panel-header">
+              <div class="panel-header-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5L19 19M19 5l-2.5 2.5M7.5 16.5L5 19"/>
+                </svg>
+              </div>
+              <div>
+                <h2>Rewards Wheel</h2>
+                <p class="panel-subtitle">Spin to win up to <strong>1,000 AFN</strong></p>
+              </div>
+            </div>
+
+            <div class="wheel-metrics-grid">
+              <div class="wheel-metric-box">
+                <div class="wheel-metric-label">Available Tickets</div>
+                <div class="wheel-metric-value" id="profileTicketsCount">0</div>
+              </div>
+              <div class="wheel-metric-box">
+                <div class="wheel-metric-label">Ticket Price</div>
+                <div class="wheel-metric-value gold" id="profileTicketPrice">50 AFN</div>
+              </div>
+              <div class="wheel-metric-box">
+                <div class="wheel-metric-label">Today's Spins</div>
+                <div class="wheel-metric-value" id="profileTodaySpins">0 / 10</div>
+              </div>
+              <button class="wheel-metric-box wheel-metric-buy" id="profileBuyTicketBtn">
+                <div class="wheel-metric-label">Buy Tickets</div>
+                <div class="wheel-metric-value gold">+ Purchase</div>
+              </button>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="wheel-stage">
+              <div class="wheel-pointer-pro">
+                <svg viewBox="0 0 32 40" fill="none">
+                  <path d="M16 0 L32 20 L20 20 L20 40 L12 40 L12 20 L0 20 Z" fill="url(#pointerGradPro)"/>
+                  <defs>
+                    <linearGradient id="pointerGradPro" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#FFD700"/>
+                      <stop offset="100%" stop-color="#8B6914"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+
+              <div class="wheel-frame-pro">
+                <div class="wheel-pro" id="profileWheel">
+                  <svg viewBox="0 0 400 400" class="wheel-svg-pro" id="profileWheelSvg"></svg>
+                  <div class="wheel-hub-pro">
+                    <div class="wheel-hub-inner-pro">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <circle cx="12" cy="12" r="3"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button class="wheel-spin-btn-pro" id="profileSpinBtn" disabled>
+              <span class="wheel-spin-text-pro">SPIN WHEEL</span>
+              <span class="wheel-spin-hint-pro" id="profileSpinHint">Ticket required</span>
+            </button>
+
+            <div class="wheel-result-pro" id="profileWheelResult" style="display:none;">
+              <div class="wheel-result-icon-pro" id="profileResultIcon"></div>
+              <div class="wheel-result-title-pro" id="profileResultTitle">Result</div>
+              <div class="wheel-result-amount-pro" id="profileResultAmount">—</div>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-header">
+              <h2>Ticket Sources</h2>
+            </div>
+
+            <div class="wheel-sources-list">
+              <div class="wheel-source-item">
+                <div class="wheel-source-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 12l2 2 4-4"/>
+                    <path d="M21 12c0 5-3.5 8.5-9 10-5.5-1.5-9-5-9-10V5l9-3 9 3z"/>
+                  </svg>
+                </div>
+                <div class="wheel-source-text">
+                  <strong>Account Verification</strong>
+                  <span>Complete registration + KYC → <b>+1 ticket</b></span>
+                </div>
+              </div>
+
+              <div class="wheel-source-item">
+                <div class="wheel-source-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12M17 20l4-4M17 20l-4-4"/>
+                  </svg>
+                </div>
+                <div class="wheel-source-text">
+                  <strong>Exchange Completion</strong>
+                  <span>Every successful trade → <b>+1 ticket</b></span>
+                </div>
+              </div>
+
+              <div class="wheel-source-item">
+                <div class="wheel-source-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                    <line x1="1" y1="10" x2="23" y2="10"/>
+                  </svg>
+                </div>
+                <div class="wheel-source-text">
+                  <strong>Direct Purchase</strong>
+                  <span>Buy tickets for <b>50 AFN each</b></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ═══════════════════════════════════════
+             PANEL: KYC
+             ═══════════════════════════════════════ -->
         <div class="profile-panel" data-panel="kyc">
           <div class="panel-card">
             <div class="panel-header">
-              <h2>Identity Verification (KYC)</h2>
+              <h2>KYC Verification</h2>
               <p>Verify your identity to unlock all features.</p>
             </div>
 
-            <div class="kyc-banner not-submitted" id="kycBanner">
-              <div class="kyc-banner-icon" id="kycBannerIcon">⏳</div>
-              <div class="kyc-banner-content">
-                <div class="kyc-banner-title" id="kycBannerTitle">Not submitted</div>
-                <div class="kyc-banner-text" id="kycBannerText">Upload your documents to get verified.</div>
+            <div id="kycStatusBox" class="kyc-status-box">
+              <div class="kyc-status-icon" id="kycStatusIcon">⏳</div>
+              <div class="kyc-status-info">
+                <div class="kyc-status-title" id="kycStatusTitle">Loading...</div>
+                <div class="kyc-status-desc" id="kycStatusDesc">Checking your verification status</div>
               </div>
             </div>
 
-            <div class="kyc-grid" id="kycUploadGrid">
-              <div class="kyc-item">
-                <div class="kyc-item-icon">◫</div>
-                <div class="kyc-item-title">National ID</div>
-                <div class="kyc-item-desc">Front side photo</div>
-                <input type="file" id="fileNationalId" accept="image/*" hidden>
-                <span class="kyc-item-btn" data-upload="national_id">Choose file</span>
-                <small class="kyc-file-name" id="nameNationalId" style="display:none;"></small>
-              </div>
-
-              <div class="kyc-item">
-                <div class="kyc-item-icon">◈</div>
-                <div class="kyc-item-title">Passport</div>
-                <div class="kyc-item-desc">Main page</div>
-                <input type="file" id="filePassport" accept="image/*" hidden>
-                <span class="kyc-item-btn" data-upload="passport">Choose file</span>
-                <small class="kyc-file-name" id="namePassport" style="display:none;"></small>
-              </div>
-
-              <div class="kyc-item">
-                <div class="kyc-item-icon">☺</div>
-                <div class="kyc-item-title">Selfie</div>
-                <div class="kyc-item-desc">With your ID</div>
-                <input type="file" id="fileSelfie" accept="image/*" hidden>
-                <span class="kyc-item-btn" data-upload="selfie">Choose file</span>
-                <small class="kyc-file-name" id="nameSelfie" style="display:none;"></small>
-              </div>
-            </div>
-
-            <div class="panel-actions" id="kycUploadBar" style="display:none;">
-              <button type="button" class="btn btn-secondary" id="kycClearBtn">Clear</button>
-              <button type="button" class="btn btn-primary" id="kycSubmitBtn">
-                <span>Upload Selected File</span>
-              </button>
-            </div>
-
-            <div class="kyc-docs-list" id="kycDocsList"></div>
-
-            <div class="info-box">
-              <strong>Why we ask</strong>
-              Identity verification is a legal requirement for all financial platforms. Your documents are stored securely and never shared with third parties.
+            <div id="kycActions" style="display:none;">
+              <a href="kyc.html" class="btn btn-primary">Continue Verification</a>
             </div>
           </div>
         </div>
 
-        <!-- PANEL: Security -->
+        <!-- ═══════════════════════════════════════
+             PANEL: Security
+             ═══════════════════════════════════════ -->
         <div class="profile-panel" data-panel="security">
           <div class="panel-card">
             <div class="panel-header">
               <h2>Change Password</h2>
-              <p>Use a strong password with at least 8 characters.</p>
+              <p>Update your password regularly for security.</p>
             </div>
 
             <form class="panel-form" id="passwordForm">
               <div class="field">
-                <label class="field-label" for="currentPassword">Current password</label>
-                <input type="password" id="currentPassword" class="field-input" autocomplete="current-password" required>
+                <label class="field-label" for="currentPassword">Current Password</label>
+                <input type="password" id="currentPassword" class="field-input" autocomplete="current-password">
               </div>
 
-              <div class="form-row">
-                <div class="field">
-                  <label class="field-label" for="newPassword">New password</label>
-                  <input type="password" id="newPassword" class="field-input" autocomplete="new-password" minlength="8" required>
-                </div>
-                <div class="field">
-                  <label class="field-label" for="confirmPassword">Confirm new password</label>
-                  <input type="password" id="confirmPassword" class="field-input" autocomplete="new-password" minlength="8" required>
-                </div>
+              <div class="field">
+                <label class="field-label" for="newPassword">New Password</label>
+                <input type="password" id="newPassword" class="field-input" autocomplete="new-password" minlength="8">
+              </div>
+
+              <div class="field">
+                <label class="field-label" for="confirmPassword">Confirm New Password</label>
+                <input type="password" id="confirmPassword" class="field-input" autocomplete="new-password" minlength="8">
               </div>
 
               <div class="panel-actions">
-                <button type="submit" class="btn btn-primary" id="changePasswordBtn">
+                <button type="submit" class="btn btn-primary" id="savePasswordBtn">
                   <span>Change Password</span>
                 </button>
               </div>
@@ -466,194 +728,94 @@
           </div>
         </div>
 
-        <!-- PANEL: Account -->
+        <!-- ═══════════════════════════════════════
+             PANEL: Account
+             ═══════════════════════════════════════ -->
         <div class="profile-panel" data-panel="account">
           <div class="panel-card">
             <div class="panel-header">
-              <h2>Account Information</h2>
-              <p>Read-only information about your account.</p>
+              <h2>Account Settings</h2>
+              <p>Manage your account preferences.</p>
             </div>
 
-            <div class="info-list">
-              <div class="info-row"><span class="info-label">User ID</span><span class="info-value" id="infoId">—</span></div>
-              <div class="info-row"><span class="info-label">Member since</span><span class="info-value" id="infoCreated">—</span></div>
-              <div class="info-row"><span class="info-label">Role</span><span class="info-value" id="infoRole">—</span></div>
-              <div class="info-row"><span class="info-label">KYC status</span><span class="info-value" id="infoKyc">—</span></div>
-              <div class="info-row"><span class="info-label">Account status</span><span class="info-value" id="infoStatus">—</span></div>
+            <div class="account-info-list">
+              <div class="account-info-item">
+                <span>Account ID</span>
+                <strong id="accountId">—</strong>
+              </div>
+              <div class="account-info-item">
+                <span>Member Since</span>
+                <strong id="accountCreated">—</strong>
+              </div>
+              <div class="account-info-item">
+                <span>Account Status</span>
+                <strong class="text-green">Active</strong>
+              </div>
+            </div>
+
+            <div class="danger-zone">
+              <h3>Danger Zone</h3>
+              <p>Once you delete your account, there is no going back.</p>
+              <button class="btn btn-danger" id="deleteAccountBtn">Delete Account</button>
             </div>
           </div>
         </div>
 
-        <!-- PANEL: Settings & Support -->
+        <!-- ═══════════════════════════════════════
+             PANEL: Settings & Support
+             ═══════════════════════════════════════ -->
         <div class="profile-panel" data-panel="settings">
-
-          <div class="panel-card">
-            <div class="panel-header">
-              <h2>Help & Support</h2>
-              <p>We're here to help you anytime, anywhere.</p>
-            </div>
-
-            <div class="settings-list">
-              <a href="contact.html" class="settings-item">
-                <div class="settings-item-icon support">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                  </svg>
-                </div>
-                <div class="settings-item-content">
-                  <div class="settings-item-title">Contact Support</div>
-                  <div class="settings-item-subtitle">Get help from our team 24/7</div>
-                </div>
-                <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </a>
-
-              <a href="contact.html#faq" class="settings-item">
-                <div class="settings-item-icon about">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                    <line x1="12" y1="17" x2="12.01" y2="17"/>
-                  </svg>
-                </div>
-                <div class="settings-item-content">
-                  <div class="settings-item-title">FAQ & Help Center</div>
-                  <div class="settings-item-subtitle">Frequently asked questions</div>
-                </div>
-                <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </a>
-            </div>
-          </div>
-
           <div class="panel-card">
             <div class="panel-header">
               <h2>Preferences</h2>
-              <p>Customize your experience.</p>
             </div>
 
             <div class="settings-list">
-              <button type="button" class="settings-item" id="settingsThemeBtn">
-                <div class="settings-item-icon theme">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                  </svg>
+              <div class="setting-item">
+                <div>
+                  <strong>Theme</strong>
+                  <span>Dark or Light mode</span>
                 </div>
-                <div class="settings-item-content">
-                  <div class="settings-item-title">Display Mode</div>
-                  <div class="settings-item-subtitle" id="settingsThemeLabel">Dark</div>
+                <button class="btn btn-secondary" id="settingsThemeBtn">Toggle</button>
+              </div>
+
+              <div class="setting-item">
+                <div>
+                  <strong>Language</strong>
+                  <span>English, Farsi, Pashto</span>
                 </div>
-                <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </button>
+                <select class="field-input" id="settingsLangSelect" style="max-width:160px;">
+                  <option value="en">English</option>
+                  <option value="fa">فارسی</option>
+                  <option value="ps">پښتو</option>
+                </select>
+              </div>
             </div>
           </div>
 
           <div class="panel-card">
             <div class="panel-header">
-              <h2>Legal & Information</h2>
-              <p>Important documents and policies.</p>
+              <h2>Support</h2>
+              <p>Need help? Contact us through one of these channels.</p>
             </div>
 
-            <div class="settings-list">
-              <a href="about.html" class="settings-item">
-                <div class="settings-item-icon about">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <line x1="12" y1="16" x2="12" y2="12"/>
-                    <line x1="12" y1="8" x2="12.01" y2="8"/>
-                  </svg>
-                </div>
-                <div class="settings-item-content">
-                  <div class="settings-item-title">About Us</div>
-                  <div class="settings-item-subtitle">Learn more about Aryana Currency</div>
-                </div>
-                <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
+            <div class="support-links">
+              <a href="../pages/contact.html" class="support-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
                 </svg>
+                Contact Us
               </a>
 
-              <a href="terms.html" class="settings-item">
-                <div class="settings-item-icon terms">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                    <polyline points="14 2 14 8 20 8"/>
-                    <line x1="16" y1="13" x2="8" y2="13"/>
-                    <line x1="16" y1="17" x2="8" y2="17"/>
-                  </svg>
-                </div>
-                <div class="settings-item-content">
-                  <div class="settings-item-title">Terms of Service</div>
-                  <div class="settings-item-subtitle">Rules for using our platform</div>
-                </div>
-                <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
+              <a href="https://t.me/aryana_support" target="_blank" class="support-link">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
                 </svg>
-              </a>
-
-              <a href="privacy.html" class="settings-item">
-                <div class="settings-item-icon privacy">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                  </svg>
-                </div>
-                <div class="settings-item-content">
-                  <div class="settings-item-title">Privacy Policy</div>
-                  <div class="settings-item-subtitle">How we protect your data</div>
-                </div>
-                <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </a>
-
-              <a href="risk.html" class="settings-item">
-                <div class="settings-item-icon risk">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                    <line x1="12" y1="9" x2="12" y2="13"/>
-                    <line x1="12" y1="17" x2="12.01" y2="17"/>
-                  </svg>
-                </div>
-                <div class="settings-item-content">
-                  <div class="settings-item-title">Risk Disclosure</div>
-                  <div class="settings-item-subtitle">Understand the risks before trading</div>
-                </div>
-                <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
+                Telegram Support
               </a>
             </div>
           </div>
-
-          <div class="panel-card">
-            <div class="panel-header">
-              <h2>Account Actions</h2>
-            </div>
-
-            <div class="settings-list">
-              <button type="button" class="settings-item danger" id="settingsLogoutBtn">
-                <div class="settings-item-icon logout">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                    <polyline points="16 17 21 12 16 7"/>
-                    <line x1="21" y1="12" x2="9" y2="12"/>
-                  </svg>
-                </div>
-                <div class="settings-item-content">
-                  <div class="settings-item-title">Sign Out</div>
-                  <div class="settings-item-subtitle">Log out of your account</div>
-                </div>
-                <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-
         </div>
 
       </div>
@@ -662,6 +824,7 @@
 
   </main>
 
+  <!-- Scripts -->
   <script src="../assets/js/config.js"></script>
   <script src="../assets/js/i18n.js"></script>
   <script src="../assets/js/theme.js"></script>
@@ -669,32 +832,5 @@
   <script src="../assets/js/api.js"></script>
   <script src="../assets/js/notifications.js"></script>
   <script src="../assets/js/profile.js"></script>
-  <script src="../assets/js/profile-trust.js"></script>
-  <script src="../assets/js/footer.js"></script>
-  <script src="../assets/js/pwa.js"></script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      function updateThemeLabel() {
-        const label = document.getElementById('settingsThemeLabel');
-        if (!label) return;
-        label.textContent = document.body.classList.contains('light') ? 'Light' : 'Dark';
-      }
-      updateThemeLabel();
-
-      const themeBtn = document.getElementById('settingsThemeBtn');
-      if (themeBtn) {
-        themeBtn.addEventListener('click', () => {
-          Theme.toggle();
-          setTimeout(updateThemeLabel, 50);
-        });
-      }
-
-      const logoutBtn = document.getElementById('settingsLogoutBtn');
-      if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => Auth.logout());
-      }
-    });
-  </script>
 </body>
 </html>
