@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Lucky Wheel — Aryana Currency">
+  <meta name="description" content="Rewards Wheel — Aryana Currency">
   <meta name="theme-color" content="#0B0E11">
 
-  <title>Lucky Wheel | ARYANA CURRENCY</title>
+  <title>Rewards Wheel | ARYANA CURRENCY</title>
 
 <script>
   (function() {
@@ -26,7 +26,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/css/theme-v2.css">
   <link rel="stylesheet" href="../assets/css/ui-v2.css">
@@ -70,22 +70,6 @@
           </svg>
           <span>Orders</span>
         </a>
-        <a href="referral.html" class="app-nav-link">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-            <circle cx="9" cy="7" r="4"/>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-          </svg>
-          <span>Referral</span>
-        </a>
-        <a href="lucky-wheel.html" class="app-nav-link active">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93L4.93 19.07"/>
-          </svg>
-          <span>Wheel</span>
-        </a>
         <a href="profile.html" class="app-nav-link">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -123,22 +107,32 @@
   <main class="container app-main">
 
     <div class="page-header wheel-page-header">
-      <h1>🎡 Lucky Wheel</h1>
-      <p>Spin the wheel and win prizes up to 1000 AFN!</p>
+      <h1>Rewards Wheel</h1>
+      <p>Spin the wheel and win up to 1,000 AFN</p>
     </div>
 
     <!-- Top Stats Bar -->
     <div class="wheel-top-stats">
       <div class="wheel-top-stat">
-        <div class="wheel-top-stat-icon">🎟️</div>
+        <div class="wheel-top-stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="6" width="20" height="12" rx="2"/>
+            <path d="M2 10h20M6 15h.01M10 15h.01"/>
+          </svg>
+        </div>
         <div>
-          <div class="wheel-top-stat-label">Your Tickets</div>
+          <div class="wheel-top-stat-label">Available Tickets</div>
           <div class="wheel-top-stat-value" id="ticketsCount">0</div>
         </div>
       </div>
 
       <div class="wheel-top-stat">
-        <div class="wheel-top-stat-icon">💰</div>
+        <div class="wheel-top-stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 6v6l4 2"/>
+          </svg>
+        </div>
         <div>
           <div class="wheel-top-stat-label">Ticket Price</div>
           <div class="wheel-top-stat-value gold" id="ticketPrice">50 AFN</div>
@@ -146,7 +140,13 @@
       </div>
 
       <div class="wheel-top-stat">
-        <div class="wheel-top-stat-icon">🎯</div>
+        <div class="wheel-top-stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="6"/>
+            <circle cx="12" cy="12" r="2"/>
+          </svg>
+        </div>
         <div>
           <div class="wheel-top-stat-label">Today's Spins</div>
           <div class="wheel-top-stat-value" id="todaySpins">0 / 10</div>
@@ -154,10 +154,15 @@
       </div>
 
       <button class="wheel-top-stat wheel-top-stat-btn" id="buyTicketBtn">
-        <div class="wheel-top-stat-icon">🛒</div>
+        <div class="wheel-top-stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </div>
         <div>
-          <div class="wheel-top-stat-label">Buy Ticket</div>
-          <div class="wheel-top-stat-value gold">+ Buy Now</div>
+          <div class="wheel-top-stat-label">Purchase</div>
+          <div class="wheel-top-stat-value gold">Buy Tickets</div>
         </div>
       </button>
     </div>
@@ -165,33 +170,36 @@
     <!-- Wheel Card -->
     <div class="wheel-card">
 
-      <!-- Wheel Container -->
       <div class="wheel-container">
         <!-- Pointer (top) -->
         <div class="wheel-pointer">
-          <svg viewBox="0 0 32 40" fill="none">
-            <path d="M16 0 L32 20 L20 20 L20 40 L12 40 L12 20 L0 20 Z" fill="url(#pointerGrad)"/>
+          <svg viewBox="0 0 44 56" fill="none">
             <defs>
               <linearGradient id="pointerGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#FFD700"/>
-                <stop offset="100%" stop-color="#B58C0F"/>
+                <stop offset="0%" stop-color="#FFED4E"/>
+                <stop offset="50%" stop-color="#FFD700"/>
+                <stop offset="100%" stop-color="#8B6914"/>
               </linearGradient>
+              <filter id="pointerShadow">
+                <feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.5"/>
+              </filter>
             </defs>
+            <path d="M22 0 L44 22 L28 22 L28 56 L16 56 L16 22 L0 22 Z"
+                  fill="url(#pointerGrad)"
+                  stroke="#8B6914"
+                  stroke-width="1"
+                  filter="url(#pointerShadow)"/>
           </svg>
         </div>
 
-        <!-- Wheel -->
+        <!-- Wheel Wrapper -->
         <div class="wheel-wrapper">
           <div class="wheel" id="wheel">
-            <svg viewBox="0 0 400 400" class="wheel-svg" id="wheelSvg">
-              <!-- Dynamic segments will be here -->
-            </svg>
+            <svg viewBox="0 0 400 400" class="wheel-svg" id="wheelSvg"></svg>
 
-            <!-- Center Hub -->
-            <div class="wheel-hub">
-              <div class="wheel-hub-inner">
-                <span class="wheel-hub-icon">🎡</span>
-              </div>
+            <!-- Center Hub (SPIN button) -->
+            <div class="wheel-hub" id="wheelHub">
+              <div class="wheel-hub-inner">SPIN</div>
             </div>
           </div>
         </div>
@@ -200,16 +208,10 @@
         <div class="wheel-glow" id="wheelGlow"></div>
       </div>
 
-      <!-- Spin Button -->
-      <button class="spin-btn" id="spinBtn" disabled>
-        <span class="spin-btn-text">🎯 SPIN NOW</span>
-        <span class="spin-btn-hint" id="spinBtnHint">You need a ticket to spin</span>
-      </button>
-
       <!-- Result Display -->
       <div class="wheel-result" id="wheelResult" style="display:none;">
-        <div class="wheel-result-icon" id="resultIcon">🎉</div>
-        <div class="wheel-result-title" id="resultTitle">You won!</div>
+        <div class="wheel-result-icon" id="resultIcon">◆</div>
+        <div class="wheel-result-title" id="resultTitle">Result</div>
         <div class="wheel-result-amount" id="resultAmount">—</div>
         <div class="wheel-result-actions">
           <button class="btn btn-secondary btn-sm" id="spinAgainBtn">Spin Again</button>
@@ -220,30 +222,44 @@
 
     <!-- How to get tickets -->
     <div class="wheel-info-card">
-      <h2>🎁 How to Get Tickets</h2>
+      <h2>How to Earn Tickets</h2>
 
       <div class="wheel-info-grid">
         <div class="wheel-info-item">
-          <div class="wheel-info-icon">✅</div>
+          <div class="wheel-info-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 12l2 2 4-4"/>
+              <path d="M21 12c0 5-3.5 8.5-9 10-5.5-1.5-9-5-9-10V5l9-3 9 3z"/>
+            </svg>
+          </div>
           <div>
-            <div class="wheel-info-title">Signup + KYC</div>
-            <div class="wheel-info-desc">Complete registration + verification → <strong>+1 ticket</strong></div>
+            <div class="wheel-info-title">Account Verification</div>
+            <div class="wheel-info-desc">Complete registration and KYC verification → <strong>+1 ticket</strong></div>
           </div>
         </div>
 
         <div class="wheel-info-item">
-          <div class="wheel-info-icon">💱</div>
+          <div class="wheel-info-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12M17 20l4-4M17 20l-4-4"/>
+            </svg>
+          </div>
           <div>
-            <div class="wheel-info-title">Every Successful Trade</div>
+            <div class="wheel-info-title">Successful Exchange</div>
             <div class="wheel-info-desc">Complete any buy or sell order → <strong>+1 ticket</strong></div>
           </div>
         </div>
 
         <div class="wheel-info-item">
-          <div class="wheel-info-icon">🛒</div>
+          <div class="wheel-info-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+              <line x1="1" y1="10" x2="23" y2="10"/>
+            </svg>
+          </div>
           <div>
-            <div class="wheel-info-title">Buy Directly</div>
-            <div class="wheel-info-desc">Purchase tickets for <strong>50 AFN each</strong></div>
+            <div class="wheel-info-title">Direct Purchase</div>
+            <div class="wheel-info-desc">Buy tickets for <strong>50 AFN each</strong></div>
           </div>
         </div>
       </div>
@@ -252,8 +268,8 @@
     <!-- Recent Winners -->
     <div class="wheel-winners-card">
       <div class="wheel-winners-header">
-        <h2>🏆 Recent Winners</h2>
-        <span class="wheel-winners-live">● LIVE</span>
+        <h2>Recent Winners</h2>
+        <span class="wheel-winners-live">LIVE</span>
       </div>
 
       <div class="wheel-winners-list" id="winnersList">
@@ -267,7 +283,7 @@
   <div class="modal-overlay" id="buyTicketModal" style="display:none;">
     <div class="modal">
       <div class="modal-header">
-        <h3>🛒 Buy Tickets</h3>
+        <h3>Buy Tickets</h3>
         <button class="modal-close" id="closeBuyModal">×</button>
       </div>
 
@@ -297,7 +313,7 @@
 
       <div class="modal-footer">
         <button class="btn btn-secondary" id="cancelBuyBtn">Cancel</button>
-        <button class="btn btn-primary" id="confirmBuyBtn">Buy Now</button>
+        <button class="btn btn-primary" id="confirmBuyBtn">Purchase</button>
       </div>
     </div>
   </div>

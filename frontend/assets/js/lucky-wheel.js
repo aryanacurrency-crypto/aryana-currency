@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Lucky Wheel Logic
+   ARYANA CURRENCY — Rewards Wheel Logic
    ═══════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   Auth.requireLogin();
 
-  // Header
+  // Header user
   const user = Auth.getUser();
   if (user) {
     const avatarEl = document.getElementById('userAvatar');
@@ -52,17 +52,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       wheelState.todaySpins = data.today_spins || 0;
       wheelState.isEnabled = data.is_enabled;
 
-      // Update UI
       document.getElementById('ticketsCount').textContent = wheelState.availableTickets;
       document.getElementById('ticketPrice').textContent = `${wheelState.ticketPrice} AFN`;
       document.getElementById('todaySpins').textContent =
         `${wheelState.todaySpins} / ${wheelState.maxSpinsPerDay}`;
       document.getElementById('modalTicketPrice').textContent = `${wheelState.ticketPrice} AFN`;
 
-      // Render wheel
       renderWheel(wheelState.prizes);
-
-      // Update spin button
       updateSpinButton();
 
     } catch (err) {
@@ -86,21 +82,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     const sliceAngle = 360 / total;
     const cx = 200;
     const cy = 200;
-    const r = 190;
+    const r = 195;
 
     let svgContent = `
       <defs>
-        <radialGradient id="hubGrad" cx="50%" cy="50%">
-          <stop offset="0%" stop-color="#FFD700"/>
-          <stop offset="100%" stop-color="#B58C0F"/>
+        <radialGradient id="innerShade" cx="50%" cy="50%" r="50%">
+          <stop offset="70%" stop-color="rgba(0,0,0,0)" />
+          <stop offset="100%" stop-color="rgba(0,0,0,0.35)" />
         </radialGradient>
-        <filter id="shadow">
-          <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3"/>
-        </filter>
       </defs>
     `;
 
-    // Draw each slice
     prizes.forEach((prize, i) => {
       const startAngle = i * sliceAngle - 90;
       const endAngle = startAngle + sliceAngle;
@@ -114,126 +106,151 @@ document.addEventListener('DOMContentLoaded', async () => {
       const y2 = cy + r * Math.sin(endRad);
 
       const largeArc = sliceAngle > 180 ? 1 : 0;
+      const path = `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z`;
 
-      const path = [
-        `M ${cx} ${cy}`,
-        `L ${x1} ${y1}`,
-        `A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2}`,
-        'Z',
-      ].join(' ');
+      svgContent += `<path d="${path}" fill="${prize.color}" stroke="#0B0E11" stroke-width="1"/>`;
 
-      // Slice
-      svgContent += `<path d="${path}" fill="${prize.color}" stroke="#0B0E11" stroke-width="2"/>`;
-
-      // Text
       const midAngle = startAngle + sliceAngle / 2;
       const midRad = (midAngle * Math.PI) / 180;
-      const textR = r * 0.7;
+      const textR = r * 0.72;
       const tx = cx + textR * Math.cos(midRad);
       const ty = cy + textR * Math.sin(midRad);
 
-      let label = prize.label || '';
-      // اگر label با ایموجی شروع می‌شه، جدا کنیم
-      const icon = prize.icon || '';
-      const shortLabel = label.replace(icon, '').trim();
+      let label = (prize.label || '').replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, '').trim();
 
-      // چرخش متن با زاویه
       let textRotation = midAngle + 90;
       if (textRotation > 90 && textRotation < 270) {
         textRotation += 180;
       }
 
-      svgContent += `
-        <g transform="translate(${tx}, ${ty}) rotate(${textRotation})">
-          ${icon ? `<text x="0" y="-8" text-anchor="middle" font-size="18" fill="white" filter="url(#shadow)">${icon}</text>` : ''}
-          <text x="0" y="${icon ? 10 : 5}" text-anchor="middle" font-size="13" font-weight="800" fill="white" filter="url(#shadow)">${shortLabel}</text>
-        </g>
-      `;
+      const isLightBg = isLightColor(prize.color);
+      const textColor = isLightBg ? '#0B0E11' : '#FFFFFF';
+      const subTextColor = isLightBg ? 'rgba(11,14,17,0.7)' : 'rgba(255,255,255,0.85)';
+
+      const hasNumber = /\d/.test(label);
+      const subLabel = prize.prize_type === 'cash' ? 'AFN' : prize.prize_type === 'ticket' ? 'TICKET' : '';
+
+      if (hasNumber && subLabel) {
+        svgContent += `
+          <g transform="translate(${tx}, ${ty}) rotate(${textRotation})">
+            <text x="0" y="-6" text-anchor="middle" font-size="22" font-weight="900" fill="${textColor}" font-family="Inter, sans-serif" letter-spacing="-0.5">${escapeSvg(label)}</text>
+            <text x="0" y="12" text-anchor="middle" font-size="9" font-weight="700" fill="${subTextColor}" font-family="Inter, sans-serif" letter-spacing="1.5">${subLabel}</text>
+          </g>
+        `;
+      } else {
+        svgContent += `
+          <g transform="translate(${tx}, ${ty}) rotate(${textRotation})">
+            <text x="0" y="4" text-anchor="middle" font-size="14" font-weight="800" fill="${textColor}" font-family="Inter, sans-serif">${escapeSvg(label)}</text>
+          </g>
+        `;
+      }
     });
 
-    // Outer ring (gold)
-    svgContent += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="url(#hubGrad)" stroke-width="8"/>`;
+    svgContent += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="url(#innerShade)" pointer-events="none"/>`;
+    svgContent += `<circle cx="${cx}" cy="${cy}" r="${r - 3}" fill="none" stroke="rgba(255,215,0,0.3)" stroke-width="1" pointer-events="none"/>`;
 
     svg.innerHTML = svgContent;
   }
 
+  function isLightColor(hex) {
+    if (!hex) return false;
+    hex = hex.replace('#', '');
+    if (hex.length === 3) {
+      hex = hex.split('').map(c => c + c).join('');
+    }
+    const r = parseInt(hex.substr(0, 2), 16);
+    const g = parseInt(hex.substr(2, 2), 16);
+    const b = parseInt(hex.substr(4, 2), 16);
+    const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+    return yiq >= 160;
+  }
+
+  function escapeSvg(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
   // ═══════════════════════════════════════
-  //              Spin Button
+  //         Spin Button State
   // ═══════════════════════════════════════
   function updateSpinButton() {
-    const btn = document.getElementById('spinBtn');
-    const hint = document.getElementById('spinBtnHint');
-
-    if (!btn) return;
+    const hub = document.getElementById('wheelHub');
+    if (!hub) return;
 
     if (!wheelState.isEnabled) {
-      btn.disabled = true;
-      if (hint) hint.textContent = 'Wheel is disabled';
+      hub.style.opacity = '0.4';
+      hub.style.cursor = 'not-allowed';
       return;
     }
 
     if (wheelState.availableTickets < 1) {
-      btn.disabled = true;
-      if (hint) hint.textContent = 'You need a ticket to spin';
+      hub.style.opacity = '0.5';
+      hub.style.cursor = 'not-allowed';
       return;
     }
 
     if (wheelState.todaySpins >= wheelState.maxSpinsPerDay) {
-      btn.disabled = true;
-      if (hint) hint.textContent = 'Daily limit reached — come back tomorrow';
+      hub.style.opacity = '0.5';
+      hub.style.cursor = 'not-allowed';
       return;
     }
 
-    btn.disabled = false;
-    if (hint) hint.textContent = 'Good luck!';
+    hub.style.opacity = '1';
+    hub.style.cursor = 'pointer';
   }
 
   // ═══════════════════════════════════════
-  //              Spin Action
+  //         Spin Action (from hub)
   // ═══════════════════════════════════════
-  document.getElementById('spinBtn')?.addEventListener('click', async () => {
+  document.getElementById('wheelHub')?.addEventListener('click', async () => {
     if (wheelState.spinning) return;
-    if (wheelState.availableTickets < 1) return;
+
+    if (wheelState.availableTickets < 1) {
+      if (typeof Notifications !== 'undefined') {
+        Notifications.error('You need a ticket to spin');
+      }
+      return;
+    }
+
+    if (wheelState.todaySpins >= wheelState.maxSpinsPerDay) {
+      if (typeof Notifications !== 'undefined') {
+        Notifications.error('Daily spin limit reached');
+      }
+      return;
+    }
 
     wheelState.spinning = true;
     document.getElementById('wheelResult').style.display = 'none';
 
-    const btn = document.getElementById('spinBtn');
-    btn.disabled = true;
-    btn.classList.add('spinning');
+    const hub = document.getElementById('wheelHub');
+    hub.classList.add('spinning');
 
     try {
-      // ۱. درخواست چرخش از سرور
       const result = await API.request('/wheel/spin', { method: 'POST' });
 
       wheelState.animationDuration = result.duration || 8;
 
-      // ۲. محاسبه زاویه نهایی
-      // سرور زاویه رو با rotate(0) می‌ده (بالای گردونه)
-      // گردونه باید این زاویه رو بگیره
       const targetAngle = result.target_angle;
-
-      // چرخش اضافی برای هیجان (۷-۹ دور)
       const extraTurns = 7 + Math.floor(Math.random() * 3);
       const totalRotation = wheelState.currentRotation + (extraTurns * 360) + (360 - targetAngle);
 
-      // ۳. اعمال انیمیشن
       const wheel = document.getElementById('wheel');
       wheel.style.transition = `transform ${wheelState.animationDuration}s cubic-bezier(0.17, 0.67, 0.12, 0.99)`;
       wheel.style.transform = `rotate(${totalRotation}deg)`;
 
       wheelState.currentRotation = totalRotation % 360;
 
-      // ۴. افکت نزدیک jackpot
       playTickSounds(wheelState.animationDuration);
 
-      // ۵. صبر تا پایان انیمیشن
       setTimeout(() => {
         showResult(result);
         wheelState.spinning = false;
-        btn.classList.remove('spinning');
+        hub.classList.remove('spinning');
 
-        // Reload status
         loadWheelStatus();
         loadRecentWinners();
 
@@ -242,8 +259,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (err) {
       console.error('Spin failed:', err);
       wheelState.spinning = false;
-      btn.disabled = false;
-      btn.classList.remove('spinning');
+      hub.classList.remove('spinning');
 
       if (typeof Notifications !== 'undefined') {
         Notifications.error(err.detail || 'Spin failed. Try again.');
@@ -252,7 +268,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   // ═══════════════════════════════════════
-  //              Show Result
+  //         Result Display
   // ═══════════════════════════════════════
   function showResult(result) {
     const container = document.getElementById('wheelResult');
@@ -262,30 +278,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const r = result.result;
 
-    let icon = '🎉';
+    let icon = '◆';
     let title = '';
     let amount = '';
 
     if (r.type === 'cash' && r.amount > 0) {
-      icon = r.icon || '💰';
-      title = `You won ${r.amount} ${r.currency}!`;
+      icon = '◆';
+      title = 'You Won';
       amount = `${r.amount.toFixed(2)} ${r.currency}`;
       fireConfetti();
 
     } else if (r.type === 'ticket') {
-      icon = '🎟️';
-      title = `You won ${r.ticket_count} free ticket(s)!`;
-      amount = `+${r.ticket_count} 🎟️`;
+      icon = '◇';
+      title = 'Bonus Tickets';
+      amount = `+${r.ticket_count} Ticket${r.ticket_count > 1 ? 's' : ''}`;
 
     } else {
-      icon = '😅';
-      title = 'Better luck next time!';
-      amount = 'Try again';
+      icon = '○';
+      title = 'No Reward';
+      amount = 'Better luck next time';
     }
 
     if (result.requires_approval) {
-      title = '⏳ Pending Approval';
-      amount = 'Your prize is being reviewed';
+      title = 'Pending Approval';
+      amount = 'Your reward is being reviewed';
     }
 
     iconEl.textContent = icon;
@@ -297,9 +313,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (typeof Notifications !== 'undefined') {
       if (r.type === 'cash' && r.amount > 0) {
-        Notifications.success(`🎉 You won ${r.amount} ${r.currency}!`);
+        Notifications.success(`You won ${r.amount} ${r.currency}!`);
       } else if (r.type === 'ticket') {
-        Notifications.success(`🎟️ You won ${r.ticket_count} ticket(s)!`);
+        Notifications.success(`You won ${r.ticket_count} ticket(s)!`);
       } else {
         Notifications.info('Better luck next time!');
       }
@@ -307,21 +323,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // ═══════════════════════════════════════
-  //         Spin Again Button
+  //         Spin Again
   // ═══════════════════════════════════════
   document.getElementById('spinAgainBtn')?.addEventListener('click', () => {
     document.getElementById('wheelResult').style.display = 'none';
     if (wheelState.availableTickets >= 1) {
-      document.getElementById('spinBtn').click();
+      document.getElementById('wheelHub').click();
     }
   });
 
   // ═══════════════════════════════════════
-  //         Tick Sounds (optional)
+  //         Tick Sounds / Glow
   // ═══════════════════════════════════════
   function playTickSounds(duration) {
-    // می‌تونی صدا اضافه کنی
-    // فعلاً فقط افکت بصری
     const glow = document.getElementById('wheelGlow');
     if (glow) {
       glow.classList.add('active');
@@ -336,14 +350,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     const list = document.getElementById('winnersList');
     if (!list) return;
 
-    // برای MVP، یه لیست نمونه نشون می‌دیم
-    // در آینده می‌تونه از API بیاد
     const mockWinners = [
-      { name: 'Ahmad R.', prize: '50 AFN', time: '2 min ago', color: '#FF9800' },
-      { name: 'Fatima K.', prize: '20 AFN', time: '5 min ago', color: '#4CAF50' },
-      { name: 'Ali M.', prize: '🎟️ Ticket', time: '8 min ago', color: '#F44336' },
-      { name: 'Zahra S.', prize: '100 AFN', time: '12 min ago', color: '#9C27B0' },
-      { name: 'Mohammad A.', prize: '10 AFN', time: '15 min ago', color: '#2196F3' },
+      { name: 'Ahmad R.', prize: '50 AFN', time: '2 min ago', color: '#1E3A8A' },
+      { name: 'Fatima K.', prize: '20 AFN', time: '5 min ago', color: '#7ED321' },
+      { name: 'Ali M.', prize: 'Ticket', time: '8 min ago', color: '#4A4A4A' },
+      { name: 'Zahra S.', prize: '100 AFN', time: '12 min ago', color: '#7ED321' },
+      { name: 'Mohammad A.', prize: '10 AFN', time: '15 min ago', color: '#1E3A8A' },
     ];
 
     list.innerHTML = mockWinners.map(w => `
@@ -386,7 +398,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (e.target === buyModal) buyModal.style.display = 'none';
   });
 
-  // Qty selector buttons
   document.querySelectorAll('.qty-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const qty = parseInt(btn.dataset.qty, 10);
@@ -415,7 +426,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     modalTotal.textContent = `${total} AFN`;
   }
 
-  // Confirm buy
   document.getElementById('confirmBuyBtn')?.addEventListener('click', async () => {
     const qty = parseInt(qtyInput.value, 10) || 1;
     const btn = document.getElementById('confirmBuyBtn');
@@ -428,10 +438,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       buyModal.style.display = 'none';
       btn.disabled = false;
-      btn.textContent = 'Buy Now';
+      btn.textContent = 'Purchase';
 
       if (typeof Notifications !== 'undefined') {
-        Notifications.success(`✅ ${qty} ticket(s) purchased!`);
+        Notifications.success(`${qty} ticket(s) purchased!`);
       }
 
       await loadWheelStatus();
@@ -439,7 +449,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (err) {
       console.error('Buy failed:', err);
       btn.disabled = false;
-      btn.textContent = 'Buy Now';
+      btn.textContent = 'Purchase';
 
       if (typeof Notifications !== 'undefined') {
         Notifications.error(err.detail || 'Purchase failed');
@@ -460,7 +470,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const ctx = canvas.getContext('2d');
     const particles = [];
-    const colors = ['#FFD700', '#FF9800', '#4CAF50', '#9C27B0', '#2196F3', '#F44336'];
+    const colors = ['#FFD700', '#FFED4E', '#7ED321', '#1E3A8A', '#FFFFFF', '#B58C0F'];
 
     for (let i = 0; i < 150; i++) {
       particles.push({
