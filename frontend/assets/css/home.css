@@ -1,11 +1,8 @@
 /* ═══════════════════════════════════════
    ARYANA CURRENCY — Home (Light Premium)
-   Financial / Modern / Clean
    ═══════════════════════════════════════ */
 
-/* ═══════════════════════════════════════
-   Page Background — Light Gradient World
-   ═══════════════════════════════════════ */
+/* ═══ Page Background ═══ */
 
 body.home-body {
   background: #FAFBFF;
@@ -14,7 +11,6 @@ body.home-body {
   overflow-x: hidden;
 }
 
-/* Gradient blob 1 (top-right) */
 body.home-body::before {
   content: "";
   position: fixed;
@@ -28,7 +24,6 @@ body.home-body::before {
   filter: blur(40px);
 }
 
-/* Gradient blob 2 (bottom-left) */
 body.home-body::after {
   content: "";
   position: fixed;
@@ -111,7 +106,6 @@ main {
   font-weight: 600;
   color: #64748B;
   transition: all 0.2s ease;
-  position: relative;
 }
 
 .home-nav a:hover {
@@ -125,9 +119,7 @@ main {
   gap: var(--space-2);
 }
 
-/* ═══════════════════════════════════════
-   HERO — The Star of the Show
-   ═══════════════════════════════════════ */
+/* ═══ HERO ═══ */
 
 .hero-section {
   position: relative;
@@ -135,7 +127,6 @@ main {
   padding-block: 90px 120px;
 }
 
-/* Decorative blobs */
 .hero-section::before {
   content: "";
   position: absolute;
@@ -174,7 +165,6 @@ main {
   z-index: 1;
 }
 
-/* ─── Eyebrow ─── */
 .hero-eyebrow {
   display: inline-flex;
   align-items: center;
@@ -206,7 +196,6 @@ main {
   50% { opacity: 0.5; transform: scale(0.8); }
 }
 
-/* ─── Title ─── */
 .hero-title {
   font-size: clamp(40px, 5vw, 68px);
   font-weight: 800;
@@ -236,10 +225,8 @@ main {
   color: #64748B;
   max-width: 520px;
   margin-bottom: var(--space-8);
-  font-weight: 400;
 }
 
-/* ─── Buttons ─── */
 .hero-buttons {
   display: flex;
   gap: var(--space-3);
@@ -261,40 +248,19 @@ main {
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow:
-    0 8px 24px rgba(59, 130, 246, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
   text-decoration: none;
   position: relative;
   overflow: hidden;
 }
 
-.btn-primary::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow:
-    0 12px 32px rgba(59, 130, 246, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-.btn-primary:hover::before {
-  opacity: 1;
-}
-
+.btn-primary span,
 .btn-primary svg {
-  position: relative;
-  z-index: 1;
-}
-
-.btn-primary span {
   position: relative;
   z-index: 1;
 }
@@ -329,7 +295,6 @@ main {
   font-size: 16px;
 }
 
-/* ─── Hero Note ─── */
 .hero-note {
   display: flex;
   align-items: center;
@@ -344,9 +309,7 @@ main {
   flex-shrink: 0;
 }
 
-/* ═══════════════════════════════════════
-   HERO CARD — Live Rate (Glass Style)
-   ═══════════════════════════════════════ */
+/* ═══ HERO CARD ═══ */
 
 .hero-card {
   position: relative;
@@ -385,8 +348,6 @@ main {
   padding-bottom: 16px;
   border-bottom: 1px solid #F1F5F9;
   margin-bottom: 20px;
-  position: relative;
-  z-index: 1;
 }
 
 .hero-card-title {
@@ -398,9 +359,7 @@ main {
   color: #0F172A;
 }
 
-.hero-card-title svg {
-  color: #3B82F6;
-}
+.hero-card-title svg { color: #3B82F6; }
 
 .live-badge {
   display: inline-flex;
@@ -425,7 +384,6 @@ main {
   box-shadow: 0 0 8px #10B981;
 }
 
-/* ─── Rate Rows ─── */
 .rate-row {
   display: flex;
   justify-content: space-between;
@@ -435,8 +393,6 @@ main {
   border: 1px solid rgba(59, 130, 246, 0.08);
   border-radius: 14px;
   margin-bottom: 12px;
-  position: relative;
-  z-index: 1;
   transition: all 0.25s ease;
 }
 
@@ -445,9 +401,7 @@ main {
   box-shadow: 0 8px 20px rgba(59, 130, 246, 0.1);
 }
 
-.rate-row:last-of-type {
-  margin-bottom: 20px;
-}
+.rate-row:last-of-type { margin-bottom: 20px; }
 
 .rate-label {
   font-size: 12px;
@@ -459,7 +413,6 @@ main {
 .rate-value {
   font-size: 22px;
   font-weight: 800;
-  color: #0F172A;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.5px;
 }
@@ -488,7 +441,6 @@ main {
   border-radius: 6px;
 }
 
-/* ─── Hero Card Button ─── */
 .hero-card-btn {
   display: flex;
   align-items: center;
@@ -502,8 +454,6 @@ main {
   font-size: 15px;
   font-weight: 700;
   transition: all 0.3s ease;
-  position: relative;
-  z-index: 1;
   text-decoration: none;
   box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
 }
@@ -519,13 +469,9 @@ main {
   text-align: center;
   margin-top: 16px;
   line-height: 1.6;
-  position: relative;
-  z-index: 1;
 }
 
-/* ═══════════════════════════════════════
-   TICKER — Live Market
-   ═══════════════════════════════════════ */
+/* ═══ TICKER ═══ */
 
 .ticker-section {
   background: #FFFFFF;
@@ -546,9 +492,7 @@ main {
   will-change: transform;
 }
 
-.ticker-track:hover {
-  animation-play-state: paused;
-}
+.ticker-track:hover { animation-play-state: paused; }
 
 @keyframes ticker-scroll {
   0% { transform: translateX(0); }
@@ -565,32 +509,15 @@ main {
   border-right: 1px solid #F1F5F9;
 }
 
-.ticker-item .symbol {
-  font-weight: 700;
-  color: #0F172A;
-}
-
-.ticker-item .price {
-  color: #64748B;
-  font-variant-numeric: tabular-nums;
-  font-weight: 600;
-}
-
-.ticker-item .change {
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
+.ticker-item .symbol { font-weight: 700; color: #0F172A; }
+.ticker-item .price { color: #64748B; font-variant-numeric: tabular-nums; font-weight: 600; }
+.ticker-item .change { font-weight: 700; font-variant-numeric: tabular-nums; }
 .ticker-item .change.up { color: #10B981; }
 .ticker-item .change.down { color: #EF4444; }
 
-/* ═══════════════════════════════════════
-   STATS
-   ═══════════════════════════════════════ */
+/* ═══ STATS ═══ */
 
-.stats-section {
-  padding-block: 70px;
-}
+.stats-section { padding-block: 70px; }
 
 .stats-grid {
   display: grid;
@@ -627,9 +554,7 @@ main {
   box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.2);
 }
 
-.stat-box:hover::before {
-  opacity: 1;
-}
+.stat-box:hover::before { opacity: 1; }
 
 .stat-box:nth-child(1) { --accent-gradient: linear-gradient(90deg, #3B82F6, #2563EB); }
 .stat-box:nth-child(2) { --accent-gradient: linear-gradient(90deg, #8B5CF6, #7C3AED); }
@@ -642,35 +567,26 @@ main {
   letter-spacing: -1.5px;
   font-variant-numeric: tabular-nums;
   margin-bottom: 8px;
-  color: #0F172A;
 }
 
 .stat-box:nth-child(1) .stat-box-value {
   background: linear-gradient(135deg, #3B82F6, #2563EB);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 
 .stat-box:nth-child(2) .stat-box-value {
   background: linear-gradient(135deg, #8B5CF6, #7C3AED);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 
 .stat-box:nth-child(3) .stat-box-value {
   background: linear-gradient(135deg, #14B8A6, #0D9488);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 
 .stat-box:nth-child(4) .stat-box-value {
   background: linear-gradient(135deg, #F59E0B, #D97706);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 
 .stat-box-label {
@@ -681,13 +597,9 @@ main {
   letter-spacing: 1px;
 }
 
-/* ═══════════════════════════════════════
-   SECTION BASE
-   ═══════════════════════════════════════ */
+/* ═══ SECTION BASE ═══ */
 
-.section {
-  padding-block: 90px;
-}
+.section { padding-block: 90px; }
 
 .section-header {
   text-align: center;
@@ -725,9 +637,7 @@ main {
   color: #64748B;
 }
 
-/* ═══════════════════════════════════════
-   RATES GRID
-   ═══════════════════════════════════════ */
+/* ═══ RATES ═══ */
 
 .rates-grid {
   display: grid;
@@ -748,9 +658,7 @@ main {
 .rate-card::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 3px;
   background: linear-gradient(90deg, #3B82F6, #8B5CF6, #14B8A6);
   opacity: 0;
@@ -763,9 +671,7 @@ main {
   box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.15);
 }
 
-.rate-card:hover::before {
-  opacity: 1;
-}
+.rate-card:hover::before { opacity: 1; }
 
 .rate-card-header {
   display: flex;
@@ -788,19 +694,8 @@ main {
   border: 1px solid rgba(59, 130, 246, 0.15);
 }
 
-.rate-card-name {
-  font-size: 14px;
-  font-weight: 700;
-  color: #0F172A;
-}
-
-.rate-card-code {
-  font-size: 11px;
-  color: #94A3B8;
-  margin-top: 2px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
+.rate-card-name { font-size: 14px; font-weight: 700; color: #0F172A; }
+.rate-card-code { font-size: 11px; color: #94A3B8; margin-top: 2px; font-weight: 600; letter-spacing: 0.5px; }
 
 .rate-card-price {
   font-size: 26px;
@@ -827,25 +722,11 @@ main {
   font-size: 12px;
 }
 
-.rate-card-footer span {
-  color: #64748B;
-  font-weight: 500;
-}
+.rate-card-footer span { color: #64748B; font-weight: 500; }
+.rate-card-footer strong { color: #10B981; font-variant-numeric: tabular-nums; font-weight: 800; }
 
-.rate-card-footer strong {
-  color: #10B981;
-  font-variant-numeric: tabular-nums;
-  font-weight: 800;
-}
-
-/* ═══ Network List ═══ */
-
-.network-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding-block: 8px;
-}
+/* Network List */
+.network-list { display: flex; flex-direction: column; gap: 12px; padding-block: 8px; }
 
 .network-item {
   display: flex;
@@ -865,29 +746,12 @@ main {
   transition: transform 0.25s ease;
 }
 
-.network-logo svg {
-  width: 100%;
-  height: 100%;
-}
+.network-logo svg { width: 100%; height: 100%; }
+.network-item:hover .network-logo { transform: scale(1.1); }
 
-.network-item:hover .network-logo {
-  transform: scale(1.1);
-}
-
-.network-logo.tron {
-  background: rgba(255, 60, 60, 0.1);
-  color: #FF3C3C;
-}
-
-.network-logo.bnb {
-  background: rgba(240, 185, 11, 0.12);
-  color: #F0B90B;
-}
-
-.network-logo.eth {
-  background: rgba(98, 126, 234, 0.1);
-  color: #627EEA;
-}
+.network-logo.tron { background: rgba(255, 60, 60, 0.1); color: #FF3C3C; }
+.network-logo.bnb { background: rgba(240, 185, 11, 0.12); color: #F0B90B; }
+.network-logo.eth { background: rgba(98, 126, 234, 0.1); color: #627EEA; }
 
 .network-name {
   font-weight: 800;
@@ -904,9 +768,7 @@ main {
   font-weight: 600;
 }
 
-/* ═══════════════════════════════════════
-   TRUST GRID
-   ═══════════════════════════════════════ */
+/* ═══ TRUST ═══ */
 
 .trust-grid {
   display: grid;
@@ -920,8 +782,6 @@ main {
   border: 1px solid rgba(226, 232, 240, 0.9);
   border-radius: 20px;
   transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
 }
 
 .trust-card:hover {
@@ -941,17 +801,9 @@ main {
   box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
 }
 
-.trust-card:nth-child(1) .trust-icon {
-  background: linear-gradient(135deg, #3B82F6, #2563EB);
-}
-
-.trust-card:nth-child(2) .trust-icon {
-  background: linear-gradient(135deg, #8B5CF6, #7C3AED);
-}
-
-.trust-card:nth-child(3) .trust-icon {
-  background: linear-gradient(135deg, #14B8A6, #0D9488);
-}
+.trust-card:nth-child(1) .trust-icon { background: linear-gradient(135deg, #3B82F6, #2563EB); }
+.trust-card:nth-child(2) .trust-icon { background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
+.trust-card:nth-child(3) .trust-icon { background: linear-gradient(135deg, #14B8A6, #0D9488); }
 
 .trust-card h3 {
   font-size: 17px;
@@ -966,9 +818,7 @@ main {
   color: #64748B;
 }
 
-/* ═══════════════════════════════════════
-   STEPS
-   ═══════════════════════════════════════ */
+/* ═══ STEPS ═══ */
 
 .steps-grid {
   display: grid;
@@ -981,7 +831,6 @@ main {
   background: #FFFFFF;
   border: 1px solid rgba(226, 232, 240, 0.9);
   border-radius: 20px;
-  position: relative;
   transition: all 0.3s ease;
 }
 
@@ -1005,17 +854,9 @@ main {
   box-shadow: 0 8px 20px rgba(59, 130, 246, 0.25);
 }
 
-.step-card:nth-child(1) .step-number {
-  background: linear-gradient(135deg, #3B82F6, #2563EB);
-}
-
-.step-card:nth-child(2) .step-number {
-  background: linear-gradient(135deg, #8B5CF6, #7C3AED);
-}
-
-.step-card:nth-child(3) .step-number {
-  background: linear-gradient(135deg, #14B8A6, #0D9488);
-}
+.step-card:nth-child(1) .step-number { background: linear-gradient(135deg, #3B82F6, #2563EB); }
+.step-card:nth-child(2) .step-number { background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
+.step-card:nth-child(3) .step-number { background: linear-gradient(135deg, #14B8A6, #0D9488); }
 
 .step-card h3 {
   font-size: 18px;
@@ -1031,116 +872,161 @@ main {
 }
 
 /* ═══════════════════════════════════════
-   📱 APP PREVIEW — Two iPhone 18
+   📱 DEVICE SHOWCASE — 3 Devices
    ═══════════════════════════════════════ */
 
-.app-preview-section {
-  padding-block: 90px;
+.device-showcase-section {
+  padding-block: 100px;
   position: relative;
   overflow: hidden;
+  background: linear-gradient(180deg, #FAFBFF 0%, #F5F0FF 50%, #FAFBFF 100%);
 }
 
-.app-preview-section::before {
+.device-showcase-section::before {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 30% 50%, rgba(59, 130, 246, 0.06), transparent 50%),
-    radial-gradient(circle at 70% 50%, rgba(139, 92, 246, 0.06), transparent 50%);
+    radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.08), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.08), transparent 40%);
   pointer-events: none;
 }
 
-.app-preview-grid {
+.device-showcase-grid {
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 60px;
+  align-items: flex-end;
+  gap: 40px;
   flex-wrap: wrap;
   position: relative;
   z-index: 1;
+  padding-top: 40px;
 }
 
-/* ─── iPhone Container ─── */
-.iphone-wrap {
-  position: relative;
+.device-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
-}
-
-.iphone-wrap.float-1 {
-  animation: float-iphone 6s ease-in-out infinite;
-}
-
-.iphone-wrap.float-2 {
-  animation: float-iphone 6s ease-in-out infinite;
-  animation-delay: 0.5s;
-}
-
-@keyframes float-iphone {
-  0%, 100% { transform: translateY(0) rotate(-1deg); }
-  50% { transform: translateY(-15px) rotate(-1deg); }
-}
-
-.iphone-wrap.float-2 {
-  animation-name: float-iphone-2;
-}
-
-@keyframes float-iphone-2 {
-  0%, 100% { transform: translateY(0) rotate(1deg); }
-  50% { transform: translateY(-15px) rotate(1deg); }
-}
-
-/* ─── iPhone Frame ─── */
-.iphone {
-  position: relative;
-  width: 300px;
-  height: 610px;
-  background: linear-gradient(145deg, #1E293B 0%, #0F172A 100%);
-  border-radius: 46px;
-  padding: 12px;
-  box-shadow:
-    0 0 0 2px #334155 inset,
-    0 0 0 4px #0F172A inset,
-    0 40px 80px -20px rgba(15, 23, 42, 0.4),
-    0 0 100px -30px rgba(59, 130, 246, 0.4);
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.iphone::before {
+.device-wrap:hover { transform: translateY(-12px); }
+
+.device-float-1 { animation: device-float-1 7s ease-in-out infinite; }
+.device-float-2 { animation: device-float-2 7s ease-in-out infinite; animation-delay: 0.7s; }
+.device-float-3 { animation: device-float-3 7s ease-in-out infinite; animation-delay: 1.4s; }
+
+@keyframes device-float-1 {
+  0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+  50% { transform: translateY(-12px) rotate(-1.5deg); }
+}
+
+@keyframes device-float-2 {
+  0%, 100% { transform: translateY(-8px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(0deg); }
+}
+
+@keyframes device-float-3 {
+  0%, 100% { transform: translateY(0) rotate(1.5deg); }
+  50% { transform: translateY(-12px) rotate(1.5deg); }
+}
+
+.device-frame {
+  position: relative;
+  width: 280px;
+  height: 580px;
+  border-radius: 44px;
+  padding: 10px;
+  transition: transform 0.3s ease;
+}
+
+.device-wrap:hover .device-frame { transform: scale(1.02); }
+
+/* iPhone 18 Pro — Titanium Silver */
+.device-iphone-pro {
+  background: linear-gradient(145deg, #F8FAFC 0%, #E2E8F0 50%, #CBD5E1 100%);
+  box-shadow:
+    0 0 0 2px #FFFFFF inset,
+    0 0 0 5px #94A3B8 inset,
+    0 30px 60px -15px rgba(15, 23, 42, 0.25),
+    0 0 0 1px rgba(148, 163, 184, 0.4),
+    0 0 100px -20px rgba(59, 130, 246, 0.3);
+}
+
+.device-iphone-pro::before {
   content: "";
   position: absolute;
-  inset: 8px;
-  background: #0F172A;
+  inset: 4px;
+  background: linear-gradient(145deg, #FFFFFF, #F1F5F9);
   border-radius: 40px;
   z-index: 0;
 }
 
-.iphone-wrap:hover .iphone {
-  transform: translateY(-10px) scale(1.02);
+/* Samsung S23 Ultra — Phantom Black */
+.device-samsung {
+  background: linear-gradient(145deg, #475569 0%, #1E293B 50%, #0F172A 100%);
+  box-shadow:
+    0 0 0 2px #64748B inset,
+    0 0 0 5px #0F172A inset,
+    0 30px 60px -15px rgba(15, 23, 42, 0.35),
+    0 0 0 1px rgba(100, 116, 139, 0.4),
+    0 0 100px -20px rgba(139, 92, 246, 0.3);
+  border-radius: 32px;
 }
 
-/* ─── Dynamic Island ─── */
+.device-samsung::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  background: linear-gradient(145deg, #1E293B, #0F172A);
+  border-radius: 28px;
+  z-index: 0;
+}
+
+/* Samsung S10+ — Prism White */
+.device-samsung-s10 {
+  background: linear-gradient(145deg, #FFFFFF 0%, #F1F5F9 40%, #E2E8F0 70%, #CBD5E1 100%);
+  box-shadow:
+    0 0 0 2px #FFFFFF inset,
+    0 0 0 5px #E2E8F0 inset,
+    0 30px 60px -15px rgba(15, 23, 42, 0.2),
+    0 0 0 1px rgba(203, 213, 225, 0.5),
+    0 0 100px -20px rgba(20, 184, 166, 0.3);
+  border-radius: 36px;
+}
+
+.device-samsung-s10::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  background: linear-gradient(145deg, #FFFFFF, #F8FAFC);
+  border-radius: 32px;
+  z-index: 0;
+}
+
+/* Notches */
+.device-notches { position: relative; z-index: 5; }
+
 .dynamic-island {
   position: absolute;
-  top: 22px;
+  top: 12px;
   left: 50%;
   transform: translateX(-50%);
-  width: 100px;
-  height: 28px;
+  width: 90px;
+  height: 26px;
   background: #000000;
   border-radius: 999px;
   z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.9);
 }
 
 .dynamic-island::before {
   content: "";
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -1148,249 +1034,596 @@ main {
   box-shadow: 0 0 0 1px #1E293B inset;
 }
 
-/* ─── Screen ─── */
-.iphone-screen {
+.punch-hole {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #000000;
+  z-index: 10;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.9);
+}
+
+.dual-camera-s10 {
+  position: absolute;
+  top: 14px;
+  right: 20px;
+  width: 70px;
+  height: 18px;
+  background: #0F172A;
+  border-radius: 999px;
+  z-index: 10;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.dual-camera-s10::before,
+.dual-camera-s10::after {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #1E293B, #000);
+  box-shadow: 0 0 0 1px #1E293B inset;
+}
+
+/* Device Screen */
+.device-screen {
   position: relative;
   width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, #0A0E27 0%, #050818 100%);
+  background: #FFFFFF;
   border-radius: 36px;
   overflow: hidden;
   z-index: 1;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08) inset;
 }
 
-/* ─── Screen Content: Login Mockup ─── */
-.screen-content {
+.device-samsung .device-screen { border-radius: 24px; }
+.device-samsung-s10 .device-screen { border-radius: 28px; }
+
+/* Status Bar */
+.screen-statusbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 24px 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #0F172A;
+  position: relative;
+  z-index: 5;
+}
+
+.samsung-sb { padding: 16px 20px 8px; }
+.s10-sb { padding: 14px 20px 8px; }
+
+.sb-icons { display: flex; gap: 4px; align-items: center; }
+.sb-icons svg { width: 14px; height: 14px; }
+
+/* ═══ DASHBOARD SCREEN (iPhone 18 Pro) ═══ */
+
+.screen-dashboard {
   flex: 1;
-  padding: 60px 20px 20px;
+  padding: 8px 16px 20px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  color: #F8FAFC;
-  position: relative;
-  overflow: hidden;
+  gap: 10px;
 }
 
-/* Background glow inside screen */
-.screen-content::before {
-  content: "";
-  position: absolute;
-  top: -80px;
-  right: -80px;
-  width: 240px;
-  height: 240px;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.4), transparent 65%);
-  filter: blur(40px);
-  pointer-events: none;
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 4px;
 }
 
-.screen-content::after {
-  content: "";
-  position: absolute;
-  bottom: -100px;
-  left: -80px;
-  width: 260px;
-  height: 260px;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.3), transparent 65%);
-  filter: blur(40px);
-  pointer-events: none;
-}
+.dash-user { display: flex; align-items: center; gap: 10px; }
 
-.screen-logo {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+.dash-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+  color: #FFFFFF;
   display: grid;
   place-items: center;
-  font-size: 18px;
-  font-weight: 900;
-  color: #FFFFFF;
-  margin-bottom: 16px;
-  position: relative;
-  z-index: 1;
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
-}
-
-.screen-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  background: rgba(59, 130, 246, 0.15);
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  border-radius: 999px;
-  font-size: 9px;
+  font-size: 15px;
   font-weight: 800;
-  letter-spacing: 0.8px;
-  color: #60A5FA;
-  margin-bottom: 12px;
-  width: fit-content;
-  position: relative;
-  z-index: 1;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
-.screen-badge::before {
-  content: "";
-  width: 5px;
-  height: 5px;
+.dash-greet { font-size: 10px; color: #64748B; font-weight: 600; }
+.dash-name { font-size: 13px; font-weight: 800; color: #0F172A; letter-spacing: -0.2px; }
+
+.dash-bell {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
   border-radius: 50%;
-  background: #22C55E;
-  box-shadow: 0 0 6px #22C55E;
+  background: #F1F5F9;
+  color: #64748B;
 }
 
-.screen-title {
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: -0.8px;
-  line-height: 1.15;
+.dash-bell svg { width: 15px; height: 15px; }
+
+.dash-bell-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #EF4444;
+  border: 2px solid #FFFFFF;
+}
+
+.dash-balance {
+  padding: 16px;
+  background: linear-gradient(135deg, #1E3A8A 0%, #312E81 100%);
+  border-radius: 18px;
+  color: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.5);
+}
+
+.dash-balance::before {
+  content: "";
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(96, 165, 250, 0.4), transparent 60%);
+  filter: blur(20px);
+}
+
+.dash-balance-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  opacity: 0.75;
   margin-bottom: 6px;
   position: relative;
   z-index: 1;
 }
 
-.screen-title span {
-  background: linear-gradient(135deg, #60A5FA, #3B82F6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.screen-subtitle {
-  font-size: 11px;
-  color: #94A3B8;
-  margin-bottom: 20px;
-  line-height: 1.5;
-  position: relative;
-  z-index: 1;
-}
-
-.screen-input {
-  padding: 12px 14px;
-  background: rgba(5, 8, 24, 0.6);
-  border: 1px solid rgba(59, 130, 246, 0.15);
-  border-radius: 10px;
-  font-size: 11px;
-  color: #94A3B8;
-  margin-bottom: 10px;
+.dash-balance-value {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 12px;
   position: relative;
   z-index: 1;
 }
 
-.screen-input svg {
-  width: 14px;
-  height: 14px;
-  color: #64748B;
-}
-
-.screen-btn {
-  margin-top: 8px;
-  padding: 13px;
-  background: linear-gradient(135deg, #3B82F6, #2563EB);
-  border-radius: 10px;
-  text-align: center;
-  font-size: 12px;
+.bal-num {
+  font-size: 32px;
   font-weight: 800;
-  letter-spacing: 0.3px;
-  color: #FFFFFF;
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
-  position: relative;
-  z-index: 1;
+  letter-spacing: -1.5px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
-.screen-footer {
-  margin-top: auto;
-  text-align: center;
-  font-size: 10px;
-  color: #64748B;
-  padding-top: 16px;
-  position: relative;
-  z-index: 1;
+.bal-unit {
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0.85;
+  letter-spacing: 0.5px;
 }
 
-.screen-footer strong {
-  color: #60A5FA;
-}
-
-/* Register screen tweaks */
-.screen-input-grid {
+.dash-balance-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
   margin-bottom: 10px;
   position: relative;
   z-index: 1;
 }
 
-.screen-input-grid .screen-input {
-  margin-bottom: 0;
+.bal-item { display: flex; flex-direction: column; gap: 2px; }
+
+.bal-item-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  opacity: 0.7;
 }
 
-.screen-referral {
-  padding: 10px 12px;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.02));
-  border: 1px dashed rgba(59, 130, 246, 0.4);
-  border-radius: 10px;
+.bal-item-value {
+  font-size: 13px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.3px;
+}
+
+.dash-balance-change {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: 999px;
   font-size: 10px;
-  color: #60A5FA;
   font-weight: 700;
-  letter-spacing: 1px;
+  color: #86EFAC;
+  position: relative;
+  z-index: 1;
+}
+
+.dash-balance-change svg { width: 10px; height: 10px; }
+
+.dash-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.dash-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 6px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.dash-action-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.dash-action-icon.deposit { background: rgba(16, 185, 129, 0.12); color: #10B981; }
+.dash-action-icon.withdraw { background: rgba(239, 68, 68, 0.12); color: #EF4444; }
+.dash-action-icon.convert { background: rgba(59, 130, 246, 0.12); color: #3B82F6; }
+
+.dash-action-icon svg { width: 14px; height: 14px; }
+
+.dash-chart {
+  padding: 12px;
+  background: #F8FAFC;
+  border-radius: 14px;
+  border: 1px solid #E2E8F0;
+}
+
+.dash-chart-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 6px;
+}
+
+.dash-sparkline { width: 100%; height: 40px; display: block; }
+
+.dash-recent { display: flex; flex-direction: column; gap: 6px; }
+
+.dash-recent-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: #F8FAFC;
+  border-radius: 10px;
+  border: 1px solid #F1F5F9;
+}
+
+.dri-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.dri-icon.bought { background: rgba(16, 185, 129, 0.12); color: #10B981; }
+.dri-icon.sold { background: rgba(239, 68, 68, 0.12); color: #EF4444; }
+
+.dri-icon svg { width: 12px; height: 12px; }
+
+.dri-info { flex: 1; min-width: 0; }
+.dri-title { font-size: 11px; font-weight: 700; color: #0F172A; }
+.dri-time { font-size: 9px; color: #94A3B8; margin-top: 1px; }
+
+.dri-amount {
+  font-size: 12px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.dri-amount.green { color: #10B981; }
+.dri-amount.red { color: #EF4444; }
+
+/* ═══ TRADE SCREEN (Samsung S23 Ultra) ═══ */
+
+.screen-trade {
+  flex: 1;
+  padding: 12px 16px 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.trade-header { display: flex; align-items: center; gap: 10px; }
+
+.trade-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+  color: #FFFFFF;
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.trade-name { font-size: 13px; font-weight: 800; color: #0F172A; }
+.trade-id {
+  font-size: 10px;
+  color: #94A3B8;
+  font-weight: 600;
   font-family: 'JetBrains Mono', monospace;
-  margin-bottom: 10px;
+}
+
+.trade-status-hero {
+  text-align: center;
+  padding: 20px 16px;
+  background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.trade-status-check {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10B981, #059669);
+  color: #FFFFFF;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 10px;
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+  position: relative;
+  z-index: 1;
+  animation: check-pulse 2s ease-in-out infinite;
+}
+
+@keyframes check-pulse {
+  0%, 100% { box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4); }
+  50% { box-shadow: 0 8px 30px rgba(16, 185, 129, 0.7); }
+}
+
+.trade-status-check svg { width: 24px; height: 24px; }
+.trade-status-title { font-size: 15px; font-weight: 800; color: #065F46; margin-bottom: 3px; }
+.trade-status-sub { font-size: 10px; color: #047857; font-weight: 600; }
+
+.trade-details { padding: 4px 0; display: flex; flex-direction: column; gap: 8px; }
+
+.trade-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px dashed #E2E8F0;
+  font-size: 11px;
+}
+
+.trade-row:last-child { border-bottom: none; }
+.trade-row-label { color: #64748B; font-weight: 600; }
+.trade-row-value { color: #0F172A; font-weight: 800; font-variant-numeric: tabular-nums; }
+.trade-row-value.sell { color: #EF4444; }
+
+.network-pill {
+  padding: 3px 8px;
+  background: rgba(59, 130, 246, 0.12);
+  color: #3B82F6;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.5px;
+}
+
+.trade-receive {
+  padding: 16px;
+  background: linear-gradient(135deg, #F8FAFC, #EFF6FF);
+  border: 1px solid #DBEAFE;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.trade-receive-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #64748B;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.trade-receive-value {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 5px;
+  margin-bottom: 8px;
+}
+
+.recv-num {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: #1E40AF;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.recv-unit { font-size: 12px; font-weight: 800; color: #3B82F6; }
+
+.trade-receive-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  font-weight: 600;
+  color: #64748B;
+  padding: 4px 10px;
+  background: #FFFFFF;
+  border-radius: 999px;
+  border: 1px solid #E2E8F0;
+}
+
+.trade-receive-note svg { width: 10px; height: 10px; }
+
+.trade-rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding-top: 8px;
+}
+
+.trade-rating-label { font-size: 10px; font-weight: 600; color: #64748B; }
+.trade-stars { display: flex; gap: 3px; }
+
+.trade-stars svg {
+  width: 18px;
+  height: 18px;
+  color: #F59E0B;
+  filter: drop-shadow(0 2px 4px rgba(245, 158, 11, 0.3));
+}
+
+/* ═══ REVIEWS SCREEN (Samsung S10+) ═══ */
+
+.screen-reviews {
+  flex: 1;
+  padding: 8px 16px 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rev-hero {
+  text-align: center;
+  padding: 16px 12px;
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(217, 119, 6, 0.2);
+}
+
+.rev-hero-stars {
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+  margin-bottom: 6px;
+}
+
+.rev-hero-stars svg {
+  width: 18px;
+  height: 18px;
+  color: #F59E0B;
+  filter: drop-shadow(0 2px 4px rgba(245, 158, 11, 0.4));
+}
+
+.rev-hero-score {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  color: #92400E;
+  line-height: 1;
+  margin-bottom: 3px;
+  font-variant-numeric: tabular-nums;
+}
+
+.rev-hero-count {
+  font-size: 10px;
+  font-weight: 700;
+  color: #B45309;
+  letter-spacing: 0.5px;
+}
+
+.rev-list { display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+
+.rev-card {
+  padding: 10px 12px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+}
+
+.rev-head {
   display: flex;
   align-items: center;
   gap: 8px;
-  position: relative;
-  z-index: 1;
+  margin-bottom: 6px;
 }
 
-.screen-referral svg {
-  width: 12px;
-  height: 12px;
-}
-
-/* ─── iPhone Label ─── */
-.iphone-label {
-  font-size: 13px;
-  font-weight: 800;
-  color: #0F172A;
-  letter-spacing: 0.3px;
-}
-
-.iphone-label-sub {
-  font-size: 11px;
-  color: #64748B;
-  font-weight: 500;
-  margin-top: 2px;
-}
-
-/* ─── Screen Number Badge (decorative) ─── */
-.iphone-badge {
-  position: absolute;
-  top: -12px;
-  right: -12px;
-  padding: 8px 14px;
-  background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+.rev-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
   color: #FFFFFF;
+  display: grid;
+  place-items: center;
   font-size: 11px;
   font-weight: 800;
-  letter-spacing: 1px;
-  border-radius: 999px;
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
-  z-index: 20;
+  flex-shrink: 0;
 }
 
-/* ═══════════════════════════════════════
-   CTA — Final Call
-   ═══════════════════════════════════════ */
+.rev-info { flex: 1; min-width: 0; }
+.rev-name { font-size: 11px; font-weight: 800; color: #0F172A; }
+.rev-date { font-size: 9px; color: #94A3B8; margin-top: 1px; }
 
-.cta-section {
-  padding-block: 60px 100px;
+.rev-stars-sm { display: flex; gap: 1px; }
+.rev-stars-sm svg { width: 10px; height: 10px; color: #F59E0B; }
+
+.rev-text {
+  font-size: 10px;
+  line-height: 1.5;
+  color: #475569;
+  font-weight: 500;
 }
+
+.device-label { text-align: center; }
+.device-name { font-size: 15px; font-weight: 800; color: #0F172A; letter-spacing: -0.3px; }
+.device-sub { font-size: 12px; color: #64748B; font-weight: 600; margin-top: 2px; }
+
+/* ═══ CTA ═══ */
+
+.cta-section { padding-block: 60px 100px; }
 
 .cta-box {
   position: relative;
@@ -1426,10 +1659,7 @@ main {
   pointer-events: none;
 }
 
-.cta-content {
-  position: relative;
-  z-index: 1;
-}
+.cta-content { position: relative; z-index: 1; }
 
 .cta-content .section-kicker {
   background: rgba(255, 255, 255, 0.1);
@@ -1467,105 +1697,45 @@ main {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
-/* ═══════════════════════════════════════
-   RESPONSIVE
-   ═══════════════════════════════════════ */
+/* ═══ RESPONSIVE ═══ */
+
+@media (max-width: 1100px) {
+  .device-showcase-grid { gap: 30px; }
+  .device-frame { width: 250px; height: 520px; border-radius: 40px; }
+  .device-samsung { border-radius: 28px; }
+  .device-samsung-s10 { border-radius: 32px; }
+}
 
 @media (max-width: 1000px) {
-  .home-nav {
-    display: none;
-  }
+  .home-nav { display: none; }
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .rates-grid { grid-template-columns: repeat(2, 1fr); }
+  .trust-grid, .steps-grid { grid-template-columns: 1fr; }
+  .cta-box { flex-direction: column; align-items: flex-start; padding: 40px 30px; }
+  .cta-box .btn-primary { width: 100%; }
+}
 
-  .hero-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .rates-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .trust-grid,
-  .steps-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .cta-box {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 40px 30px;
-  }
-
-  .cta-box .btn-primary {
-    width: 100%;
-  }
-
-  .app-preview-grid {
-    gap: 40px;
-  }
-
-  .iphone {
-    width: 260px;
-    height: 530px;
-  }
+@media (max-width: 820px) {
+  .device-showcase-grid { flex-direction: column; align-items: center; gap: 40px; }
+  .device-wrap { animation: none; }
+  .device-frame { width: 280px; height: 580px; }
 }
 
 @media (max-width: 640px) {
-  .hero-section {
-    padding-block: 50px 70px;
-  }
+  .hero-section { padding-block: 50px 70px; }
+  .hero-title { font-size: 36px; letter-spacing: -1.5px; }
+  .hero-description { font-size: 15px; }
+  .section { padding-block: 60px; }
+  .stats-grid { gap: var(--space-3); }
+  .stat-box { padding: 24px 16px; }
+  .stat-box-value { font-size: 28px; }
+  .rates-grid { grid-template-columns: 1fr; }
+  .cta-box { padding: 32px 24px; }
+}
 
-  .hero-title {
-    font-size: 36px;
-    letter-spacing: -1.5px;
-  }
-
-  .hero-description {
-    font-size: 15px;
-  }
-
-  .section {
-    padding-block: 60px;
-  }
-
-  .stats-grid {
-    gap: var(--space-3);
-  }
-
-  .stat-box {
-    padding: 24px 16px;
-  }
-
-  .stat-box-value {
-    font-size: 28px;
-  }
-
-  .rates-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .cta-box {
-    padding: 32px 24px;
-  }
-
-  .app-preview-grid {
-    gap: 30px;
-  }
-
-  .iphone {
-    width: 240px;
-    height: 490px;
-  }
-
-  .iphone-screen {
-    border-radius: 30px;
-  }
-
-  .screen-title {
-    font-size: 18px;
-  }
+@media (max-width: 400px) {
+  .device-frame { width: 240px; height: 500px; }
+  .bal-num { font-size: 26px; }
+  .recv-num { font-size: 22px; }
 }
