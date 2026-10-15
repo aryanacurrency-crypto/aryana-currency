@@ -2,7 +2,6 @@
    ARYANA CURRENCY — Home (Live & Animated)
    ═══════════════════════════════════════ */
 
-// ═══ Data Pools ═══
 const FIRST_NAMES_M = [
   'Ahmad', 'Mohammad', 'Ali', 'Hussain', 'Omar', 'Hassan', 'Yousuf', 'Ibrahim',
   'Ismail', 'Rahim', 'Karim', 'Najib', 'Wahid', 'Farid', 'Saeed', 'Masoud',
@@ -10,8 +9,6 @@ const FIRST_NAMES_M = [
   'Shafiq', 'Aman', 'Wali', 'Niaz', 'Gul Mohammad', 'Abdullah', 'Nasrullah', 'Zabih',
   'Nasir', 'Hikmat', 'Aziz', 'Nabi', 'Dawoud', 'Yasin', 'Idris', 'Zakaria'
 ];
-
-const FIRST_NAMES_F = ['Zahra', 'Fatima', 'Maryam', 'Shakiba', 'Najiba'];
 
 const LAST_NAMES = [
   'Rezaei', 'Ahmadi', 'Karimi', 'Hussaini', 'Mohammadi', 'Sadeqi', 'Nouri', 'Rahimi',
@@ -39,7 +36,7 @@ const AVATAR_GRADIENTS = [
   ['#DC2626', '#991B1B'],
 ];
 
-// ═══ 50 Testimonials (FA/PS/EN) ═══
+// ═══ 50 Testimonials ═══
 const TESTIMONIALS = [
   // FA Dari
   { name: 'احمد رضایی', city: 'کابل', rating: 5, lang: 'fa', text: 'قبلاً از نفرهای نامعلوم داخل تلگرام آنلاین خرید می‌کردم. بعد از اینکه پول می‌فرستادم، بلاکم می‌کردند. حالا جای خوشی است که این صرافی مشکل ما تریدرهای کوچک را حل کرده. از وقتی که تترهای خود را در صرافی آریانا نقد می‌کنم، نه هر روز در گروپ‌ها پشت صراف می‌گردم، نه کمیشن زیاد می‌دهم.' },
@@ -80,7 +77,6 @@ const TESTIMONIALS = [
   { name: 'مریم صادقی', city: 'کندز', rating: 4, lang: 'fa', text: 'خوب شده که این امکان رو گذاشتن. قبلاً کمیسیون‌ها بالا بود، حالا خودم انتخاب می‌کنم از کی بخرم.' },
   { name: 'شکیبا نوری', city: 'لوگر', rating: 5, lang: 'fa', text: 'برای من که تازه‌کار هستم، این صرافی خیلی کمک کرده. حساب پی من سریع پر می‌شه و دیگه نگران نیستم.' },
   { name: 'نجیبه رحیمی', city: 'ننگرهار', rating: 5, lang: 'fa', text: 'فروشنده‌های اینجا رتبه و امتیاز دارن. من از کسی می‌خرم که امتیازش بالاست و معامله‌های قبلی‌اش موفق بوده.' },
-
   // PS Pashto
   { name: 'نصیر احمد', city: 'کابل', rating: 5, lang: 'ps', text: 'پخوا مې د تلګرام له نامعلومو خلکو تتر اخیست. یو ځل مې پیسې ولېږلې، بیا یې بلاک کړم. حالا چې دلته یم، زما زړه ارام دی.' },
   { name: 'شفیقه کریمی', city: 'هرات', rating: 5, lang: 'ps', text: 'موږ کوچني سوداګر وو. د تلګرام له لارې به مو تتر اخیست. کله کله به دوکه کېدل. اوس چې دې صرافي دا ستونزه حل کړې، ډېر خوشحاله یو.' },
@@ -92,8 +88,7 @@ const TESTIMONIALS = [
   { name: 'پریسا حسینی', city: 'بامیان', rating: 5, lang: 'ps', text: 'پخوا مو له بهرنیو خلکو معامله کوله او ډار و. اوس چې پوهیږو صرافي ضامنه ده، ډاډه یو.' },
   { name: 'حکمت الله رحیمی', city: 'غزنی', rating: 5, lang: 'ps', text: 'د پخوا په پرتله ډېر ښه دی. کمیسیون کم دی او د مرستې ټیم ژر ځواب وایي.' },
   { name: 'نصرالله قادری', city: 'فاریاب', rating: 5, lang: 'ps', text: 'هر ځل چې زما ماشومان معامله کوي، زه ټکټ اخلم. دې دوی ته ښه انګیزه ورکړې ده.' },
-
-  // EN English
+  // EN
   { name: 'Sarah K.', city: 'Dubai', rating: 5, lang: 'en', text: 'Been using Aryana for a few months. The P2P option is really helpful — the platform holds the funds until both sides confirm. Used to get scammed on Telegram groups before.' },
   { name: 'Michael R.', city: 'Frankfurt', rating: 4, lang: 'en', text: 'Simple platform, works well. I mostly use P2P. KYC took a day but that\'s normal.' },
   { name: 'Zahra A.', city: 'Hamburg', rating: 5, lang: 'en', text: 'I use Aryana mostly to send money to my family back in Afghanistan. The P2P is simple and the funds are safe. My brother received his money in a few hours.' },
@@ -101,7 +96,7 @@ const TESTIMONIALS = [
   { name: 'Kaveh S.', city: 'Toronto', rating: 5, lang: 'en', text: 'Good experience. P2P works smoothly and fees are lower than elsewhere. Recommended for small traders.' },
 ];
 
-// ═══ FAQ Data ═══
+// ═══ FAQ ═══
 const FAQ_DATA = [
   { icon: 'user', q: 'How do I sign up?', a: 'Click the "Register" button, enter your email and phone number, add a referral code if you have one, and create your account. After registration, you\'ll need to complete KYC verification to enable trading.' },
   { icon: 'shield', q: 'Why is KYC required?', a: 'KYC (Know Your Customer) is a legal requirement for all financial platforms. By verifying your identity, we ensure account security and prevent fraud. Once verified, all platform features are unlocked for you.' },
@@ -295,10 +290,7 @@ async function initTicker() {
 
 // ═══ Activity ═══
 function randomFrom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-function randomNumber(min, max, decimals = 0) {
-  const num = Math.random() * (max - min) + min;
-  return decimals > 0 ? num.toFixed(decimals) : Math.floor(num);
-}
+function randomNumber(min, max) { return Math.floor(Math.random() * (max - min) + min); }
 function getRandomTime() {
   const times = ['2s', '5s', '8s', '12s', '22s', '30s', '45s', '1m', '2m'];
   return randomFrom(times) + ' ago';
@@ -315,8 +307,7 @@ function generateActivityItem() {
   else amount = randomNumber(10, 99);
   return {
     name: `${firstName} ${lastName}`,
-    location: city,
-    network, type,
+    location: city, network, type,
     amount: amount.toLocaleString('en-US'),
     initials: firstName.charAt(0),
     gradient: randomFrom(AVATAR_GRADIENTS),
@@ -405,7 +396,7 @@ function updateCalculator() {
   result.textContent = total.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 }
 
-// ═══ Testimonials — Vertical Auto-Scroll ═══
+// ═══ Testimonials ═══
 function generateStars(rating) {
   let stars = '';
   for (let i = 1; i <= 5; i++) {
@@ -428,7 +419,7 @@ function createTestimonialCard(t) {
       <div class="testimonial-stars">${generateStars(t.rating)}</div>
       <div class="testimonial-text" dir="${dir}" lang="${t.lang}">${t.text}</div>
       <div class="testimonial-footer">
-        <div class="testimonial-avatar" style="background: linear-gradient(135deg, ${gradient[0]}, ${gradient[1]});">${t.name.charAt(0)}</div>
+        <div class="testimonial-avatar" lang="${t.lang}" style="background: linear-gradient(135deg, ${gradient[0]}, ${gradient[1]});">${t.name.charAt(0)}</div>
         <div class="testimonial-author">
           <div class="testimonial-name" dir="${dir}" lang="${t.lang}">${t.name}</div>
           <div class="testimonial-location" dir="${dir}" lang="${t.lang}">
@@ -447,14 +438,8 @@ function createTestimonialCard(t) {
 function initTestimonials() {
   const scroll = document.getElementById('testimonialsScroll');
   if (!scroll) return;
-
-  // Shuffle testimonials
   const shuffled = [...TESTIMONIALS].sort(() => Math.random() - 0.5);
-
-  // Build cards
   const cardsHtml = shuffled.map(createTestimonialCard).join('');
-
-  // Duplicate for infinite loop
   scroll.innerHTML = cardsHtml + cardsHtml;
 }
 
@@ -499,7 +484,6 @@ function createFaqItem(item, index) {
 function initFAQ() {
   const list = document.getElementById('faqList');
   if (!list) return;
-
   list.innerHTML = FAQ_DATA.map((item, i) => createFaqItem(item, i)).join('');
 
   list.querySelectorAll('.faq-item').forEach(item => {
