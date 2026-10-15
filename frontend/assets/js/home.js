@@ -2,24 +2,26 @@
    ARYANA CURRENCY — Home (Live & Animated)
    ═══════════════════════════════════════ */
 
-// ═══ Data Pools ═══
-const FIRST_NAMES = [
+// ═══════════════════════════════════════
+//              DATA POOLS
+// ═══════════════════════════════════════
+
+const FIRST_NAMES_M = [
   'احمد', 'محمد', 'علی', 'حسین', 'عمر', 'حسن', 'یوسف', 'ابراهیم',
   'اسماعیل', 'رحیم', 'کریم', 'نجیب', 'وحید', 'فرید', 'سعید', 'مسعود',
   'جاوید', 'بصیر', 'ناصر', 'ظاهر', 'رامین', 'سهیل', 'فواد', 'برهان',
   'شفیع', 'امان', 'ولی', 'نیاز', 'گل محمد', 'عبدالله', 'نصرالله', 'ذبیح',
-  'شکریه', 'زهرا', 'فاطمه', 'مریم', 'سمیرا', 'نجیبه', 'رویا', 'لیلا',
-  'شبنم', 'پروانه', 'خدیجه', 'عایشه', 'حمیرا', 'نازی', 'شهلا', 'فرشته',
-  'نصیر', 'شفیقه', 'معصومه'
+  'نصیر', 'حکمت', 'عزیز', 'نبی', 'داود', 'یاسین', 'ادریس', 'زکریا'
 ];
+
+const FIRST_NAMES_F = ['زهرا', 'فاطمه', 'مریم', 'شکیبا', 'نجیبه'];
 
 const LAST_NAMES = [
   'رضایی', 'احمدی', 'کریمی', 'حسینی', 'محمدی', 'صادقی', 'نوری', 'رحیمی',
   'جعفری', 'موسوی', 'هاشمی', 'امینی', 'غفوری', 'فرهادی', 'صدیقی', 'یوسفی',
   'حکیمی', 'قادری', 'نظری', 'کاظمی', 'باقری', 'عباسی', 'زمانی', 'قاسمی',
   'شریفی', 'مرادی', 'سلطانی', 'عزیزی', 'صالحی', 'فرجی', 'بهرامی', 'خالقی',
-  'روحانی', 'نادری', 'قریشی', 'طاهری', 'جعفرزاده', 'ولی‌زاده', 'اکبری',
-  'فاضلی', 'میرزایی', 'پناهی', 'سعادتی', 'حبیبی'
+  'روحانی', 'نادری', 'قریشی', 'طاهری', 'اکبری', 'فاضلی', 'میرزایی', 'پناهی'
 ];
 
 const CITIES = [
@@ -40,7 +42,150 @@ const AVATAR_GRADIENTS = [
   ['#DC2626', '#991B1B'],
 ];
 
-// ═══ State ═══
+// ═══════════════════════════════════════
+//         50 TESTIMONIALS
+// ═══════════════════════════════════════
+
+const TESTIMONIALS = [
+  // ─── فارسی: کلاهبرداری تلگرام ───
+  { name: 'احمد رضایی', city: 'کابل', rating: 5, text: 'قبلاً از نفرهای نامعلوم داخل تلگرام آنلاین خرید می‌کردم. بعد از اینکه پول می‌فرستادم، بلاکم می‌کردند. حالا جای خوشی است که این صرافی مشکل ما تریدرهای کوچک را حل کرده. از وقتی که تترهای خود را در صرافی آریانا نقد می‌کنم، نه هر روز در گروپ‌ها پشت صراف می‌گردم، نه کمیشن زیاد می‌دهم.' },
+  { name: 'نصرالله قادری', city: 'فاریاب', rating: 5, text: 'تا حساب دو طرف خریدار و فروشنده به هم نرسیده و تسویه نشده، کسی نمی‌تواند با رسید فیک و تتر فیک فریب‌کاری کند. این خیلی مهم است برای ما که سرمایه زیاد نداریم.' },
+  { name: 'علی نوری', city: 'جلال‌آباد', rating: 5, text: 'ما که سرمایه زیاد نداریم، از بازار چند دالر سود می‌کنیم. دفه اول که اومدم، کمی گیج شدم ولی حالا راحتم. از وقتی که اینجا کار می‌کنم، دیگه لازم نیست هر روز پشت صراف بگردم.' },
+  { name: 'حسین جعفری', city: 'غزنی', rating: 5, text: 'قبلاً فقط از گروپ‌های تلگرام تتر می‌خریدم. یک بار پول فرستادم، بلاکم کرد. حالا اینجا مشخص است کی فروشنده‌ست و صرافی خودش واسطه‌ست.' },
+  { name: 'نجیب الله صادقی', city: 'مزار شریف', rating: 5, text: 'رفقام را دعوت کردم به این صرافی. هر دفه که یک نفر از زیرمجموعه‌هام معامله می‌کنه، یک تیکت به من می‌رسه. تا حالا دوتا ۱۰۰ افغانی و یکی ۵۰ افغانی برنده شدم.' },
+  { name: 'فرید صادقی', city: 'هرات', rating: 5, text: 'قبلاً برای زیرمجموعه گرفتن چیزی نمی‌دادن. اینجا هم ۱۵ افغانی می‌دن، هم تیکت بخت‌آزمایی. من ۸ نفر آوردم و از دایره شانس هم ۲۰۰ افغانی گرفتم.' },
+  { name: 'عزیز الرحمن', city: 'غزنی', rating: 5, text: 'من ۱۵ نفر زیرمجموعه دارم. با هر بار معاملات آنها یک تیکت بخت‌آزمایی دریافت می‌کنم. همین دیروز ۱۰۰۰ افغانی در دایره شانس برنده شدم.' },
+  { name: 'حکمت الله رحیمی', city: 'غزنی', rating: 5, text: 'هر وقت که زیرمجموعه‌هام معامله می‌کنن، برام یک تیکت میاد. هفته پیش دوتا ۵۰ افغانی و یک تیکت رایگان برنده شدم.' },
+  { name: 'یوسف اکبری', city: 'پروان', rating: 5, text: '۵ نفر زیرمجموعه دارم. هر معامله‌ای که می‌کنن، ۱۵ افغانی به حساب قفل‌شده‌ام میاد و یک تیکت هم می‌گیرم. هفته پیش ۱۰۰ افغانی از دایره شانس برنده شدم.' },
+  { name: 'نصیر احمد', city: 'کابل', rating: 5, text: 'قبلاً چند بار از نفرهای نامعلوم داخل تلگرام تتر خریدم. یک بار پول فرستادم، بلاکم کرد. حالا اینجا راحتم. صرافی خودش ضامن است.' },
+  { name: 'عبدالله نوری', city: 'مزار شریف', rating: 5, text: 'کارشون خوبه. پول سریع می‌رسه. تازه از دایره شانس هم چیزهای خوبی برنده شدم.' },
+  { name: 'حبیب الله صادقی', city: 'جلال‌آباد', rating: 5, text: 'دفه اول یه کم استرس داشتم ولی حالا دیگه کاملاً راحتم. چند بار معامله کردم و همه‌شون درست بود.' },
+  { name: 'شفیع الله نوری', city: 'کابل', rating: 5, text: 'من تریدر کوچک هستم. قبلاً از بازار چند دالر سود می‌کردم ولی نقد کردنش سخت بود. حالا اینجا خیلی راحت‌تره.' },
+
+  // ─── فارسی: P2P امنیت ───
+  { name: 'محمد احمدی', city: 'مزار شریف', rating: 5, text: 'P2P اینجا خیلی خوبه. فروشنده‌ها مشخص است، امتیاز دارن. اگه مشکلی شود، صرافی پیگیری می‌کنه.' },
+  { name: 'وحید کریمی', city: 'کابل', rating: 5, text: 'کارشون خوبه. فقط بعضی وقت‌ها کمی صبر می‌خواد تا فروشنده مناسب پیدا شود.' },
+  { name: 'عبدالله کریمی', city: 'مزار شریف', rating: 5, text: 'من دفه اول کمی گیج شدم. راهنما باید واضح‌تر باشد. حالا دیگه یاد گرفتم ولی دفه اول سخت بود.' },
+  { name: 'رامین نظری', city: 'هرات', rating: 5, text: 'از وقتی که اینجا حساب باز کردم، دیگه از تلگرام خرید نمی‌کنم. امنیتش خیلی بهتره.' },
+  { name: 'سهیل کاظمی', city: 'کابل', rating: 5, text: 'چند بار معامله کردم. هر بار درست بود. نرخ‌ها هم منصفانه است.' },
+  { name: 'فواد باقری', city: 'قندهار', rating: 4, text: 'خوب کار می‌کنه. فقط کاش تعداد فروشنده‌ها زیادتر بود تا بیشتر انتخاب داشته باشیم.' },
+
+  // ─── فارسی: کمیسیون بالا ───
+  { name: 'مسعود عباسی', city: 'هرات', rating: 5, text: 'قبلاً از یک جای مشخص تتر می‌خریدم، سه چهار فیصد کمیسیون می‌گرفت. حالا اینجا کمتر حساب می‌کنه و خودم می‌تونم نرخ را ببینم.' },
+  { name: 'جاوید زمانی', city: 'هرات', rating: 5, text: 'کمیشن اینجا از جایی که قبلاً کار می‌کردم کمتره. از وقتی که اینجا هستم، دیگه لازم نیست کمیشن زیاد بدم.' },
+  { name: 'بصیر قاسمی', city: 'قندهار', rating: 4, text: 'نرخ‌ها خوبه. پول سریع می‌رسه. فقط بعضی وقت‌ها باید کمی صبر کنم.' },
+  { name: 'ظاهر شریفی', city: 'مزار شریف', rating: 4, text: 'کارشون خوبه. کمیسیون هم منصفانه است. راضی یم.' },
+  { name: 'ناصر مرادی', city: 'کابل', rating: 4, text: 'خدمتشون خوبه. فقط کاش پشتیبانی یه کم سریع‌تر جواب می‌داد.' },
+  { name: 'رامین سلطانی', city: 'کابل', rating: 5, text: 'برای تریدرهای کوچک مثل من خیلی خوبه. نرخ‌ها شفافه و کمیشن کمه.' },
+
+  // ─── فارسی: تجربه معمولی/انتقاد ───
+  { name: 'داوود عزیزی', city: 'کابل', rating: 3, text: 'کار می‌کند ولی پشتیبانی کمی دیر جواب می‌ده. شاید بهتر شود بعداً.' },
+  { name: 'یاسین صالحی', city: 'هرات', rating: 3, text: 'خوب است ولی کاش شبکه‌های USDT زیادتر بود. من فقط با TRC20 کار می‌کنم.' },
+  { name: 'ادریس فرجی', city: 'قندهار', rating: 3, text: 'کارشون خوبه ولی کاش یه راهنمای واضح‌تر برای تازه‌کارها داشت.' },
+  { name: 'زکریا بهرامی', city: 'مزار شریف', rating: 3, text: 'خوبه. فقط بعضی وقت‌ها نرخ‌ها کمی بالا و پایین می‌شه.' },
+  { name: 'نبی خالقی', city: 'کابل', rating: 2, text: 'دفه اول یه کم سخت بود. حالا دیگه یاد گرفتم ولی اولش گیج شدم.' },
+  { name: 'ولی روحانی', city: 'هرات', rating: 2, text: 'کار می‌کنه ولی چیز خاصی نداره که منو جذب کنه.' },
+  { name: 'نیاز نادری', city: 'کابل', rating: 1, text: 'من تازه عضو شدم و راستش خیلی استرس دارم. نمی‌دانم باید چطور شروع کنم. کاشکی یک راهنما برای تازه‌کارها بود.' },
+  { name: 'گل محمد قریشی', city: 'مزار شریف', rating: 1, text: 'بار اولمه اینجا معامله می‌کنم. کمی می‌ترسم. اگه یک راهنما برای تازه‌کارها بود، خیلی کمک می‌کرد.' },
+
+  // ─── فارسی: نظرات خانم‌ها (۴ تا) ───
+  { name: 'زهرا حسینی', city: 'قندهار', rating: 5, text: 'من از خونه معامله می‌کنم. فروشنده‌ها تأیید شده‌ن و من از کسی می‌خرم که امتیازش بالاست. خیلی راحت‌تر از تلگرامه.' },
+  { name: 'فاطمه کریمی', city: 'هرات', rating: 5, text: 'چند بار از تلگرام خرید کردم و ضرر کردم. حالا که اینجا هستم، راحت‌تر شدم. دفه اول کمی سخت بود ولی حالا یاد گرفتم.' },
+  { name: 'مریم صادقی', city: 'کندز', rating: 4, text: 'خوب شده که این امکان رو گذاشتن. قبلاً کمیسیون‌ها بالا بود، حالا خودم انتخاب می‌کنم از کی بخرم.' },
+  { name: 'شکیبا نوری', city: 'لوگر', rating: 5, text: 'برای من که تازه‌کار هستم، این صرافی خیلی کمک کرده. حساب پی من سریع پر می‌شه و دیگه نگران نیستم.' },
+  { name: 'نجیبه رحیمی', city: 'ننگرهار', rating: 5, text: 'فروشنده‌های اینجا رتبه و امتیاز دارن. من از کسی می‌خرم که امتیازش بالاست و معامله‌های قبلی‌اش موفق بوده.' },
+
+  // ─── پشتو (۱۰ نظر) ───
+  { name: 'نصیر احمد', city: 'کابل', rating: 5, text: 'پخوا مې د تلګرام له نامعلومو خلکو تتر اخیست. یو ځل مې پیسې ولېږلې، بیا یې بلاک کړم. حالا چې دلته یم، زما زړه ارام دی.' },
+  { name: 'شفیقه کریمی', city: 'هرات', rating: 5, text: 'موږ کوچني سوداګر وو. د تلګرام له لارې به مو تتر اخیست. کله کله به دوکه کېدل. اوس چې دې صرافي دا ستونزه حل کړې، ډېر خوشحاله یو.' },
+  { name: 'مرسل جعفری', city: 'کندز', rating: 4, text: 'زما میړه او زه دواړه له دې پلیټفارم کار اخلو. پخوا مو له نامعلومو خلکو سره معامله کوله او ډار و. اوس ډاډه یو.' },
+  { name: 'عبدالله نوری', city: 'مزار شریف', rating: 5, text: 'زما ۱۰ ملګري رابلل. هر ځل چې دوی معامله کوي، زه یو ټکټ اخلم. پرون مې ۱۰۰ افغانۍ وګټلې.' },
+  { name: 'حبیب الله صادقی', city: 'جلال‌آباد', rating: 5, text: 'د تلګرام له نامعلومو خلکو سره مو معامله کوله. یو ځل مو پیسې ورکړې او بلاک شوو. اوس چې آریانا ده، ډاډه یو.' },
+  { name: 'زلیخا احمدی', city: 'قندهار', rating: 5, text: 'زه کور ته ناسته یم او معامله کوم. پیسې هم ژر رسېږي. د ښځو لپاره ډېر اسان دی.' },
+  { name: 'عزیز الرحمن', city: 'غزنی', rating: 4, text: 'ښه کار کوي. یوازې کله کله د مناسب پیرودونکي پیدا کول وخت نیسي.' },
+  { name: 'پریسا حسینی', city: 'بامیان', rating: 5, text: 'پخوا مو له بهرنیو خلکو معامله کوله او ډار و. اوس چې پوهیږو صرافي ضامنه ده، ډاډه یو.' },
+  { name: 'حکمت الله رحیمی', city: 'غزنی', rating: 5, text: 'د پخوا په پرتله ډېر ښه دی. کمیسیون کم دی او د مرستې ټیم ژر ځواب وایي.' },
+  { name: 'نصرالله قادری', city: 'فاریاب', rating: 5, text: 'هر ځل چې زما ماشومان معامله کوي، زه ټکټ اخلم. دې دوی ته ښه انګیزه ورکړې ده.' },
+
+  // ─── انگلیسی (۵ نظر) ───
+  { name: 'Sarah K.', city: 'Dubai', rating: 5, text: 'Been using Aryana for a few months. The P2P option is really helpful — the platform holds the funds until both sides confirm. Used to get scammed on Telegram groups before.' },
+  { name: 'Michael R.', city: 'Frankfurt', rating: 4, text: 'Simple platform, works well. I mostly use P2P. KYC took a day but that\'s normal.' },
+  { name: 'Zahra A.', city: 'Hamburg', rating: 5, text: 'I use Aryana mostly to send money to my family back in Afghanistan. The P2P is simple and the funds are safe. My brother received his money in a few hours.' },
+  { name: 'David A.', city: 'Istanbul', rating: 5, text: 'Used to buy USDT from random Telegram sellers and got scammed once. With Aryana\'s P2P, funds are held safely until both sides confirm. Much better.' },
+  { name: 'Kaveh S.', city: 'Toronto', rating: 5, text: 'Good experience. P2P works smoothly and fees are lower than elsewhere. Recommended for small traders.' },
+];
+
+// ═══════════════════════════════════════
+//             FAQ DATA
+// ═══════════════════════════════════════
+
+const FAQ_DATA = [
+  {
+    icon: 'user',
+    q: 'چطور ثبت‌نام کنم؟',
+    a: 'روی دکمه «ثبت‌نام» بزنید، ایمیل و شماره تماس خود را وارد کنید، کد دعوت را اگر دارید وارد کنید، و حساب خود را بسازید. بعد از ثبت‌نام، برای دسترسی به معاملات باید احراز هویت کنید.'
+  },
+  {
+    icon: 'shield',
+    q: 'چرا احراز هویت لازم است؟',
+    a: 'احراز هویت (KYC) یک الزام قانونی برای همه پلتفرم‌های مالی است. ما با تأیید هویت شما، امنیت حساب و جلوگیری از تقلب را تضمین می‌کنیم. بعد از احراز هویت، همه امکانات صرافی برای شما فعال می‌شود.'
+  },
+  {
+    icon: 'dollar',
+    q: 'حداقل مبلغ معامله چقدر است؟',
+    a: 'حداقل مبلغ برای هر معامله ۱۰ تتر است. برای برداشت افغانی، حداقل ۵۰۰ افغانی و برای برداشت تتر حداقل ۱۰ تتر در نظر گرفته شده است.'
+  },
+  {
+    icon: 'percent',
+    q: 'کارمزد صرافی چقدر است؟',
+    a: 'کارمزد پایه ما ۱.۵٪ از مبلغ هر معامله است. برای کاربران VIP سطح‌های بالاتر، این کارمزد کمتر می‌شود. کارمزد دقیق قبل از تأیید معامله به شما نمایش داده می‌شود.'
+  },
+  {
+    icon: 'buy',
+    q: 'چطور تتر بخرم؟',
+    a: 'وارد حساب خود شوید، «خرید تتر» را انتخاب کنید، مبلغ مورد نظر را وارد کنید، نرخ را ببینید و تأیید کنید. سپس مبلغ افغانی را به حساب صرافی انتقال دهید و رسید را ثبت کنید. تیم ما پرداخت را تأیید می‌کند و تتر به حساب شما ارسال می‌شود.'
+  },
+  {
+    icon: 'sell',
+    q: 'چطور تتر بفروشم؟',
+    a: 'در حساب خود، «فروش تتر» را انتخاب کنید، مبلغ تتر را وارد کنید و نرخ را ببینید. تتر شما در صرافی قفل می‌شود و بعد از تأیید، افغانی به حساب حساب پی یا حساب بانکی شما ارسال می‌شود.'
+  },
+  {
+    icon: 'p2p',
+    q: 'P2P چیست و چطور کار می‌کند؟',
+    a: 'P2P (Peer to Peer) یعنی معامله مستقیم بین شما و یک کاربر دیگر که خود صرافی به عنوان واسطه و امانت‌دار عمل می‌کند. پول و تتر دو طرف تا زمانی که هر دو تأیید نکنند، قفل می‌ماند. این روش امنیت معامله را تضمین می‌کند و جلوی کلاهبرداری را می‌گیرد.'
+  },
+  {
+    icon: 'network',
+    q: 'کدام شبکه USDT بهتر است؟',
+    a: 'شبکه TRC20 (ترون) سریع‌ترین و ارزان‌ترین گزینه است و بیشتر کاربران از آن استفاده می‌کنند. BEP20 (BNB Chain) هم گزینه خوبی است. برای انتقال‌های بزرگ، ERC20 (اتریوم) استاندارد جهانی است ولی کارمزد بیشتری دارد.'
+  },
+  {
+    icon: 'time',
+    q: 'چند وقت طول می‌کشد معامله انجام شود؟',
+    a: 'بیشتر معاملات در کمتر از ۱۵ دقیقه انجام می‌شوند. اگر پرداخت به بررسی دستی نیاز داشته باشد، ممکن است کمی بیشتر طول بکشد. برای P2P، زمان بستگی به طرف مقابل دارد، ولی صرافی پیگیرِ روند است.'
+  },
+  {
+    icon: 'gift',
+    q: 'Referral Program چیست؟',
+    a: 'با هر دعوت موفق، ۱۵ افغانی به حساب قفل‌شده شما اضافه می‌شود. بعد از اینکه دوست شما احراز هویت کند و اولین معامله‌اش را انجام دهد، این مبلغ آزاد می‌شود. همچنین از کارمزد معاملات زیرمجموعه‌های VIP، درصدی به شما می‌رسد.'
+  },
+  {
+    icon: 'wheel',
+    q: 'Rewards Wheel چیست؟',
+    a: 'دایره شانس یک بازی با جایزه‌های نقدی و تخفیفی است. با هر بار ثبت‌نام موفق، معامله موفق، یا دعوت دوست، یک تیکت رایگان دریافت می‌کنید. با چرخش دایره، ممکن است تا ۱۰۰۰ افغانی جایزه ببرید. تیکت اضافه را می‌توانید به قیمت ۵۰ افغانی هم بخرید.'
+  },
+  {
+    icon: 'support',
+    q: 'چطور با پشتیبانی تماس بگیرم؟',
+    a: 'از طریق تلگرام، واتساپ، یا ایمیل می‌توانید با تیم پشتیبانی ما تماس بگیرید. پاسخ‌دهی ما به طور معمول در کمتر از ۵ دقیقه انجام می‌شود. لینک‌های تماس در فوتر سایت و صفحه «تماس» موجود است.'
+  },
+];
+
+// ═══════════════════════════════════════
+//              STATE
+// ═══════════════════════════════════════
+
 let currentRate = {
   buy: 70.50,
   sell: 70.20,
@@ -50,18 +195,14 @@ let currentRate = {
   liquidity: 45250,
 };
 
-let activityPool = [];
+// ═══════════════════════════════════════
+//               INIT
+// ═══════════════════════════════════════
 
-// ═══════════════════════════════════════
-//           INIT
-// ═══════════════════════════════════════
 document.addEventListener('DOMContentLoaded', async () => {
   const initialLang = I18N.detectInitialLang();
   await I18N.load(initialLang);
   I18N.apply();
-
-  const yearEl = document.getElementById('currentYear');
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   // Hero animations
   startTypewriter();
@@ -82,28 +223,35 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Calculator
   initCalculator();
 
+  // Testimonials
+  initTestimonials();
+
+  // FAQ
+  initFAQ();
+
   // Scroll reveal
   initScrollReveal();
 
   // Live updates
-  setInterval(loadLiveRates, 15000);   // Rate every 15s
-  setInterval(updateSparkline, 8000);  // Chart every 8s
-  setInterval(initTicker, 60000);      // Ticker every 60s
-  setInterval(updateStats, 5000);      // Stats every 5s
+  setInterval(loadLiveRates, 15000);
+  setInterval(updateSparkline, 8000);
+  setInterval(initTicker, 60000);
+  setInterval(updateStats, 5000);
 });
 
 // ═══════════════════════════════════════
 //           TYPEWRITER
 // ═══════════════════════════════════════
+
 function startTypewriter() {
   const el = document.getElementById('typewriterText');
   if (!el) return;
 
   const phrases = [
-    'at the best rate.',
-    'in seconds.',
-    'with trust.',
-    '24/7 always.'
+    'با بهترین نرخ.',
+    'در چند ثانیه.',
+    'با اعتماد کامل.',
+    'همیشه در دسترس.'
   ];
 
   let phraseIndex = 0;
@@ -141,30 +289,28 @@ function startTypewriter() {
 // ═══════════════════════════════════════
 //           LIVE RATES
 // ═══════════════════════════════════════
+
 async function loadLiveRates() {
   try {
     const rate = await API.getCurrentRate();
-    currentRate.buy = Number(rate.sell_price_afn);   // Buy = sell_price
-    currentRate.sell = Number(rate.buy_price_afn);   // Sell = buy_price
+    currentRate.buy = Number(rate.sell_price_afn);
+    currentRate.sell = Number(rate.buy_price_afn);
   } catch (err) {
-    // Fallback with slight random for live feel
     currentRate.buy = 70.50 + (Math.random() - 0.5) * 0.4;
     currentRate.sell = 70.20 + (Math.random() - 0.5) * 0.4;
   }
 
-  // Round
   currentRate.buy = Math.round(currentRate.buy * 100) / 100;
   currentRate.sell = Math.round(currentRate.sell * 100) / 100;
   currentRate.high = Math.max(currentRate.high, currentRate.buy);
   currentRate.low = Math.min(currentRate.low, currentRate.buy);
   currentRate.change = ((currentRate.buy - 70) / 70 * 100);
 
-  // Update UI
   updateRateUI();
 }
 
 function updateRateUI() {
-  const fmt = (n) => Number(n).toLocaleString('en-US', {
+  const fmt = (n) => Number(n).toLocaleString('fa-AF', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
@@ -185,7 +331,6 @@ function updateRateUI() {
     priceEl.textContent = fmt(newPrice);
     priceEl.dataset.price = newPrice;
 
-    // Flash effect
     if (oldPrice > 0) {
       priceEl.classList.add(newPrice > oldPrice ? 'flash-up' : 'flash-down');
       setTimeout(() => {
@@ -200,8 +345,8 @@ function updateRateUI() {
       : '<polyline points="6 9 12 15 18 9"/>';
     changeEl.innerHTML = `
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">${svg}</svg>
-      <span>${currentRate.change >= 0 ? '+' : ''}${currentRate.change.toFixed(2)}%</span>
-      <span class="lrc-change-period">today</span>
+      <span>${currentRate.change >= 0 ? '+' : ''}${currentRate.change.toFixed(2)}٪</span>
+      <span class="lrc-change-period">امروز</span>
     `;
     changeEl.style.background = currentRate.change >= 0
       ? 'rgba(16, 185, 129, 0.1)'
@@ -214,26 +359,25 @@ function updateRateUI() {
   if (spreadEl) spreadEl.textContent = fmt(currentRate.buy - currentRate.sell);
   if (buyEl) buyEl.textContent = fmt(currentRate.buy);
   if (sellEl) sellEl.textContent = fmt(currentRate.sell);
-  if (liqEl) liqEl.textContent = currentRate.liquidity.toLocaleString('en-US');
+  if (liqEl) liqEl.textContent = currentRate.liquidity.toLocaleString('fa-AF');
 
-  // Update exchange cards
   const buyCardPrice = document.getElementById('buyCardPrice');
   const sellCardPrice = document.getElementById('sellCardPrice');
   const buyCardExample = document.getElementById('buyCardExample');
   const sellCardExample = document.getElementById('sellCardExample');
 
-  if (buyCardPrice) buyCardPrice.textContent = `${fmt(currentRate.buy)} AFN`;
-  if (sellCardPrice) sellCardPrice.textContent = `${fmt(currentRate.sell)} AFN`;
-  if (buyCardExample) buyCardExample.textContent = `${fmt(currentRate.buy * 100)} AFN`;
-  if (sellCardExample) sellCardExample.textContent = `${fmt(currentRate.sell * 100)} AFN`;
+  if (buyCardPrice) buyCardPrice.textContent = `${fmt(currentRate.buy)} افغانی`;
+  if (sellCardPrice) sellCardPrice.textContent = `${fmt(currentRate.sell)} افغانی`;
+  if (buyCardExample) buyCardExample.textContent = `${fmt(currentRate.buy * 100)} افغانی`;
+  if (sellCardExample) sellCardExample.textContent = `${fmt(currentRate.sell * 100)} افغانی`;
 
-  // Update calculator result
   updateCalculator();
 }
 
 // ═══════════════════════════════════════
 //           LIVE TIMESTAMP
 // ═══════════════════════════════════════
+
 function startLiveTimestamp() {
   const el = document.getElementById('lrcTimestamp');
   if (!el) return;
@@ -243,21 +387,19 @@ function startLiveTimestamp() {
   setInterval(() => {
     seconds++;
     if (seconds < 5) {
-      el.textContent = 'just now';
+      el.textContent = 'همین حالا';
     } else if (seconds < 60) {
-      el.textContent = `${seconds}s ago`;
+      el.textContent = `${seconds} ثانیه پیش`;
     } else {
-      el.textContent = `${Math.floor(seconds / 60)}m ago`;
+      el.textContent = `${Math.floor(seconds / 60)} دقیقه پیش`;
     }
   }, 1000);
-
-  // Reset on rate update
-  window.resetTimestamp = () => { seconds = 0; };
 }
 
 // ═══════════════════════════════════════
 //           SPARKLINE
 // ═══════════════════════════════════════
+
 let sparklinePoints = [];
 
 function updateSparkline() {
@@ -265,23 +407,19 @@ function updateSparkline() {
   const areaEl = document.getElementById('lrcSparklineArea');
   if (!pathEl || !areaEl) return;
 
-  // Generate initial points if empty
   if (sparklinePoints.length === 0) {
     for (let i = 0; i < 40; i++) {
       sparklinePoints.push(70 + (Math.random() - 0.5) * 0.8);
     }
   }
 
-  // Shift and add new point
   sparklinePoints.shift();
   sparklinePoints.push(currentRate.buy);
 
-  // Find min/max for scaling
   const min = Math.min(...sparklinePoints);
   const max = Math.max(...sparklinePoints);
   const range = max - min || 1;
 
-  // Build path
   const width = 400;
   const height = 80;
   const padding = 4;
@@ -292,13 +430,11 @@ function updateSparkline() {
     return { x, y };
   });
 
-  // Line path
   let pathD = `M ${points[0].x} ${points[0].y}`;
   for (let i = 1; i < points.length; i++) {
     pathD += ` L ${points[i].x} ${points[i].y}`;
   }
 
-  // Area path
   const areaD = pathD + ` L ${width} ${height} L 0 ${height} Z`;
 
   pathEl.setAttribute('d', pathD);
@@ -308,26 +444,27 @@ function updateSparkline() {
 // ═══════════════════════════════════════
 //           TICKER
 // ═══════════════════════════════════════
+
 async function initTicker() {
   const track = document.getElementById('tickerTrack');
   if (!track) return;
 
-  const fmt = (n) => Number(n).toLocaleString('en-US', {
+  const fmt = (n) => Number(n).toLocaleString('fa-AF', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
 
   const items = [
-    { symbol: 'USDT/AFN', price: fmt(currentRate.buy), change: '+0.45%', up: true },
-    { symbol: 'USD/AFN',  price: fmt(currentRate.buy), change: '+0.12%', up: true },
-    { symbol: 'EUR/AFN',  price: '76.50', change: '+0.18%', up: true },
-    { symbol: 'GBP/AFN',  price: '89.20', change: '−0.09%', up: false },
-    { symbol: 'AED/AFN',  price: '19.20', change: '+0.09%', up: true },
-    { symbol: 'IRT/AFN',  price: '0.0011', change: '+0.05%', up: true },
-    { symbol: 'PKR/AFN',  price: '0.245', change: '−0.15%', up: false },
-    { symbol: 'CHF/AFN',  price: '81.30', change: '+0.22%', up: true },
-    { symbol: 'AUD/AFN',  price: '45.80', change: '−0.07%', up: false },
-    { symbol: 'USDT/IRR', price: '0.00097', change: '+0.31%', up: true },
+    { symbol: 'USDT/AFN', price: fmt(currentRate.buy), change: '+۰.۴۵٪', up: true },
+    { symbol: 'USD/AFN',  price: fmt(currentRate.buy), change: '+۰.۱۲٪', up: true },
+    { symbol: 'EUR/AFN',  price: '۷۶.۵۰', change: '+۰.۱۸٪', up: true },
+    { symbol: 'GBP/AFN',  price: '۸۹.۲۰', change: '−۰.۰۹٪', up: false },
+    { symbol: 'AED/AFN',  price: '۱۹.۲۰', change: '+۰.۰۹٪', up: true },
+    { symbol: 'IRT/AFN',  price: '۰.۰۰۱۱', change: '+۰.۰۵٪', up: true },
+    { symbol: 'PKR/AFN',  price: '۰.۲۴۵', change: '−۰.۱۵٪', up: false },
+    { symbol: 'CHF/AFN',  price: '۸۱.۳۰', change: '+۰.۲۲٪', up: true },
+    { symbol: 'AUD/AFN',  price: '۴۵.۸۰', change: '−۰.۰۷٪', up: false },
+    { symbol: 'USDT/IRR', price: '۰.۰۰۰۹۷', change: '+۰.۳۱٪', up: true },
   ];
 
   const buildItem = (item) => `
@@ -345,24 +482,23 @@ async function initTicker() {
 // ═══════════════════════════════════════
 //           ACTIVITY FEED
 // ═══════════════════════════════════════
+
 function randomFrom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
 function randomNumber(min, max, decimals = 0) {
   const num = Math.random() * (max - min) + min;
-  return decimals > 0
-    ? num.toFixed(decimals)
-    : Math.floor(num).toLocaleString('en-US');
+  return decimals > 0 ? num.toFixed(decimals) : Math.floor(num);
 }
 
 function getRandomTime() {
-  const times = ['2s', '5s', '8s', '12s', '15s', '22s', '30s', '45s', '1m', '2m', '3m'];
-  return randomFrom(times) + ' ago';
+  const times = ['۲ ثانیه', '۵ ثانیه', '۸ ثانیه', '۱۲ ثانیه', '۲۲ ثانیه', '۳۰ ثانیه', '۴۵ ثانیه', '۱ دقیقه', '۲ دقیقه'];
+  return randomFrom(times) + ' پیش';
 }
 
 function generateActivityItem() {
-  const firstName = randomFrom(FIRST_NAMES);
+  const firstName = randomFrom(FIRST_NAMES_M);
   const lastName = randomFrom(LAST_NAMES);
   const city = randomFrom(CITIES);
   const network = randomFrom(NETWORKS);
@@ -370,14 +506,14 @@ function generateActivityItem() {
 
   let amount;
   if (Math.random() > 0.7) {
-    amount = randomNumber(1000, 2500);  // Large
+    amount = randomNumber(1000, 2500);
   } else if (Math.random() > 0.4) {
     amount = randomNumber(100, 999);
   } else {
-    amount = randomNumber(10, 99, Math.random() > 0.5 ? 2 : 0);
+    amount = randomNumber(10, 99);
   }
 
-  const initials = firstName.charAt(0) + (lastName ? lastName.charAt(0) : '');
+  const initials = firstName.charAt(0);
   const gradient = randomFrom(AVATAR_GRADIENTS);
 
   return {
@@ -385,7 +521,7 @@ function generateActivityItem() {
     location: city,
     network,
     type,
-    amount,
+    amount: amount.toLocaleString('fa-AF'),
     initials,
     gradient,
     time: getRandomTime(),
@@ -413,7 +549,7 @@ function createActivityItem(data, isNew = false) {
         </div>
       </div>
       <div class="activity-amount">
-        <div class="activity-amount-value">${data.amount} USDT</div>
+        <div class="activity-amount-value">${data.amount} تتر</div>
         <div class="activity-time">${data.time}</div>
       </div>
     </div>
@@ -424,7 +560,6 @@ function initActivityFeed() {
   const feed = document.getElementById('activityFeed');
   if (!feed) return;
 
-  // Initial 7 items
   feed.innerHTML = '';
   for (let i = 0; i < 7; i++) {
     const data = generateActivityItem();
@@ -442,13 +577,11 @@ function startActivityUpdates() {
 
     feed.insertAdjacentHTML('afterbegin', html);
 
-    // Remove last item if too many
     const items = feed.querySelectorAll('.activity-item');
     if (items.length > 7) {
       items[items.length - 1].remove();
     }
 
-    // Random next update
     const nextDelay = 3000 + Math.random() * 3000;
     setTimeout(addNewItem, nextDelay);
   }
@@ -459,6 +592,7 @@ function startActivityUpdates() {
 // ═══════════════════════════════════════
 //           ONLINE COUNTER
 // ═══════════════════════════════════════
+
 function startOnlineCounter() {
   const el = document.getElementById('activityOnlineCount');
   if (!el) return;
@@ -470,28 +604,29 @@ function startOnlineCounter() {
     count += change;
     if (count < 2800) count = 2800;
     if (count > 2950) count = 2950;
-    el.textContent = count.toLocaleString('en-US');
+    el.textContent = count.toLocaleString('fa-AF');
   }, 4000);
 }
 
 // ═══════════════════════════════════════
 //           STATS UPDATE
 // ═══════════════════════════════════════
+
 function updateStats() {
   const tradesEl = document.getElementById('statTrades');
   const volumeEl = document.getElementById('statVolume');
   const successEl = document.getElementById('statSuccess');
 
   if (tradesEl) {
-    let current = parseInt(tradesEl.textContent.replace(/,/g, ''));
+    let current = parseInt(tradesEl.textContent.replace(/[،,]/g, '')) || 1847;
     current += Math.floor(Math.random() * 5) + 1;
-    tradesEl.textContent = current.toLocaleString('en-US');
+    tradesEl.textContent = current.toLocaleString('fa-AF');
   }
 
   if (volumeEl) {
-    let current = parseInt(volumeEl.textContent.replace(/,/g, ''));
+    let current = parseInt(volumeEl.textContent.replace(/[،,]/g, '')) || 47250;
     current += Math.floor(Math.random() * 100) + 20;
-    volumeEl.textContent = current.toLocaleString('en-US');
+    volumeEl.textContent = current.toLocaleString('fa-AF');
   }
 
   if (successEl) {
@@ -503,13 +638,12 @@ function updateStats() {
 // ═══════════════════════════════════════
 //           CALCULATOR
 // ═══════════════════════════════════════
+
 function initCalculator() {
   const input = document.getElementById('calcAmount');
   const btn = document.getElementById('calcBtn');
 
-  if (input) {
-    input.addEventListener('input', updateCalculator);
-  }
+  if (input) input.addEventListener('input', updateCalculator);
 
   if (btn) {
     btn.addEventListener('click', () => {
@@ -530,18 +664,173 @@ function updateCalculator() {
   const amount = parseFloat(input.value) || 0;
   const total = amount * currentRate.buy;
 
-  result.textContent = total.toLocaleString('en-US', {
+  result.textContent = total.toLocaleString('fa-AF', {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   });
 }
 
 // ═══════════════════════════════════════
+//           TESTIMONIALS
+// ═══════════════════════════════════════
+
+function generateStars(rating) {
+  let stars = '';
+  for (let i = 1; i <= 5; i++) {
+    if (i <= rating) {
+      stars += `<svg viewBox="0 0 24 24" fill="currentColor" class="star-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+    } else {
+      stars += `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="star-empty"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+    }
+  }
+  return stars;
+}
+
+function createTestimonialCard(t) {
+  const initial = t.name.charAt(0);
+  const gradient = randomFrom(AVATAR_GRADIENTS);
+
+  return `
+    <div class="testimonial-card">
+      <div class="testimonial-quote">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h9.983zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z"/>
+        </svg>
+      </div>
+
+      <div class="testimonial-stars">${generateStars(t.rating)}</div>
+
+      <div class="testimonial-text">${t.text}</div>
+
+      <div class="testimonial-footer">
+        <div class="testimonial-avatar" style="background: linear-gradient(135deg, ${gradient[0]}, ${gradient[1]});">
+          ${initial}
+        </div>
+        <div class="testimonial-author">
+          <div class="testimonial-name">${t.name}</div>
+          <div class="testimonial-location">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            ${t.city}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function initTestimonials() {
+  const track1 = document.getElementById('testimonialsTrack1');
+  const track2 = document.getElementById('testimonialsTrack2');
+
+  if (!track1 || !track2) return;
+
+  // Split testimonials into 2 rows
+  const half = Math.ceil(TESTIMONIALS.length / 2);
+  const row1 = TESTIMONIALS.slice(0, half);
+  const row2 = TESTIMONIALS.slice(half);
+
+  // Build row HTML
+  const buildRow = (items) => items.map(createTestimonialCard).join('');
+
+  // Duplicate for infinite marquee
+  track1.innerHTML = buildRow(row1) + buildRow(row1);
+  track2.innerHTML = buildRow(row2) + buildRow(row2);
+}
+
+// ═══════════════════════════════════════
+//           FAQ
+// ═══════════════════════════════════════
+
+const FAQ_ICONS = {
+  user: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+  dollar: '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+  percent: '<line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>',
+  buy: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+  sell: '<line x1="5" y1="12" x2="19" y2="12"/>',
+  p2p: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  network: '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+  time: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+  gift: '<polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>',
+  wheel: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5L19 19M19 5l-2.5 2.5M7.5 16.5L5 19"/>',
+  support: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+};
+
+function createFaqItem(item, index) {
+  const icon = FAQ_ICONS[item.icon] || FAQ_ICONS.user;
+
+  return `
+    <div class="faq-item" data-index="${index}">
+      <button class="faq-question" type="button">
+        <div class="faq-question-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            ${icon}
+          </svg>
+        </div>
+        <div class="faq-question-text">${item.q}</div>
+        <div class="faq-chevron">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">${item.a}</div>
+      </div>
+    </div>
+  `;
+}
+
+function initFAQ() {
+  const list = document.getElementById('faqList');
+  if (!list) return;
+
+  // Render items
+  list.innerHTML = FAQ_DATA.map((item, i) => createFaqItem(item, i)).join('');
+
+  // Toggle accordion
+  list.querySelectorAll('.faq-item').forEach(item => {
+    const btn = item.querySelector('.faq-question');
+    btn.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+
+      // Close others
+      list.querySelectorAll('.faq-item.open').forEach(openItem => {
+        openItem.classList.remove('open');
+      });
+
+      // Toggle current
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // Search
+  const searchInput = document.getElementById('faqSearch');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.trim().toLowerCase();
+
+      list.querySelectorAll('.faq-item').forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (!query || text.includes(query)) {
+          item.style.display = '';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  }
+}
+
+// ═══════════════════════════════════════
 //           SCROLL REVEAL
 // ═══════════════════════════════════════
+
 function initScrollReveal() {
   const reveals = document.querySelectorAll('.reveal');
-
   if (reveals.length === 0) return;
 
   const observer = new IntersectionObserver((entries) => {
