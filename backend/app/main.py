@@ -8,8 +8,12 @@ from app.api.v1 import kyc as kyc_router
 from app.api.v1 import orders as orders_router
 from app.api.v1 import public as public_router
 from app.api.v1 import rates as rates_router
+from app.api.v1 import referral as referral_router
 from app.api.v1 import wallet as wallet_router
+from app.api.v1 import wheel as wheel_router
 from app.api.v1 import withdrawals as withdrawals_router
+from app.api.v1.admin import users as admin_users_router
+from app.api.v1.admin import wheel as admin_wheel_router
 from app.core.config import settings
 
 app = FastAPI(
@@ -23,7 +27,6 @@ app = FastAPI(
 #              CORS — همیشه فعال
 # ═══════════════════════════════════════
 
-# دامنه‌های پیش‌فرض (اگه Environment Variable نباشه، از اینا استفاده می‌شه)
 DEFAULT_CORS_ORIGINS = [
     "https://aryana-currency.vercel.app",
     "https://www.aryana-currency.vercel.app",
@@ -34,7 +37,6 @@ DEFAULT_CORS_ORIGINS = [
     "http://127.0.0.1:8000",
 ]
 
-# اگه توی .env یا Environment Variable ست شده باشه، از اون استفاده کن
 cors_origins = settings.cors_origins_list or DEFAULT_CORS_ORIGINS
 
 app.add_middleware(
@@ -47,15 +49,25 @@ app.add_middleware(
 )
 
 API_V1_PREFIX = "/api/v1"
+
+# ─── Core routers ───
 app.include_router(auth_router.router, prefix=API_V1_PREFIX)
 app.include_router(rates_router.router, prefix=API_V1_PREFIX)
 app.include_router(wallet_router.router, prefix=API_V1_PREFIX)
 app.include_router(orders_router.router, prefix=API_V1_PREFIX)
-app.include_router(admin_router.router, prefix=API_V1_PREFIX)
 app.include_router(public_router.router, prefix=API_V1_PREFIX)
 app.include_router(kyc_router.router, prefix=API_V1_PREFIX)
 app.include_router(withdrawals_router.router, prefix=API_V1_PREFIX)
 app.include_router(direct_trades_router.router, prefix=API_V1_PREFIX)
+
+# ─── Referral & Wheel (User) ───
+app.include_router(referral_router.router, prefix=API_V1_PREFIX)
+app.include_router(wheel_router.router, prefix=API_V1_PREFIX)
+
+# ─── Admin routers ───
+app.include_router(admin_router.router, prefix=API_V1_PREFIX)
+app.include_router(admin_wheel_router.router, prefix=API_V1_PREFIX)
+app.include_router(admin_users_router.router, prefix=API_V1_PREFIX)
 
 
 @app.get("/", tags=["system"])

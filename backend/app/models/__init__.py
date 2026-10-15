@@ -1,4 +1,10 @@
 from app.models.audit import AuditLog
+from app.models.direct_trade import (
+    DirectTradeAd,
+    DirectTradeMessage,
+    DirectTradeOrder,
+    UserReputation,
+)
 from app.models.enums import (
     Currency,
     DirectTradeAdSide,
@@ -14,45 +20,58 @@ from app.models.enums import (
 from app.models.kyc import KycDocument
 from app.models.ledger import LedgerEntry
 from app.models.order import Order
-from app.models.rate import Rate
-from app.models.user import User
-from app.models.wallet import Wallet
-from app.models.withdrawal import Withdrawal
 from app.models.password_reset import PasswordResetToken
 from app.models.platform_settings import PlatformSettings
-from app.models.direct_trade import (
-    DirectTradeAd,
-    DirectTradeMessage,
-    DirectTradeOrder,
-    UserReputation,
+from app.models.rate import Rate
+from app.models.referral import (
+    LockedBalance,
+    Referral,
+    ReferralCode,
+    ReferralEarning,
 )
-
+from app.models.user import User
+from app.models.wallet import Wallet
+from app.models.wheel import (
+    WheelAuditLog,
+    WheelPrize,
+    WheelSettings,
+    WheelSpin,
+    WheelTicket,
+)
+from app.models.withdrawal import Withdrawal
 
 __all__ = [
-    # --- Existing ---
-    "AuditLog",
-    "Currency",
-    "KycDocument",
-    "KycStatus",
-    "LedgerDirection",
-    "LedgerEntry",
-    "Order",
-    "OrderSide",
-    "OrderStatus",
-    "Rate",
     "User",
-    "UserRole",
     "Wallet",
-    "Withdrawal",
-    "WithdrawalStatus",
-    "PasswordResetToken",
+    "Order",
+    "Rate",
+    "KycDocument",
     "PlatformSettings",
-    # --- Direct Trade ---
+    "LedgerEntry",
+    "Withdrawal",
+    "AuditLog",
+    "PasswordResetToken",
     "DirectTradeAd",
-    "DirectTradeAdSide",
-    "DirectTradeAdStatus",
     "DirectTradeOrder",
-    "DirectTradeOrderStatus",
     "DirectTradeMessage",
     "UserReputation",
+    "UserRole",
+    "OrderSide",
+    "OrderStatus",
+    "Currency",
+    "LedgerDirection",
+    "KycStatus",
+    "WithdrawalStatus",
+    "DirectTradeAdSide",
+    "DirectTradeAdStatus",
+    "DirectTradeOrderStatus",
+    "ReferralCode",
+    "Referral",
+    "ReferralEarning",
+    "LockedBalance",
+    "WheelSettings",
+    "WheelPrize",
+    "WheelTicket",
+    "WheelSpin",
+    "WheelAuditLog",
 ]

@@ -60,29 +60,31 @@ def get_kyc_status(
 async def upload_kyc_document(
     doc_type: str = Form(...),
     file: UploadFile = File(...),
+    first_name: str | None = Form(None),
+    last_name: str | None = Form(None),
+    phone_number: str | None = Form(None),
+    document_type: str | None = Form(None),
+    document_number: str | None = Form(None),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
     """
     آپلود مدرک KYC — فایل مستقیم توی دیتابیس ذخیره میشه.
-    doc_type: national_id / passport / selfie
+    doc_type: national_id / passport / selfie / tazkira / driver_license
     """
-    # اعتبارسنجی نوع مدرک
-    valid_types = {"national_id", "passport", "selfie"}
+    valid_types = {"national_id", "passport", "selfie", "tazkira", "driver_license"}
     if doc_type not in valid_types:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"نوع مدرک باید یکی از این‌ها باشد: {', '.join(valid_types)}",
         )
 
-    # اعتبارسنجی MIME type
     if file.content_type not in ALLOWED_MIME:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="فرمت فایل باید JPG، PNG، WebP یا PDF باشد",
         )
 
-    # خواندن فایل و چک اندازه
     content = await file.read()
     if len(content) > MAX_FILE_SIZE:
         raise HTTPException(
@@ -90,26 +92,32 @@ async def upload_kyc_document(
             detail="حجم فایل نباید بیشتر از ۵ مگابایت باشد",
         )
 
-    # حذف مدارک قبلی از همین نوع که هنوز PENDING یا REJECTED هستن
+    # حذف مدارک قبلی از همین نوع که هنوز APPROVED نشدن
     db.query(KycDocument).filter(
         KycDocument.user_id == current_user.id,
         KycDocument.doc_type == doc_type,
         KycDocument.status != KycStatus.APPROVED,
     ).delete()
 
-    # ثبت مدرک جدید با فایل توی دیتابیس
+    # ثبت مدرک جدید
     doc = KycDocument(
         user_id=current_user.id,
         doc_type=doc_type,
         file_data=content,
         file_mime=file.content_type,
         status=KycStatus.PENDING,
+        # فیلدهای جدید
+        first_name=first_name,
+        last_name=last_name,
+        phone_number=phone_number,
+        document_type=document_type,
+        document_number=document_number,
     )
     db.add(doc)
     db.commit()
     db.refresh(doc)
 
-    # ─── اعلان تلگرام ───
+    # اعلان تلگرام
     try:
         notify_new_kyc(doc, current_user)
     except Exception as e:
@@ -142,7 +150,6 @@ def list_pending_kyc(
         .all()
     )
 
-    # گروه‌بندی بر اساس کاربر
     result = {}
     for doc in docs:
         if doc.user_id not in result:
@@ -162,6 +169,11 @@ def list_pending_kyc(
             "id": doc.id,
             "doc_type": doc.doc_type,
             "status": doc.status.value,
+            "first_name": doc.first_name,
+            "last_name": doc.last_name,
+            "phone_number": doc.phone_number,
+            "document_type": doc.document_type,
+            "document_number": doc.document_number,
             "created_at": doc.created_at.isoformat(),
         })
 
@@ -198,7 +210,12 @@ def approve_kyc(
     db: Session = Depends(get_db),
     admin: User = Depends(get_current_admin),
 ):
-    """تأیید مدرک KYC."""
+    """
+    تأیید مدرک KYC.
+    - وضعیت کاربر is_verified = True
+    - آزادسازی پاداش رفرال (اگه دعوت‌شده بود)
+    - اعطای تیکت ثبت‌نام+KYC (فقط یک‌بار)
+    """
     doc = db.query(KycDocument).filter(KycDocument.id == doc_id).first()
     if not doc:
         raise HTTPException(status_code=404, detail="مدرک یافت نشد")
@@ -210,6 +227,28 @@ def approve_kyc(
     user = db.query(User).filter(User.id == doc.user_id).first()
     if user and not user.is_verified:
         user.is_verified = True
+
+    db.flush()
+
+    # ═══════════════════════════════════════════
+    # 🎁 آزادسازی پاداش رفرال + تیکت KYC
+    # ═══════════════════════════════════════════
+    if user:
+        # آزادسازی پاداش رفرال (اگه کاربر دعوت‌شده بود)
+        try:
+            from app.services import referral as referral_service
+            referral_service.on_kyc_completed(db, user)
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).error(f"Referral on_kyc failed: {e}")
+
+        # اعطای تیکت ثبت‌نام+KYC (فقط یک‌بار برای هر کاربر)
+        try:
+            from app.services import wheel as wheel_service
+            wheel_service.claim_signup_kyc_ticket(db, user)
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).error(f"Wheel ticket on KYC failed: {e}")
 
     db.commit()
     return {"message": "مدرک تأیید شد", "doc_id": doc.id}

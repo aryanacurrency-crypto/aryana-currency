@@ -10248,10 +10248,12 @@ C:.
     |       |   login.js
     |       |   main.js
     |       |   networks.js
+    |       |   New Text Document.txt
     |       |   notifications.js
     |       |   order.js
     |       |   orders.js
     |       |   p2p.js
+    |       |   profile-trust.js
     |       |   profile.js
     |       |   pwa.js
     |       |   register.js
@@ -10273,6 +10275,8 @@ C:.
     |       |       kyc.js
     |       |       order-detail.js
     |       |       orders.js
+    |       |       p2p-order-detail.js
+    |       |       p2p-orders.js
     |       |       rates.js
     |       |       settings.js
     |       |       users.js
@@ -10308,6 +10312,8 @@ C:.
         |       kyc.html
         |       order-detail.html
         |       orders.html
+        |       p2p-order-detail.html
+        |       p2p-orders.html
         |       rates.html
         |       settings.html
         |       users.html

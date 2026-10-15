@@ -678,3 +678,122 @@
     font-size: 18px;
   }
 }
+
+/* ═══════════════════════════════════════
+   🎁 Referral Code Field
+   ═══════════════════════════════════════ */
+
+.referral-field {
+  position: relative;
+  background: linear-gradient(135deg,
+    rgba(240, 185, 11, 0.05) 0%,
+    rgba(240, 185, 11, 0.02) 100%);
+  border: 1px dashed rgba(240, 185, 11, 0.35);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-block: var(--space-5);
+  transition: all 0.3s ease;
+}
+
+.referral-field:focus-within {
+  border-color: var(--gold);
+  border-style: solid;
+  background: linear-gradient(135deg,
+    rgba(240, 185, 11, 0.10) 0%,
+    rgba(240, 185, 11, 0.04) 100%);
+  box-shadow: 0 0 20px rgba(240, 185, 11, 0.15);
+}
+
+.referral-field .field-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--gold);
+  font-weight: 600;
+  gap: 8px;
+}
+
+.referral-field .optional-badge {
+  font-size: 10px;
+  font-weight: 700;
+  background: rgba(240, 185, 11, 0.15);
+  color: var(--gold);
+  padding: 2px 8px;
+  border-radius: 10px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.referral-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.referral-input {
+  background: var(--bg-secondary);
+  border: 1px solid rgba(240, 185, 11, 0.25);
+  letter-spacing: 2px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding-right: 48px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.referral-input:focus {
+  border-color: var(--gold);
+  background: var(--bg-primary);
+  box-shadow: 0 0 12px rgba(240, 185, 11, 0.25);
+}
+
+.referral-input::placeholder {
+  color: var(--text-tertiary);
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.referral-status {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+.referral-status.checking::before {
+  content: "⏳";
+  animation: pulse-op 1s infinite;
+}
+
+.referral-status.valid::before {
+  content: "✅";
+}
+
+.referral-status.invalid::before {
+  content: "❌";
+}
+
+@keyframes pulse-op {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* موبایل */
+@media (max-width: 480px) {
+  .referral-field {
+    padding: var(--space-3);
+    margin-block: var(--space-4);
+  }
+
+  .referral-field .field-label {
+    font-size: 13px;
+  }
+
+  .referral-input {
+    font-size: 14px;
+    padding-right: 44px;
+  }
+}

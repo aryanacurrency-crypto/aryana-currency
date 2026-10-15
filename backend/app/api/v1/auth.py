@@ -16,7 +16,14 @@ from app.core.security import (
     verify_password,
 )
 from app.core.telegram import notify_new_user
-from app.models import User, Wallet
+from app.models import (
+    LockedBalance,
+    PlatformSettings,
+    Referral,
+    ReferralCode,
+    User,
+    Wallet,
+)
 from app.models.enums import Currency
 from app.models.password_reset import PasswordResetToken
 from app.schemas.auth import (
@@ -59,6 +66,33 @@ def register(payload: UserCreate, db: Session = Depends(get_db)):
                 detail="این شماره تلفن قبلاً ثبت شده است",
             )
 
+    # ═══ چک کد رفرال (اگه داده شده) ═══
+    referrer = None
+    referral_code_obj = None
+    normalized_code = None
+
+    if payload.referral_code:
+        normalized_code = payload.referral_code.upper().strip()
+
+        referral_code_obj = db.query(ReferralCode).filter(
+            ReferralCode.code == normalized_code
+        ).first()
+
+        if not referral_code_obj:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="کد دعوت نامعتبر است",
+            )
+
+        referrer = db.query(User).get(referral_code_obj.user_id)
+
+        # جلوگیری از دعوت خود
+        if referrer and referrer.email == payload.email:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="نمی‌توانید خودتان را دعوت کنید",
+            )
+
     # ساخت کاربر
     user = User(
         email=payload.email,
@@ -69,6 +103,8 @@ def register(payload: UserCreate, db: Session = Depends(get_db)):
         hesab_pay_holder_name=payload.hesab_pay_holder_name,
         usdt_wallet_address=payload.usdt_wallet_address,
         usdt_wallet_network=payload.usdt_wallet_network,
+        referred_by_id=referrer.id if referrer else None,
+        referral_code_used=normalized_code,
     )
     db.add(user)
     db.flush()
@@ -76,6 +112,41 @@ def register(payload: UserCreate, db: Session = Depends(get_db)):
     # ساخت دو کیف پول خالی
     for currency in (Currency.AFN, Currency.USDT):
         db.add(Wallet(user_id=user.id, currency=currency))
+
+    # ═══ ثبت Referral + LockedBalance برای دعوت‌کننده ═══
+    if referrer and referral_code_obj:
+        platform_settings = db.query(PlatformSettings).first()
+
+        if platform_settings and platform_settings.referral_enabled:
+            # ثبت رکورد referral
+            referral = Referral(
+                referrer_id=referrer.id,
+                referred_user_id=user.id,
+                code_used=normalized_code,
+                level=1,
+                bonus_amount=platform_settings.referral_bonus_amount,
+                bonus_currency=platform_settings.referral_bonus_currency,
+                bonus_status="locked",
+                expires_at=datetime.now(timezone.utc)
+                + timedelta(days=platform_settings.referral_expiry_days),
+            )
+            db.add(referral)
+            db.flush()
+
+            # اضافه به LockedBalance دعوت‌کننده
+            locked = LockedBalance(
+                user_id=referrer.id,
+                amount=platform_settings.referral_bonus_amount,
+                currency=platform_settings.referral_bonus_currency,
+                reason="referral_bonus",
+                referral_id=referral.id,
+                status="locked",
+                description=f"پاداش دعوت {user.full_name or user.email}",
+            )
+            db.add(locked)
+
+            # بروزرسانی آمار ReferralCode
+            referral_code_obj.signups += 1
 
     db.commit()
     db.refresh(user)

@@ -38,11 +38,9 @@ def calculate_order_amounts(
     محاسبه مبالغ سفارش.
 
     BUY:  کاربر تتر میخره → از نرخ sell استفاده میکنیم (بالاتر)
-          کاربر افغانی میده، پلتفرم تتر میده
     SELL: کاربر تتر میفروشه → از نرخ buy استفاده میکنیم (پایینتر)
-          کاربر تتر میده، پلتفرم افغانی میده
 
-    کارمزد ۱.۵٪ روی مبلغ افغانی اعمال میشه.
+    کارمزد پیش‌فرض ۱.۵٪ روی مبلغ افغانی اعمال میشه.
     """
     if side == OrderSide.BUY:
         rate_used = rate.sell_price_afn
@@ -55,10 +53,8 @@ def calculate_order_amounts(
     fee_afn = (gross_afn * fee_percent / Decimal("100")).quantize(Decimal("0.01"), rounding=ROUND_DOWN)
 
     if side == OrderSide.BUY:
-        # کاربر افغانی میده: gross + fee
         net_afn = gross_afn + fee_afn
     else:
-        # کاربر افغانی میگیره: gross - fee
         net_afn = gross_afn - fee_afn
 
     return {
@@ -76,17 +72,7 @@ def create_order(
     side: OrderSide,
     amount_usdt: Decimal,
 ) -> Order:
-    """
-    ساخت سفارش جدید.
-
-    مراحل:
-    1. اعتبارسنجی حداقل مقدار
-    2. گرفتن نرخ فعال
-    3. محاسبه مبالغ
-    4. چک کردن موجودی کاربر (برای فروش تتر)
-    5. ساخت رکورد Order
-    """
-    # ۱. حداقل مقدار
+    """ساخت سفارش جدید."""
     min_usdt = Decimal(str(settings.MIN_ORDER_USD))
     if amount_usdt < min_usdt:
         raise HTTPException(
@@ -94,13 +80,9 @@ def create_order(
             detail=f"حداقل مقدار سفارش {min_usdt} USDT است",
         )
 
-    # ۲. نرخ
     rate = get_active_rate(db)
-
-    # ۳. محاسبات
     calc = calculate_order_amounts(side, amount_usdt, rate)
 
-    # ۴. بررسی موجودی (فقط برای SELL)
     if side == OrderSide.SELL:
         wallet = db.query(Wallet).filter(
             Wallet.user_id == user.id,
@@ -113,7 +95,6 @@ def create_order(
                 detail="موجودی تتر کافی نیست",
             )
 
-    # ۵. ساخت سفارش
     order = Order(
         reference=generate_reference(),
         user_id=user.id,
@@ -130,7 +111,6 @@ def create_order(
     )
     db.add(order)
 
-    # ۶. قفل کردن موجودی برای SELL
     if side == OrderSide.SELL:
         wallet = db.query(Wallet).filter(
             Wallet.user_id == user.id,
@@ -146,7 +126,8 @@ def create_order(
 def complete_order(db: Session, order: Order, admin_user: User, platform_ref: str) -> Order:
     """
     تکمیل سفارش توسط ادمین.
-    اینجا دفتر کل ثبت میشه و موجودیها آپدیت میشن.
+    اینجا دفتر کل ثبت میشه، موجودیها آپدیت میشن، تیکت داده میشه،
+    و کمیسیون VIP توزیع میشه.
     """
     if order.status not in (OrderStatus.PENDING, OrderStatus.AWAITING_REVIEW, OrderStatus.PROCESSING):
         raise HTTPException(
@@ -174,62 +155,51 @@ def complete_order(db: Session, order: Order, admin_user: User, platform_ref: st
 
     if order.side == OrderSide.BUY:
         # کاربر تتر میخره
-        # 1. کاربر USDT میگیره
         ledger_service.record_entry(
             db, tx_id, ledger_service.user_wallet_account(order.user_id),
             Currency.USDT, LedgerDirection.CREDIT, order.amount_usdt,
             user_id=order.user_id, order_id=order.id, description="دریافت تتر از خرید",
         )
-        # 2. پلتفرم USDT میده
         ledger_service.record_entry(
             db, tx_id, ledger_service.platform_usdt_account(),
             Currency.USDT, LedgerDirection.DEBIT, order.amount_usdt,
             order_id=order.id, description="ارسال تتر بابت خرید کاربر",
         )
-        # 3. پلتفرم AFN میگیره
         ledger_service.record_entry(
             db, tx_id, ledger_service.platform_afn_account(),
             Currency.AFN, LedgerDirection.CREDIT, order.net_afn,
             order_id=order.id, description="دریافت افغانی از خرید کاربر",
         )
-        # 4. کاربر AFN میده (خارج از سیستم، فقط برای توازن)
         ledger_service.record_entry(
             db, tx_id, ledger_service.user_wallet_account(order.user_id),
             Currency.AFN, LedgerDirection.DEBIT, order.net_afn,
             user_id=order.user_id, order_id=order.id, description="پرداخت افغانی بابت خرید",
         )
 
-        # آپدیت موجودی کاربر
         user_usdt_wallet.balance += order.amount_usdt
 
     else:  # SELL
-        # کاربر تتر میفروشه
-        # 1. پلتفرم USDT میگیره
         ledger_service.record_entry(
             db, tx_id, ledger_service.platform_usdt_account(),
             Currency.USDT, LedgerDirection.CREDIT, order.amount_usdt,
             order_id=order.id, description="دریافت تتر از فروش کاربر",
         )
-        # 2. کاربر USDT میده (unlock + کم کردن)
         ledger_service.record_entry(
             db, tx_id, ledger_service.user_wallet_account(order.user_id),
             Currency.USDT, LedgerDirection.DEBIT, order.amount_usdt,
             user_id=order.user_id, order_id=order.id, description="پرداخت تتر بابت فروش",
         )
-        # 3. پلتفرم AFN میده
         ledger_service.record_entry(
             db, tx_id, ledger_service.platform_afn_account(),
             Currency.AFN, LedgerDirection.DEBIT, order.net_afn,
             order_id=order.id, description="ارسال افغانی بابت فروش کاربر",
         )
-        # 4. کاربر AFN میگیره
         ledger_service.record_entry(
             db, tx_id, ledger_service.user_wallet_account(order.user_id),
             Currency.AFN, LedgerDirection.CREDIT, order.net_afn,
             user_id=order.user_id, order_id=order.id, description="دریافت افغانی از فروش",
         )
 
-        # آپدیت موجودی کاربر
         user_usdt_wallet.locked_balance -= order.amount_usdt
         user_usdt_wallet.balance -= order.amount_usdt
         user_afn_wallet.balance += order.net_afn
@@ -248,6 +218,32 @@ def complete_order(db: Session, order: Order, admin_user: User, platform_ref: st
     order.reviewed_by = admin_user.id
     order.reviewed_at = datetime.now(timezone.utc)
 
+    db.flush()  # برای اینکه order.status نهایی بشه
+
+    # ═══════════════════════════════════════════
+    # 🎁 اعطای تیکت گردونه
+    # ═══════════════════════════════════════════
+    try:
+        from app.services import wheel as wheel_service
+        user = db.query(User).get(order.user_id)
+        if user:
+            wheel_service.give_trade_ticket(db, user, order.id)
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Wheel ticket failed: {e}")
+
+    # ═══════════════════════════════════════════
+    # 💰 توزیع کمیسیون VIP و آزادسازی پاداش رفرال
+    # ═══════════════════════════════════════════
+    try:
+        from app.services import referral as referral_service
+        user = db.query(User).get(order.user_id)
+        if user:
+            referral_service.on_first_successful_trade(db, user, order)
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Referral commission failed: {e}")
+
     db.commit()
     db.refresh(order)
     return order
@@ -261,7 +257,6 @@ def cancel_order(db: Session, order: Order) -> Order:
             detail="فقط سفارشهای در انتظار پرداخت قابل لغو هستند",
         )
 
-    # اگه SELL بود، قفل رو باز کن
     if order.side == OrderSide.SELL:
         wallet = db.query(Wallet).filter(
             Wallet.user_id == order.user_id,

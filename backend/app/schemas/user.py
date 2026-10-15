@@ -20,6 +20,13 @@ class UserCreate(UserBase):
     usdt_wallet_address: str | None = None
     usdt_wallet_network: str | None = None
 
+    # ═══ Referral / Partner Code ═══
+    referral_code: str | None = Field(
+        default=None,
+        max_length=20,
+        description="کد دعوت یا کد پارتنر (اختیاری)",
+    )
+
 
 class UserUpdate(BaseModel):
     """ویرایش پروفایل."""
@@ -43,4 +50,7 @@ class UserRead(UserBase):
     hesab_pay_holder_name: str | None = None
     usdt_wallet_address: str | None = None
     usdt_wallet_network: str | None = None
+    referred_by_id: int | None = None
+    referral_code_used: str | None = None
+    available_tickets: int = 0
     created_at: datetime

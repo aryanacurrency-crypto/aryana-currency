@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
@@ -35,7 +35,6 @@
 
   <div class="auth-page">
 
-    <!-- Left: Form -->
     <main class="auth-form-panel">
       <div class="auth-form-container">
 
@@ -88,6 +87,30 @@
             >
           </div>
 
+          <!-- ═══════════════════════════════════
+               🎁 Referral / Partner Code
+               ═══════════════════════════════════ -->
+          <div class="field referral-field">
+            <label class="field-label" for="referralCode">
+              <span>🎁 Referral / Partner Code</span>
+              <span class="optional-badge">Optional</span>
+            </label>
+            <div class="referral-input-wrap">
+              <input
+                type="text"
+                id="referralCode"
+                class="field-input referral-input"
+                placeholder="ALI123"
+                maxlength="20"
+                autocomplete="off"
+              >
+              <span class="referral-status" id="referralStatus"></span>
+            </div>
+            <div class="field-hint">
+              If someone invited you, enter their code here.
+            </div>
+          </div>
+
           <div class="field">
             <label class="field-label" for="password">Password</label>
             <div class="password-input-wrap">
@@ -136,7 +159,6 @@
       </div>
     </main>
 
-    <!-- Right: Brand -->
     <aside class="auth-brand-panel">
 
       <div class="auth-brand-top">
@@ -160,7 +182,6 @@
           Start exchanging in under 2 minutes.
         </p>
 
-        <!-- Mock Dashboard -->
         <div class="mock-dashboard">
           <div class="mock-header">
             <div class="mock-brand">
@@ -201,7 +222,6 @@
           </div>
         </div>
 
-        <!-- Stats -->
         <div class="auth-stats">
           <div class="auth-stat">
             <div class="auth-stat-value">24/7</div>
@@ -217,7 +237,6 @@
           </div>
         </div>
 
-        <!-- Testimonial -->
         <div class="auth-testimonial">
           <div class="auth-testimonial-stars">★★★★★</div>
           <p class="auth-testimonial-text">
@@ -232,7 +251,6 @@
           </div>
         </div>
 
-        <!-- Trust -->
         <div class="auth-trust">
           <div class="auth-trust-item">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">

@@ -1,0 +1,695 @@
+/* ═══════════════════════════════════════
+   ARYANA CURRENCY — Lucky Wheel v2
+   ═══════════════════════════════════════ */
+
+.wheel-page-header {
+  text-align: center;
+}
+
+.wheel-page-header h1 {
+  font-size: 32px;
+}
+
+/* ═══ Top Stats Bar ═══ */
+
+.wheel-top-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.wheel-top-stat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  transition: all 0.2s ease;
+}
+
+.wheel-top-stat-icon {
+  font-size: 26px;
+  flex-shrink: 0;
+}
+
+.wheel-top-stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 2px;
+}
+
+.wheel-top-stat-value {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.wheel-top-stat-value.gold {
+  color: var(--gold);
+}
+
+.wheel-top-stat-btn {
+  cursor: pointer;
+  border-color: rgba(240, 185, 11, 0.35);
+  background: linear-gradient(135deg,
+    rgba(240, 185, 11, 0.08),
+    rgba(240, 185, 11, 0.02));
+  font-family: inherit;
+  text-align: left;
+}
+
+.wheel-top-stat-btn:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(240, 185, 11, 0.15);
+}
+
+/* ═══ Wheel Card ═══ */
+
+.wheel-card {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(240, 185, 11, 0.10), transparent 60%),
+    var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8) var(--space-6);
+  margin-bottom: var(--space-6);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.wheel-container {
+  position: relative;
+  display: inline-block;
+  margin: 0 auto var(--space-6);
+}
+
+/* ─── Pointer ─── */
+.wheel-pointer {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 32px;
+  height: 40px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+.wheel-pointer svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Wheel Wrapper ─── */
+.wheel-wrapper {
+  position: relative;
+  width: 420px;
+  height: 420px;
+  max-width: 90vw;
+  max-height: 90vw;
+}
+
+.wheel {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: relative;
+  transform-origin: center center;
+  will-change: transform;
+  filter: drop-shadow(0 0 40px rgba(240, 185, 11, 0.3));
+}
+
+.wheel-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ─── Center Hub ─── */
+.wheel-hub {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFD700 0%, #B58C0F 100%);
+  box-shadow:
+    0 0 0 6px rgba(11, 14, 17, 0.9),
+    0 0 0 10px rgba(240, 185, 11, 0.3),
+    0 8px 24px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(240, 185, 11, 0.5);
+  display: grid;
+  place-items: center;
+  z-index: 5;
+  animation: hub-glow 3s ease-in-out infinite;
+}
+
+@keyframes hub-glow {
+  0%, 100% {
+    box-shadow:
+      0 0 0 6px rgba(11, 14, 17, 0.9),
+      0 0 0 10px rgba(240, 185, 11, 0.3),
+      0 8px 24px rgba(0, 0, 0, 0.6),
+      0 0 40px rgba(240, 185, 11, 0.5);
+  }
+  50% {
+    box-shadow:
+      0 0 0 6px rgba(11, 14, 17, 0.9),
+      0 0 0 10px rgba(240, 185, 11, 0.5),
+      0 8px 24px rgba(0, 0, 0, 0.6),
+      0 0 70px rgba(240, 185, 11, 0.8);
+  }
+}
+
+.wheel-hub-inner {
+  font-size: 32px;
+}
+
+/* ─── Glow Effect (نزدیک jackpot) ─── */
+.wheel-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  box-shadow:
+    0 0 60px 20px rgba(240, 185, 11, 0.6),
+    inset 0 0 60px rgba(255, 215, 0, 0.4);
+  z-index: 1;
+}
+
+.wheel-glow.active {
+  opacity: 1;
+  animation: glow-pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* ─── Spin Button ─── */
+.spin-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 18px 48px;
+  background: linear-gradient(135deg, #FFD700 0%, #B58C0F 100%);
+  color: #0B0E11;
+  border: none;
+  border-radius: var(--radius-full);
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow:
+    0 8px 24px rgba(240, 185, 11, 0.4),
+    0 0 0 4px rgba(240, 185, 11, 0.15);
+  margin-bottom: var(--space-4);
+  position: relative;
+  overflow: hidden;
+}
+
+.spin-btn:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow:
+    0 12px 36px rgba(240, 185, 11, 0.55),
+    0 0 0 6px rgba(240, 185, 11, 0.2);
+}
+
+.spin-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.spin-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--bg-hover);
+  color: var(--text-tertiary);
+  box-shadow: none;
+}
+
+.spin-btn.spinning {
+  animation: spin-btn-pulse 0.8s ease-in-out infinite;
+}
+
+@keyframes spin-btn-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.spin-btn-text {
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.spin-btn-hint {
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.85;
+  letter-spacing: 0.5px;
+}
+
+/* ─── Result ─── */
+.wheel-result {
+  margin-top: var(--space-5);
+  padding: var(--space-5);
+  background: linear-gradient(135deg,
+    rgba(240, 185, 11, 0.10),
+    rgba(240, 185, 11, 0.04));
+  border: 1px solid rgba(240, 185, 11, 0.35);
+  border-radius: var(--radius-lg);
+  animation: result-pop 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+@keyframes result-pop {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.wheel-result-icon {
+  font-size: 56px;
+  margin-bottom: var(--space-3);
+  animation: bounce-icon 1s ease-in-out infinite;
+}
+
+@keyframes bounce-icon {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.wheel-result-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.wheel-result-amount {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -1px;
+  margin-bottom: var(--space-4);
+  text-shadow: 0 0 30px rgba(240, 185, 11, 0.5);
+}
+
+.wheel-result-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+/* ═══ Info Card ═══ */
+
+.wheel-info-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+.wheel-info-card h2 {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  margin-bottom: var(--space-5);
+}
+
+.wheel-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.wheel-info-item {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  transition: all 0.2s ease;
+}
+
+.wheel-info-item:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+
+.wheel-info-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.wheel-info-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.wheel-info-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.wheel-info-desc strong {
+  color: var(--gold);
+}
+
+/* ═══ Winners Card ═══ */
+
+.wheel-winners-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.wheel-winners-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-5);
+}
+
+.wheel-winners-header h2 {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+
+.wheel-winners-live {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: var(--red);
+  animation: live-blink 1.5s ease-in-out infinite;
+}
+
+@keyframes live-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.wheel-winners-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.wheel-winner-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+
+.wheel-winner-item:hover {
+  background: var(--bg-hover);
+}
+
+.wheel-winner-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: white;
+  font-weight: 800;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.wheel-winner-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.wheel-winner-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.wheel-winner-time {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-top: 1px;
+}
+
+.wheel-winner-prize {
+  font-size: 14px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.wheel-winner-placeholder {
+  text-align: center;
+  padding: var(--space-4);
+  color: var(--text-tertiary);
+  font-size: 13px;
+}
+
+/* ═══ Buy Ticket Modal ═══ */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--space-4);
+  animation: fade-in 0.2s ease;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 420px;
+  animation: modal-pop 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+@keyframes modal-pop {
+  from {
+    transform: scale(0.85) translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-5);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.modal-header h3 {
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 24px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.modal-close:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.modal-body {
+  padding: var(--space-5);
+}
+
+.qty-selector {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.qty-btn {
+  padding: 12px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.qty-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.qty-btn.active {
+  background: var(--gold);
+  color: var(--text-inverse);
+  border-color: var(--gold);
+}
+
+.buy-summary {
+  padding: var(--space-4);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  margin-top: var(--space-4);
+}
+
+.buy-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.buy-row:last-child {
+  margin-bottom: 0;
+}
+
+.buy-row.total {
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--border-subtle);
+  font-size: 15px;
+  color: var(--text-primary);
+}
+
+.buy-row.total strong {
+  color: var(--gold);
+  font-size: 18px;
+}
+
+.modal-footer {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.modal-footer .btn {
+  flex: 1;
+}
+
+/* ═══ Confetti Canvas ═══ */
+
+.confetti-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2000;
+  display: none;
+}
+
+/* ═══ Responsive ═══ */
+
+@media (max-width: 900px) {
+  .wheel-top-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .wheel-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .wheel-page-header h1 {
+    font-size: 24px;
+  }
+
+  .wheel-card {
+    padding: var(--space-5) var(--space-4);
+  }
+
+  .wheel-wrapper {
+    width: 320px;
+    height: 320px;
+  }
+
+  .wheel-hub {
+    width: 68px;
+    height: 68px;
+  }
+
+  .wheel-hub-inner {
+    font-size: 26px;
+  }
+
+  .spin-btn {
+    padding: 16px 36px;
+    font-size: 15px;
+  }
+
+  .wheel-result-amount {
+    font-size: 24px;
+  }
+
+  .wheel-top-stats {
+    grid-template-columns: 1fr;
+  }
+}

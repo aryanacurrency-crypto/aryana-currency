@@ -54,6 +54,22 @@ class Settings(BaseSettings):
     TELEGRAM_BOT_TOKEN: str = ""
     TELEGRAM_CHAT_ID: str = ""
 
+    # ═══════════════════════════════════════
+    #   Referral — Fallback Defaults
+    #   (مقادیر اصلی از دیتابیس خونده میشن)
+    # ═══════════════════════════════════════
+    DEFAULT_REFERRAL_BONUS_AFN: float = 15.0
+    DEFAULT_REFERRAL_EXPIRY_DAYS: int = 90
+    DEFAULT_REFERRAL_MAX_LEVELS: int = 1
+
+    # ═══════════════════════════════════════
+    #   Wheel — Fallback Defaults
+    #   (مقادیر اصلی از دیتابیس خونده میشن)
+    # ═══════════════════════════════════════
+    DEFAULT_TICKET_PRICE_AFN: float = 50.0
+    DEFAULT_TICKET_EXPIRY_DAYS: int = 7
+    DEFAULT_MAX_SPINS_PER_DAY: int = 10
+
     @property
     def cors_origins_list(self) -> list[str]:
         """تبدیل رشته CORS به لیست."""

@@ -1,4 +1,4 @@
-﻿/* ═══════════════════════════════════════
+﻿﻿/* ═══════════════════════════════════════
    ARYANA CURRENCY — Admin v2 Common
    Shared logic for all admin pages
    ═══════════════════════════════════════ */
@@ -63,6 +63,13 @@ const AdminCommon = {
         badge: 'orders',
       },
       {
+        href: 'p2p-orders.html',
+        icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+        label: 'P2P Orders',
+        key: 'p2p-orders',
+        badge: 'p2p',
+      },
+      {
         href: 'kyc.html',
         icon: '<path d="M9 12l2 2 4-4"/><path d="M21 12c0 5-3.5 8.5-9 10-5.5-1.5-9-5-9-10V5l9-3 9 3z"/>',
         label: 'KYC',
@@ -87,6 +94,12 @@ const AdminCommon = {
         icon: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
         label: 'Users',
         key: 'users',
+      },
+      {
+        href: 'wheel-settings.html',
+        icon: '<circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93L4.93 19.07"/>',
+        label: 'Lucky Wheel',
+        key: 'wheel',
       },
       {
         href: 'settings.html',
@@ -186,6 +199,14 @@ const AdminCommon = {
       this.setBadge('withdrawals', stats.pending || 0);
     } catch (e) {
       console.error('Badge withdrawals failed:', e);
+    }
+
+    // P2P در انتظار
+    try {
+      const p2p = await API.getAdminP2PPendingReview();
+      this.setBadge('p2p', p2p.length || 0);
+    } catch (e) {
+      console.error('Badge P2P failed:', e);
     }
   },
 

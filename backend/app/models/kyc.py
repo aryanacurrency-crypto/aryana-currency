@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import DateTime, Enum as SAEnum, ForeignKey, String, Text, func
+from sqlalchemy import Boolean, DateTime, Enum as SAEnum, ForeignKey, String, Text, func
 from sqlalchemy.dialects.postgresql import BYTEA
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -17,18 +17,32 @@ class KycDocument(Base):
         ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False
     )
 
-    # نوع مدرک: national_id / passport / selfie
+    # نوع مدرک: national_id / passport / selfie / tazkira / driver_license
     doc_type: Mapped[str] = mapped_column(String(50), nullable=False)
 
-    # مسیر فایل (برای سازگاری با نسخه قبلی — اختیاری)
+    # ═══ اطلاعات شخصی ═══
+    first_name: Mapped[str | None] = mapped_column(String(120))
+    last_name: Mapped[str | None] = mapped_column(String(120))
+    phone_number: Mapped[str | None] = mapped_column(String(30))
+
+    # ═══ اطلاعات سند ═══
+    document_type: Mapped[str | None] = mapped_column(String(50))
+    document_number: Mapped[str | None] = mapped_column(String(100))
+
+    # مسیر فایل (سازگاری با نسخه قبلی)
     file_path: Mapped[str | None] = mapped_column(String(255))
 
-    # داده‌ی فایل (برای ذخیره در دیتابیس)
+    # داده‌ی فایل
     file_data: Mapped[bytes | None] = mapped_column(BYTEA)
     file_mime: Mapped[str | None] = mapped_column(String(100))
 
     status: Mapped[KycStatus] = mapped_column(
         SAEnum(KycStatus), default=KycStatus.PENDING, nullable=False
+    )
+
+    # ═══ وضعیت کلی کاربر ═══
+    is_user_fully_verified: Mapped[bool] = mapped_column(
+        Boolean, default=False, nullable=False
     )
 
     reviewed_by: Mapped[int | None] = mapped_column(

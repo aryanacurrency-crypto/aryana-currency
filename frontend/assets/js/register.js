@@ -20,6 +20,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const successBox = document.getElementById('successBox');
   const emailInput = document.getElementById('email');
   const fullNameInput = document.getElementById('fullName');
+  const referralInput = document.getElementById('referralCode');
+  const referralStatus = document.getElementById('referralStatus');
 
   // ─── فقط انگلیسی توی ایمیل ───
   preventNonEnglish(emailInput);
@@ -27,10 +29,78 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ─── اسم: فقط حروف انگلیسی و فاصله ───
   preventNonEnglish(fullNameInput, { mode: 'name' });
 
-  // ─── Show/Hide Password (هر دو فیلد) ───
+  // ─── Show/Hide Password ───
   attachPasswordToggle('password', 'passwordToggle');
   attachPasswordToggle('passwordConfirm', 'passwordConfirmToggle');
 
+  // ═══════════════════════════════════════
+  //   🎁 Referral Code — Auto-fill از URL
+  // ═══════════════════════════════════════
+  const urlParams = new URLSearchParams(window.location.search);
+  const refFromUrl =
+    urlParams.get('ref') ||
+    urlParams.get('referral') ||
+    urlParams.get('partner');
+
+  if (refFromUrl && referralInput) {
+    referralInput.value = refFromUrl.toUpperCase();
+    validateReferralCode(referralInput.value);
+  }
+
+  // ═══════════════════════════════════════
+  //   🎁 Referral Code — Validation زنده
+  // ═══════════════════════════════════════
+  let referralCheckTimeout;
+
+  if (referralInput) {
+    // فقط حروف و اعداد انگلیسی، خودکار uppercase
+    referralInput.addEventListener('input', (e) => {
+      e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+
+      const code = e.target.value.trim();
+      referralStatus.className = 'referral-status';
+
+      if (!code) {
+        return;
+      }
+
+      if (code.length < 4) {
+        return;
+      }
+
+      clearTimeout(referralCheckTimeout);
+      referralStatus.classList.add('checking');
+
+      referralCheckTimeout = setTimeout(() => {
+        validateReferralCode(code);
+      }, 500);
+    });
+  }
+
+  async function validateReferralCode(code) {
+    try {
+      const res = await fetch(`${CONFIG.API_BASE}/referral/validate/${encodeURIComponent(code)}`, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' },
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.valid) {
+        referralStatus.className = 'referral-status valid';
+        referralStatus.title = `Invited by: ${data.referrer_name}`;
+      } else {
+        referralStatus.className = 'referral-status invalid';
+      }
+    } catch (err) {
+      console.error('Referral validation error:', err);
+      referralStatus.className = 'referral-status';
+    }
+  }
+
+  // ═══════════════════════════════════════
+  //              Form Submit
+  // ═══════════════════════════════════════
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -42,6 +112,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const phone = form.phone.value.trim() || null;
     const password = form.password.value;
     const passwordConfirm = form.passwordConfirm.value;
+    const referralCode = referralInput ? referralInput.value.trim().toUpperCase() : null;
 
     // اعتبارسنجی
     if (!fullName || !email || !password) {
@@ -85,6 +156,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         phone,
       };
 
+      // 🎁 Referral Code (فقط اگه پر بود)
+      if (referralCode) {
+        payload.referral_code = referralCode;
+      }
+
       await API.register(payload);
 
       const tokens = await API.login(email, password);
@@ -103,7 +179,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       console.error('Register error:', err);
       let msg = err.detail || 'Registration failed. Please try again.';
 
-      if (msg.includes('ایمیل')) {
+      if (msg.includes('کد دعوت') || msg.includes('referral') || msg.includes('code')) {
+        msg = I18N.currentLang === 'en' ? 'Invalid referral code.'
+            : I18N.currentLang === 'fa' ? 'کد دعوت نامعتبر است.'
+            : 'د بلنې کوډ سم نه دی.';
+        referralStatus.className = 'referral-status invalid';
+      } else if (msg.includes('ایمیل')) {
         msg = I18N.currentLang === 'en' ? 'This email is already registered.'
             : I18N.currentLang === 'fa' ? 'این ایمیل قبلاً ثبت شده است.'
             : 'دا ایمیل لا دمخه ثبت شوی دی.';
