@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Aryana Currency — Buy & sell USDT at the best rate. A licensed digital currency exchange.">
-  <meta name="theme-color" content="#FAFBFF">
+  <meta name="theme-color" content="#0F172A">
 
   <title>ARYANA CURRENCY | Digital Exchange</title>
 
@@ -12,7 +12,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="assets/css/theme-v2.css">
   <link rel="stylesheet" href="assets/css/ui-v2.css">
@@ -59,12 +59,16 @@
     <section class="hero-section">
       <div class="container hero-grid">
 
-        <div>
-          <div class="hero-eyebrow" data-i18n="heroEyebrow">A NEW STANDARD IN EXCHANGE</div>
+        <div class="hero-left">
+          <div class="hero-eyebrow">
+            <span class="hero-eyebrow-dot"></span>
+            <span data-i18n="heroEyebrow">LICENSED EXCHANGE · AFGHANISTAN</span>
+          </div>
 
           <h1 class="hero-title">
             <span data-i18n="heroTitleLine1">Buy & sell USDT</span><br>
-            <span class="gold" data-i18n="heroTitleLine2">at the best rate.</span>
+            <span class="gold" id="typewriterText" data-i18n="heroTitleLine2">at the best rate.</span>
+            <span class="typewriter-cursor"></span>
           </h1>
 
           <p class="hero-description" data-i18n="heroDescription">
@@ -79,56 +83,120 @@
                 <polyline points="12 5 19 12 12 19"/>
               </svg>
             </a>
-            <a href="#rates" class="btn btn-outline btn-lg" data-i18n="viewRates">View Exchange Rates</a>
+            <a href="#rates" class="btn btn-outline btn-lg" data-i18n="viewRates">View Rates</a>
           </div>
 
-          <div class="hero-note">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12"/>
-            </svg>
-            <span data-i18n="heroNote">Clear rates. Licensed operation. Manual-verified payments.</span>
+          <div class="hero-trust-row">
+            <div class="hero-trust-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              <span>Licensed</span>
+            </div>
+            <div class="hero-trust-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+              <span>Verified</span>
+            </div>
+            <div class="hero-trust-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              <span>24/7</span>
+            </div>
           </div>
         </div>
 
-        <!-- Live Rate Card -->
-        <div class="hero-card">
-          <div class="hero-card-header">
-            <div class="hero-card-title">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        <!-- ═══ LIVE USDT/AFN CARD ═══ -->
+        <div class="live-rate-card" id="liveRateCard">
+          <div class="lrc-header">
+            <div class="lrc-live">
+              <span class="lrc-live-dot"></span>
+              <span>LIVE NOW</span>
+            </div>
+            <div class="lrc-pair">USDT / AFN</div>
+          </div>
+
+          <div class="lrc-price-block">
+            <div class="lrc-price-value" id="lrcPrice">—</div>
+            <div class="lrc-price-change" id="lrcChange">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="18 15 12 9 6 15"/>
               </svg>
-              <span data-i18n="converterTitle">Live USDT Rate</span>
+              <span>+0.00%</span>
+              <span class="lrc-change-period">today</span>
             </div>
-            <span class="live-badge" data-i18n="liveBadge">LIVE</span>
+            <div class="lrc-timestamp">
+              <span class="lrc-ts-dot"></span>
+              <span>Updated <span id="lrcTimestamp">just now</span></span>
+            </div>
           </div>
 
-          <div class="rate-row">
-            <div>
-              <div class="rate-label" data-i18n="weBuy">You buy 1 USDT at</div>
-              <div class="rate-value sell" id="liveSellPrice">— AFN</div>
+          <div class="lrc-stats-grid">
+            <div class="lrc-stat">
+              <div class="lrc-stat-label">24h High</div>
+              <div class="lrc-stat-value" id="lrcHigh">—</div>
             </div>
-            <span class="rate-currency">USDT</span>
+            <div class="lrc-stat">
+              <div class="lrc-stat-label">24h Low</div>
+              <div class="lrc-stat-value" id="lrcLow">—</div>
+            </div>
+            <div class="lrc-stat">
+              <div class="lrc-stat-label">Spread</div>
+              <div class="lrc-stat-value" id="lrcSpread">—</div>
+            </div>
           </div>
 
-          <div class="rate-row">
-            <div>
-              <div class="rate-label" data-i18n="weSell">You sell 1 USDT at</div>
-              <div class="rate-value buy" id="liveBuyPrice">— AFN</div>
-            </div>
-            <span class="rate-currency">USDT</span>
-          </div>
-
-          <a href="pages/register.html" class="hero-card-btn">
-            <span data-i18n="startNow">Start Now</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"/>
-              <polyline points="12 5 19 12 12 19"/>
+          <div class="lrc-chart">
+            <svg viewBox="0 0 400 80" preserveAspectRatio="none" id="lrcSparkline">
+              <defs>
+                <linearGradient id="lrcGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.4"/>
+                  <stop offset="100%" stop-color="#3B82F6" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path id="lrcSparklinePath" d="" stroke="#3B82F6" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <path id="lrcSparklineArea" d="" fill="url(#lrcGrad)"/>
             </svg>
-          </a>
+          </div>
 
-          <p class="hero-card-disclaimer" data-i18n="liveDisclaimer">
-            Rates update in real-time. The final rate is locked when you place an order.
-          </p>
+          <div class="lrc-actions">
+            <a href="pages/register.html?side=BUY" class="lrc-action lrc-action-buy">
+              <div class="lrc-action-label">Buy</div>
+              <div class="lrc-action-value" id="lrcBuyPrice">—</div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </a>
+            <a href="pages/register.html?side=SELL" class="lrc-action lrc-action-sell">
+              <div class="lrc-action-label">Sell</div>
+              <div class="lrc-action-value" id="lrcSellPrice">—</div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </a>
+          </div>
+
+          <div class="lrc-footer">
+            <div class="lrc-footer-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+              <span>Liquidity: <strong>$<span id="lrcLiquidity">45,250</span></strong></span>
+            </div>
+            <div class="lrc-footer-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              <span>Avg: <strong>8 min</strong></span>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -139,143 +207,266 @@
       <div class="ticker-track" id="tickerTrack"></div>
     </div>
 
-    <!-- ═══ STATS ═══ -->
-    <section class="stats-section">
+    <!-- ═══ LIVE ACTIVITY FEED ═══ -->
+    <section class="activity-section">
       <div class="container">
-        <div class="stats-grid">
-          <div class="stat-box">
-            <div class="stat-box-value">2,500+</div>
-            <div class="stat-box-label" data-i18n="statUsers">Active Users</div>
+        <div class="activity-header">
+          <div class="activity-header-left">
+            <div class="activity-live-badge">
+              <span class="activity-live-dot"></span>
+              <span>LIVE</span>
+            </div>
+            <div>
+              <h2 class="activity-title">Live Exchange Activity</h2>
+              <p class="activity-subtitle">Real-time trades happening on Aryana Currency</p>
+            </div>
           </div>
-          <div class="stat-box">
-            <div class="stat-box-value">$450K</div>
-            <div class="stat-box-label" data-i18n="statVolume">Volume Traded</div>
+
+          <div class="activity-online">
+            <span class="activity-online-dot"></span>
+            <strong id="activityOnlineCount">2,847</strong>
+            <span>users online</span>
           </div>
-          <div class="stat-box">
-            <div class="stat-box-value">1.5%</div>
-            <div class="stat-box-label" data-i18n="statFee">Flat Fee</div>
+        </div>
+
+        <div class="activity-grid">
+
+          <!-- Live Feed -->
+          <div class="activity-feed" id="activityFeed">
+            <!-- Items injected by JS -->
           </div>
-          <div class="stat-box">
-            <div class="stat-box-value">24/7</div>
-            <div class="stat-box-label" data-i18n="statSupport">Support</div>
+
+          <!-- Today's Stats -->
+          <div class="activity-stats">
+            <div class="activity-stat-card">
+              <div class="activity-stat-icon" style="background: linear-gradient(135deg, #1E3A8A, #1E40AF);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+              </div>
+              <div class="activity-stat-content">
+                <div class="activity-stat-label">Trades Today</div>
+                <div class="activity-stat-value" id="statTrades">1,847</div>
+                <div class="activity-stat-trend up">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="18 15 12 9 6 15"/>
+                  </svg>
+                  <span>+12.5%</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="activity-stat-card">
+              <div class="activity-stat-icon" style="background: linear-gradient(135deg, #1E40AF, #2563EB);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="1" x2="12" y2="23"/>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+              </div>
+              <div class="activity-stat-content">
+                <div class="activity-stat-label">Volume 24h</div>
+                <div class="activity-stat-value">$<span id="statVolume">47,250</span></div>
+                <div class="activity-stat-trend up">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="18 15 12 9 6 15"/>
+                  </svg>
+                  <span>+8.3%</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="activity-stat-card">
+              <div class="activity-stat-icon" style="background: linear-gradient(135deg, #8B5CF6, #7C3AED);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+              </div>
+              <div class="activity-stat-content">
+                <div class="activity-stat-label">Success Rate</div>
+                <div class="activity-stat-value"><span id="statSuccess">99.8</span>%</div>
+                <div class="activity-stat-trend up">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="18 15 12 9 6 15"/>
+                  </svg>
+                  <span>+0.2%</span>
+                </div>
+              </div>
+            </div>
+
           </div>
+
         </div>
       </div>
     </section>
 
-    <!-- ═══ RATES ═══ -->
+    <!-- ═══ RATES (Exchange Cards) ═══ -->
     <section class="section" id="rates">
       <div class="container">
         <div class="section-header">
-          <div class="section-kicker" data-i18n="ratesKicker">MARKET OVERVIEW</div>
-          <h2 class="section-title" data-i18n="ratesTitle">Exchange rates at a glance</h2>
-          <p class="section-desc" data-i18n="ratesDescription">Live rates for USDT/AFN, updated by our team.</p>
+          <div class="section-kicker">EXCHANGE</div>
+          <h2 class="section-title">Trade USDT in seconds</h2>
+          <p class="section-desc">Buy, sell, calculate and choose your network — all in one place.</p>
         </div>
 
-        <div class="rates-grid">
-          <div class="rate-card">
-            <div class="rate-card-header">
-              <div class="rate-icon">₮</div>
-              <div>
-                <div class="rate-card-name" data-i18n="buyUsdt">Buy USDT</div>
-                <div class="rate-card-code">USDT / AFN</div>
-              </div>
-            </div>
-            <div class="rate-card-price" id="rateSellCard">— AFN</div>
-            <div class="rate-card-unit" data-i18n="perUsdt">per 1 USDT</div>
-            <div class="rate-card-footer">
-              <span data-i18n="feeLabel">Platform fee</span>
-              <strong data-i18n="feeValue">1.5%</strong>
-            </div>
-          </div>
+        <div class="exchange-grid">
 
-          <div class="rate-card">
-            <div class="rate-card-header">
-              <div class="rate-icon">₮</div>
-              <div>
-                <div class="rate-card-name" data-i18n="sellUsdt">Sell USDT</div>
-                <div class="rate-card-code">USDT / AFN</div>
-              </div>
-            </div>
-            <div class="rate-card-price" id="rateBuyCard">— AFN</div>
-            <div class="rate-card-unit" data-i18n="perUsdt">per 1 USDT</div>
-            <div class="rate-card-footer">
-              <span data-i18n="feeLabel">Platform fee</span>
-              <strong data-i18n="feeValue">1.5%</strong>
-            </div>
-          </div>
-
-          <div class="rate-card">
-            <div class="rate-card-header">
-              <div class="rate-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"/>
-                  <line x1="12" y1="8" x2="12" y2="12"/>
-                  <line x1="12" y1="16" x2="12.01" y2="16"/>
+          <!-- Buy USDT -->
+          <div class="exchange-card">
+            <div class="exchange-card-top">
+              <div class="exchange-icon buy">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"/>
+                  <line x1="5" y1="12" x2="19" y2="12"/>
                 </svg>
               </div>
-              <div>
-                <div class="rate-card-name" data-i18n="minOrderTitle">Minimum order</div>
-                <div class="rate-card-code" data-i18n="minOrderCode">PER TRANSACTION</div>
-              </div>
+              <div class="exchange-badge buy">BUY</div>
             </div>
-            <div class="rate-card-price">10 USDT</div>
-            <div class="rate-card-unit" data-i18n="minOrderUnit">≈ $10 USD</div>
-            <div class="rate-card-footer">
-              <span data-i18n="noMaxLabel">No maximum</span>
-              <strong data-i18n="noMaxValue">Flexible</strong>
+            <h3 class="exchange-title">Buy USDT</h3>
+            <div class="exchange-price" id="buyCardPrice">— AFN</div>
+            <div class="exchange-unit">per 1 USDT</div>
+            <div class="exchange-example">
+              <span>100 USDT =</span>
+              <strong id="buyCardExample">7,050 AFN</strong>
             </div>
+            <a href="pages/register.html?side=BUY" class="exchange-btn buy">
+              Start Buying
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </a>
           </div>
 
-          <div class="rate-card">
-            <div class="rate-card-header">
-              <div class="rate-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Sell USDT -->
+          <div class="exchange-card">
+            <div class="exchange-card-top">
+              <div class="exchange-icon sell">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+              </div>
+              <div class="exchange-badge sell">SELL</div>
+            </div>
+            <h3 class="exchange-title">Sell USDT</h3>
+            <div class="exchange-price" id="sellCardPrice">— AFN</div>
+            <div class="exchange-unit">per 1 USDT</div>
+            <div class="exchange-example">
+              <span>100 USDT =</span>
+              <strong id="sellCardExample">7,020 AFN</strong>
+            </div>
+            <a href="pages/register.html?side=SELL" class="exchange-btn sell">
+              Start Selling
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </a>
+          </div>
+
+          <!-- Calculator -->
+          <div class="exchange-card">
+            <div class="exchange-card-top">
+              <div class="exchange-icon calc">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="4" y="2" width="16" height="20" rx="2"/>
+                  <line x1="8" y1="6" x2="16" y2="6"/>
+                  <line x1="8" y1="10" x2="8" y2="10.01"/>
+                  <line x1="12" y1="10" x2="12" y2="10.01"/>
+                  <line x1="16" y1="10" x2="16" y2="10.01"/>
+                  <line x1="8" y1="14" x2="8" y2="14.01"/>
+                  <line x1="12" y1="14" x2="12" y2="14.01"/>
+                  <line x1="16" y1="14" x2="16" y2="14.01"/>
+                  <line x1="8" y1="18" x2="16" y2="18"/>
+                </svg>
+              </div>
+              <div class="exchange-badge calc">TOOL</div>
+            </div>
+            <h3 class="exchange-title">Calculator</h3>
+            <div class="exchange-calc">
+              <div class="calc-input">
+                <input type="number" id="calcAmount" value="100" min="1" step="1" placeholder="100">
+                <span class="calc-unit">USDT</span>
+              </div>
+              <div class="calc-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"/>
+                  <polyline points="19 12 12 19 5 12"/>
+                </svg>
+              </div>
+              <div class="calc-output">
+                <div class="calc-output-value" id="calcResult">7,050</div>
+                <span class="calc-output-unit">AFN</span>
+              </div>
+            </div>
+            <button class="exchange-btn calc" id="calcBtn">
+              Calculate
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Networks -->
+          <div class="exchange-card">
+            <div class="exchange-card-top">
+              <div class="exchange-icon network">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="10"/>
                   <line x1="2" y1="12" x2="22" y2="12"/>
                   <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
                 </svg>
               </div>
-              <div>
-                <div class="rate-card-name" data-i18n="networkTitle">Networks</div>
-                <div class="rate-card-code" data-i18n="networkCode">USDT TRANSFER</div>
-              </div>
+              <div class="exchange-badge network">3 NETWORKS</div>
             </div>
-            <div class="network-list">
-              <div class="network-item">
-                <div class="network-logo tron">
+            <h3 class="exchange-title">Transfer Networks</h3>
+            <div class="exchange-networks">
+              <div class="network-row">
+                <div class="network-row-icon tron">
                   <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M3.2 3.1l8.2 4.7 6.2-2.5L3.2 3.1zm8.9 5.7l-8.9-5l14.5 2.1-5.6 2.9zm6.1-2.5l-5.5 2.9 5.5 6.8V6.3zm-6.6 3.6L4.4 5.7l6.2 14.2 1-9zm1.5.1l-1 8.8 5.9-8.7-4.9-.1z"/>
                   </svg>
                 </div>
-                <span class="network-name">TRC20</span>
-                <span class="network-sub">Tron</span>
+                <div class="network-row-info">
+                  <div class="network-row-name">TRC20</div>
+                  <div class="network-row-desc">Tron · Fastest</div>
+                </div>
+                <div class="network-row-badge recommended">★</div>
               </div>
-              <div class="network-item">
-                <div class="network-logo bnb">
+
+              <div class="network-row">
+                <div class="network-row-icon bnb">
                   <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2l3.09 3.09L12 8.18 8.91 5.09 12 2zm-6.91 6.91L8.18 12l-3.09 3.09L2 12l3.09-3.09zM12 15.82L15.09 18.91 12 22 8.91 18.91 12 15.82zm6.91-6.91L22 12l-3.09 3.09L15.82 12l3.09-3.09zM12 9.27L14.73 12 12 14.73 9.27 12 12 9.27z"/>
                   </svg>
                 </div>
-                <span class="network-name">BEP20</span>
-                <span class="network-sub">BNB Chain</span>
+                <div class="network-row-info">
+                  <div class="network-row-name">BEP20</div>
+                  <div class="network-row-desc">BNB Chain · Low fees</div>
+                </div>
               </div>
-              <div class="network-item">
-                <div class="network-logo eth">
+
+              <div class="network-row">
+                <div class="network-row-icon eth">
                   <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 1.5L5.5 11.2 12 15l6.5-3.8L12 1.5zM12 16.2L5.5 12.4 12 22l6.5-9.6L12 16.2z" opacity=".9"/>
                   </svg>
                 </div>
-                <span class="network-name">ERC20</span>
-                <span class="network-sub">Ethereum</span>
+                <div class="network-row-info">
+                  <div class="network-row-name">ERC20</div>
+                  <div class="network-row-desc">Ethereum · Standard</div>
+                </div>
               </div>
             </div>
-            <div class="rate-card-unit" style="margin-top: 14px;" data-i18n="networkUnit">Choose your network</div>
-            <div class="rate-card-footer">
-              <span data-i18n="supportLabel">Support</span>
-              <strong data-i18n="supportValue">24/7</strong>
-            </div>
+            <a href="pages/register.html" class="exchange-btn network">
+              Choose Network
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </a>
           </div>
+
         </div>
       </div>
     </section>
@@ -283,15 +474,15 @@
     <!-- ═══ TRUST ═══ -->
     <section class="section" style="padding-top:0;">
       <div class="container">
-        <div class="trust-grid">
+        <div class="trust-grid reveal">
           <div class="trust-card">
             <div class="trust-icon">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               </svg>
             </div>
-            <h3 data-i18n="trustOneTitle">Transparent pricing</h3>
-            <p data-i18n="trustOneText">See the applicable rate before confirming.</p>
+            <h3>Transparent pricing</h3>
+            <p>See the applicable rate before confirming.</p>
           </div>
 
           <div class="trust-card">
@@ -301,8 +492,8 @@
                 <polyline points="22 4 12 14.01 9 11.01"/>
               </svg>
             </div>
-            <h3 data-i18n="trustTwoTitle">Licensed operation</h3>
-            <p data-i18n="trustTwoText">Operating under a valid official license.</p>
+            <h3>Licensed operation</h3>
+            <p>Operating under a valid official license.</p>
           </div>
 
           <div class="trust-card">
@@ -312,8 +503,8 @@
                 <circle cx="12" cy="7" r="4"/>
               </svg>
             </div>
-            <h3 data-i18n="trustThreeTitle">Manual verification</h3>
-            <p data-i18n="trustThreeText">Every payment is verified by our team.</p>
+            <h3>Manual verification</h3>
+            <p>Every payment is verified by our team.</p>
           </div>
         </div>
       </div>
@@ -322,44 +513,44 @@
     <!-- ═══ HOW IT WORKS ═══ -->
     <section class="section" id="how" style="padding-top:0;">
       <div class="container">
-        <div class="section-header">
-          <div class="section-kicker" data-i18n="howKicker">HOW IT WORKS</div>
-          <h2 class="section-title" data-i18n="howTitle">A clearer way to exchange</h2>
-          <p class="section-desc" data-i18n="howDescription">The customer journey, designed to be simple and understandable.</p>
+        <div class="section-header reveal">
+          <div class="section-kicker">HOW IT WORKS</div>
+          <h2 class="section-title">A clearer way to exchange</h2>
+          <p class="section-desc">The customer journey, designed to be simple and understandable.</p>
         </div>
 
-        <div class="steps-grid">
+        <div class="steps-grid reveal">
           <div class="step-card">
             <div class="step-number">1</div>
-            <h3 data-i18n="stepOneTitle">Create your account</h3>
-            <p data-i18n="stepOneText">Register and complete the required verification before using eligible services.</p>
+            <h3>Create your account</h3>
+            <p>Register and complete the required verification before using eligible services.</p>
           </div>
 
           <div class="step-card">
             <div class="step-number">2</div>
-            <h3 data-i18n="stepTwoTitle">Place your order</h3>
-            <p data-i18n="stepTwoText">Choose buy or sell, enter the amount, and review the locked rate and fees.</p>
+            <h3>Place your order</h3>
+            <p>Choose buy or sell, enter the amount, and review the locked rate and fees.</p>
           </div>
 
           <div class="step-card">
             <div class="step-number">3</div>
-            <h3 data-i18n="stepThreeTitle">Track your transaction</h3>
-            <p data-i18n="stepThreeText">Transfer the funds, submit the reference, and track progress in your history.</p>
+            <h3>Track your transaction</h3>
+            <p>Transfer the funds, submit the reference, and track progress in your history.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ═══ 📱 DEVICE SHOWCASE ═══ -->
+    <!-- ═══ DEVICE SHOWCASE ═══ -->
     <section class="device-showcase-section" id="app">
       <div class="container">
-        <div class="section-header">
-          <div class="section-kicker" data-i18n="appKicker">EXPERIENCE ARYANA</div>
-          <h2 class="section-title" data-i18n="appTitle">Your exchange, on every screen</h2>
-          <p class="section-desc" data-i18n="appDescription">Live dashboard, verified trades, and real reviews — see how Aryana looks on your device.</p>
+        <div class="section-header reveal">
+          <div class="section-kicker">EXPERIENCE ARYANA</div>
+          <h2 class="section-title">Your exchange, on every screen</h2>
+          <p class="section-desc">Live dashboard, verified trades, and real reviews — see how Aryana looks on your device.</p>
         </div>
 
-        <div class="device-showcase-grid">
+        <div class="device-showcase-grid reveal">
 
           <!-- iPhone 18 Pro — Dashboard -->
           <div class="device-wrap device-float-1">
@@ -631,7 +822,7 @@
 
                     <div class="rev-card">
                       <div class="rev-head">
-                        <div class="rev-avatar" style="background: linear-gradient(135deg, #3B82F6, #2563EB);">A</div>
+                        <div class="rev-avatar" style="background: linear-gradient(135deg, #1E3A8A, #1E40AF);">A</div>
                         <div class="rev-info">
                           <div class="rev-name">Ahmad R.</div>
                           <div class="rev-date">2 days ago</div>
@@ -651,7 +842,7 @@
 
                     <div class="rev-card">
                       <div class="rev-head">
-                        <div class="rev-avatar" style="background: linear-gradient(135deg, #8B5CF6, #7C3AED);">F</div>
+                        <div class="rev-avatar" style="background: linear-gradient(135deg, #7C3AED, #6D28D9);">F</div>
                         <div class="rev-info">
                           <div class="rev-name">Fatima K.</div>
                           <div class="rev-date">1 week ago</div>
@@ -671,7 +862,7 @@
 
                     <div class="rev-card">
                       <div class="rev-head">
-                        <div class="rev-avatar" style="background: linear-gradient(135deg, #14B8A6, #0D9488);">M</div>
+                        <div class="rev-avatar" style="background: linear-gradient(135deg, #0F766E, #115E59);">M</div>
                         <div class="rev-info">
                           <div class="rev-name">Mohammad A.</div>
                           <div class="rev-date">2 weeks ago</div>
@@ -706,15 +897,21 @@
     </section>
 
     <!-- ═══ CTA ═══ -->
-    <section class="cta-section">
+    <section class="cta-section reveal">
       <div class="container">
         <div class="cta-box">
           <div class="cta-content">
-            <div class="section-kicker" data-i18n="ctaKicker">ARYANA CURRENCY</div>
-            <h2 data-i18n="ctaTitle">Exchange with greater clarity.</h2>
-            <p data-i18n="ctaText">A licensed digital currency exchange built for trust.</p>
+            <div class="section-kicker">ARYANA CURRENCY</div>
+            <h2>Exchange with greater clarity.</h2>
+            <p>A licensed digital currency exchange built for trust.</p>
           </div>
-          <a href="pages/register.html" class="btn btn-primary btn-lg" data-i18n="getStartedBtn">Get Started</a>
+          <a href="pages/register.html" class="btn btn-primary btn-lg">
+            Get Started
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
         </div>
       </div>
     </section>
