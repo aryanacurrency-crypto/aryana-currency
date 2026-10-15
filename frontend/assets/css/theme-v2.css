@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════
    ARYANA CURRENCY — Design System v2
-   Purple-Dark Theme (Financial / Luxury)
+   RISE FUNDED Style — Deep Navy Blue Theme
    ═══════════════════════════════════════ */
 
 /* ─── Prevent FOUC ─── */
@@ -27,24 +27,24 @@ html {
   color: var(--text-primary);
 }
 
-/* ─── Purple-Dark Theme ─── */
+/* ─── RISE FUNDED Navy-Dark Theme ─── */
 :root {
   /* --- Backgrounds --- */
-  --bg-primary: #0A0612;
-  --bg-secondary: #14091F;
-  --bg-tertiary: #1A0E2A;
-  --bg-hover: #241338;
+  --bg-primary: #050818;
+  --bg-secondary: #0A0E27;
+  --bg-tertiary: #0F1433;
+  --bg-hover: #161B3D;
 
   /* --- Borders --- */
-  --border-subtle: #2D1B45;
-  --border-strong: #3D2560;
+  --border-subtle: #1E293B;
+  --border-strong: #334155;
 
-  /* --- Brand Colors (Purple) --- */
-  --gold: #A855F7;
-  --gold-light: #C084FC;
-  --gold-dark: #7C3AED;
+  /* --- Brand Colors (Navy Blue) --- */
+  --gold: #3B82F6;
+  --gold-light: #60A5FA;
+  --gold-dark: #2563EB;
 
-  /* --- Secondary Accent (Indigo) --- */
+  /* --- Secondary Accent --- */
   --indigo: #4F46E5;
   --indigo-light: #6366F1;
 
@@ -58,27 +58,27 @@ html {
   --yellow: #F59E0B;
 
   /* --- Text Colors --- */
-  --text-primary: #F5F3FF;
-  --text-secondary: #A0A0B0;
-  --text-tertiary: #6B6B7B;
-  --text-inverse: #0A0612;
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-tertiary: #64748B;
+  --text-inverse: #050818;
 
   /* --- Overlay / Glass --- */
-  --overlay-bg: rgba(10, 6, 18, 0.85);
-  --overlay-light: rgba(168, 85, 247, 0.05);
-  --overlay-medium: rgba(168, 85, 247, 0.08);
+  --overlay-bg: rgba(5, 8, 24, 0.85);
+  --overlay-light: rgba(59, 130, 246, 0.05);
+  --overlay-medium: rgba(59, 130, 246, 0.08);
 
-  /* --- Glow / Purple effects --- */
-  --glow-purple: rgba(168, 85, 247, 0.35);
-  --glow-purple-soft: rgba(168, 85, 247, 0.15);
+  /* --- Glow / Blue effects --- */
+  --glow-blue: rgba(59, 130, 246, 0.35);
+  --glow-blue-soft: rgba(59, 130, 246, 0.15);
   --glow-indigo: rgba(79, 70, 229, 0.3);
 
   /* --- Shadows --- */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
-  --shadow-glow: 0 0 24px rgba(168, 85, 247, 0.2);
-  --shadow-glow-strong: 0 0 48px rgba(168, 85, 247, 0.4);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.7);
+  --shadow-glow: 0 0 24px rgba(59, 130, 246, 0.25);
+  --shadow-glow-strong: 0 0 48px rgba(59, 130, 246, 0.45);
 
   /* --- Radii --- */
   --radius-sm: 6px;
@@ -244,7 +244,7 @@ img {
 }
 
 .app-nav-link.active {
-  background: rgba(168, 85, 247, 0.1);
+  background: rgba(59, 130, 246, 0.1);
   color: var(--gold);
 }
 
@@ -301,7 +301,7 @@ img {
 
 ::selection {
   background: var(--gold);
-  color: var(--text-inverse);
+  color: #FFFFFF;
 }
 
 /* ═══ Animations ═══ */
@@ -333,12 +333,12 @@ img {
 
 @keyframes glow-pulse {
   0%, 100% {
-    opacity: 0.5;
+    opacity: 0.4;
     transform: scale(1);
   }
   50% {
-    opacity: 0.8;
-    transform: scale(1.05);
+    opacity: 0.7;
+    transform: scale(1.08);
   }
 }
 
