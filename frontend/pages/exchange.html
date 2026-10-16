@@ -2,38 +2,44 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Trade USDT — Aryana Currency">
-  <meta name="theme-color" content="#0B0E11">
+  <meta name="theme-color" content="#FAFBFF">
 
   <title>Trade | ARYANA CURRENCY</title>
 
-<script>
-  (function() {
-    try {
-      var saved = localStorage.getItem('aryana_theme');
-      var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      document.documentElement.classList.add(theme);
-      document.documentElement.setAttribute('data-theme', theme);
-    } catch (e) {}
-  })();
-</script>
+  <!-- Theme boot (no FOUC) -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('aryana_theme') || 'light';
+        document.documentElement.classList.add(saved);
+        document.documentElement.setAttribute('data-theme', saved);
+        setTimeout(function () {
+          document.documentElement.classList.add('theme-ready');
+        }, 50);
+      } catch (e) {}
+    })();
+  </script>
 
   <!-- PWA -->
   <link rel="manifest" href="../manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Aryana">
   <link rel="apple-touch-icon" href="../assets/images/icon-192.png">
 
   <link rel="icon" type="image/png" href="../assets/images/logo.png">
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+  <!-- Styles -->
   <link rel="stylesheet" href="../assets/css/theme-v2.css">
   <link rel="stylesheet" href="../assets/css/ui-v2.css">
+  <link rel="stylesheet" href="../assets/css/command-palette.css">
   <link rel="stylesheet" href="../assets/css/dashboard-v2.css">
   <link rel="stylesheet" href="../assets/css/exchange-v2.css">
   <link rel="stylesheet" href="../assets/css/notifications.css">
@@ -42,7 +48,9 @@
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- ═══════════════════════════════════════
+       HEADER
+       ═══════════════════════════════════════ -->
   <header class="app-header">
     <div class="container app-header-inner">
 
@@ -60,31 +68,64 @@
             <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
             <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
           </svg>
-          <span>Dashboard</span>
+          <span data-i18n="navDashboard">Dashboard</span>
         </a>
         <a href="exchange.html" class="app-nav-link active">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12M17 20l4-4M17 20l-4-4"/>
           </svg>
-          <span>Trade</span>
+          <span data-i18n="navTrade">Trade</span>
+        </a>
+        <a href="p2p/index.html" class="app-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span data-i18n="navP2P">P2P</span>
         </a>
         <a href="orders.html" class="app-nav-link">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
             <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
           </svg>
-          <span>Orders</span>
+          <span data-i18n="navOrders">Orders</span>
         </a>
         <a href="profile.html" class="app-nav-link">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
             <circle cx="12" cy="7" r="4"/>
           </svg>
-          <span>Profile</span>
+          <span data-i18n="navProfile">Profile</span>
         </a>
       </nav>
 
       <div class="app-header-actions">
+        <!-- Command Palette Trigger -->
+        <button class="cmd-trigger" data-cmd-trigger type="button" aria-label="Open command palette">
+          <span class="cmd-trigger-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <span>Search...</span>
+          </span>
+          <kbd class="cmd-kbd">⌘K</kbd>
+        </button>
+
+        <button class="cmd-trigger cmd-trigger-compact" data-cmd-trigger type="button" aria-label="Open command palette">
+          <span class="cmd-trigger-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <span>Search</span>
+          </span>
+        </button>
+
         <a href="admin/index.html" class="icon-btn" id="adminPanelBtn" style="display:none;" title="Admin Panel">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 2l3 6 6 1-4.5 4.5L18 20l-6-3-6 3 1.5-6.5L3 9l6-1z"/>
@@ -102,7 +143,7 @@
           <span class="user-name" id="userName">User</span>
         </a>
 
-        <button class="icon-btn" id="logoutBtn" title="Logout">
+        <button class="icon-btn" id="logoutBtn" title="Logout" aria-label="Logout">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
             <polyline points="16 17 21 12 16 7"/>
@@ -114,50 +155,53 @@
     </div>
   </header>
 
-  <!-- Main -->
+  <!-- ═══════════════════════════════════════
+       MAIN
+       ═══════════════════════════════════════ -->
   <main class="container app-main">
 
     <!-- Page Header -->
     <div class="page-header-row">
-      <a href="dashboard.html" class="back-btn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <a href="dashboard.html" class="back-btn" aria-label="Back to dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="19" y1="12" x2="5" y2="12"/>
           <polyline points="12 19 5 12 12 5"/>
         </svg>
       </a>
       <div>
-        <h1 style="font-size:22px; font-weight:800; letter-spacing:-0.5px;">Trade USDT</h1>
-        <p style="font-size:13px; color:var(--text-secondary); margin-top:2px;">Buy or sell USDT at the best rate</p>
+        <h1 data-i18n="tradeTitle">Trade USDT</h1>
+        <p data-i18n="tradeSubtitle">Buy or sell USDT at the best rate</p>
       </div>
     </div>
 
     <!-- Trade Tabs -->
     <div class="trade-tabs">
-      <button class="trade-tab active" data-side="BUY">
+      <button class="trade-tab active" data-side="BUY" type="button">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="12" y1="5" x2="12" y2="19"/>
           <polyline points="19 12 12 19 5 12"/>
         </svg>
-        Buy USDT
+        <span data-i18n="buyUsdt">Buy USDT</span>
       </button>
-      <button class="trade-tab" data-side="SELL">
+      <button class="trade-tab" data-side="SELL" type="button">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="12" y1="19" x2="12" y2="5"/>
           <polyline points="5 12 12 5 19 12"/>
         </svg>
-        Sell USDT
+        <span data-i18n="sellUsdt">Sell USDT</span>
       </button>
     </div>
 
     <!-- Trade Layout -->
     <div class="trade-layout">
 
-      <!-- Trade Form -->
+      <!-- ─── Trade Form Card ─── -->
       <div class="trade-card">
 
         <div class="trade-card-header">
           <div class="trade-card-title" id="formTitle">Buy USDT</div>
           <div class="trade-rate-badge">
+            <span class="rate-dot"></span>
             <span>Rate:</span>
             <span class="rate-value" id="rateBadge">— AFN</span>
           </div>
@@ -167,12 +211,13 @@
 
         <form id="tradeForm">
 
-          <!-- You Pay -->
+          <!-- ─── You Pay ─── -->
           <div class="amount-field">
             <div class="amount-label">
-              <span id="payLabel">You Pay</span>
+              <span id="payLabel" data-i18n="youPay">You Pay</span>
               <span class="balance" id="payBalanceWrap" style="display:none;">
-                Balance: <strong id="payBalance">0</strong>
+                <span data-i18n="balance">Balance</span>:
+                <strong id="payBalance">0</strong>
               </span>
             </div>
             <div class="amount-input-row">
@@ -183,6 +228,7 @@
                 inputmode="decimal"
                 placeholder="0"
                 autocomplete="off"
+                spellcheck="false"
               >
               <div class="currency-tag">
                 <div class="currency-icon usdt" id="payCurrencyIcon">₮</div>
@@ -191,19 +237,19 @@
             </div>
           </div>
 
-          <!-- Swap -->
+          <!-- ─── Swap ─── -->
           <div class="swap-row">
-            <button type="button" class="swap-btn" id="swapBtn" aria-label="Swap">
+            <button type="button" class="swap-btn" id="swapBtn" aria-label="Swap currencies">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M7 4v16M7 20l-4-4M7 20l4-4M17 20V4M17 4l4 4M17 4l-4 4"/>
               </svg>
             </button>
           </div>
 
-          <!-- You Receive -->
-          <div class="amount-field">
+          <!-- ─── You Receive ─── -->
+          <div class="amount-field readonly">
             <div class="amount-label">
-              <span id="receiveLabel">You Receive</span>
+              <span id="receiveLabel" data-i18n="youReceive">You Receive</span>
             </div>
             <div class="amount-input-row">
               <input
@@ -212,6 +258,7 @@
                 class="amount-input"
                 readonly
                 placeholder="0"
+                tabindex="-1"
               >
               <div class="currency-tag">
                 <div class="currency-icon afn" id="receiveCurrencyIcon">؋</div>
@@ -220,7 +267,7 @@
             </div>
           </div>
 
-          <!-- Quick Amounts -->
+          <!-- ─── Quick Amounts ─── -->
           <div class="quick-amounts">
             <button type="button" class="quick-amount" data-amount="10">10</button>
             <button type="button" class="quick-amount" data-amount="50">50</button>
@@ -228,14 +275,14 @@
             <button type="button" class="quick-amount" data-amount="500">500</button>
           </div>
 
-          <!-- Summary -->
+          <!-- ─── Summary ─── -->
           <div class="summary-box">
             <div class="summary-row">
-              <span>Rate</span>
+              <span data-i18n="rate">Rate</span>
               <span id="sumRate">— AFN</span>
             </div>
             <div class="summary-row">
-              <span>Platform Fee (1.5%)</span>
+              <span data-i18n="platformFee">Platform Fee (1.5%)</span>
               <span id="sumFee">— AFN</span>
             </div>
             <div class="summary-divider"></div>
@@ -245,47 +292,109 @@
             </div>
           </div>
 
-          <!-- Submit -->
+          <!-- ─── Submit ─── -->
           <button type="submit" class="trade-submit" id="submitBtn" data-side="BUY">
-            <span>Continue</span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <span data-i18n="continue">Continue</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <line x1="5" y1="12" x2="19" y2="12"/>
               <polyline points="12 5 19 12 12 19"/>
             </svg>
           </button>
 
-          <!-- Min Order Note -->
+          <!-- ─── Min Order Note ─── -->
           <div class="min-order-note">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"/>
               <line x1="12" y1="16" x2="12" y2="12"/>
               <line x1="12" y1="8" x2="12.01" y2="8"/>
             </svg>
-            <span>Minimum order: <strong>10 USDT</strong></span>
+            <span data-i18n="minOrder">Minimum order: <strong>10 USDT</strong></span>
           </div>
 
         </form>
 
       </div>
 
-      <!-- Side Instructions -->
+      <!-- ─── Side Card (Live info + Steps + Tips) ─── -->
       <aside class="side-card">
-        <div class="side-card-header">
-          <div class="side-card-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-              <line x1="12" y1="17" x2="12.01" y2="17"/>
+
+        <!-- Live Rate Block -->
+        <div class="live-rate-block">
+          <div class="live-rate-header">
+            <span class="live-rate-label" id="liveRateLabel">USDT / AFN</span>
+            <span class="live-rate-chip">
+              <span class="live-rate-chip-dot"></span>
+              LIVE
+            </span>
+          </div>
+          <div class="live-rate-value" id="liveRateValue">—</div>
+          <div class="live-rate-change up" id="liveRateChange">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="18 15 12 9 6 15"/>
+            </svg>
+            <span id="liveRatePct">+0.00%</span>
+            <span style="opacity: 0.7; margin-left: 4px;" data-i18n="today">today</span>
+          </div>
+
+          <!-- Mini Sparkline -->
+          <div class="live-sparkline">
+            <svg viewBox="0 0 200 40" preserveAspectRatio="none" id="liveSparkline">
+              <defs>
+                <linearGradient id="liveGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#1E40AF" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#1E40AF" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path id="sparkArea" d="" fill="url(#liveGrad)"/>
+              <path id="sparkLine" d="" stroke="#1E40AF" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
-          <div class="side-card-title" id="sideCardTitle">How to Buy</div>
         </div>
 
-        <div class="side-steps" id="sideSteps">
+        <!-- Side Stats -->
+        <div class="side-stats">
+          <div class="side-stat">
+            <div class="side-stat-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="1" x2="12" y2="23"/>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+              <span data-i18n="platformFee">Platform Fee</span>
+            </div>
+            <div class="side-stat-value fee">1.5%</div>
+          </div>
+
+          <div class="side-stat">
+            <div class="side-stat-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12" 6 12 12 16 14"/>
+              </svg>
+              <span data-i18n="processingTime">Processing Time</span>
+            </div>
+            <div class="side-stat-value speed">~10 min</div>
+          </div>
+
+          <div class="side-stat">
+            <div class="side-stat-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <span data-i18n="minOrderLabel">Min Order</span>
+            </div>
+            <div class="side-stat-value">10 USDT</div>
+          </div>
+        </div>
+
+        <!-- Steps -->
+        <div class="side-steps">
+          <div class="side-steps-title" id="stepsTitle">How to Buy</div>
+
           <div class="side-step active">
             <div class="side-step-num">1</div>
             <div>
-              <div class="side-step-title">Enter amount</div>
+              <div class="side-step-title" data-i18n="step1Title">Enter amount</div>
               <div class="side-step-text" id="step1Text">Enter how much USDT you want to buy.</div>
             </div>
           </div>
@@ -293,7 +402,7 @@
           <div class="side-step">
             <div class="side-step-num">2</div>
             <div>
-              <div class="side-step-title">Review the rate</div>
+              <div class="side-step-title" data-i18n="step2Title">Review the rate</div>
               <div class="side-step-text" id="step2Text">Check the rate and total to pay in AFN.</div>
             </div>
           </div>
@@ -301,7 +410,7 @@
           <div class="side-step">
             <div class="side-step-num">3</div>
             <div>
-              <div class="side-step-title">Submit order</div>
+              <div class="side-step-title" data-i18n="step3Title">Submit order</div>
               <div class="side-step-text" id="step3Text">Continue to see payment instructions.</div>
             </div>
           </div>
@@ -309,24 +418,53 @@
           <div class="side-step">
             <div class="side-step-num">4</div>
             <div>
-              <div class="side-step-title">Verify payment</div>
+              <div class="side-step-title" data-i18n="step4Title">Verify payment</div>
               <div class="side-step-text" id="step4Text">Our team verifies and completes your order.</div>
             </div>
           </div>
         </div>
+
+        <!-- Smart Tips -->
+        <div class="smart-tips">
+          <div class="smart-tips-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/>
+            </svg>
+            <span data-i18n="smartTips">Smart Tips</span>
+          </div>
+
+          <div class="smart-tip">
+            <div class="smart-tip-icon">✓</div>
+            <div>Rate <strong>locks for 30 seconds</strong> after you submit</div>
+          </div>
+
+          <div class="smart-tip">
+            <div class="smart-tip-icon">✓</div>
+            <div>Payment is <strong>verified manually</strong> by our team</div>
+          </div>
+
+          <div class="smart-tip">
+            <div class="smart-tip-icon">✓</div>
+            <div>Funds released <strong>after confirmation</strong></div>
+          </div>
+        </div>
+
       </aside>
 
     </div>
 
   </main>
 
-  <!-- Scripts -->
+  <!-- ═══════════════════════════════════════
+       SCRIPTS
+       ═══════════════════════════════════════ -->
   <script src="../assets/js/config.js"></script>
   <script src="../assets/js/i18n.js"></script>
   <script src="../assets/js/theme.js"></script>
   <script src="../assets/js/auth.js"></script>
   <script src="../assets/js/api.js"></script>
   <script src="../assets/js/notifications.js"></script>
+  <script src="../assets/js/command-palette.js"></script>
   <script src="../assets/js/exchange.js"></script>
   <script src="../assets/js/footer.js"></script>
   <script src="../assets/js/pwa.js"></script>

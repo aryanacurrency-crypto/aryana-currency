@@ -1,11 +1,20 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Exchange v2 Logic
-   Trade page
+   ARYANA CURRENCY — Exchange v3 Logic
+   Live rate · Flash · Sparkline · API
    ═══════════════════════════════════════ */
 
 let currentRate = null;
+let previousRate = null;
 let currentSide = 'BUY';
 let currentWallets = null;
+let rateHistory = [];
+let pollingInterval = null;
+
+const POLL_INTERVAL = 5000; // 5s
+
+/* ═══════════════════════════════════════
+   🚀 INIT
+   ═══════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', async () => {
   Auth.requireLogin();
@@ -19,17 +28,23 @@ document.addEventListener('DOMContentLoaded', async () => {
   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) logoutBtn.addEventListener('click', () => Auth.logout());
 
-  // Show admin button
+  // Theme toggle
+  const themeBtn = document.getElementById('themeToggle');
+  if (themeBtn) themeBtn.addEventListener('click', () => Theme.toggle());
+
+  // Show admin
   showAdminButton();
 
-  // Render user info
+  // Render user
   renderUserInfo();
 
-  // تشخیص side از URL
+  // Side از URL
   const params = new URLSearchParams(window.location.search);
   const sideParam = params.get('side');
   if (sideParam === 'SELL') {
     currentSide = 'SELL';
+  } else if (sideParam === 'BUY') {
+    currentSide = 'BUY';
   }
 
   // Setup
@@ -48,14 +63,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Apply side
   applySide();
-
-  // Calculate اولیه
   calculate();
+
+  // Live polling
+  startLivePolling();
 });
 
 /* ═══════════════════════════════════════
-              Helpers
+   👤 USER
    ═══════════════════════════════════════ */
+
+function renderUserInfo() {
+  const user = Auth.getUser();
+  if (!user) return;
+
+  const initial = (user.full_name || user.email || '?').charAt(0).toUpperCase();
+  const nameEl = document.getElementById('userName');
+  const avatarEl = document.getElementById('userAvatar');
+
+  if (avatarEl) avatarEl.textContent = initial;
+  if (nameEl) nameEl.textContent = (user.full_name || 'User').split(' ')[0];
+}
 
 function showAdminButton() {
   const user = Auth.getUser();
@@ -65,53 +93,176 @@ function showAdminButton() {
   }
 }
 
-function renderUserInfo() {
-  const user = Auth.getUser();
-  if (!user) return;
-
-  const initial = (user.full_name || user.email || '?').charAt(0).toUpperCase();
-  const avatarEl = document.getElementById('userAvatar');
-  const nameEl = document.getElementById('userName');
-
-  if (avatarEl) avatarEl.textContent = initial;
-  if (nameEl) nameEl.textContent = (user.full_name || 'User').split(' ')[0];
-}
-
-/* ═══════════════════════════════════════
-              Load Data
-   ═══════════════════════════════════════ */
-
 async function loadProfile() {
   try {
     const user = await API.me();
     Auth.setUser(user);
     showAdminButton();
-
-    const initial = (user.full_name || user.email || '?').charAt(0).toUpperCase();
-    const avatarEl = document.getElementById('userAvatar');
-    const nameEl = document.getElementById('userName');
-    if (avatarEl) avatarEl.textContent = initial;
-    if (nameEl) nameEl.textContent = (user.full_name || 'User').split(' ')[0];
+    renderUserInfo();
   } catch (err) {
     console.error('Profile load failed:', err);
   }
 }
 
+/* ═══════════════════════════════════════
+   💱 RATE + LIVE POLLING
+   ═══════════════════════════════════════ */
+
 async function loadRate() {
   try {
-    currentRate = await API.getCurrentRate();
+    const rate = await API.getCurrentRate();
+    if (!rate) return;
 
-    const fmt = (n) => Number(n).toLocaleString('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
+    previousRate = currentRate;
+    currentRate = rate;
 
-    setText('rateBadge', `${fmt(currentRate.sell_price_afn)} AFN`);
+    const price = Number(rate.sell_price_afn);
+    rateHistory.push(price);
+    if (rateHistory.length > 20) rateHistory.shift();
+
+    updateRateUI(rate);
+    drawSparkline();
   } catch (err) {
     console.error('Rate load failed:', err);
-    Notify.error('Could not load exchange rate.');
   }
 }
+
+function updateRateUI(rate) {
+  const sellPrice = Number(rate.sell_price_afn);
+  const buyPrice = Number(rate.buy_price_afn);
+
+  const fmt = (n) => Number(n).toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
+  // ─── Rate Badge (top of form) ───
+  const badge = document.getElementById('rateBadge');
+  if (badge) {
+    const activeRate = currentSide === 'BUY' ? sellPrice : buyPrice;
+    badge.textContent = `${fmt(activeRate)} AFN`;
+
+    // Flash effect
+    if (previousRate) {
+      const prev = currentSide === 'BUY'
+        ? Number(previousRate.sell_price_afn)
+        : Number(previousRate.buy_price_afn);
+      flashElement(badge, activeRate, prev);
+    }
+  }
+
+  // ─── Live Rate Value ───
+  const liveValue = document.getElementById('liveRateValue');
+  if (liveValue) {
+    liveValue.textContent = `${fmt(sellPrice)} AFN`;
+    if (previousRate) {
+      const prev = Number(previousRate.sell_price_afn);
+      flashElement(liveValue, sellPrice, prev);
+    }
+  }
+
+  // ─── Live Rate Change ───
+  if (previousRate) {
+    const prev = Number(previousRate.sell_price_afn);
+    const diff = sellPrice - prev;
+    const pct = prev > 0 ? (diff / prev) * 100 : 0;
+    const isUp = diff >= 0;
+
+    const changeEl = document.getElementById('liveRateChange');
+    if (changeEl) {
+      changeEl.classList.toggle('up', isUp);
+      changeEl.classList.toggle('down', !isUp);
+
+      const pctEl = document.getElementById('liveRatePct');
+      if (pctEl) {
+        pctEl.textContent = (isUp ? '+' : '') + pct.toFixed(2) + '%';
+      }
+
+      const svg = changeEl.querySelector('svg polyline');
+      if (svg) {
+        svg.setAttribute('points', isUp ? '18 15 12 9 6 15' : '6 9 12 15 18 9');
+      }
+    }
+  }
+
+  // ─── Live Rate Label (pair) ───
+  const label = document.getElementById('liveRateLabel');
+  if (label) {
+    label.textContent = 'USDT / AFN';
+  }
+}
+
+function flashElement(el, newVal, oldVal) {
+  if (!el || newVal === oldVal) return;
+
+  el.classList.remove('flash-up', 'flash-down');
+  void el.offsetWidth; // reflow
+
+  if (newVal > oldVal) {
+    el.classList.add('flash-up');
+  } else if (newVal < oldVal) {
+    el.classList.add('flash-down');
+  }
+
+  setTimeout(() => {
+    el.classList.remove('flash-up', 'flash-down');
+  }, 900);
+}
+
+function startLivePolling() {
+  if (pollingInterval) clearInterval(pollingInterval);
+
+  pollingInterval = setInterval(async () => {
+    if (document.hidden) return;
+    await loadRate();
+  }, POLL_INTERVAL);
+}
+
+/* ═══════════════════════════════════════
+   📈 SPARKLINE
+   ═══════════════════════════════════════ */
+
+function drawSparkline() {
+  const line = document.getElementById('sparkLine');
+  const area = document.getElementById('sparkArea');
+  if (!line || !area) return;
+
+  let data = rateHistory.slice();
+
+  // اگه data کم بود، مصنوعی بساز
+  if (data.length < 2) {
+    data = [66.5, 66.6, 66.7, 66.65, 66.8, 66.75, 66.85, 66.80];
+  }
+
+  const W = 200;
+  const H = 40;
+  const PAD = 2;
+
+  const min = Math.min(...data);
+  const max = Math.max(...data);
+  const range = max - min || 1;
+
+  const step = (W - PAD * 2) / (data.length - 1);
+
+  const points = data.map((v, i) => {
+    const x = PAD + i * step;
+    const y = H - PAD - ((v - min) / range) * (H - PAD * 2);
+    return { x, y };
+  });
+
+  const linePath = points
+    .map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`)
+    .join(' ');
+
+  const areaPath = linePath + ` L${points[points.length - 1].x.toFixed(1)},${H} L${points[0].x.toFixed(1)},${H} Z`;
+
+  line.setAttribute('d', linePath);
+  area.setAttribute('d', areaPath);
+}
+
+/* ═══════════════════════════════════════
+   👛 WALLETS
+   ═══════════════════════════════════════ */
 
 async function loadWallets() {
   try {
@@ -120,106 +271,6 @@ async function loadWallets() {
   } catch (err) {
     console.error('Wallets load failed:', err);
   }
-}
-
-/* ═══════════════════════════════════════
-              Setup
-   ═══════════════════════════════════════ */
-
-function setupTabs() {
-  document.querySelectorAll('.trade-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      const side = tab.dataset.side;
-      if (side === currentSide) return;
-
-      currentSide = side;
-      applySide();
-      calculate();
-    });
-  });
-}
-
-function applySide() {
-  const isBuy = currentSide === 'BUY';
-
-  // Tabs
-  document.querySelectorAll('.trade-tab').forEach(t => {
-    t.classList.toggle('active', t.dataset.side === currentSide);
-  });
-
-  // Title
-  setText('formTitle', isBuy ? 'Buy USDT' : 'Sell USDT');
-  setText('sideCardTitle', isBuy ? 'How to Buy' : 'How to Sell');
-
-  // Submit
-  const submitBtn = document.getElementById('submitBtn');
-  if (submitBtn) {
-    submitBtn.dataset.side = currentSide;
-    const span = submitBtn.querySelector('span');
-    if (span) span.textContent = isBuy ? 'Buy Now' : 'Sell Now';
-  }
-
-  // Pay/Receive
-  if (isBuy) {
-    // کاربر AFN میده، USDT میگیره
-    setText('payLabel', 'You Pay');
-    setText('receiveLabel', 'You Receive');
-    setText('payCurrency', 'AFN');
-    setText('receiveCurrency', 'USDT');
-    const payIcon = document.getElementById('payCurrencyIcon');
-    const receiveIcon = document.getElementById('receiveCurrencyIcon');
-    if (payIcon) payIcon.className = 'currency-icon afn';
-    if (receiveIcon) receiveIcon.className = 'currency-icon usdt';
-    if (payIcon) payIcon.textContent = '؋';
-    if (receiveIcon) receiveIcon.textContent = '₮';
-
-    // Rate badge
-    if (currentRate) {
-      const fmt = (n) => Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      setText('rateBadge', `${fmt(currentRate.sell_price_afn)} AFN`);
-    }
-
-    // Steps
-    setText('step1Text', 'Enter the amount of AFN you want to pay.');
-    setText('step2Text', 'Review the rate and how much USDT you get.');
-    setText('step3Text', 'Continue to see payment instructions.');
-    setText('step4Text', 'Our team verifies and sends USDT to your wallet.');
-
-  } else {
-    // کاربر USDT میده، AFN میگیره
-    setText('payLabel', 'You Pay');
-    setText('receiveLabel', 'You Receive');
-    setText('payCurrency', 'USDT');
-    setText('receiveCurrency', 'AFN');
-    const payIcon = document.getElementById('payCurrencyIcon');
-    const receiveIcon = document.getElementById('receiveCurrencyIcon');
-    if (payIcon) payIcon.className = 'currency-icon usdt';
-    if (receiveIcon) receiveIcon.className = 'currency-icon afn';
-    if (payIcon) payIcon.textContent = '₮';
-    if (receiveIcon) receiveIcon.textContent = '؋';
-
-    // Rate badge
-    if (currentRate) {
-      const fmt = (n) => Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      setText('rateBadge', `${fmt(currentRate.buy_price_afn)} AFN`);
-    }
-
-    // Steps
-    setText('step1Text', 'Enter the amount of USDT you want to sell.');
-    setText('step2Text', 'Review the rate and how much AFN you get.');
-    setText('step3Text', 'Continue to see wallet address for payment.');
-    setText('step4Text', 'Our team verifies and sends AFN to your Hesab Pay.');
-  }
-
-  // Placeholder
-  const input = document.getElementById('amountUsdt');
-  if (input) input.placeholder = '0';
-
-  // Reset input
-  if (input) input.value = '';
-
-  // Balance display
-  updateBalanceDisplay();
 }
 
 function updateBalanceDisplay() {
@@ -236,22 +287,122 @@ function updateBalanceDisplay() {
     maximumFractionDigits: 2,
   });
 
-  // در BUY کاربر AFN میده → موجودی AFN
-  // در SELL کاربر USDT میده → موجودی USDT
   const payBalanceWrap = document.getElementById('payBalanceWrap');
   const payBalanceEl = document.getElementById('payBalance');
 
   if (currentSide === 'BUY') {
+    // کاربر AFN میده
     if (payBalanceEl) payBalanceEl.textContent = `${fmt(afnBal)} AFN`;
   } else {
+    // کاربر USDT میده
     if (payBalanceEl) payBalanceEl.textContent = `${fmt(usdtBal)} USDT`;
   }
 
-  if (payBalanceWrap) payBalanceWrap.style.display = 'inline';
+  if (payBalanceWrap) payBalanceWrap.style.display = 'inline-flex';
 }
 
 /* ═══════════════════════════════════════
-              Inputs
+   🎚️ TABS
+   ═══════════════════════════════════════ */
+
+function setupTabs() {
+  document.querySelectorAll('.trade-tab').forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const side = tab.dataset.side;
+      if (side === currentSide) return;
+
+      currentSide = side;
+      applySide();
+      calculate();
+    });
+  });
+}
+
+function applySide() {
+  const isBuy = currentSide === 'BUY';
+
+  // ─── Tabs ───
+  document.querySelectorAll('.trade-tab').forEach((t) => {
+    t.classList.toggle('active', t.dataset.side === currentSide);
+  });
+
+  // ─── Titles ───
+  setText('formTitle', isBuy ? 'Buy USDT' : 'Sell USDT');
+  setText('stepsTitle', isBuy ? 'How to Buy' : 'How to Sell');
+
+  // ─── Submit Button ───
+  const submitBtn = document.getElementById('submitBtn');
+  if (submitBtn) {
+    submitBtn.dataset.side = currentSide;
+    const span = submitBtn.querySelector('span');
+    if (span) {
+      span.textContent = isBuy ? 'Continue Buy' : 'Continue Sell';
+    }
+  }
+
+  // ─── Pay/Receive ───
+  if (isBuy) {
+    // کاربر AFN میده، USDT میگیره
+    setText('payLabel', 'You Pay');
+    setText('receiveLabel', 'You Receive');
+    setText('payCurrency', 'AFN');
+    setText('receiveCurrency', 'USDT');
+    setIcon('payCurrencyIcon', 'afn', '؋');
+    setIcon('receiveCurrencyIcon', 'usdt', '₮');
+
+    setText('step1Text', 'Enter the amount of AFN you want to pay.');
+    setText('step2Text', 'Review the rate and how much USDT you get.');
+    setText('step3Text', 'Continue to see payment instructions.');
+    setText('step4Text', 'Our team verifies and sends USDT to your wallet.');
+
+    const rate = currentRate ? Number(currentRate.sell_price_afn) : 0;
+    const badge = document.getElementById('rateBadge');
+    if (badge && rate) badge.textContent = `${fmtNum(rate)} AFN`;
+
+  } else {
+    // کاربر USDT میده، AFN میگیره
+    setText('payLabel', 'You Pay');
+    setText('receiveLabel', 'You Receive');
+    setText('payCurrency', 'USDT');
+    setText('receiveCurrency', 'AFN');
+    setIcon('payCurrencyIcon', 'usdt', '₮');
+    setIcon('receiveCurrencyIcon', 'afn', '؋');
+
+    setText('step1Text', 'Enter the amount of USDT you want to sell.');
+    setText('step2Text', 'Review the rate and how much AFN you get.');
+    setText('step3Text', 'Continue to see wallet address for payment.');
+    setText('step4Text', 'Our team verifies and sends AFN to your Hesab Pay.');
+
+    const rate = currentRate ? Number(currentRate.buy_price_afn) : 0;
+    const badge = document.getElementById('rateBadge');
+    if (badge && rate) badge.textContent = `${fmtNum(rate)} AFN`;
+  }
+
+  // ─── Reset input ───
+  const input = document.getElementById('amountUsdt');
+  if (input) {
+    input.value = '';
+    input.placeholder = '0';
+  }
+
+  // ─── Reset quick amounts ───
+  document.querySelectorAll('.quick-amount').forEach((btn) => {
+    btn.classList.remove('active');
+  });
+
+  // ─── Balance ───
+  updateBalanceDisplay();
+}
+
+function setIcon(id, variant, symbol) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.className = `currency-icon ${variant}`;
+  el.textContent = symbol;
+}
+
+/* ═══════════════════════════════════════
+   ✏️ INPUTS
    ═══════════════════════════════════════ */
 
 function setupInputs() {
@@ -261,22 +412,39 @@ function setupInputs() {
   input.addEventListener('input', (e) => {
     // فقط اعداد و نقطه
     let value = e.target.value.replace(/[^\d.]/g, '');
+
     // فقط یه نقطه
     const parts = value.split('.');
     if (parts.length > 2) {
       value = parts[0] + '.' + parts.slice(1).join('');
     }
+
     e.target.value = value;
     calculate();
+
+    // پاک کردن active از quick amounts
+    document.querySelectorAll('.quick-amount').forEach((btn) => {
+      if (parseFloat(btn.dataset.amount) !== parseFloat(value)) {
+        btn.classList.remove('active');
+      } else {
+        btn.classList.add('active');
+      }
+    });
   });
 }
 
 function setupQuickAmounts() {
-  document.querySelectorAll('.quick-amount').forEach(btn => {
+  document.querySelectorAll('.quick-amount').forEach((btn) => {
     btn.addEventListener('click', () => {
       const input = document.getElementById('amountUsdt');
       if (!input) return;
+
       input.value = btn.dataset.amount;
+
+      // Active state
+      document.querySelectorAll('.quick-amount').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+
       calculate();
     });
   });
@@ -294,7 +462,7 @@ function setupSwapButton() {
 }
 
 /* ═══════════════════════════════════════
-              Calculate
+   🧮 CALCULATE
    ═══════════════════════════════════════ */
 
 function calculate() {
@@ -305,7 +473,7 @@ function calculate() {
   const sumTotal = document.getElementById('sumTotal');
   const sumTotalLabel = document.getElementById('sumTotalLabel');
 
-  if (!currentRate) return;
+  if (!input || !currentRate) return;
 
   const amount = parseFloat(input.value) || 0;
   const isBuy = currentSide === 'BUY';
@@ -319,43 +487,46 @@ function calculate() {
     maximumFractionDigits: 2,
   });
 
+  // ─── حالت خالی ───
   if (amount <= 0) {
-    output.value = '0';
+    if (output) output.value = '0';
     if (sumRate) sumRate.textContent = `${fmt(rate)} AFN`;
     if (sumFee) sumFee.textContent = '0.00 AFN';
     if (sumTotal) sumTotal.textContent = '0.00 AFN';
+    if (sumTotalLabel) sumTotalLabel.textContent = 'Total';
     return;
   }
 
   if (isBuy) {
     // کاربر AFN میده، USDT میگیره
-    const gross = amount / rate;         // USDT
-    const grossAfn = amount;              // AFN
-    const fee = grossAfn * 0.015;         // AFN
-    const totalAfn = grossAfn;            // کاربر اینقدر AFN میده (کارمزد داخل نرخ)
+    const totalAfn = amount;                    // AFN کاربر میده
+    const grossUsdt = totalAfn / rate;          // USDT قبل از کارمزد
+    const feeAfn = totalAfn * 0.015;            // کارمزد به AFN
+    const netUsdt = (totalAfn - feeAfn) / rate; // USDT بعد از کارمزد
 
-    output.value = fmt(gross);
+    if (output) output.value = fmt(netUsdt);
     if (sumRate) sumRate.textContent = `${fmt(rate)} AFN`;
-    if (sumFee) sumFee.textContent = `${fmt(fee)} AFN`;
+    if (sumFee) sumFee.textContent = `${fmt(feeAfn)} AFN`;
     if (sumTotalLabel) sumTotalLabel.textContent = 'Total to Pay';
     if (sumTotal) sumTotal.textContent = `${fmt(totalAfn)} AFN`;
 
   } else {
     // کاربر USDT میده، AFN میگیره
-    const grossAfn = amount * rate;       // AFN
-    const fee = grossAfn * 0.015;         // AFN
-    const totalAfn = grossAfn - fee;      // AFN دریافتی
+    const totalUsdt = amount;                   // USDT کاربر میده
+    const grossAfn = totalUsdt * rate;          // AFN قبل از کارمزد
+    const feeAfn = grossAfn * 0.015;            // کارمزد به AFN
+    const netAfn = grossAfn - feeAfn;           // AFN بعد از کارمزد
 
-    output.value = fmt(grossAfn);
+    if (output) output.value = fmt(netAfn);
     if (sumRate) sumRate.textContent = `${fmt(rate)} AFN`;
-    if (sumFee) sumFee.textContent = `${fmt(fee)} AFN`;
+    if (sumFee) sumFee.textContent = `${fmt(feeAfn)} AFN`;
     if (sumTotalLabel) sumTotalLabel.textContent = 'Total to Receive';
-    if (sumTotal) sumTotal.textContent = `${fmt(totalAfn)} AFN`;
+    if (sumTotal) sumTotal.textContent = `${fmt(netAfn)} AFN`;
   }
 }
 
 /* ═══════════════════════════════════════
-              Form Submit
+   📤 SUBMIT
    ═══════════════════════════════════════ */
 
 function setupForm() {
@@ -367,8 +538,7 @@ function setupForm() {
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-
-    errorBox.style.display = 'none';
+    if (errorBox) errorBox.style.display = 'none';
 
     const input = document.getElementById('amountUsdt');
     const amount = parseFloat(input.value);
@@ -408,21 +578,18 @@ function setupForm() {
       }
     }
 
+    // Disable button
     btn.disabled = true;
     const orig = btn.innerHTML;
     btn.innerHTML = '<span class="spinner"></span>';
 
     try {
       // ساخت سفارش
-      // API ما side و amount_usdt می‌خواد
       let amountUsdt;
-
       if (isBuy) {
-        // کاربر AFN داده → تبدیل به USDT
         const rate = Number(currentRate.sell_price_afn);
         amountUsdt = amount / rate;
       } else {
-        // کاربر USDT داده
         amountUsdt = amount;
       }
 
@@ -438,11 +605,8 @@ function setupForm() {
       console.error('Order failed:', err);
       let msg = err.detail || 'Failed to create order.';
 
-      if (msg.includes('حداقل')) {
-        msg = 'Minimum order is 10 USDT.';
-      } else if (msg.includes('موجودی')) {
-        msg = 'Insufficient balance.';
-      }
+      if (msg.includes('حداقل')) msg = 'Minimum order is 10 USDT.';
+      else if (msg.includes('موجودی')) msg = 'Insufficient balance.';
 
       Notify.error(msg);
       btn.disabled = false;
@@ -452,10 +616,43 @@ function setupForm() {
 }
 
 /* ═══════════════════════════════════════
-              Helpers
+   🛠️ HELPERS
    ═══════════════════════════════════════ */
 
 function setText(id, value) {
   const el = document.getElementById(id);
   if (el) el.textContent = value;
 }
+
+function fmtNum(n) {
+  return Number(n).toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
+/* ═══════════════════════════════════════
+   🧹 CLEANUP
+   ═══════════════════════════════════════ */
+
+window.addEventListener('beforeunload', () => {
+  if (pollingInterval) clearInterval(pollingInterval);
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) {
+    loadRate();
+    loadWallets();
+  }
+});
+
+/* ═══════════════════════════════════════
+   🌍 EXPOSE
+   ═══════════════════════════════════════ */
+
+window.Exchange = {
+  reload: () => {
+    loadRate();
+    loadWallets();
+  },
+};
