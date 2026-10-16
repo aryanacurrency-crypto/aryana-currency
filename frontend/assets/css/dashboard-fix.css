@@ -1,0 +1,511 @@
+/* ═══════════════════════════════════════
+   ARYANA CURRENCY — Dashboard Fixes
+   Light Theme Overrides
+   ═══════════════════════════════════════ */
+
+/* ═══════════════════════════════════════
+   🔝 HEADER — Light Glass
+   ═══════════════════════════════════════ */
+
+.app-header {
+  background: rgba(255, 255, 255, 0.72) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.6) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset,
+              0 4px 24px rgba(30, 64, 175, 0.04) !important;
+}
+
+/* لینک‌های نویگیشن */
+.app-nav-link {
+  color: #64748B !important;
+}
+
+.app-nav-link:hover {
+  background: rgba(30, 64, 175, 0.06) !important;
+  color: #1E40AF !important;
+}
+
+.app-nav-link.active {
+  background: rgba(30, 64, 175, 0.08) !important;
+  color: #1E40AF !important;
+}
+
+/* آیکون‌ها */
+.icon-btn {
+  color: #64748B !important;
+}
+
+.icon-btn:hover {
+  background: rgba(30, 64, 175, 0.06) !important;
+  color: #1E40AF !important;
+}
+
+/* برند */
+.app-brand-text {
+  color: #0F172A !important;
+}
+
+.app-brand-text small {
+  color: #1E40AF !important;
+}
+
+/* دکمه‌ی search */
+.cmd-trigger {
+  background: rgba(248, 250, 255, 0.9) !important;
+  border-color: rgba(226, 232, 240, 0.9) !important;
+  color: #64748B !important;
+}
+
+.cmd-trigger:hover {
+  background: rgba(30, 64, 175, 0.06) !important;
+  border-color: rgba(30, 64, 175, 0.3) !important;
+  color: #1E40AF !important;
+}
+
+/* Avatar button */
+.user-avatar-btn {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(226, 232, 240, 0.9) !important;
+}
+
+.user-avatar-btn:hover {
+  border-color: rgba(30, 64, 175, 0.3) !important;
+  background: white !important;
+}
+
+.user-name {
+  color: #0F172A !important;
+}
+
+/* ═══════════════════════════════════════
+   🔻 FOOTER — Light Glass
+   ═══════════════════════════════════════ */
+
+.app-footer,
+footer,
+.footer {
+  background: rgba(255, 255, 255, 0.72) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border-top: 1px solid rgba(226, 232, 240, 0.6) !important;
+  color: #0F172A !important;
+}
+
+/* Bottom Nav (اگه داری) */
+.bottom-nav,
+.mobile-nav {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border-top: 1px solid rgba(226, 232, 240, 0.6) !important;
+}
+
+.bottom-nav a,
+.mobile-nav a {
+  color: #64748B !important;
+}
+
+.bottom-nav a.active,
+.mobile-nav a.active {
+  color: #1E40AF !important;
+}
+
+/* ═══════════════════════════════════════
+   💰 BALANCE HERO — LIGHT VERSION
+   جایگزین gradient تیره با روشن + Navy-Purple
+   ═══════════════════════════════════════ */
+
+.balance-hero {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(30, 64, 175, 0.08) 0%, transparent 50%),
+    linear-gradient(135deg, #FFFFFF 0%, #F0F4FF 50%, #F5F3FF 100%) !important;
+  border: 1px solid rgba(30, 64, 175, 0.12) !important;
+  color: #0F172A !important;
+  box-shadow:
+    0 0 0 1px rgba(30, 64, 175, 0.04) inset,
+    0 20px 48px rgba(30, 64, 175, 0.08),
+    0 8px 24px rgba(124, 58, 237, 0.06) !important;
+}
+
+/* موج هندوکش — تیره‌تر روی روشن */
+.balance-hero::before {
+  background:
+    radial-gradient(ellipse at 20% 100%, rgba(30, 64, 175, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(124, 58, 237, 0.05) 0%, transparent 50%) !important;
+}
+
+.balance-hero::after {
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.08), transparent 60%) !important;
+}
+
+/* Label */
+.balance-label {
+  color: #1E40AF !important;
+}
+
+.balance-label .live-chip {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: rgba(16, 185, 129, 0.25) !important;
+  color: #059669 !important;
+}
+
+/* Eye button */
+.balance-eye-btn {
+  background: rgba(30, 64, 175, 0.06) !important;
+  border-color: rgba(30, 64, 175, 0.15) !important;
+  color: #1E40AF !important;
+}
+
+.balance-eye-btn:hover {
+  background: rgba(30, 64, 175, 0.12) !important;
+}
+
+/* Amount — تیره روی روشن */
+.balance-amount {
+  background: linear-gradient(135deg, #0F1E3D 0%, #1E40AF 60%, #7C3AED 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  text-shadow: none !important;
+}
+
+.balance-currency-badge {
+  background: rgba(30, 64, 175, 0.08) !important;
+  border-color: rgba(30, 64, 175, 0.15) !important;
+  color: #1E40AF !important;
+}
+
+/* Equivalent */
+.balance-equivalent {
+  color: #64748B !important;
+}
+
+/* Change badge */
+.balance-change {
+  background: rgba(16, 185, 129, 0.1) !important;
+  color: #059669 !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+.balance-change.up {
+  background: rgba(16, 185, 129, 0.1) !important;
+  color: #059669 !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+.balance-change.down {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #DC2626 !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
+}
+
+/* Sparkline — Navy روی روشن */
+.balance-chart #sparkLine {
+  stroke: #1E40AF !important;
+}
+
+.balance-chart #heroGrad stop:first-child {
+  stop-color: #1E40AF !important;
+  stop-opacity: 0.25 !important;
+}
+
+/* Action buttons — روشن */
+.balance-actions {
+  border-top-color: rgba(30, 64, 175, 0.1) !important;
+}
+
+.balance-action {
+  background: rgba(30, 64, 175, 0.05) !important;
+  border-color: rgba(30, 64, 175, 0.1) !important;
+  color: #0F172A !important;
+}
+
+.balance-action:hover {
+  background: rgba(30, 64, 175, 0.1) !important;
+  box-shadow: 0 6px 16px rgba(30, 64, 175, 0.12) !important;
+}
+
+.balance-action svg {
+  color: #1E40AF !important;
+}
+
+/* ═══════════════════════════════════════
+   🎨 PAGE BACKGROUND — کرم روشن
+   ═══════════════════════════════════════ */
+
+body {
+  background: #FAFBFF !important;
+  color: #0F172A !important;
+}
+
+body::before {
+  background: radial-gradient(circle, rgba(30, 64, 175, 0.08) 0%, transparent 65%) !important;
+}
+
+body::after {
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.06) 0%, transparent 65%) !important;
+}
+
+/* ═══════════════════════════════════════
+   📊 STAT CARDS
+   ═══════════════════════════════════════ */
+
+.stat-card {
+  background: white !important;
+  border-color: #E2E8F0 !important;
+}
+
+.stat-card:hover {
+  border-color: rgba(30, 64, 175, 0.3) !important;
+  box-shadow: 0 12px 32px rgba(30, 64, 175, 0.1) !important;
+}
+
+.stat-card-value {
+  color: #0F172A !important;
+}
+
+.stat-card-label {
+  color: #94A3B8 !important;
+}
+
+.stat-card-sub {
+  color: #64748B !important;
+}
+
+/* ═══════════════════════════════════════
+   ⚡ QUICK PANEL
+   ═══════════════════════════════════════ */
+
+.quick-panel {
+  background: white !important;
+  border-color: #E2E8F0 !important;
+}
+
+.quick-panel-title {
+  color: #0F172A !important;
+}
+
+.quick-panel-subtitle {
+  color: #94A3B8 !important;
+}
+
+.quick-action-lg {
+  background: #F8FAFF !important;
+  border-color: #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+.quick-action-lg:hover {
+  border-color: rgba(30, 64, 175, 0.3) !important;
+  box-shadow: 0 6px 20px rgba(30, 64, 175, 0.1) !important;
+}
+
+.quick-action-lg-title {
+  color: #0F172A !important;
+}
+
+.quick-action-lg-subtitle {
+  color: #94A3B8 !important;
+}
+
+.quick-action-lg-arrow {
+  color: #94A3B8 !important;
+}
+
+/* ═══════════════════════════════════════
+   📋 ACTIVITY PANEL
+   ═══════════════════════════════════════ */
+
+.activity-panel {
+  background: white !important;
+  border-color: #E2E8F0 !important;
+}
+
+.activity-header {
+  border-bottom-color: #E2E8F0 !important;
+}
+
+.activity-header-title h2 {
+  color: #0F172A !important;
+}
+
+.activity-header-title p {
+  color: #94A3B8 !important;
+}
+
+.activity-item:hover {
+  background: #F0F4FF !important;
+}
+
+.activity-item-title {
+  color: #0F172A !important;
+}
+
+.activity-item-title strong {
+  color: #1E40AF !important;
+}
+
+.activity-item-meta {
+  color: #94A3B8 !important;
+}
+
+/* ═══════════════════════════════════════
+   🎁 REFERRAL PANEL
+   ═══════════════════════════════════════ */
+
+.referral-panel {
+  background: linear-gradient(135deg, #F5F3FF 0%, #EFF6FF 100%) !important;
+  border-color: rgba(124, 58, 237, 0.15) !important;
+}
+
+.referral-title {
+  color: #0F172A !important;
+}
+
+.referral-subtitle {
+  color: #64748B !important;
+}
+
+.referral-code-box {
+  background: white !important;
+  border-color: #A78BFA !important;
+}
+
+.referral-code-value {
+  color: #0F1E3D !important;
+}
+
+.referral-stat {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border-color: white !important;
+}
+
+.referral-stat-label {
+  color: #94A3B8 !important;
+}
+
+/* ═══════════════════════════════════════
+   📈 MARKET PANEL
+   ═══════════════════════════════════════ */
+
+.market-panel {
+  background: white !important;
+  border-color: #E2E8F0 !important;
+}
+
+.market-header {
+  border-bottom-color: #E2E8F0 !important;
+}
+
+.market-header h2 {
+  color: #0F172A !important;
+}
+
+.market-header p {
+  color: #94A3B8 !important;
+}
+
+.market-item:hover {
+  background: #F0F4FF !important;
+}
+
+.market-item-name {
+  color: #0F172A !important;
+}
+
+.market-item-pair {
+  color: #94A3B8 !important;
+}
+
+.market-item-price {
+  color: #0F172A !important;
+}
+
+/* ═══════════════════════════════════════
+   ⭐ VIP CARD
+   ═══════════════════════════════════════ */
+
+.vip-card {
+  background: white !important;
+  border-color: #E2E8F0 !important;
+}
+
+.vip-name {
+  color: #0F172A !important;
+}
+
+.vip-level {
+  color: #94A3B8 !important;
+}
+
+.vip-progress-meta {
+  color: #64748B !important;
+}
+
+/* ═══════════════════════════════════════
+   🚀 QUICK ACTIONS GRID
+   ═══════════════════════════════════════ */
+
+.qa-card {
+  background: white !important;
+  border-color: #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+.qa-card:hover {
+  border-color: rgba(30, 64, 175, 0.3) !important;
+  box-shadow: 0 12px 32px rgba(30, 64, 175, 0.1) !important;
+}
+
+/* ═══════════════════════════════════════
+   💡 INSIGHTS
+   ═══════════════════════════════════════ */
+
+.insight-card {
+  background: linear-gradient(135deg, #EFF6FF 0%, #F5F3FF 100%) !important;
+  border-color: rgba(30, 64, 175, 0.15) !important;
+}
+
+.insight-title {
+  color: #0F172A !important;
+}
+
+.insight-text {
+  color: #64748B !important;
+}
+
+.insight-text strong {
+  color: #1E40AF !important;
+}
+
+/* ═══════════════════════════════════════
+   🎯 PAGE HEADER
+   ═══════════════════════════════════════ */
+
+.page-greeting {
+  color: #0F172A !important;
+}
+
+.page-meta {
+  color: #64748B !important;
+}
+
+/* ═══════════════════════════════════════
+   🌐 SVG GLOBAL — رنگ Navy روی روشن
+   ═══════════════════════════════════════ */
+
+.app-brand-text small {
+  color: #1E40AF !important;
+}
+
+/* ═══════════════════════════════════════
+   📱 RESPONSIVE — حفظ رفتار
+   ═══════════════════════════════════════ */
+
+@media (max-width: 640px) {
+  .app-header {
+    background: rgba(255, 255, 255, 0.85) !important;
+  }
+}
