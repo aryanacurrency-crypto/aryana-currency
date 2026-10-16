@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════
    ARYANA CURRENCY — Deposit + Withdraw Light Fix
-   Override همه‌ی دارک‌ها + فرم تأیید
+   Navy-Purple · ARYANA OS · Complete
    ═══════════════════════════════════════ */
 
 /* ═══════════════════════════════════════
@@ -526,36 +526,89 @@
 .withdraw-form .field-hint { color: #94A3B8 !important; }
 .amount-input-tag { color: #1E40AF !important; }
 
-/* ═══ Submit Button (SELL style) ═══ */
+/* ═══════════════════════════════════════
+   🎨 WITHDRAW SUBMIT BUTTON
+   Navy-Purple · Professional · Trust
+   ═══════════════════════════════════════ */
 
 .trade-submit[data-side="SELL"] {
-  background: linear-gradient(135deg, #EF4444, #DC2626) !important;
-  color: white !important;
-  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.25) !important;
+  position: relative;
+  width: 100%;
+  padding: 18px 24px !important;
+  margin-top: var(--space-5) !important;
+  border-radius: 16px !important;
   border: none !important;
-  border-radius: 14px !important;
-  font-weight: 800 !important;
   cursor: pointer !important;
+  font-family: inherit !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.3px !important;
+  color: white !important;
+  background: linear-gradient(135deg, #1E40AF 0%, #4F46E5 50%, #7C3AED 100%) !important;
+  background-size: 200% 200% !important;
+  background-position: 0% 50% !important;
+  box-shadow:
+    0 8px 24px rgba(30, 64, 175, 0.30),
+    0 0 0 1px rgba(255, 255, 255, 0.10) inset !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 8px !important;
-  transition: all 0.25s ease !important;
+  gap: 10px !important;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  overflow: hidden !important;
+}
+
+.trade-submit[data-side="SELL"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 100%
+  );
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.trade-submit[data-side="SELL"]:hover:not(:disabled)::before {
+  left: 100%;
 }
 
 .trade-submit[data-side="SELL"]:hover:not(:disabled) {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 12px 32px rgba(239, 68, 68, 0.4) !important;
+  background-position: 100% 50% !important;
+  transform: translateY(-3px) !important;
+  box-shadow:
+    0 14px 36px rgba(124, 58, 237, 0.40),
+    0 0 0 1px rgba(255, 255, 255, 0.15) inset !important;
 }
 
 .trade-submit[data-side="SELL"]:active:not(:disabled) {
-  transform: translateY(0) scale(0.98) !important;
+  transform: translateY(-1px) scale(0.99) !important;
+  box-shadow:
+    0 6px 16px rgba(30, 64, 175, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.10) inset !important;
 }
 
 .trade-submit[data-side="SELL"]:disabled {
   opacity: 0.5 !important;
   cursor: not-allowed !important;
   transform: none !important;
+  box-shadow: none !important;
+}
+
+.trade-submit[data-side="SELL"] svg {
+  width: 18px !important;
+  height: 18px !important;
+  transition: transform 0.25s ease;
+}
+
+.trade-submit[data-side="SELL"]:hover:not(:disabled) svg {
+  transform: translateY(-2px);
 }
 
 /* ═══ Recent Withdrawals ═══ */
@@ -666,7 +719,9 @@
   box-shadow: 0 8px 20px rgba(30, 64, 175, 0.35) !important;
 }
 
-/* ═══ Responsive ═══ */
+/* ═══════════════════════════════════════
+   📱 RESPONSIVE
+   ═══════════════════════════════════════ */
 
 @media (max-width: 640px) {
   .confirm-deposit-card {
@@ -677,4 +732,9 @@
   .confirm-header-icon { width: 36px; height: 36px; }
   .confirm-header-title { font-size: 15px; }
   .confirm-amount-wrap .field-input { font-size: 16px; }
+
+  .trade-submit[data-side="SELL"] {
+    padding: 16px 20px !important;
+    font-size: 14px !important;
+  }
 }
