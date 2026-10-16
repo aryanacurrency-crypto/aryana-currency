@@ -2313,3 +2313,137 @@ body.light.pwa-active .confirm-modal-actions .btn-secondary {
 html:not(.theme-ready) * {
   transition: none !important;
 }
+
+/* ═══════════════════════════════════════
+   ARYANA OS — PWA Light Theme Override
+   رفع تیرگی + پالت Navy-Purple
+   ═══════════════════════════════════════ */
+
+/* ─── پالت ─── */
+:root {
+  --pwa-gold: #1E40AF !important;
+  --pwa-gold-bright: #2563EB !important;
+  --pwa-gold-deep: #0F1E3D !important;
+  --pwa-gold-glow: rgba(30, 64, 175, 0.3) !important;
+  --header-bg: rgba(255, 255, 255, 0.85) !important;
+  --header-border: rgba(226, 232, 240, 0.6) !important;
+  --header-shadow: 0 4px 24px rgba(30, 64, 175, 0.06) !important;
+}
+
+/* ─── هدر ─── */
+body.pwa-active .app-header {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: saturate(180%) blur(20px) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.6) !important;
+  box-shadow: 0 4px 24px rgba(30, 64, 175, 0.06) !important;
+  color: #0F172A !important;
+}
+
+body.pwa-active .app-brand-text {
+  color: #0F172A !important;
+}
+
+body.pwa-active .app-brand-text small {
+  color: #1E40AF !important;
+}
+
+body.pwa-active .icon-btn {
+  color: #64748B !important;
+}
+
+body.pwa-active .icon-btn:hover {
+  background: rgba(30, 64, 175, 0.06) !important;
+  color: #1E40AF !important;
+}
+
+body.pwa-active .user-avatar {
+  background: linear-gradient(135deg, #1E40AF, #7C3AED) !important;
+  color: white !important;
+}
+
+/* ─── Bottom Nav ─── */
+.pwa-bottom-nav {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-top: 1px solid rgba(226, 232, 240, 0.6) !important;
+  box-shadow: 0 -8px 32px rgba(30, 64, 175, 0.08) !important;
+}
+
+.pwa-nav-item {
+  color: #94A3B8 !important;
+}
+
+.pwa-nav-item.active {
+  color: #1E40AF !important;
+}
+
+.pwa-nav-item.active::before {
+  background: linear-gradient(90deg, #1E40AF, #7C3AED) !important;
+  box-shadow: 0 0 8px rgba(30, 64, 175, 0.35) !important;
+}
+
+.pwa-nav-item.active .pwa-nav-icon {
+  filter: drop-shadow(0 0 8px rgba(30, 64, 175, 0.35)) !important;
+  color: #1E40AF !important;
+}
+
+.pwa-nav-item.active .pwa-nav-label {
+  color: #1E40AF !important;
+}
+
+/* ─── Balance Hero ─── */
+body.pwa-active .balance-hero {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(124, 58, 237, 0.10) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(30, 64, 175, 0.10) 0%, transparent 50%),
+    linear-gradient(135deg, #FFFFFF 0%, #F0F4FF 60%, #F5F3FF 100%) !important;
+  border: 1px solid rgba(30, 64, 175, 0.12) !important;
+  box-shadow:
+    0 0 0 1px rgba(30, 64, 175, 0.04) inset,
+    0 12px 40px rgba(30, 64, 175, 0.10) !important;
+  color: #0F172A !important;
+}
+
+body.light.pwa-active .balance-hero {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(124, 58, 237, 0.10) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(30, 64, 175, 0.10) 0%, transparent 50%),
+    linear-gradient(135deg, #FFFFFF 0%, #F0F4FF 60%, #F5F3FF 100%) !important;
+}
+
+body.pwa-active .balance-label {
+  color: #1E40AF !important;
+}
+
+body.pwa-active .balance-amount {
+  background: linear-gradient(135deg, #0F1E3D 0%, #1E40AF 60%, #7C3AED 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+body.pwa-active .balance-currency-badge {
+  color: #1E40AF !important;
+  background: rgba(30, 64, 175, 0.08) !important;
+  border: 1px solid rgba(30, 64, 175, 0.12) !important;
+}
+
+body.pwa-active .balance-equivalent {
+  color: #64748B !important;
+}
+
+body.pwa-active .balance-action {
+  background: rgba(30, 64, 175, 0.05) !important;
+  border: 1px solid rgba(30, 64, 175, 0.1) !important;
+  color: #0F172A !important;
+}
+
+body.pwa-active .balance-action-icon {
+  background: white !important;
+  color: #1E40AF !important;
+}
+
+body.pwa-active .balance-action-icon svg {
+  color: #1E40AF !important;
+}
