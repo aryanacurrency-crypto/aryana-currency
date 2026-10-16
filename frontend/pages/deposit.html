@@ -155,6 +155,7 @@
        ═══════════════════════════════════════ -->
   <main class="container app-main">
 
+    <!-- Page Header -->
     <div class="page-header-row">
       <a href="dashboard.html" class="back-btn" aria-label="Back">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -183,7 +184,9 @@
     <!-- Deposit Layout -->
     <div class="deposit-layout">
 
-      <!-- Main Card -->
+      <!-- ═══════════════════════════════════════
+           MAIN CARD
+           ═══════════════════════════════════════ -->
       <div class="deposit-card">
 
         <div class="deposit-card-header">
@@ -206,7 +209,7 @@
           <!-- Info + Address -->
           <div class="deposit-info-block">
 
-            <!-- Network Selector -->
+            <!-- Network Selector (فقط USDT) -->
             <div id="networkBlock">
               <div class="address-label">Choose Network</div>
               <div id="networkTabs"></div>
@@ -278,9 +281,109 @@
           </div>
         </div>
 
+        <!-- ═══════════════════════════════════════
+             ✅ CONFIRM DEPOSIT FORM
+             ═══════════════════════════════════════ -->
+        <div class="confirm-deposit-card" id="confirmDepositCard">
+          <div class="confirm-header">
+            <div class="confirm-header-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <div>
+              <div class="confirm-header-title">Already sent your deposit?</div>
+              <div class="confirm-header-subtitle">Submit your transaction reference for verification</div>
+            </div>
+          </div>
+
+          <div class="confirm-info-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="16" x2="12" y2="12"/>
+              <line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+            <div>
+              After sending funds, fill this form. Our team will verify and credit your account within <strong>30 minutes</strong>.
+            </div>
+          </div>
+
+          <form class="confirm-form" id="confirmDepositForm">
+
+            <!-- Amount -->
+            <div class="field">
+              <label class="field-label" for="confirmAmount" id="confirmAmountLabel">
+                Amount you sent (USDT)
+              </label>
+              <div class="confirm-amount-wrap">
+                <input
+                  type="text"
+                  id="confirmAmount"
+                  class="field-input mono"
+                  inputmode="decimal"
+                  placeholder="100.00"
+                  autocomplete="off"
+                >
+                <span class="confirm-amount-tag" id="confirmAmountTag">USDT</span>
+              </div>
+              <div class="field-hint" id="confirmAmountHint">
+                Enter the exact amount you transferred.
+              </div>
+            </div>
+
+            <!-- Reference / TXID -->
+            <div class="field">
+              <label class="field-label" for="confirmRef" id="confirmRefLabel">
+                Transaction ID (TXID)
+              </label>
+              <input
+                type="text"
+                id="confirmRef"
+                class="field-input mono"
+                placeholder="a1b2c3d4e5f6..."
+                autocomplete="off"
+              >
+              <div class="field-hint" id="confirmRefHint">
+                Copy the transaction hash from your wallet app.
+              </div>
+            </div>
+
+            <!-- Note (optional) -->
+            <div class="field">
+              <label class="field-label" for="confirmNote">
+                Note <span style="color:#94A3B8;font-weight:600;">(optional)</span>
+              </label>
+              <input
+                type="text"
+                id="confirmNote"
+                class="field-input"
+                placeholder="Any extra info..."
+                autocomplete="off"
+              >
+            </div>
+
+            <!-- Estimated total -->
+            <div class="confirm-amount-info" id="confirmTotalInfo" style="display:none;">
+              <span class="confirm-amount-info-label">You will receive approximately</span>
+              <span class="confirm-amount-info-value" id="confirmTotalValue">— USDT</span>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="confirm-submit-btn" id="confirmSubmitBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>I've Paid — Submit for Review</span>
+            </button>
+
+          </form>
+        </div>
+
       </div>
 
-      <!-- Side Instructions -->
+      <!-- ═══════════════════════════════════════
+           SIDE CARD
+           ═══════════════════════════════════════ -->
       <aside class="side-card">
         <div class="side-card-header">
           <div class="side-card-icon">
@@ -321,8 +424,8 @@
           <div class="side-step">
             <div class="side-step-num">4</div>
             <div>
-              <div class="side-step-title">Create your order</div>
-              <div class="side-step-text">After sending, go to Trade to place your order.</div>
+              <div class="side-step-title">Submit the form</div>
+              <div class="side-step-text">Fill the confirm form with your TXID.</div>
             </div>
           </div>
         </div>
@@ -345,7 +448,9 @@
 
   </main>
 
-  <!-- Scripts -->
+  <!-- ═══════════════════════════════════════
+       SCRIPTS
+       ═══════════════════════════════════════ -->
   <script src="../assets/js/config.js"></script>
   <script src="../assets/js/i18n.js"></script>
   <script src="../assets/js/theme.js"></script>
@@ -355,6 +460,7 @@
   <script src="../assets/js/command-palette.js"></script>
   <script src="../assets/js/networks.js"></script>
   <script src="../assets/js/deposit.js"></script>
+  <script src="../assets/js/deposit-confirm.js"></script>
   <script src="../assets/js/footer.js"></script>
   <script src="../assets/js/pwa.js"></script>
 </body>

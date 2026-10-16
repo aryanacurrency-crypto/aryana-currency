@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Deposit Light Fix
-   Override همه‌ی دارک‌ها
+   ARYANA CURRENCY — Deposit Light Fix + Confirm Form
+   Override دارک‌ها + استایل فرم تأیید
    ═══════════════════════════════════════ */
 
 /* ═══ Main Deposit Card ═══ */
@@ -25,27 +25,18 @@
     0 0 0 80px rgba(124, 58, 237, 0.015) !important;
 }
 
-/* ─── Card Header ─── */
-
 .deposit-card-icon {
   background: linear-gradient(135deg, #1E40AF, #7C3AED) !important;
   color: white !important;
   box-shadow: 0 8px 20px rgba(30, 64, 175, 0.25) !important;
 }
 
-.deposit-card-title {
-  color: #0F172A !important;
-}
+.deposit-card-title { color: #0F172A !important; }
+.deposit-card-subtitle { color: #64748B !important; }
 
-.deposit-card-subtitle {
-  color: #64748B !important;
-}
+/* ═══ Address ═══ */
 
-/* ═══ Address Label + Value ═══ */
-
-.address-label {
-  color: #64748B !important;
-}
+.address-label { color: #64748B !important; }
 
 .address-value {
   background: #FFFFFF !important;
@@ -59,11 +50,7 @@
   box-shadow: 0 4px 12px rgba(30, 64, 175, 0.08) !important;
 }
 
-.address-value.hesab {
-  color: #0F172A !important;
-}
-
-/* ─── Copy Button ─── */
+.address-value.hesab { color: #0F172A !important; }
 
 .copy-btn {
   background: linear-gradient(135deg, #1E40AF, #7C3AED) !important;
@@ -89,25 +76,12 @@
   border: 1px solid #E2E8F0 !important;
 }
 
-.info-row {
-  border-bottom: 1px solid #F0F4FF !important;
-}
+.info-row { border-bottom: 1px solid #F0F4FF !important; }
+.info-label { color: #64748B !important; }
+.info-value { color: #0F172A !important; }
+.info-value.sans { color: #0F172A !important; }
 
-.info-label {
-  color: #64748B !important;
-}
-
-.info-value {
-  color: #0F172A !important;
-}
-
-.info-value.sans {
-  color: #0F172A !important;
-}
-
-/* ═══════════════════════════════════════
-   🌐 NETWORK TABS (اصلاح رنگ فعال)
-   ═══════════════════════════════════════ */
+/* ═══ Network Tabs (اصلاح) ═══ */
 
 .network-tabs {
   display: grid !important;
@@ -161,19 +135,12 @@
   box-shadow: 0 8px 24px rgba(30, 64, 175, 0.25) !important;
 }
 
-.visual-label {
-  color: #1E40AF !important;
-}
-
-.visual-text {
-  color: #64748B !important;
-}
+.visual-label { color: #1E40AF !important; }
+.visual-text { color: #64748B !important; }
 
 /* ═══ Warning Boxes ═══ */
 
-.warning-box {
-  color: #64748B !important;
-}
+.warning-box { color: #64748B !important; }
 
 .warning-box.danger {
   background: rgba(239, 68, 68, 0.06) !important;
@@ -181,9 +148,7 @@
   border-inline-start: 3px solid #EF4444 !important;
 }
 
-.warning-box.danger .warning-icon {
-  color: #EF4444 !important;
-}
+.warning-box.danger .warning-icon { color: #EF4444 !important; }
 
 .warning-box.info {
   background: rgba(59, 130, 246, 0.06) !important;
@@ -191,22 +156,11 @@
   border-inline-start: 3px solid #3B82F6 !important;
 }
 
-.warning-box.info .warning-icon {
-  color: #3B82F6 !important;
-}
+.warning-box.info .warning-icon { color: #3B82F6 !important; }
 
-.warning-text {
-  color: #64748B !important;
-}
-
-.warning-text strong {
-  color: #0F172A !important;
-}
-
-.warning-text span {
-  color: #1E40AF !important;
-  font-weight: 800;
-}
+.warning-text { color: #64748B !important; }
+.warning-text strong { color: #0F172A !important; }
+.warning-text span { color: #1E40AF !important; font-weight: 800; }
 
 /* ═══ Side Card ═══ */
 
@@ -216,9 +170,7 @@
   box-shadow: 0 8px 24px rgba(30, 64, 175, 0.04) !important;
 }
 
-.side-card-header {
-  border-bottom: 1px solid #F0F4FF !important;
-}
+.side-card-header { border-bottom: 1px solid #F0F4FF !important; }
 
 .side-card-icon {
   background: linear-gradient(135deg, #1E40AF, #7C3AED) !important;
@@ -226,11 +178,7 @@
   box-shadow: 0 4px 12px rgba(30, 64, 175, 0.2) !important;
 }
 
-.side-card-title {
-  color: #0F172A !important;
-}
-
-/* ═══ Side Steps ═══ */
+.side-card-title { color: #0F172A !important; }
 
 .side-step-num {
   background: #F5F7FF !important;
@@ -238,28 +186,16 @@
   color: #64748B !important;
 }
 
-.side-step-title {
-  color: #0F172A !important;
-}
-
-.side-step-text {
-  color: #64748B !important;
-}
-
-/* ═══ Support Box ═══ */
+.side-step-title { color: #0F172A !important; }
+.side-step-text { color: #64748B !important; }
 
 .support-box {
   background: linear-gradient(135deg, #EFF6FF 0%, #F5F3FF 100%) !important;
   border: 1px solid rgba(30, 64, 175, 0.15) !important;
 }
 
-.support-box-title {
-  color: #0F172A !important;
-}
-
-.support-box-text {
-  color: #64748B !important;
-}
+.support-box-title { color: #0F172A !important; }
+.support-box-text { color: #64748B !important; }
 
 .support-box-btn {
   background: linear-gradient(135deg, #1E40AF, #7C3AED) !important;
@@ -279,9 +215,7 @@
   border: 1px solid #E2E8F0 !important;
 }
 
-.currency-tab {
-  color: #64748B !important;
-}
+.currency-tab { color: #64748B !important; }
 
 .currency-tab:hover:not(.active) {
   background: #EFF6FF !important;
@@ -315,4 +249,267 @@
   border-color: #1E40AF !important;
   color: #1E40AF !important;
   background: #EFF6FF !important;
+}
+
+/* ═══════════════════════════════════════
+   ✅ CONFIRM FORM — "I've Paid"
+   ═══════════════════════════════════════ */
+
+.confirm-deposit-card {
+  margin-top: var(--space-5);
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 20px;
+  padding: var(--space-6);
+  box-shadow: 0 8px 24px rgba(30, 64, 175, 0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+.confirm-deposit-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #1E40AF, #7C3AED);
+}
+
+.confirm-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid #F0F4FF;
+}
+
+.confirm-header-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #10B981, #059669);
+  color: white;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+.confirm-header-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0F172A;
+  letter-spacing: -0.3px;
+  margin-bottom: 2px;
+}
+
+.confirm-header-subtitle {
+  font-size: 12px;
+  color: #64748B;
+  font-weight: 500;
+}
+
+.confirm-form .field {
+  margin-bottom: var(--space-4);
+}
+
+.confirm-form .field-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  color: #64748B;
+  margin-bottom: 8px;
+  letter-spacing: 0.2px;
+}
+
+.confirm-form .field-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: #F8FAFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 12px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #0F172A;
+  transition: all 0.2s ease;
+  font-weight: 600;
+}
+
+.confirm-form .field-input:focus {
+  outline: none;
+  border-color: #1E40AF;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.08);
+}
+
+.confirm-form .field-input::placeholder {
+  color: #94A3B8;
+  font-weight: 500;
+}
+
+.confirm-form .field-input.mono {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.3px;
+}
+
+.confirm-form .field-hint {
+  font-size: 11px;
+  color: #94A3B8;
+  margin-top: 6px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.confirm-form .field-hint.warning {
+  color: #D97706;
+}
+
+/* ─── Amount Input with Currency Tag ─── */
+.confirm-amount-wrap {
+  position: relative;
+}
+
+.confirm-amount-wrap .field-input {
+  padding-right: 90px;
+  font-size: 18px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+}
+
+.confirm-amount-tag {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #EFF6FF, #F5F3FF);
+  border: 1px solid rgba(30, 64, 175, 0.15);
+  color: #1E40AF;
+  font-size: 12px;
+  font-weight: 800;
+  border-radius: 8px;
+  letter-spacing: 0.5px;
+  pointer-events: none;
+}
+
+/* ─── Amount Info Row ─── */
+.confirm-amount-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: linear-gradient(135deg, #EFF6FF, #F5F3FF);
+  border: 1px solid rgba(30, 64, 175, 0.15);
+  border-radius: 12px;
+  margin-bottom: var(--space-4);
+  font-size: 12px;
+}
+
+.confirm-amount-info-label {
+  color: #64748B;
+  font-weight: 600;
+}
+
+.confirm-amount-info-value {
+  color: #1E40AF;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono);
+}
+
+/* ─── Submit Button ─── */
+.confirm-submit-btn {
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #10B981, #059669);
+  color: white;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+  font-family: inherit;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+  margin-top: var(--space-3);
+}
+
+.confirm-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(16, 185, 129, 0.4);
+}
+
+.confirm-submit-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.confirm-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.confirm-submit-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ─── Info Box (بالای فرم) ─── */
+.confirm-info-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  background: rgba(59, 130, 246, 0.06);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-inline-start: 3px solid #3B82F6;
+  border-radius: 12px;
+  margin-bottom: var(--space-4);
+  font-size: 12px;
+  color: #64748B;
+  line-height: 1.6;
+}
+
+.confirm-info-box svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: #3B82F6;
+  margin-top: 1px;
+}
+
+.confirm-info-box strong {
+  color: #0F172A;
+  font-weight: 800;
+}
+
+/* ═══ Responsive ═══ */
+
+@media (max-width: 640px) {
+  .confirm-deposit-card {
+    padding: var(--space-4);
+    border-radius: 16px;
+  }
+
+  .confirm-header-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .confirm-header-title {
+    font-size: 15px;
+  }
+
+  .confirm-amount-wrap .field-input {
+    font-size: 16px;
+  }
 }
