@@ -72,24 +72,25 @@
         : 'Enter the exact amount of AFN you sent via Hesab Pay.'
     );
 
+    // ─── Ref Label (AFN → Receipt Link | USDT → TXID) ───
     setText(
       'confirmRefLabel',
-      isUsdt ? 'Transaction ID (TXID)' : 'Hesab Pay Reference Number'
+      isUsdt ? 'Transaction ID (TXID)' : 'Hesab Pay Receipt Link'
     );
 
     setText(
       'confirmRefHint',
       isUsdt
-        ? 'Copy the transaction hash from your wallet app.'
-        : 'Copy the reference number from your Hesab Pay receipt.'
+        ? 'Copy the transaction hash (TXID) from your wallet app.'
+        : 'Paste the receipt link from your Hesab Pay app (starts with https://gateway.hesab.com/...).'
     );
 
-    // ─── Placeholder ───
+    // ─── Placeholders ───
     const refInput = document.getElementById('confirmRef');
     if (refInput) {
       refInput.placeholder = isUsdt
         ? 'a1b2c3d4e5f6...'
-        : 'HP-12345678';
+        : 'https://gateway.hesab.com/api/receipt/...';
     }
 
     const amtInput = document.getElementById('confirmAmount');
@@ -106,9 +107,6 @@
      ═══════════════════════════════════════ */
 
   function watchNetworkChanges() {
-    // networks.js خودش تابع renderNetworkTabs رو داره
-    // ما از MutationObserver استفاده می‌کنیم که تغییرات رو ببینیم
-
     const observer = new MutationObserver(() => {
       const activeTab = document.querySelector('.network-tab.active');
       if (activeTab) {
@@ -122,10 +120,13 @@
 
     const container = document.getElementById('networkTabs');
     if (container) {
-      observer.observe(container, { subtree: true, attributes: true, attributeFilter: ['class'] });
+      observer.observe(container, {
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['class'],
+      });
     }
 
-    // اولیه
     const activeTab = document.querySelector('.network-tab.active');
     if (activeTab) {
       currentNetwork = activeTab.dataset.network;
@@ -133,7 +134,7 @@
   }
 
   /* ═══════════════════════════════════════
-     📊 TOTAL INFO (برای USDT)
+     📊 TOTAL INFO
      ═══════════════════════════════════════ */
 
   function updateTotalInfo() {
@@ -146,7 +147,6 @@
     const amount = parseFloat(amtInput.value) || 0;
 
     if (currentCurrency === 'USDT' && amount > 0 && currentRate) {
-      // ─── کاربر USDT داده، معادل AFN رو نشون بده ───
       const rate = Number(currentRate.sell_price_afn) || 0;
       const afnEquiv = amount * rate;
 
@@ -154,7 +154,6 @@
       value.textContent = `≈ ${formatNumber(afnEquiv)} AFN`;
 
     } else if (currentCurrency === 'AFN' && amount > 0 && currentRate) {
-      // ─── کاربر AFN داده، معادل USDT رو نشون بده ───
       const rate = Number(currentRate.buy_price_afn) || 0;
       const usdtEquiv = rate > 0 ? amount / rate : 0;
 
@@ -175,7 +174,6 @@
     if (!input) return;
 
     input.addEventListener('input', (e) => {
-      // فقط اعداد و نقطه
       let value = e.target.value.replace(/[^\d.]/g, '');
 
       const parts = value.split('.');
@@ -208,24 +206,41 @@
       const ref = document.getElementById('confirmRef').value.trim();
       const note = document.getElementById('confirmNote').value.trim() || null;
 
-      // ─── Validation ───
+      // ─── Validation: مقدار ───
       if (amount <= 0) {
         Notify.warning('Please enter the amount you sent.');
         return;
       }
 
-      if (!ref || ref.length < 4) {
-        Notify.warning('Please enter a valid transaction reference.');
+      const minAmount = currentCurrency === 'USDT' ? 10 : 500;
+      if (amount < minAmount) {
+        Notify.warning(`Minimum deposit is ${minAmount} ${currentCurrency}.`);
         return;
       }
 
-      // ─── Minimum check ───
-      const minAmount = currentCurrency === 'USDT' ? 10 : 500;
-      if (amount < minAmount) {
-        Notify.warning(
-          `Minimum deposit is ${minAmount} ${currentCurrency}.`
-        );
+      // ─── Validation: Reference ───
+      if (!ref || ref.length < 4) {
+        Notify.warning('Please enter a valid reference.');
         return;
+      }
+
+      if (currentCurrency === 'AFN') {
+        // Hesab Pay → لینک رسید
+        if (!ref.startsWith('https://gateway.hesab.com') &&
+            !ref.startsWith('http://gateway.hesab.com')) {
+          Notify.warning('Please paste a valid Hesab Pay receipt link (https://gateway.hesab.com/...).');
+          return;
+        }
+      } else {
+        // USDT → TXID (نباید URL باشه)
+        if (ref.startsWith('http')) {
+          Notify.warning('TXID should not be a URL. Paste the transaction hash.');
+          return;
+        }
+        if (ref.length < 10) {
+          Notify.warning('TXID seems too short. Please check it.');
+          return;
+        }
       }
 
       // ─── Confirm ───
@@ -250,7 +265,6 @@
         if (currentCurrency === 'USDT') {
           amountUsdt = amount;
         } else {
-          // AFN → USDT
           const rate = currentRate
             ? Number(currentRate.buy_price_afn)
             : 66.80;
@@ -259,17 +273,21 @@
 
         const order = await API.createOrder('BUY', amountUsdt.toFixed(2));
 
-        // ─── 2. Submit payment reference ───
-        await API.submitPayment(order.id, ref, note);
+        // ─── 2. Submit payment reference با نوع ───
+        const finalNote = currentCurrency === 'AFN'
+          ? `[AFN/HesabPay] ${note || 'Receipt link submitted'}`
+          : `[USDT/${currentNetwork}] ${note || 'TXID submitted'}`;
+
+        await API.submitPayment(order.id, ref, finalNote);
 
         // ─── 3. Success ───
         Notify.success('Deposit submitted! Awaiting verification.');
 
-        // ─── Reset form ───
         form.reset();
         updateTotalInfo();
 
-        // ─── Redirect به order detail ───        setTimeout(() => {
+        // ─── Redirect ───
+        setTimeout(() => {
           window.location.href = `order.html?id=${order.id}`;
         }, 1200);
 
