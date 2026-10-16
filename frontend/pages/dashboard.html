@@ -2,38 +2,44 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Dashboard — Aryana Currency">
-  <meta name="theme-color" content="#0B0E11">
+  <meta name="theme-color" content="#FAFBFF">
 
   <title>Dashboard | ARYANA CURRENCY</title>
 
-<script>
-  (function() {
-    try {
-      var saved = localStorage.getItem('aryana_theme');
-      var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      document.documentElement.classList.add(theme);
-      document.documentElement.setAttribute('data-theme', theme);
-    } catch (e) {}
-  })();
-</script>
+  <!-- Theme boot (no FOUC) -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('aryana_theme') || 'light';
+        document.documentElement.classList.add(saved);
+        document.documentElement.setAttribute('data-theme', saved);
+        setTimeout(function () {
+          document.documentElement.classList.add('theme-ready');
+        }, 50);
+      } catch (e) {}
+    })();
+  </script>
 
   <!-- PWA -->
   <link rel="manifest" href="../manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Aryana">
   <link rel="apple-touch-icon" href="../assets/images/icon-192.png">
 
   <link rel="icon" type="image/png" href="../assets/images/logo.png">
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+  <!-- Styles -->
   <link rel="stylesheet" href="../assets/css/theme-v2.css">
   <link rel="stylesheet" href="../assets/css/ui-v2.css">
+  <link rel="stylesheet" href="../assets/css/command-palette.css">
   <link rel="stylesheet" href="../assets/css/dashboard-v2.css">
   <link rel="stylesheet" href="../assets/css/notifications.css">
   <link rel="stylesheet" href="../assets/css/footer.css">
@@ -41,7 +47,9 @@
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- ═══════════════════════════════════════
+       HEADER
+       ═══════════════════════════════════════ -->
   <header class="app-header">
     <div class="container app-header-inner">
 
@@ -95,24 +103,60 @@
       </nav>
 
       <div class="app-header-actions">
+        <!-- Command Palette Trigger -->
+        <button class="cmd-trigger" data-cmd-trigger type="button" aria-label="Open command palette">
+          <span class="cmd-trigger-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <span>Search...</span>
+          </span>
+          <kbd class="cmd-kbd">⌘K</kbd>
+        </button>
+
+        <!-- Command Palette Trigger (mobile) -->
+        <button class="cmd-trigger cmd-trigger-compact" data-cmd-trigger type="button" aria-label="Open command palette">
+          <span class="cmd-trigger-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <span>Search</span>
+          </span>
+        </button>
+
+        <!-- Admin Panel -->
         <a href="admin/index.html" class="icon-btn" id="adminPanelBtn" style="display:none;" title="Admin Panel">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 2l3 6 6 1-4.5 4.5L18 20l-6-3-6 3 1.5-6.5L3 9l6-1z"/>
           </svg>
         </a>
 
+        <!-- Notifications -->
+        <button class="icon-btn" id="notificationsBtn" title="Notifications" aria-label="Notifications">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+          <span class="badge-dot" id="notifDot" style="display:none;"></span>
+        </button>
+
+        <!-- Theme Toggle -->
         <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
           </svg>
         </button>
 
+        <!-- User Avatar -->
         <a href="profile.html" class="user-avatar-btn">
           <div class="user-avatar" id="userAvatar">A</div>
           <span class="user-name" id="userName">User</span>
         </a>
 
-        <button class="icon-btn" id="logoutBtn" title="Logout">
+        <!-- Logout -->
+        <button class="icon-btn" id="logoutBtn" title="Logout" aria-label="Logout">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
             <polyline points="16 17 21 12 16 7"/>
@@ -124,25 +168,45 @@
     </div>
   </header>
 
-  <!-- Main -->
+  <!-- ═══════════════════════════════════════
+       MAIN
+       ═══════════════════════════════════════ -->
   <main class="container app-main">
 
-    <!-- Page Header -->
+    <!-- ─── Page Header ─── -->
     <div class="page-header">
-      <h1>
-        <span data-i18n="welcomeBack">Welcome back,</span>
-        <span id="welcomeName">—</span>
-      </h1>
-      <p data-i18n="dashboardSubtitle">Here's an overview of your portfolio.</p>
+      <div class="page-header-left">
+        <h1 class="page-greeting">
+          <span id="greetingText">Good evening</span>,
+          <span class="name" id="welcomeName">Habibullah</span>
+          <span class="wave">👋</span>
+        </h1>
+        <div class="page-meta">
+          <span id="pageDate">Thursday, Oct 16</span>
+          <span class="dot-sep"></span>
+          <span id="pageTime">14:32</span>
+          <span class="dot-sep"></span>
+          <span class="live-dot"></span>
+          <span>Live</span>
+        </div>
+      </div>
     </div>
 
-    <!-- Balance Hero (Binance-style) -->
-    <div class="balance-hero">
-      <div class="balance-hero-content">
+    <!-- ═══════════════════════════════════════
+         BENTO GRID
+         ═══════════════════════════════════════ -->
+    <div class="bento-grid">
 
-        <!-- Label + Eye -->
-        <div class="balance-label">
-          <span data-i18n="estTotalValue">Estimated Total Value</span>
+      <!-- ─── Balance Hero ─── -->
+      <section class="balance-hero" id="balanceHero">
+        <div class="balance-hero-top">
+          <div class="balance-label">
+            <span data-i18n="estTotalValue">PORTFOLIO VALUE</span>
+            <span class="live-chip">
+              <span class="live-chip-dot"></span>
+              LIVE
+            </span>
+          </div>
           <button type="button" class="balance-eye-btn" id="toggleBalance" aria-label="Toggle balance visibility">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
@@ -151,304 +215,557 @@
           </button>
         </div>
 
-        <!-- Big Amount -->
         <div class="balance-amount-row">
-          <span class="balance-amount" id="totalBalance">0.00</span>
+          <span class="balance-amount" id="totalBalance">$0.00</span>
           <span class="balance-currency-badge">USDT</span>
         </div>
 
-        <!-- Equivalent + Change -->
         <div class="balance-equivalent-row">
-          <span class="balance-equivalent" id="totalUsdt">≈ $0.00</span>
+          <span class="balance-equivalent" id="totalEquivalent">≈ 0.00 USDT</span>
           <span class="balance-change up" id="balanceChange">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="18 15 12 9 6 15"/>
             </svg>
-            +0.00%
+            <span>+0.00%</span>
           </span>
         </div>
 
-        <!-- Mini Sparkline Chart -->
+        <!-- Live Sparkline -->
         <div class="balance-chart">
-          <svg viewBox="0 0 300 60" preserveAspectRatio="none" class="sparkline">
+          <svg viewBox="0 0 300 60" preserveAspectRatio="none" class="sparkline" id="balanceSparkline">
             <defs>
-              <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#FFC107" stop-opacity="0.4"/>
-                <stop offset="100%" stop-color="#FFC107" stop-opacity="0"/>
+              <linearGradient id="heroGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.35"/>
+                <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
               </linearGradient>
             </defs>
-            <path d="M0,40 L20,35 L40,38 L60,30 L80,32 L100,25 L120,28 L140,20 L160,22 L180,18 L200,15 L220,20 L240,12 L260,15 L280,10 L300,12"
-                  stroke="#FFC107"
-                  stroke-width="2"
-                  fill="none"
-                  stroke-linecap="round"/>
-            <path d="M0,40 L20,35 L40,38 L60,30 L80,32 L100,25 L120,28 L140,20 L160,22 L180,18 L200,15 L220,20 L240,12 L260,15 L280,10 L300,12 L300,60 L0,60 Z"
-                  fill="url(#chartGradient)"/>
+            <path id="sparkArea" d="" fill="url(#heroGrad)"/>
+            <path id="sparkLine" d="" stroke="#FFFFFF" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
 
-        <!-- Action Buttons (Horizontal with Icons) -->
+        <!-- Actions -->
         <div class="balance-actions">
           <a href="deposit.html" class="balance-action">
-            <div class="balance-action-icon deposit">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            <span data-i18n="deposit">Deposit</span>
+          </a>
+          <a href="withdraw.html" class="balance-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="19" x2="12" y2="5"/>
+              <polyline points="5 12 12 5 19 12"/>
+            </svg>
+            <span data-i18n="withdraw">Withdraw</span>
+          </a>
+          <a href="exchange.html" class="balance-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12M17 20l4-4M17 20l-4-4"/>
+            </svg>
+            <span data-i18n="convert">Convert</span>
+          </a>
+          <a href="orders.html" class="balance-action">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span data-i18n="history">History</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- ─── Quick Panel ─── -->
+      <aside class="quick-panel">
+        <div class="quick-panel-header">
+          <div class="quick-panel-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+          <div>
+            <div class="quick-panel-title" data-i18n="quickActions">Quick Actions</div>
+            <div class="quick-panel-subtitle">Do it in seconds</div>
+          </div>
+        </div>
+
+        <div class="quick-actions-grid">
+          <a href="exchange.html?side=BUY" class="quick-action-lg">
+            <div class="quick-action-lg-icon green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="12" y1="5" x2="12" y2="19"/>
                 <line x1="5" y1="12" x2="19" y2="12"/>
               </svg>
             </div>
-            <span data-i18n="deposit">Deposit</span>
-          </a>
-
-          <a href="withdraw.html" class="balance-action">
-            <div class="balance-action-icon withdraw">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="12" y1="19" x2="12" y2="5"/>
-                <polyline points="5 12 12 5 19 12"/>
+            <div class="quick-action-lg-text">
+              <div class="quick-action-lg-title" data-i18n="buy">Buy USDT</div>
+              <div class="quick-action-lg-subtitle">Best rate today</div>
+            </div>
+            <div class="quick-action-lg-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
               </svg>
             </div>
-            <span data-i18n="withdraw">Withdraw</span>
           </a>
 
-          <a href="exchange.html" class="balance-action">
-            <div class="balance-action-icon convert">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12M17 20l4-4M17 20l-4-4"/>
+          <a href="exchange.html?side=SELL" class="quick-action-lg">
+            <div class="quick-action-lg-icon red">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/>
               </svg>
             </div>
-            <span data-i18n="convert">Convert</span>
+            <div class="quick-action-lg-text">
+              <div class="quick-action-lg-title" data-i18n="sell">Sell USDT</div>
+              <div class="quick-action-lg-subtitle">Instant payout</div>
+            </div>
+            <div class="quick-action-lg-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </div>
           </a>
 
-          <a href="orders.html" class="balance-action">
-            <div class="balance-action-icon history">
+          <a href="p2p/index.html" class="quick-action-lg">
+            <div class="quick-action-lg-icon navy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <div class="quick-action-lg-text">
+              <div class="quick-action-lg-title">P2P Market</div>
+              <div class="quick-action-lg-subtitle">Trade with users</div>
+            </div>
+            <div class="quick-action-lg-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </div>
+          </a>
+
+          <a href="lucky-wheel.html" class="quick-action-lg">
+            <div class="quick-action-lg-icon purple">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 2v10l7 5"/>
+              </svg>
+            </div>
+            <div class="quick-action-lg-text">
+              <div class="quick-action-lg-title">Lucky Wheel</div>
+              <div class="quick-action-lg-subtitle">
+                <span id="wheelTicketsQuick">3</span> tickets available
+              </div>
+            </div>
+            <div class="quick-action-lg-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </div>
+          </a>
+        </div>
+      </aside>
+
+      <!-- ─── Stats Row ─── -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-card-icon navy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+            </div>
+            <span class="stat-card-trend up" id="rateTrend">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="18 15 12 9 6 15"/>
+              </svg>
+              <span>+0.00%</span>
+            </span>
+          </div>
+          <div class="stat-card-label">USDT PRICE</div>
+          <div class="stat-card-value" id="statUsdtPrice">— AFN</div>
+          <div class="stat-card-sub">per 1 USDT</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-card-icon purple">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+            </div>
+            <span class="stat-card-trend up">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="18 15 12 9 6 15"/>
+              </svg>
+              <span>+8%</span>
+            </span>
+          </div>
+          <div class="stat-card-label">TOTAL ORDERS</div>
+          <div class="stat-card-value" id="statTotalOrders">0</div>
+          <div class="stat-card-sub">
+            <span id="statCompleted">0</span> completed
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-card-icon green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="1" x2="12" y2="23"/>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+            </div>
+            <span class="stat-card-trend up">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="18 15 12 9 6 15"/>
+              </svg>
+              <span>30d</span>
+            </span>
+          </div>
+          <div class="stat-card-label">30D VOLUME</div>
+          <div class="stat-card-value" id="statVolume">0 USDT</div>
+          <div class="stat-card-sub">Total traded</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-card-icon amber">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/>
                 <polyline points="12 6 12 12 16 14"/>
               </svg>
             </div>
-            <span data-i18n="history">History</span>
+            <span class="stat-card-trend up">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="18 15 12 9 6 15"/>
+              </svg>
+              <span>Live</span>
+            </span>
+          </div>
+          <div class="stat-card-label">MEMBER SINCE</div>
+          <div class="stat-card-value" id="statMemberSince">—</div>
+          <div class="stat-card-sub">Welcome back</div>
+        </div>
+      </div>
+
+      <!-- ─── Smart Insights ─── -->
+      <section class="insights-section" id="insightsSection">
+        <!-- پر می‌شه با JS -->
+      </section>
+
+      <!-- ─── Activity Timeline ─── -->
+      <section class="activity-panel">
+        <div class="activity-header">
+          <div class="activity-header-title">
+            <div class="activity-header-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+            </div>
+            <div>
+              <h2 data-i18n="activityTitle">Recent Activity</h2>
+              <p>Latest updates on your account</p>
+            </div>
+          </div>
+          <a href="orders.html" class="activity-header-link">
+            <span data-i18n="viewAll">View all</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
           </a>
         </div>
 
-      </div>
-    </div>
-
-    <!-- Stats Row -->
-    <div class="stats-row">
-      <div class="stat-block">
-        <div class="stat-label">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-          </svg>
-          <span data-i18n="statUsdtPrice">USDT Price</span>
+        <div class="activity-list" id="activityList">
+          <!-- پر می‌شه با JS -->
         </div>
-        <div class="stat-value text-gold" id="statUsdtPrice">— AFN</div>
-      </div>
+      </section>
 
-      <div class="stat-block">
-        <div class="stat-label">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-          </svg>
-          <span data-i18n="statTotalOrders">Total Orders</span>
+      <!-- ─── Referral Card ─── -->
+      <aside class="referral-panel">
+        <div class="referral-header">
+          <div class="referral-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 12 20 22 4 22 4 12"/>
+              <rect x="2" y="7" width="20" height="5"/>
+              <line x1="12" y1="22" x2="12" y2="7"/>
+              <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+              <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="referral-title" data-i18n="referralTitle">Invite & Earn</div>
+            <div class="referral-subtitle">Earn 10% of every trade</div>
+          </div>
         </div>
-        <div class="stat-value" id="statTotalOrders">—</div>
-      </div>
 
-      <div class="stat-block">
-        <div class="stat-label">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="1" x2="12" y2="23"/>
-            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-          </svg>
-          <span data-i18n="statVolume">30d Volume</span>
+        <div class="referral-code-box">
+          <div class="referral-code-value" id="referralCode">HABIB123</div>
+          <button type="button" class="referral-code-copy" id="copyReferralBtn" aria-label="Copy referral code">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+          </button>
         </div>
-        <div class="stat-value" id="statVolume">— USDT</div>
-      </div>
 
-      <div class="stat-block">
-        <div class="stat-label">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-            <polyline points="22 4 12 14.01 9 11.01"/>
-          </svg>
-          <span data-i18n="statCompleted">Completed</span>
+        <div class="referral-stats">
+          <div class="referral-stat">
+            <div class="referral-stat-label">Invited</div>
+            <div class="referral-stat-value" id="referralInvited">0</div>
+          </div>
+          <div class="referral-stat">
+            <div class="referral-stat-label">Earned</div>
+            <div class="referral-stat-value purple" id="referralEarned">0 AFN</div>
+          </div>
         </div>
-        <div class="stat-value text-green" id="statCompleted">—</div>
+
+        <a href="referral.html" class="referral-btn">
+          <span data-i18n="viewReferral">View Referral Dashboard</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      </aside>
+
+      <!-- ─── Wheel Promo ─── -->
+      <a href="lucky-wheel.html" class="wheel-promo">
+        <div>
+          <div class="wheel-promo-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 2v10l7 5"/>
+            </svg>
+          </div>
+          <div class="wheel-promo-title">Lucky Wheel</div>
+          <div class="wheel-promo-text">
+            You have <strong id="wheelTickets">3</strong> tickets. Spin now and win up to 500 AFN!
+          </div>
+        </div>
+        <div class="wheel-promo-cta">
+          <span>Spin Now</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </a>
+
+      <!-- ─── VIP Card ─── -->
+      <div class="vip-card">
+        <div class="vip-header">
+          <div class="vip-badge">
+            <span class="vip-badge-dot"></span>
+            <span>VIP MEMBER</span>
+          </div>
+          <div class="vip-level" id="vipLevel">Level 1</div>
+        </div>
+
+        <div>
+          <div class="vip-name" id="vipName">Silver</div>
+        </div>
+
+        <div class="vip-progress">
+          <div class="vip-progress-meta">
+            <span>Next: <strong id="vipNext">Gold</strong></span>
+            <span><strong id="vipProgressPct">45%</strong></span>
+          </div>
+          <div class="vip-progress-bar">
+            <div class="vip-progress-fill" id="vipProgressFill" style="width: 45%;"></div>
+          </div>
+        </div>
+
+        <div class="vip-perks">
+          <span class="vip-perk">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Lower fees
+          </span>
+          <span class="vip-perk">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Priority support
+          </span>
+        </div>
       </div>
-    </div>
 
-    <!-- Asset Cards -->
-    <div class="asset-grid">
-
-      <!-- USDT -->
-      <div class="asset-card">
-        <div class="asset-card-header">
-          <div class="asset-info">
-            <div class="asset-icon usdt">₮</div>
+      <!-- ─── Market Overview ─── -->
+      <section class="market-panel">
+        <div class="market-header">
+          <div class="market-header-title">
+            <div class="market-header-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+            </div>
             <div>
-              <div class="asset-name">Tether</div>
-              <div class="asset-symbol">USDT</div>
+              <h2 data-i18n="marketTitle">Market Overview</h2>
+              <p>Live prices · updated every 5s</p>
             </div>
           </div>
-          <span class="asset-change up" id="usdtChange">+0.00%</span>
         </div>
 
-        <div class="asset-balance">
-          <span id="usdtBalance">0.00</span>
-          <small>USDT</small>
-        </div>
-        <div class="asset-equivalent">
-          ≈ $<span id="usdtValue">0.00</span>
-        </div>
-
-        <div class="asset-locked" id="usdtLocked" style="display:none;">
-          <span data-i18n="locked">Locked:</span> <strong id="usdtLockedAmount">0.00</strong>
-        </div>
-
-        <div class="asset-actions">
-          <a href="exchange.html?side=BUY" class="btn btn-primary">Buy</a>
-          <a href="exchange.html?side=SELL" class="btn btn-secondary">Sell</a>
-        </div>
-      </div>
-
-      <!-- AFN -->
-      <div class="asset-card">
-        <div class="asset-card-header">
-          <div class="asset-info">
-            <div class="asset-icon afn">؋</div>
-            <div>
-              <div class="asset-name">Afghan Afghani</div>
-              <div class="asset-symbol">AFN</div>
+        <div class="market-list" id="marketList">
+          <div class="market-item">
+            <div class="market-item-symbol">
+              <div class="market-item-icon usdt">₮</div>
+              <div>
+                <div class="market-item-name">Tether</div>
+                <div class="market-item-pair">USDT / AFN</div>
+              </div>
+            </div>
+            <div class="market-item-price" id="marketUsdtPrice">—</div>
+            <div class="market-item-change up" id="marketUsdtChange">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="18 15 12 9 6 15"/>
+              </svg>
+              <span>+0.00%</span>
+            </div>
+            <div class="market-item-sparkline">
+              <svg viewBox="0 0 80 32" preserveAspectRatio="none">
+                <path d="M0,24 L10,20 L20,22 L30,16 L40,18 L50,12 L60,14 L70,8 L80,10"
+                      stroke="#10B981" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              </svg>
             </div>
           </div>
-          <span class="asset-change up" id="afnChange">+0.00%</span>
-        </div>
 
-        <div class="asset-balance">
-          <span id="afnBalance">0.00</span>
-          <small>AFN</small>
-        </div>
-        <div class="asset-equivalent">
-          ≈ $<span id="afnValue">0.00</span>
-        </div>
+          <div class="market-item">
+            <div class="market-item-symbol">
+              <div class="market-item-icon usd">$</div>
+              <div>
+                <div class="market-item-name">US Dollar</div>
+                <div class="market-item-pair">USD / AFN</div>
+              </div>
+            </div>
+            <div class="market-item-price" id="marketUsdPrice">—</div>
+            <div class="market-item-change up" id="marketUsdChange">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="18 15 12 9 6 15"/>
+              </svg>
+              <span>+0.12%</span>
+            </div>
+            <div class="market-item-sparkline">
+              <svg viewBox="0 0 80 32" preserveAspectRatio="none">
+                <path d="M0,20 L10,18 L20,16 L30,18 L40,14 L50,12 L60,14 L70,10 L80,8"
+                      stroke="#10B981" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
 
-        <div class="asset-actions">
-          <a href="deposit.html" class="btn btn-secondary">Deposit</a>
-          <a href="withdraw.html" class="btn btn-secondary">Withdraw</a>
+          <div class="market-item">
+            <div class="market-item-symbol">
+              <div class="market-item-icon afn">؋</div>
+              <div>
+                <div class="market-item-name">Afghan Afghani</div>
+                <div class="market-item-pair">AFN / USDT</div>
+              </div>
+            </div>
+            <div class="market-item-price" id="marketAfnPrice">—</div>
+            <div class="market-item-change up" id="marketAfnChange">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="18 15 12 9 6 15"/>
+              </svg>
+              <span>+0.00%</span>
+            </div>
+            <div class="market-item-sparkline">
+              <svg viewBox="0 0 80 32" preserveAspectRatio="none">
+                <path d="M0,22 L10,20 L20,18 L30,20 L40,16 L50,18 L60,14 L70,16 L80,12"
+                      stroke="#10B981" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
         </div>
+      </section>
+
+      <!-- ─── Quick Action Grid ─── -->
+      <div class="quick-actions-row">
+        <a href="exchange.html?side=BUY" class="qa-card">
+          <div class="qa-card-icon green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+          </div>
+          <span data-i18n="buy">Buy</span>
+        </a>
+
+        <a href="exchange.html?side=SELL" class="qa-card">
+          <div class="qa-card-icon red">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+          </div>
+          <span data-i18n="sell">Sell</span>
+        </a>
+
+        <a href="deposit.html" class="qa-card">
+          <div class="qa-card-icon navy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <polyline points="19 12 12 19 5 12"/>
+            </svg>
+          </div>
+          <span data-i18n="deposit">Deposit</span>
+        </a>
+
+        <a href="withdraw.html" class="qa-card">
+          <div class="qa-card-icon amber">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="19" x2="12" y2="5"/>
+              <polyline points="5 12 12 5 19 12"/>
+            </svg>
+          </div>
+          <span data-i18n="withdraw">Withdraw</span>
+        </a>
+
+        <a href="orders.html" class="qa-card">
+          <div class="qa-card-icon purple">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+          </div>
+          <span data-i18n="navOrders">Orders</span>
+        </a>
+
+        <a href="profile.html" class="qa-card">
+          <div class="qa-card-icon gradient">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <span data-i18n="navProfile">Profile</span>
+        </a>
       </div>
 
     </div>
-
-    <!-- Quick Actions -->
-    <div class="quick-actions">
-      <a href="exchange.html?side=BUY" class="quick-action">
-        <div class="quick-action-icon green">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="5" x2="12" y2="19"/>
-            <line x1="5" y1="12" x2="19" y2="12"/>
-          </svg>
-        </div>
-        <span data-i18n="buy">Buy</span>
-      </a>
-
-      <a href="exchange.html?side=SELL" class="quick-action">
-        <div class="quick-action-icon red">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12"/>
-          </svg>
-        </div>
-        <span data-i18n="sell">Sell</span>
-      </a>
-
-      <a href="p2p/index.html" class="quick-action">
-        <div class="quick-action-icon gold">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-            <circle cx="9" cy="7" r="4"/>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-          </svg>
-        </div>
-        <span data-i18n="navP2P">P2P</span>
-      </a>
-
-      <a href="orders.html" class="quick-action">
-        <div class="quick-action-icon blue">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <polyline points="12 6 12 12 16 14"/>
-          </svg>
-        </div>
-        <span data-i18n="history">History</span>
-      </a>
-
-      <a href="profile.html" class="quick-action">
-        <div class="quick-action-icon gold">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
-          </svg>
-        </div>
-        <span data-i18n="profile">Profile</span>
-      </a>
-    </div>
-
-    <!-- Recent Transactions -->
-    <section>
-      <div class="section-header">
-        <h2 data-i18n="recentActivity">Recent Activity</h2>
-        <a href="orders.html" data-i18n="viewAll">View all →</a>
-      </div>
-
-      <div class="tx-list" id="txList">
-        <div class="empty-state" id="txEmpty">
-          <div class="empty-state-icon">◇</div>
-          <h3 data-i18n="noTransactions">No transactions yet</h3>
-          <p data-i18n="noTransactionsText">Your activity will appear here.</p>
-        </div>
-      </div>
-    </section>
+    <!-- /bento-grid -->
 
   </main>
 
-  <!-- Scripts -->
+  <!-- ═══════════════════════════════════════
+       SCRIPTS
+       ═══════════════════════════════════════ -->
   <script src="../assets/js/config.js"></script>
   <script src="../assets/js/i18n.js"></script>
   <script src="../assets/js/theme.js"></script>
   <script src="../assets/js/auth.js"></script>
   <script src="../assets/js/api.js"></script>
   <script src="../assets/js/notifications.js"></script>
+  <script src="../assets/js/command-palette.js"></script>
   <script src="../assets/js/dashboard.js"></script>
   <script src="../assets/js/footer.js"></script>
   <script src="../assets/js/pwa.js"></script>
-
-  <!-- Balance Toggle Logic -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const toggleBalance = document.getElementById('toggleBalance');
-      if (toggleBalance) {
-        let balanceVisible = localStorage.getItem('balance_visible') !== 'false';
-
-        const applyBalanceVisibility = () => {
-          const hero = document.querySelector('.balance-hero');
-          if (!hero) return;
-          if (balanceVisible) {
-            hero.classList.remove('balance-hidden');
-          } else {
-            hero.classList.add('balance-hidden');
-          }
-        };
-
-        applyBalanceVisibility();
-
-        toggleBalance.addEventListener('click', () => {
-          balanceVisible = !balanceVisible;
-          localStorage.setItem('balance_visible', balanceVisible);
-          applyBalanceVisibility();
-        });
-      }
-    });
-  </script>
 </body>
 </html>

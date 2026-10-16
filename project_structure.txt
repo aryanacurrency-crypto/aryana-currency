@@ -10041,6 +10041,7 @@ C:.
 |   |   alembic.ini
 |   |   python
 |   |   requirements.txt
+|   |   runtime.txt
 |   |   test_order_logic.py
 |   |   
 |   +---alembic
@@ -10050,15 +10051,19 @@ C:.
 |   |   |   
 |   |   +---versions
 |   |   |   |   12b098fe8b79_add_platform_settings.py
+|   |   |   |   5eaef8cebc91_add_referral_and_wheel_tables.py
 |   |   |   |   64d45d390b91_add_direct_trade_tables.py
 |   |   |   |   9a1a386ce752_initial_schema.py
 |   |   |   |   a489e0df3d95_update_platform_settings_contact_fields.py
+|   |   |   |   b6922deb25ff_add_vip_fields_and_settings.py
 |   |   |   |   
 |   |   |   \---__pycache__
 |   |   |           12b098fe8b79_add_platform_settings.cpython-312.pyc
+|   |   |           5eaef8cebc91_add_referral_and_wheel_tables.cpython-312.pyc
 |   |   |           64d45d390b91_add_direct_trade_tables.cpython-312.pyc
 |   |   |           9a1a386ce752_initial_schema.cpython-312.pyc
 |   |   |           a489e0df3d95_update_platform_settings_contact_fields.cpython-312.pyc
+|   |   |           b6922deb25ff_add_vip_fields_and_settings.cpython-312.pyc
 |   |   |           
 |   |   \---__pycache__
 |   |           env.cpython-312.pyc
@@ -10072,24 +10077,32 @@ C:.
 |   |   |   |   __init__.py
 |   |   |   |   
 |   |   |   +---v1
-|   |   |   |   |   admin.py
 |   |   |   |   |   auth.py
 |   |   |   |   |   direct_trades.py
 |   |   |   |   |   kyc.py
 |   |   |   |   |   orders.py
 |   |   |   |   |   public.py
 |   |   |   |   |   rates.py
+|   |   |   |   |   referral.py
 |   |   |   |   |   wallet.py
+|   |   |   |   |   wheel.py
 |   |   |   |   |   withdrawals.py
 |   |   |   |   |   __init__.py
 |   |   |   |   |   
+|   |   |   |   +---admin
+|   |   |   |   |       users.py
+|   |   |   |   |       wheel.py
+|   |   |   |   |       __init__.py
+|   |   |   |   |       
 |   |   |   |   \---__pycache__
 |   |   |   |           admin.cpython-312.pyc
 |   |   |   |           auth.cpython-312.pyc
+|   |   |   |           direct_trades.cpython-312.pyc
 |   |   |   |           kyc.cpython-312.pyc
 |   |   |   |           orders.cpython-312.pyc
 |   |   |   |           public.cpython-312.pyc
 |   |   |   |           rates.cpython-312.pyc
+|   |   |   |           referral.cpython-312.pyc
 |   |   |   |           wallet.cpython-312.pyc
 |   |   |   |           withdrawals.cpython-312.pyc
 |   |   |   |           __init__.cpython-312.pyc
@@ -10112,7 +10125,16 @@ C:.
 |   |   |           database.cpython-312.pyc
 |   |   |           email.cpython-312.pyc
 |   |   |           security.cpython-312.pyc
+|   |   |           settings_service.cpython-312.pyc
 |   |   |           telegram.cpython-312.pyc
+|   |   |           __init__.cpython-312.pyc
+|   |   |           
+|   |   +---db
+|   |   |   |   seed.py
+|   |   |   |   __init__.py
+|   |   |   |   
+|   |   |   \---__pycache__
+|   |   |           seed.cpython-312.pyc
 |   |   |           __init__.cpython-312.pyc
 |   |   |           
 |   |   +---models
@@ -10125,8 +10147,10 @@ C:.
 |   |   |   |   password_reset.py
 |   |   |   |   platform_settings.py
 |   |   |   |   rate.py
+|   |   |   |   referral.py
 |   |   |   |   user.py
 |   |   |   |   wallet.py
+|   |   |   |   wheel.py
 |   |   |   |   withdrawal.py
 |   |   |   |   __init__.py
 |   |   |   |   
@@ -10140,8 +10164,10 @@ C:.
 |   |   |           password_reset.cpython-312.pyc
 |   |   |           platform_settings.cpython-312.pyc
 |   |   |           rate.cpython-312.pyc
+|   |   |           referral.cpython-312.pyc
 |   |   |           user.cpython-312.pyc
 |   |   |           wallet.cpython-312.pyc
+|   |   |           wheel.cpython-312.pyc
 |   |   |           withdrawal.cpython-312.pyc
 |   |   |           __init__.cpython-312.pyc
 |   |   |           
@@ -10150,9 +10176,11 @@ C:.
 |   |   |   |   direct_trade.py
 |   |   |   |   order.py
 |   |   |   |   rate.py
+|   |   |   |   referral.py
 |   |   |   |   settings.py
 |   |   |   |   user.py
 |   |   |   |   wallet.py
+|   |   |   |   wheel.py
 |   |   |   |   withdrawal.py
 |   |   |   |   __init__.py
 |   |   |   |   
@@ -10161,6 +10189,7 @@ C:.
 |   |   |           direct_trade.cpython-312.pyc
 |   |   |           order.cpython-312.pyc
 |   |   |           rate.cpython-312.pyc
+|   |   |           settings.cpython-312.pyc
 |   |   |           user.cpython-312.pyc
 |   |   |           wallet.cpython-312.pyc
 |   |   |           withdrawal.cpython-312.pyc
@@ -10173,6 +10202,8 @@ C:.
 |   |   |   |   direct_trade.py
 |   |   |   |   ledger.py
 |   |   |   |   order.py
+|   |   |   |   referral.py
+|   |   |   |   wheel.py
 |   |   |   |   withdrawal.py
 |   |   |   |   __init__.py
 |   |   |   |   
@@ -10180,6 +10211,8 @@ C:.
 |   |   |           direct_trade.cpython-312.pyc
 |   |   |           ledger.cpython-312.pyc
 |   |   |           order.cpython-312.pyc
+|   |   |           referral.cpython-312.pyc
+|   |   |           wheel.cpython-312.pyc
 |   |   |           withdrawal.cpython-312.pyc
 |   |   |           __init__.cpython-312.pyc
 |   |   |           
@@ -10216,14 +10249,17 @@ C:.
     |   |       exchange-v2.css
     |   |       footer.css
     |   |       home.css
+    |   |       lucky-wheel-v2.css
     |   |       notifications.css
     |   |       order-v2.css
     |   |       orders-v2.css
     |   |       p2p.css
     |   |       profile-v2.css
     |   |       pwa.css
+    |   |       referral-v2.css
     |   |       theme-v2.css
     |   |       ui-v2.css
+    |   |       wheel-admin-v2.css
     |   |       
     |   +---icons
     |   +---images
@@ -10246,6 +10282,7 @@ C:.
     |       |   home.js
     |       |   i18n.js
     |       |   login.js
+    |       |   lucky-wheel.js
     |       |   main.js
     |       |   networks.js
     |       |   New Text Document.txt
@@ -10253,9 +10290,11 @@ C:.
     |       |   order.js
     |       |   orders.js
     |       |   p2p.js
+    |       |   profile-referral-wheel.js
     |       |   profile-trust.js
     |       |   profile.js
     |       |   pwa.js
+    |       |   referral.js
     |       |   register.js
     |       |   reset-password.js
     |       |   theme.js
@@ -10280,6 +10319,7 @@ C:.
     |       |       rates.js
     |       |       settings.js
     |       |       users.js
+    |       |       wheel-settings.js
     |       |       withdrawals.js
     |       |       
     |       \---lib
@@ -10297,10 +10337,12 @@ C:.
         |   exchange.html
         |   forgot-password.html
         |   login.html
+        |   lucky-wheel.html
         |   order.html
         |   orders.html
         |   privacy.html
         |   profile.html
+        |   referral.html
         |   register.html
         |   reset-password.html
         |   risk.html
@@ -10317,6 +10359,7 @@ C:.
         |       rates.html
         |       settings.html
         |       users.html
+        |       wheel-settings.html
         |       withdrawals.html
         |       
         \---p2p

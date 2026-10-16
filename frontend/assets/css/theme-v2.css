@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Design System v2
-   RISE FUNDED Style — Deep Navy Blue Theme
+   ARYANA CURRENCY — Design System v3
+   Light Theme · Navy + Purple · Exchange-Grade
    ═══════════════════════════════════════ */
 
 /* ─── Prevent FOUC ─── */
@@ -27,67 +27,116 @@ html {
   color: var(--text-primary);
 }
 
-/* ─── RISE FUNDED Navy-Dark Theme ─── */
+/* ═══════════════════════════════════════
+   🎨 DESIGN TOKENS
+   ═══════════════════════════════════════ */
+
 :root {
-  /* --- Backgrounds --- */
-  --bg-primary: #050818;
-  --bg-secondary: #0A0E27;
-  --bg-tertiary: #0F1433;
-  --bg-hover: #161B3D;
+  /* ─── Brand Colors (Navy + Purple) ─── */
+  --navy-950: #050B1A;
+  --navy-900: #0A1428;
+  --navy-800: #0F1E3D;
+  --navy-700: #152850;
+  --navy-600: #1E3A8A;
+  --navy-500: #1E40AF;   /* ← Primary */
+  --navy-400: #2563EB;
+  --navy-300: #3B82F6;
+  --navy-200: #60A5FA;
+  --navy-100: #DBEAFE;
+  --navy-50:  #EFF6FF;
 
-  /* --- Borders --- */
-  --border-subtle: #1E293B;
-  --border-strong: #334155;
+  --purple-700: #6D28D9;
+  --purple-600: #7C3AED;   /* ← Accent */
+  --purple-500: #8B5CF6;
+  --purple-400: #A78BFA;
+  --purple-100: #EDE9FE;
+  --purple-50:  #F5F3FF;
 
-  /* --- Brand Colors (Navy Blue) --- */
-  --gold: #3B82F6;
-  --gold-light: #60A5FA;
-  --gold-dark: #2563EB;
+  /* ─── Semantic ─── */
+  --green-600: #059669;
+  --green-500: #10B981;   /* Buy / Success */
+  --green-100: #D1FAE5;
+  --green-50:  #ECFDF5;
 
-  /* --- Secondary Accent --- */
-  --indigo: #4F46E5;
-  --indigo-light: #6366F1;
+  --red-600: #DC2626;
+  --red-500: #EF4444;     /* Sell / Danger */
+  --red-100: #FEE2E2;
+  --red-50:  #FEF2F2;
 
-  /* --- Semantic Colors --- */
-  --green: #10B981;
-  --green-bg: rgba(16, 185, 129, 0.12);
-  --red: #EF4444;
-  --red-bg: rgba(239, 68, 68, 0.12);
-  --blue: #3B82F6;
-  --blue-bg: rgba(59, 130, 246, 0.12);
-  --yellow: #F59E0B;
+  --amber-600: #D97706;
+  --amber-500: #F59E0B;   /* Pending / Warning */
+  --amber-100: #FEF3C7;
+  --amber-50:  #FFFBEB;
 
-  /* --- Text Colors --- */
-  --text-primary: #F8FAFC;
-  --text-secondary: #94A3B8;
-  --text-tertiary: #64748B;
-  --text-inverse: #050818;
+  /* ─── Aliases (سازگاری با کدهای فعلی) ─── */
+  --gold: var(--navy-500);
+  --gold-light: var(--navy-400);
+  --gold-dark: var(--navy-600);
 
-  /* --- Overlay / Glass --- */
-  --overlay-bg: rgba(5, 8, 24, 0.85);
-  --overlay-light: rgba(59, 130, 246, 0.05);
-  --overlay-medium: rgba(59, 130, 246, 0.08);
+  --indigo: var(--purple-600);
+  --indigo-light: var(--purple-500);
 
-  /* --- Glow / Blue effects --- */
-  --glow-blue: rgba(59, 130, 246, 0.35);
-  --glow-blue-soft: rgba(59, 130, 246, 0.15);
-  --glow-indigo: rgba(79, 70, 229, 0.3);
+  --blue: var(--navy-400);
+  --blue-bg: rgba(30, 64, 175, 0.08);
 
-  /* --- Shadows --- */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.6);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.7);
-  --shadow-glow: 0 0 24px rgba(59, 130, 246, 0.25);
-  --shadow-glow-strong: 0 0 48px rgba(59, 130, 246, 0.45);
+  --green: var(--green-500);
+  --green-bg: rgba(16, 185, 129, 0.10);
 
-  /* --- Radii --- */
-  --radius-sm: 6px;
-  --radius-md: 10px;
+  --red: var(--red-500);
+  --red-bg: rgba(239, 68, 68, 0.10);
+
+  --yellow: var(--amber-500);
+
+  /* ─── Backgrounds ─── */
+  --bg-primary: #FAFBFF;
+  --bg-secondary: #FFFFFF;
+  --bg-tertiary: #F8FAFF;
+  --bg-hover: #F0F4FF;
+  --bg-elevated: #FFFFFF;
+
+  /* ─── Overlay / Glass ─── */
+  --overlay-bg: rgba(250, 251, 255, 0.85);
+  --overlay-light: rgba(30, 64, 175, 0.04);
+  --overlay-medium: rgba(30, 64, 175, 0.08);
+
+  /* ─── Borders ─── */
+  --border-subtle: #E2E8F0;
+  --border-strong: #CBD5E1;
+  --border-brand: rgba(30, 64, 175, 0.25);
+
+  /* ─── Text ─── */
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --text-tertiary: #94A3B8;
+  --text-inverse: #FFFFFF;
+  --text-brand: #1E40AF;
+
+  /* ─── Glow / Shadows ─── */
+  --glow-navy: rgba(30, 64, 175, 0.20);
+  --glow-navy-soft: rgba(30, 64, 175, 0.10);
+  --glow-purple: rgba(124, 58, 237, 0.20);
+  --glow-green: rgba(16, 185, 129, 0.25);
+  --glow-red: rgba(239, 68, 68, 0.25);
+
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-xl: 0 20px 48px rgba(30, 64, 175, 0.12);
+  --shadow-glow: 0 0 24px rgba(30, 64, 175, 0.15);
+  --shadow-glow-strong: 0 0 48px rgba(30, 64, 175, 0.25);
+
+  /* ─── Radii ─── */
+  --radius-sm: 8px;
+  --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 24px;
+  --radius-2xl: 32px;
   --radius-full: 9999px;
 
-  /* --- Spacing --- */
+  /* ─── Signature Radius (ARYANA brand) ─── */
+  --radius-signature: 24px 12px 12px 12px;
+
+  /* ─── Spacing ─── */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -97,20 +146,35 @@ html {
   --space-8: 32px;
   --space-10: 40px;
   --space-12: 48px;
+  --space-16: 64px;
 
-  /* --- Typography --- */
-  --font-sans: 'Inter', 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
-  --font-arabic: 'Noto Sans Arabic', sans-serif;
+  /* ─── Typography ─── */
+  --font-sans: 'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Courier New', monospace;
+  --font-arabic: 'Noto Sans Arabic', 'Vazirmatn', sans-serif;
 
-  /* --- Transitions --- */
+  /* ─── Transitions ─── */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ─── Z-Index ─── */
+  --z-header: 100;
+  --z-overlay: 500;
+  --z-modal: 1000;
+  --z-toast: 2000;
 }
 
 /* ═══════════════════════════════════════
-   Reset & Base
+   🌙 AUTO DARK (اختیاری - کاربر می‌تونه فعال کنه)
+   پیش‌فرض: خاموش
+   ═══════════════════════════════════════ */
+
+/* فعلاً غیرفعال - چون برند روشن است */
+
+/* ═══════════════════════════════════════
+   🔧 RESET & BASE
    ═══════════════════════════════════════ */
 
 * {
@@ -123,6 +187,7 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
@@ -133,6 +198,7 @@ body {
   font-size: 14px;
   min-height: 100vh;
   overflow-x: hidden;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
 }
 
 body[dir="rtl"] {
@@ -153,7 +219,9 @@ button {
   color: inherit;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
   font-family: inherit;
   color: inherit;
   outline: none;
@@ -166,15 +234,36 @@ img {
   object-fit: contain;
 }
 
-/* ═══ Header ═══ */
+svg {
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════
+   📦 CONTAINER
+   ═══════════════════════════════════════ */
+
+.container {
+  width: min(1280px, calc(100% - 40px));
+  margin-inline: auto;
+}
+
+@media (max-width: 640px) {
+  .container {
+    width: calc(100% - 32px);
+  }
+}
+
+/* ═══════════════════════════════════════
+   🎨 HEADER (App)
+   ═══════════════════════════════════════ */
 
 .app-header {
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: var(--z-header);
   background: var(--overlay-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-subtle);
 }
 
@@ -207,17 +296,21 @@ img {
   letter-spacing: 1px;
   line-height: 1.2;
   color: var(--text-primary);
-  font-family: 'Manrope', 'Inter', sans-serif;
+  font-family: var(--font-sans);
 }
 
 .app-brand-text small {
   display: block;
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 2.5px;
-  color: var(--gold);
+  color: var(--navy-500);
   margin-top: 2px;
 }
+
+/* ═══════════════════════════════════════
+   🧭 NAV
+   ═══════════════════════════════════════ */
 
 .app-nav {
   display: flex;
@@ -232,21 +325,37 @@ img {
   padding: 10px 16px;
   border-radius: var(--radius-md);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-secondary);
   transition: all var(--transition-fast);
   text-decoration: none;
+  position: relative;
 }
 
 .app-nav-link:hover {
   background: var(--bg-hover);
-  color: var(--text-primary);
+  color: var(--navy-500);
 }
 
 .app-nav-link.active {
-  background: rgba(59, 130, 246, 0.1);
-  color: var(--gold);
+  background: var(--navy-50);
+  color: var(--navy-500);
 }
+
+.app-nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 16px;
+  right: 16px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--navy-500), var(--purple-600));
+  border-radius: 2px;
+}
+
+/* ═══════════════════════════════════════
+   🔘 HEADER ACTIONS
+   ═══════════════════════════════════════ */
 
 .app-header-actions {
   display: flex;
@@ -265,46 +374,145 @@ img {
   background: transparent;
   border: none;
   cursor: pointer;
+  position: relative;
 }
 
 .icon-btn:hover {
   background: var(--bg-hover);
-  color: var(--text-primary);
+  color: var(--navy-500);
 }
 
-/* ═══ Utility Classes ═══ */
-
-.container {
-  width: min(1280px, calc(100% - 40px));
-  margin-inline: auto;
+.icon-btn:active {
+  transform: scale(0.94);
 }
+
+.icon-btn .badge-dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--red-500);
+  border: 2px solid var(--bg-primary);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════
+   📊 MAIN
+   ═══════════════════════════════════════ */
+
+.app-main {
+  padding-block: var(--space-8) var(--space-12);
+}
+
+/* ═══════════════════════════════════════
+   🛠️ UTILITY CLASSES
+   ═══════════════════════════════════════ */
 
 .text-muted { color: var(--text-secondary); }
-.text-success { color: var(--green); }
-.text-danger { color: var(--red); }
-.text-gold { color: var(--gold); }
+.text-success { color: var(--green-500); }
+.text-danger { color: var(--red-500); }
+.text-warning { color: var(--amber-500); }
+.text-navy { color: var(--navy-500); }
+.text-purple { color: var(--purple-600); }
+.text-gold { color: var(--navy-500); }
+
+.bg-navy { background: var(--navy-500); color: white; }
+.bg-purple { background: var(--purple-600); color: white; }
+.bg-green { background: var(--green-500); color: white; }
+.bg-red { background: var(--red-500); color: white; }
 
 .mono {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
 }
 
-/* ═══ Scrollbar ═══ */
-
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: var(--bg-primary); }
-::-webkit-scrollbar-thumb {
-  background: var(--bg-hover);
-  border-radius: var(--radius-full);
+.tabular {
+  font-variant-numeric: tabular-nums;
 }
-::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+
+.gradient-navy {
+  background: linear-gradient(135deg, var(--navy-500) 0%, var(--navy-800) 100%);
+}
+
+.gradient-brand {
+  background: linear-gradient(135deg, var(--navy-500) 0%, var(--purple-600) 100%);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--navy-500) 0%, var(--purple-600) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════════════════════════════════════
+   🎨 AMBIENT BACKGROUND BLOBS
+   ═══════════════════════════════════════ */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: -300px;
+  right: -200px;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(30, 64, 175, 0.08) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(60px);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  bottom: -400px;
+  left: -250px;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.06) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(60px);
+}
+
+main {
+  position: relative;
+  z-index: 1;
+}
+
+/* ═══════════════════════════════════════
+   📜 SCROLLBAR
+   ═══════════════════════════════════════ */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--navy-300);
+}
 
 ::selection {
-  background: var(--gold);
-  color: #FFFFFF;
+  background: var(--navy-500);
+  color: white;
 }
 
-/* ═══ Animations ═══ */
+/* ═══════════════════════════════════════
+   ✨ KEYFRAMES (Animations)
+   ═══════════════════════════════════════ */
 
 @keyframes fadeIn {
   from { opacity: 0; }
@@ -322,9 +530,42 @@ img {
   }
 }
 
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.85);
+  }
 }
 
 @keyframes spin {
@@ -342,38 +583,149 @@ img {
   }
 }
 
-/* ═══ Reduced motion ═══ */
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
+@keyframes flash-green {
+  0%, 100% { color: var(--text-primary); }
+  50% { color: var(--green-500); }
+}
+
+@keyframes flash-red {
+  0%, 100% { color: var(--text-primary); }
+  50% { color: var(--red-500); }
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
   }
 }
 
-/* ═══ Responsive Header ═══ */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
 
-@media (max-width: 900px) {
-  .app-nav {
-    display: none;
+@keyframes blob-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -30px) scale(1.1); }
+}
+
+@keyframes count-up {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
-@media (max-width: 640px) {
-  .app-header-inner {
-    height: 64px;
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
   }
-  .app-brand-text {
-    font-size: 13px;
-  }
-  .app-brand img {
-    width: 36px;
-    height: 36px;
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
 /* ═══════════════════════════════════════
-   SVG Global Sizes
+   🎬 ANIMATION UTILITY CLASSES
+   ═══════════════════════════════════════ */
+
+.animate-fade-in { animation: fadeIn 0.4s ease both; }
+.animate-fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) both; }
+.animate-fade-in-down { animation: fadeInDown 0.5s cubic-bezier(0.4, 0, 0.2, 1) both; }
+.animate-scale-in { animation: scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.animate-slide-in-right { animation: slide-in-right 0.4s ease both; }
+.animate-slide-in-left { animation: slide-in-left 0.4s ease both; }
+
+.delay-1 { animation-delay: 0.05s; }
+.delay-2 { animation-delay: 0.1s; }
+.delay-3 { animation-delay: 0.15s; }
+.delay-4 { animation-delay: 0.2s; }
+.delay-5 { animation-delay: 0.25s; }
+
+/* ═══════════════════════════════════════
+   ⚡ FLASH EFFECTS (Live data)
+   ═══════════════════════════════════════ */
+
+.flash-green {
+  animation: flash-green 0.8s ease;
+}
+
+.flash-red {
+  animation: flash-red 0.8s ease;
+}
+
+/* ═══════════════════════════════════════
+   🦴 SKELETON LOADING
+   ═══════════════════════════════════════ */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-tertiary) 0%,
+    var(--bg-hover) 50%,
+    var(--bg-tertiary) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 1.6s infinite linear;
+  border-radius: var(--radius-sm);
+  color: transparent !important;
+  user-select: none;
+  pointer-events: none;
+}
+
+.skeleton-text {
+  height: 14px;
+  width: 100%;
+  margin-bottom: 6px;
+}
+
+.skeleton-title {
+  height: 22px;
+  width: 60%;
+  margin-bottom: 10px;
+}
+
+/* ═══════════════════════════════════════
+   💫 RIPPLE EFFECT
+   ═══════════════════════════════════════ */
+
+.ripple-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: scale(0);
+  animation: ripple 0.6s linear;
+  pointer-events: none;
+}
+
+.ripple-dark {
+  background: rgba(30, 64, 175, 0.15);
+}
+
+/* ═══════════════════════════════════════
+   🎭 SVG GLOBAL SIZES
    ═══════════════════════════════════════ */
 
 .balance-change svg {
@@ -427,4 +779,93 @@ img {
 .empty-state-icon svg {
   width: 42px;
   height: 42px;
+}
+
+/* ═══════════════════════════════════════
+   ♿ ACCESSIBILITY
+   ═══════════════════════════════════════ */
+
+:focus-visible {
+  outline: 2px solid var(--navy-500);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ═══════════════════════════════════════
+   📱 RESPONSIVE HEADER
+   ═══════════════════════════════════════ */
+
+@media (max-width: 900px) {
+  .app-nav {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-header-inner {
+    height: 64px;
+  }
+
+  .app-brand-text {
+    font-size: 13px;
+  }
+
+  .app-brand img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .app-brand-text small {
+    font-size: 9px;
+    letter-spacing: 2px;
+  }
+
+  .app-main {
+    padding-block: var(--space-6) var(--space-10);
+  }
+}
+
+/* ═══════════════════════════════════════
+   🌐 RTL SUPPORT
+   ═══════════════════════════════════════ */
+
+[dir="rtl"] .app-nav-link.active::after {
+  left: 16px;
+  right: 16px;
+}
+
+[dir="rtl"] .icon-btn .badge-dot {
+  right: auto;
+  left: 8px;
+}
+
+/* ═══════════════════════════════════════
+   🖨️ PRINT (اختیاری)
+   ═══════════════════════════════════════ */
+
+@media print {
+  .app-header,
+  .app-nav,
+  .icon-btn {
+    display: none;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  body::before,
+  body::after {
+    display: none;
+  }
 }
