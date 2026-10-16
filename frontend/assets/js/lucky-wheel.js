@@ -1,5 +1,6 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Rewards Wheel Logic
+   ARYANA CURRENCY — Rewards Wheel v3
+   Navy-Purple · Light · ARYANA OS
    ═══════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -11,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   Auth.requireLogin();
 
-  // Header user
+  // ─── Header user ───
   const user = Auth.getUser();
   if (user) {
     const avatarEl = document.getElementById('userAvatar');
@@ -20,12 +21,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (nameEl) nameEl.textContent = user.full_name || user.email || 'User';
   }
 
+  // ─── Logout + Theme ───
   document.getElementById('logoutBtn')?.addEventListener('click', () => Auth.logout());
   document.getElementById('themeToggle')?.addEventListener('click', () => Theme.toggle());
 
-  // ═══════════════════════════════════════
-  //              State
-  // ═══════════════════════════════════════
+  /* ═══════════════════════════════════════
+     STATE
+     ═══════════════════════════════════════ */
+
   let wheelState = {
     prizes: [],
     availableTickets: 0,
@@ -38,9 +41,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     animationDuration: 8,
   };
 
-  // ═══════════════════════════════════════
-  //           Load Wheel Status
-  // ═══════════════════════════════════════
+  /* ═══════════════════════════════════════
+     LOAD WHEEL STATUS
+     ═══════════════════════════════════════ */
+
   async function loadWheelStatus() {
     try {
       const data = await API.request('/wheel/status');
@@ -56,7 +60,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('ticketPrice').textContent = `${wheelState.ticketPrice} AFN`;
       document.getElementById('todaySpins').textContent =
         `${wheelState.todaySpins} / ${wheelState.maxSpinsPerDay}`;
-      document.getElementById('modalTicketPrice').textContent = `${wheelState.ticketPrice} AFN`;
+
+      const modalPrice = document.getElementById('modalTicketPrice');
+      if (modalPrice) modalPrice.textContent = `${wheelState.ticketPrice} AFN`;
 
       renderWheel(wheelState.prizes);
       updateSpinButton();
@@ -69,9 +75,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // ═══════════════════════════════════════
-  //              Render Wheel
-  // ═══════════════════════════════════════
+  /* ═══════════════════════════════════════
+     RENDER WHEEL
+     ═══════════════════════════════════════ */
+
   function renderWheel(prizes) {
     const svg = document.getElementById('wheelSvg');
     if (!svg) return;
@@ -88,7 +95,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       <defs>
         <radialGradient id="innerShade" cx="50%" cy="50%" r="50%">
           <stop offset="70%" stop-color="rgba(0,0,0,0)" />
-          <stop offset="100%" stop-color="rgba(0,0,0,0.35)" />
+          <stop offset="100%" stop-color="rgba(30,64,175,0.20)" />
         </radialGradient>
       </defs>
     `;
@@ -108,7 +115,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       const largeArc = sliceAngle > 180 ? 1 : 0;
       const path = `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z`;
 
-      svgContent += `<path d="${path}" fill="${prize.color}" stroke="#0B0E11" stroke-width="1"/>`;
+      // ─── Stroke سفید بین قطعه‌ها ───
+      svgContent += `<path d="${path}" fill="${prize.color}" stroke="#FFFFFF" stroke-width="2"/>`;
 
       const midAngle = startAngle + sliceAngle / 2;
       const midRad = (midAngle * Math.PI) / 180;
@@ -124,30 +132,37 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       const isLightBg = isLightColor(prize.color);
-      const textColor = isLightBg ? '#0B0E11' : '#FFFFFF';
-      const subTextColor = isLightBg ? 'rgba(11,14,17,0.7)' : 'rgba(255,255,255,0.85)';
+      const textColor = isLightBg ? '#0F172A' : '#FFFFFF';
+      const subTextColor = isLightBg ? 'rgba(15,23,42,0.7)' : 'rgba(255,255,255,0.85)';
 
       const hasNumber = /\d/.test(label);
-      const subLabel = prize.prize_type === 'cash' ? 'AFN' : prize.prize_type === 'ticket' ? 'TICKET' : '';
+      const subLabel = prize.prize_type === 'cash'
+        ? 'AFN'
+        : prize.prize_type === 'ticket'
+          ? 'TICKET'
+          : '';
 
       if (hasNumber && subLabel) {
         svgContent += `
           <g transform="translate(${tx}, ${ty}) rotate(${textRotation})">
-            <text x="0" y="-6" text-anchor="middle" font-size="22" font-weight="900" fill="${textColor}" font-family="Inter, sans-serif" letter-spacing="-0.5">${escapeSvg(label)}</text>
-            <text x="0" y="12" text-anchor="middle" font-size="9" font-weight="700" fill="${subTextColor}" font-family="Inter, sans-serif" letter-spacing="1.5">${subLabel}</text>
+            <text x="0" y="-6" text-anchor="middle" font-size="22" font-weight="900" fill="${textColor}" font-family="Manrope, Inter, sans-serif" letter-spacing="-0.5">${escapeSvg(label)}</text>
+            <text x="0" y="12" text-anchor="middle" font-size="9" font-weight="700" fill="${subTextColor}" font-family="Manrope, Inter, sans-serif" letter-spacing="1.5">${subLabel}</text>
           </g>
         `;
       } else {
         svgContent += `
           <g transform="translate(${tx}, ${ty}) rotate(${textRotation})">
-            <text x="0" y="4" text-anchor="middle" font-size="14" font-weight="800" fill="${textColor}" font-family="Inter, sans-serif">${escapeSvg(label)}</text>
+            <text x="0" y="4" text-anchor="middle" font-size="14" font-weight="800" fill="${textColor}" font-family="Manrope, Inter, sans-serif">${escapeSvg(label)}</text>
           </g>
         `;
       }
     });
 
+    // ─── Inner shade ───
     svgContent += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="url(#innerShade)" pointer-events="none"/>`;
-    svgContent += `<circle cx="${cx}" cy="${cy}" r="${r - 3}" fill="none" stroke="rgba(255,215,0,0.3)" stroke-width="1" pointer-events="none"/>`;
+
+    // ─── Border حلقه Navy-Purple ───
+    svgContent += `<circle cx="${cx}" cy="${cy}" r="${r - 3}" fill="none" stroke="rgba(124,58,237,0.3)" stroke-width="1" pointer-events="none"/>`;
 
     svg.innerHTML = svgContent;
   }
@@ -174,9 +189,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       .replace(/"/g, '&quot;');
   }
 
-  // ═══════════════════════════════════════
-  //         Spin Button State
-  // ═══════════════════════════════════════
+  /* ═══════════════════════════════════════
+     SPIN BUTTON STATE
+     ═══════════════════════════════════════ */
+
   function updateSpinButton() {
     const hub = document.getElementById('wheelHub');
     if (!hub) return;
@@ -203,9 +219,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     hub.style.cursor = 'pointer';
   }
 
-  // ═══════════════════════════════════════
-  //         Spin Action (from hub)
-  // ═══════════════════════════════════════
+  /* ═══════════════════════════════════════
+     SPIN ACTION
+     ═══════════════════════════════════════ */
+
   document.getElementById('wheelHub')?.addEventListener('click', async () => {
     if (wheelState.spinning) return;
 
@@ -267,9 +284,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // ═══════════════════════════════════════
-  //         Result Display
-  // ═══════════════════════════════════════
+  /* ═══════════════════════════════════════
+     RESULT DISPLAY
+     ═══════════════════════════════════════ */
+
   function showResult(result) {
     const container = document.getElementById('wheelResult');
     const iconEl = document.getElementById('resultIcon');
@@ -278,28 +296,29 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const r = result.result;
 
-    let icon = '◆';
+    let icon = '💰';
     let title = '';
     let amount = '';
 
     if (r.type === 'cash' && r.amount > 0) {
-      icon = '◆';
-      title = 'You Won';
+      icon = '💰';
+      title = 'You Won!';
       amount = `${r.amount.toFixed(2)} ${r.currency}`;
       fireConfetti();
 
     } else if (r.type === 'ticket') {
-      icon = '◇';
+      icon = '🎟️';
       title = 'Bonus Tickets';
       amount = `+${r.ticket_count} Ticket${r.ticket_count > 1 ? 's' : ''}`;
 
     } else {
-      icon = '○';
-      title = 'No Reward';
+      icon = '🎯';
+      title = 'Try Again';
       amount = 'Better luck next time';
     }
 
     if (result.requires_approval) {
+      icon = '⏳';
       title = 'Pending Approval';
       amount = 'Your reward is being reviewed';
     }
@@ -322,9 +341,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // ═══════════════════════════════════════
-  //         Spin Again
-  // ═══════════════════════════════════════
+  /* ═══════════════════════════════════════
+     SPIN AGAIN
+     ═══════════════════════════════════════ */
+
   document.getElementById('spinAgainBtn')?.addEventListener('click', () => {
     document.getElementById('wheelResult').style.display = 'none';
     if (wheelState.availableTickets >= 1) {
@@ -332,9 +352,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // ═══════════════════════════════════════
-  //         Tick Sounds / Glow
-  // ═══════════════════════════════════════
+  /* ═══════════════════════════════════════
+     TICK SOUNDS / GLOW
+     ═══════════════════════════════════════ */
+
   function playTickSounds(duration) {
     const glow = document.getElementById('wheelGlow');
     if (glow) {
@@ -343,19 +364,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // ═══════════════════════════════════════
-  //         Recent Winners
-  // ═══════════════════════════════════════
+  /* ═══════════════════════════════════════
+     RECENT WINNERS
+     ═══════════════════════════════════════ */
+
   async function loadRecentWinners() {
     const list = document.getElementById('winnersList');
     if (!list) return;
 
     const mockWinners = [
-      { name: 'Ahmad R.', prize: '50 AFN', time: '2 min ago', color: '#1E3A8A' },
-      { name: 'Fatima K.', prize: '20 AFN', time: '5 min ago', color: '#7ED321' },
-      { name: 'Ali M.', prize: 'Ticket', time: '8 min ago', color: '#4A4A4A' },
-      { name: 'Zahra S.', prize: '100 AFN', time: '12 min ago', color: '#7ED321' },
-      { name: 'Mohammad A.', prize: '10 AFN', time: '15 min ago', color: '#1E3A8A' },
+      { name: 'Ahmad R.',    prize: '50 AFN',  time: '2 min ago',  color: '#1E40AF' },
+      { name: 'Fatima K.',   prize: '20 AFN',  time: '5 min ago',  color: '#10B981' },
+      { name: 'Ali M.',      prize: 'Ticket',  time: '8 min ago',  color: '#7C3AED' },
+      { name: 'Zahra S.',    prize: '100 AFN', time: '12 min ago', color: '#7C3AED' },
+      { name: 'Mohammad A.', prize: '10 AFN',  time: '15 min ago', color: '#1E40AF' },
     ];
 
     list.innerHTML = mockWinners.map(w => `
@@ -374,9 +396,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     `).join('');
   }
 
-  // ═══════════════════════════════════════
-  //         Buy Ticket Modal
-  // ═══════════════════════════════════════
+  /* ═══════════════════════════════════════
+     BUY TICKET MODAL
+     ═══════════════════════════════════════ */
+
   const buyModal = document.getElementById('buyTicketModal');
   const qtyInput = document.getElementById('qtyInput');
   const modalTotal = document.getElementById('modalTotal');
@@ -431,6 +454,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btn = document.getElementById('confirmBuyBtn');
 
     btn.disabled = true;
+    const orig = btn.innerHTML;
     btn.innerHTML = '<span class="spinner"></span>';
 
     try {
@@ -438,7 +462,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       buyModal.style.display = 'none';
       btn.disabled = false;
-      btn.textContent = 'Purchase';
+      btn.innerHTML = orig;
 
       if (typeof Notifications !== 'undefined') {
         Notifications.success(`${qty} ticket(s) purchased!`);
@@ -449,7 +473,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (err) {
       console.error('Buy failed:', err);
       btn.disabled = false;
-      btn.textContent = 'Purchase';
+      btn.innerHTML = orig;
 
       if (typeof Notifications !== 'undefined') {
         Notifications.error(err.detail || 'Purchase failed');
@@ -457,9 +481,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // ═══════════════════════════════════════
-  //              Confetti
-  // ═══════════════════════════════════════
+  /* ═══════════════════════════════════════
+     CONFETTI
+     ═══════════════════════════════════════ */
+
   function fireConfetti() {
     const canvas = document.getElementById('confettiCanvas');
     if (!canvas) return;
@@ -470,7 +495,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const ctx = canvas.getContext('2d');
     const particles = [];
-    const colors = ['#FFD700', '#FFED4E', '#7ED321', '#1E3A8A', '#FFFFFF', '#B58C0F'];
+    const colors = ['#1E40AF', '#7C3AED', '#10B981', '#FFFFFF', '#4F46E5', '#A78BFA'];
 
     for (let i = 0; i < 150; i++) {
       particles.push({
@@ -516,9 +541,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     animate();
   }
 
-  // ═══════════════════════════════════════
-  //              Init
-  // ═══════════════════════════════════════
+  /* ═══════════════════════════════════════
+     INIT
+     ═══════════════════════════════════════ */
+
   await loadWheelStatus();
   await loadRecentWinners();
 });
