@@ -1,46 +1,43 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Referral v2
+   ARYANA CURRENCY — Referral v3
+   Light · Navy-Purple · ARYANA OS
    ═══════════════════════════════════════ */
 
-/* ═══ Referral Hero ═══ */
+/* ═══════════════════════════════════════
+   🎁 REFERRAL HERO
+   ═══════════════════════════════════════ */
 
 .referral-hero {
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(circle at 100% 0%, rgba(240, 185, 11, 0.18), transparent 55%),
-    radial-gradient(circle at 0% 100%, rgba(240, 185, 11, 0.08), transparent 55%),
-    linear-gradient(135deg, #1E2329 0%, #15181D 100%);
-  border: 1px solid rgba(240, 185, 11, 0.20);
-  border-radius: var(--radius-xl);
+    radial-gradient(circle at 100% 0%, rgba(124, 58, 237, 0.10) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(30, 64, 175, 0.10) 0%, transparent 50%),
+    linear-gradient(135deg, #FFFFFF 0%, #F0F4FF 60%, #F5F3FF 100%);
+  border: 1px solid rgba(30, 64, 175, 0.15);
+  border-radius: 24px;
   padding: var(--space-7);
   margin-bottom: var(--space-6);
   box-shadow:
-    0 0 0 1px rgba(240, 185, 11, 0.05) inset,
-    0 12px 40px rgba(0, 0, 0, 0.4),
-    0 0 60px rgba(240, 185, 11, 0.06);
-}
-
-body.light .referral-hero {
-  background:
-    radial-gradient(circle at 100% 0%, rgba(240, 185, 11, 0.12), transparent 55%),
-    radial-gradient(circle at 0% 100%, rgba(240, 185, 11, 0.05), transparent 55%),
-    linear-gradient(135deg, #FFFFFF 0%, #FFF9E6 100%);
-  border-color: rgba(240, 185, 11, 0.28);
-  box-shadow:
-    0 0 0 1px rgba(240, 185, 11, 0.08) inset,
-    0 12px 40px rgba(0, 0, 0, 0.06);
+    0 0 0 1px rgba(30, 64, 175, 0.04) inset,
+    0 12px 40px rgba(30, 64, 175, 0.08),
+    0 0 60px rgba(124, 58, 237, 0.04);
 }
 
 .referral-hero-bg {
   position: absolute;
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(240, 185, 11, 0.15), transparent 60%);
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.12), transparent 60%);
   top: -250px;
   right: -200px;
   pointer-events: none;
   animation: pulse-slow 6s ease-in-out infinite;
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
 .referral-hero-content {
@@ -51,13 +48,14 @@ body.light .referral-hero {
 .referral-code-label,
 .referral-link-label {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 2px;
-  color: var(--gold);
+  color: #1E40AF;
   text-transform: uppercase;
   margin-bottom: var(--space-3);
-  opacity: 0.85;
 }
+
+/* ─── Referral Code ─── */
 
 .referral-code-row {
   display: flex;
@@ -68,24 +66,17 @@ body.light .referral-hero {
 }
 
 .referral-code {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 42px;
   font-weight: 800;
   letter-spacing: 6px;
-  color: var(--text-primary);
-  background: linear-gradient(135deg, #EAECEF 0%, #B8BCC5 100%);
+  background: linear-gradient(135deg, #1E40AF 0%, #7C3AED 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  color: transparent;
   line-height: 1;
-  text-shadow: 0 0 30px rgba(240, 185, 11, 0.2);
-}
-
-body.light .referral-code {
-  background: linear-gradient(135deg, #0B0E11 0%, #4B5563 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  text-shadow: 0 0 30px rgba(124, 58, 237, 0.2);
 }
 
 .referral-copy-btn {
@@ -93,36 +84,39 @@ body.light .referral-code {
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background: rgba(240, 185, 11, 0.15);
-  border: 1px solid rgba(240, 185, 11, 0.30);
-  border-radius: var(--radius-md);
-  color: var(--gold);
+  background: linear-gradient(135deg, #1E40AF, #7C3AED);
+  border: none;
+  border-radius: 12px;
+  color: white;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: inherit;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.2);
 }
 
 .referral-copy-btn:hover {
-  background: var(--gold);
-  color: var(--text-inverse);
-  border-color: var(--gold);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(240, 185, 11, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(124, 58, 237, 0.3);
+}
+
+.referral-copy-btn:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .referral-copy-btn.copied {
-  background: var(--green);
-  color: white;
-  border-color: var(--green);
+  background: linear-gradient(135deg, #10B981, #059669);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
 .referral-copy-btn svg {
   width: 15px !important;
   height: 15px !important;
 }
+
+/* ─── Referral Link ─── */
 
 .referral-link-row {
   display: flex;
@@ -135,25 +129,27 @@ body.light .referral-code {
 .referral-link-input {
   flex: 1;
   min-width: 200px;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(240, 185, 11, 0.2);
-  border-radius: var(--radius-md);
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 12px;
   padding: 12px 16px;
   font-size: 13px;
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--text-primary);
+  font-family: var(--font-mono);
+  color: #0F172A;
   outline: none;
-}
-
-body.light .referral-link-input {
-  background: rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.04);
 }
 
 .referral-link-input:focus {
-  border-color: var(--gold);
+  border-color: #1E40AF;
+  box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.08);
 }
 
-/* ═══ Share Row ═══ */
+/* ═══════════════════════════════════════
+   📤 SHARE ROW
+   ═══════════════════════════════════════ */
 
 .share-row {
   display: grid;
@@ -167,15 +163,16 @@ body.light .referral-link-input {
   justify-content: center;
   gap: 8px;
   padding: 12px 14px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 12px;
   font-size: 13px;
-  font-weight: 700;
-  color: var(--text-primary);
+  font-weight: 800;
+  color: #0F172A;
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: inherit;
+  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.04);
 }
 
 .share-btn svg {
@@ -186,34 +183,36 @@ body.light .referral-link-input {
 
 .share-btn:hover {
   transform: translateY(-2px);
-  border-color: var(--border-strong);
+  box-shadow: 0 6px 16px rgba(30, 64, 175, 0.1);
 }
 
 .share-btn.telegram:hover {
-  background: rgba(0, 136, 204, 0.12);
+  background: rgba(0, 136, 204, 0.08);
   border-color: #0088cc;
   color: #0088cc;
 }
 
 .share-btn.whatsapp:hover {
-  background: rgba(37, 211, 102, 0.12);
+  background: rgba(37, 211, 102, 0.08);
   border-color: #25D366;
   color: #25D366;
 }
 
 .share-btn.facebook:hover {
-  background: rgba(24, 119, 242, 0.12);
+  background: rgba(24, 119, 242, 0.08);
   border-color: #1877F2;
   color: #1877F2;
 }
 
 .share-btn.copy:hover {
-  background: rgba(240, 185, 11, 0.12);
-  border-color: var(--gold);
-  color: var(--gold);
+  background: #EFF6FF;
+  border-color: #1E40AF;
+  color: #1E40AF;
 }
 
-/* ═══ Stats Grid ═══ */
+/* ═══════════════════════════════════════
+   📊 STATS GRID
+   ═══════════════════════════════════════ */
 
 .referral-stats {
   display: grid;
@@ -223,63 +222,73 @@ body.light .referral-link-input {
 }
 
 .referral-stat {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 20px;
   padding: var(--space-5);
   text-align: center;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 16px rgba(30, 64, 175, 0.04);
 }
 
 .referral-stat:hover {
-  border-color: var(--border-strong);
-  transform: translateY(-2px);
+  border-color: rgba(30, 64, 175, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(30, 64, 175, 0.08);
 }
 
 .referral-stat-icon {
-  font-size: 24px;
-  margin-bottom: var(--space-2);
+  font-size: 28px;
+  margin-bottom: var(--space-3);
+  line-height: 1;
 }
 
 .referral-stat-value {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 800;
-  color: var(--text-primary);
+  color: #0F172A;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.5px;
   margin-bottom: 4px;
 }
 
 .referral-stat-value.gold {
-  color: var(--gold);
+  background: linear-gradient(135deg, #1E40AF, #7C3AED);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .referral-stat-value.green {
-  color: var(--green);
+  color: #10B981;
 }
 
 .referral-stat-label {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--text-tertiary);
+  color: #94A3B8;
 }
 
-/* ═══ How It Works ═══ */
+/* ═══════════════════════════════════════
+   🎯 HOW IT WORKS
+   ═══════════════════════════════════════ */
 
 .how-it-works-card {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 24px;
   padding: var(--space-6);
   margin-bottom: var(--space-6);
+  box-shadow: 0 8px 24px rgba(30, 64, 175, 0.04);
 }
 
 .how-it-works-header h2 {
   font-size: 20px;
   font-weight: 800;
   letter-spacing: -0.3px;
+  color: #0F172A;
   margin-bottom: var(--space-5);
 }
 
@@ -293,15 +302,16 @@ body.light .referral-link-input {
 .step {
   position: relative;
   padding: var(--space-4);
-  background: var(--bg-tertiary);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-subtle);
-  transition: all 0.2s ease;
+  background: #F8FAFF;
+  border-radius: 14px;
+  border: 1px solid #E2E8F0;
+  transition: all 0.25s ease;
 }
 
 .step:hover {
-  border-color: var(--gold);
+  border-color: rgba(30, 64, 175, 0.3);
   transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(30, 64, 175, 0.06);
 }
 
 .step-num {
@@ -310,48 +320,54 @@ body.light .referral-link-input {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-  color: var(--text-inverse);
+  background: linear-gradient(135deg, #1E40AF, #7C3AED);
+  color: white;
   font-weight: 800;
   font-size: 14px;
   margin-bottom: var(--space-3);
-  box-shadow: 0 4px 12px rgba(240, 185, 11, 0.3);
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.25);
 }
 
 .step-title {
   font-size: 13px;
-  font-weight: 700;
-  color: var(--text-primary);
+  font-weight: 800;
+  color: #0F172A;
   margin-bottom: 4px;
 }
 
 .step-desc {
   font-size: 12px;
-  color: var(--text-secondary);
+  color: #64748B;
   line-height: 1.5;
+  font-weight: 500;
 }
 
 .how-it-works-note {
   padding: var(--space-4);
-  background: rgba(240, 185, 11, 0.08);
-  border-left: 3px solid var(--gold);
-  border-radius: var(--radius-sm);
+  background: rgba(245, 158, 11, 0.06);
+  border-inline-start: 3px solid #F59E0B;
+  border-radius: 12px;
   font-size: 13px;
-  color: var(--text-secondary);
+  color: #64748B;
   line-height: 1.6;
+  font-weight: 500;
 }
 
 .how-it-works-note strong {
-  color: var(--gold);
+  color: #D97706;
+  font-weight: 800;
 }
 
-/* ═══ Referrals List ═══ */
+/* ═══════════════════════════════════════
+   👥 REFERRALS LIST
+   ═══════════════════════════════════════ */
 
 .referrals-list-card {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 24px;
   padding: var(--space-6);
+  box-shadow: 0 8px 24px rgba(30, 64, 175, 0.04);
 }
 
 .referrals-list-header {
@@ -365,6 +381,7 @@ body.light .referral-link-input {
   font-size: 20px;
   font-weight: 800;
   letter-spacing: -0.3px;
+  color: #0F172A;
 }
 
 .referrals-count {
@@ -374,24 +391,27 @@ body.light .referral-link-input {
   min-width: 28px;
   height: 28px;
   padding: 0 10px;
-  border-radius: var(--radius-full);
-  background: var(--gold);
-  color: var(--text-inverse);
+  border-radius: 999px;
+  background: linear-gradient(135deg, #1E40AF, #7C3AED);
+  color: white;
   font-size: 13px;
   font-weight: 800;
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.2);
 }
 
 .referral-item {
   padding: var(--space-4);
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  background: #F8FAFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 16px;
   margin-bottom: var(--space-3);
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
 
 .referral-item:hover {
-  border-color: var(--border-strong);
+  border-color: rgba(30, 64, 175, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(30, 64, 175, 0.06);
 }
 
 .referral-item:last-child {
@@ -409,26 +429,28 @@ body.light .referral-link-input {
 
 .ref-item-name {
   font-size: 14px;
-  font-weight: 700;
-  color: var(--text-primary);
+  font-weight: 800;
+  color: #0F172A;
 }
 
 .ref-bonus-badge {
   font-size: 11px;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: var(--radius-sm);
+  font-weight: 800;
+  padding: 5px 12px;
+  border-radius: 8px;
   letter-spacing: 0.3px;
 }
 
 .ref-bonus-badge.locked {
-  background: rgba(240, 185, 11, 0.15);
-  color: var(--gold);
+  background: rgba(245, 158, 11, 0.12);
+  color: #D97706;
+  border: 1px solid rgba(245, 158, 11, 0.2);
 }
 
 .ref-bonus-badge.released {
-  background: var(--green-bg);
-  color: var(--green);
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
 .ref-item-steps {
@@ -440,21 +462,21 @@ body.light .referral-link-input {
 
 .ref-step {
   font-size: 11px;
-  padding: 4px 10px;
-  border-radius: var(--radius-sm);
-  background: var(--bg-hover);
-  color: var(--text-tertiary);
-  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 8px;
+  background: #F5F7FF;
+  color: #94A3B8;
+  font-weight: 700;
 }
 
 .ref-step.done {
-  background: var(--green-bg);
-  color: var(--green);
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
 }
 
 .ref-step.pending {
-  background: rgba(240, 185, 11, 0.10);
-  color: var(--gold);
+  background: rgba(245, 158, 11, 0.10);
+  color: #D97706;
 }
 
 .ref-item-amount {
@@ -462,18 +484,54 @@ body.light .referral-link-input {
   align-items: center;
   justify-content: space-between;
   padding-top: var(--space-3);
-  border-top: 1px solid var(--border-subtle);
+  border-top: 1px solid #E2E8F0;
   font-size: 13px;
-  color: var(--text-secondary);
+  color: #64748B;
+  font-weight: 600;
 }
 
 .ref-item-amount strong {
-  color: var(--gold);
+  background: linear-gradient(135deg, #1E40AF, #7C3AED);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   font-weight: 800;
-  font-size: 15px;
+  font-size: 16px;
 }
 
-/* ═══ Responsive ═══ */
+/* ═══════════════════════════════════════
+   📭 EMPTY STATE
+   ═══════════════════════════════════════ */
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.empty-state-icon {
+  font-size: 48px;
+  opacity: 0.5;
+  margin-bottom: var(--space-4);
+}
+
+.empty-state h3 {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0F172A;
+  margin-bottom: var(--space-2);
+}
+
+.empty-state p {
+  font-size: 13px;
+  color: #64748B;
+  max-width: 320px;
+  margin-inline: auto;
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════
+   📱 RESPONSIVE
+   ═══════════════════════════════════════ */
 
 @media (max-width: 900px) {
   .referral-stats {
@@ -488,6 +546,7 @@ body.light .referral-link-input {
 @media (max-width: 640px) {
   .referral-hero {
     padding: var(--space-5);
+    border-radius: 20px;
   }
 
   .referral-code {
@@ -513,4 +572,17 @@ body.light .referral-link-input {
   .referral-copy-btn {
     justify-content: center;
   }
+
+  .referrals-list-card,
+  .how-it-works-card {
+    padding: var(--space-5);
+    border-radius: 20px;
+  }
+}
+
+/* ═══ RTL ═══ */
+
+[dir="rtl"] .how-it-works-note {
+  border-inline-start: none;
+  border-inline-end: 3px solid #F59E0B;
 }
