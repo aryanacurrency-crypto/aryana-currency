@@ -1,5 +1,6 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — PWA Logic
+   ARYANA CURRENCY — PWA Logic v2
+   Auto-Update Service Worker
    ═══════════════════════════════════════ */
 
 (function () {
@@ -9,16 +10,52 @@
     window.matchMedia('(display-mode: standalone)').matches ||
     window.navigator.standalone === true;
 
-  // ثبت SW
+  /* ═══════════════════════════════════════
+     SERVICE WORKER REGISTRATION
+     ═══════════════════════════════════════ */
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker
-        .register('/service-worker.js')
-        .then((reg) => console.log('SW registered:', reg.scope))
-        .catch((err) => console.warn('SW registration failed:', err));
+        .register('/service-worker.js', { scope: '/' })
+        .then((reg) => {
+          console.log('[PWA] SW registered:', reg.scope);
+
+          // ─── چک آپدیت هر ۳۰ ثانیه ───
+          setInterval(() => {
+            reg.update().catch(() => {});
+          }, 30 * 1000);
+
+          // ─── وقتی SW جدید اومد، فوری فعال کن ───
+          reg.addEventListener('updatefound', () => {
+            const newWorker = reg.installing;
+            if (!newWorker) return;
+
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                // SW جدید آماده — بهش بگو فوری فعال شه
+                newWorker.postMessage({ type: 'SKIP_WAITING' });
+              }
+            });
+          });
+        })
+        .catch((err) => {
+          console.warn('[PWA] SW registration failed:', err);
+        });
+
+      // ─── وقتی SW جدید کنترل گرفت، یه بار reload ───
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (refreshing) return;
+        refreshing = true;
+        console.log('[PWA] New SW active. Reloading...');
+        window.location.reload();
+      });
     });
   }
 
+  /* ═══════════════════════════════════════
+     PWA MODE
+     ═══════════════════════════════════════ */
   if (isPWA) {
     document.documentElement.classList.add('pwa-mode');
 
@@ -39,8 +76,8 @@
   }
 
   function openDefaultProfileTab() {
-    document.querySelectorAll('.profile-nav-item').forEach(item => item.classList.remove('active'));
-    document.querySelectorAll('.profile-panel').forEach(panel => panel.classList.remove('active'));
+    document.querySelectorAll('.profile-nav-item').forEach((item) => item.classList.remove('active'));
+    document.querySelectorAll('.profile-panel').forEach((panel) => panel.classList.remove('active'));
 
     const settingsNav = document.querySelector('.profile-nav-item[data-tab="settings"]');
     const settingsPanel = document.querySelector('.profile-panel[data-panel="settings"]');
@@ -51,6 +88,9 @@
     }
   }
 
+  /* ═══════════════════════════════════════
+     BOTTOM NAV
+     ═══════════════════════════════════════ */
   function injectBottomNav() {
     if (document.getElementById('pwaBottomNav')) return;
 
@@ -58,78 +98,43 @@
     const isAdmin = path.includes('/admin/');
     const isInPages = path.includes('/pages/');
 
-    // ─── اصلاح: پشتیبانی از پوشه p2p ───
-    // اگه توی /pages/p2p/ هستیم، prefix باید ../ باشه
     const isInP2P = path.includes('/pages/p2p/');
     let prefix = '';
     if (isInP2P) {
-      prefix = '../';           // از /pages/p2p/ → /pages/
+      prefix = '../';
     } else if (isInPages) {
-      prefix = '';              // از /pages/ → /pages/
+      prefix = '';
     } else {
-      prefix = 'pages/';        // از root → /pages/
+      prefix = 'pages/';
     }
 
     const userNav = [
-      {
-        href: `${prefix}dashboard.html`,
-        icon: 'home',
-        label: 'Home',
-        keys: ['dashboard', 'index', '']
-      },
-      {
-        href: `${prefix}exchange.html`,
-        icon: 'trade',
-        label: 'Trade',
-        keys: ['exchange']
-      },
-      {
-        href: isInP2P ? 'index.html' : `${prefix}p2p/index.html`,
-        icon: 'p2p',
-        label: 'P2P',
-        keys: ['index', 'create-ad', 'order', 'my-ads', 'my-orders', 'p2p']
-      },
-      {
-        href: `${prefix}orders.html`,
-        icon: 'orders',
-        label: 'Orders',
-        keys: ['orders', 'order']
-      },
-      {
-        href: `${prefix}profile.html`,
-        icon: 'profile',
-        label: 'Profile',
-        keys: ['profile']
-      },
+      { href: `${prefix}dashboard.html`, icon: 'home',    label: 'Home',    keys: ['dashboard', 'index', ''] },
+      { href: `${prefix}exchange.html`,  icon: 'trade',   label: 'Trade',   keys: ['exchange'] },
+      { href: isInP2P ? 'index.html' : `${prefix}p2p/index.html`, icon: 'p2p', label: 'P2P', keys: ['index', 'create-ad', 'order', 'my-ads', 'my-orders', 'p2p'] },
+      { href: `${prefix}orders.html`,    icon: 'orders',  label: 'Orders',  keys: ['orders', 'order'] },
+      { href: `${prefix}profile.html`,   icon: 'profile', label: 'Profile', keys: ['profile'] },
     ];
 
     const adminNav = [
-      { href: 'index.html', icon: 'dashboard', label: 'Dashboard', keys: ['index', ''] },
-      { href: 'orders.html', icon: 'orders', label: 'Orders', keys: ['orders', 'order-detail'] },
-      { href: 'users.html', icon: 'users', label: 'Users', keys: ['users'] },
-      { href: 'settings.html', icon: 'settings', label: 'Settings', keys: ['settings'] },
+      { href: 'index.html',    icon: 'dashboard', label: 'Dashboard', keys: ['index', ''] },
+      { href: 'orders.html',   icon: 'orders',    label: 'Orders',    keys: ['orders', 'order-detail'] },
+      { href: 'users.html',    icon: 'users',     label: 'Users',     keys: ['users'] },
+      { href: 'settings.html', icon: 'settings',  label: 'Settings',  keys: ['settings'] },
     ];
 
     const navItems = isAdmin ? adminNav : userNav;
-
-    // ─── تشخیص صفحه فعلی ───
     let currentFile = path.split('/').pop().replace('.html', '');
-
-    // اگه مسیر /pages/p2p/index.html باشه، currentFile می‌شه "index"
-    // ولی بخوایم P2P رو active کنیم، باید با key "p2p" یا "index" توی p2p ست بشه
     const isP2PPage = path.includes('/pages/p2p/');
 
     const navHTML = navItems
       .map((item) => {
         let isActive = false;
-
         if (isP2PPage) {
-          // توی صفحات p2p هستیم
           isActive = item.icon === 'p2p';
         } else {
           isActive = item.keys.includes(currentFile);
         }
-
         return `
           <a href="${item.href}" class="pwa-nav-item ${isActive ? 'active' : ''}">
             <div class="pwa-nav-icon">${getIcon(item.icon)}</div>
@@ -143,7 +148,6 @@
     nav.className = 'pwa-bottom-nav';
     nav.id = 'pwaBottomNav';
     nav.innerHTML = navHTML;
-
     document.body.appendChild(nav);
   }
 
@@ -168,6 +172,9 @@
     return icons[name] || '';
   }
 
+  /* ═══════════════════════════════════════
+     INSTALL PROMPT
+     ═══════════════════════════════════════ */
   let deferredPrompt = null;
 
   window.addEventListener('beforeinstallprompt', (e) => {
