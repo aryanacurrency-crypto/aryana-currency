@@ -1,12 +1,17 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Order Detail v2
+   ARYANA CURRENCY — Order Detail v3
+   Light · Navy-Purple · Auto-Refresh
    ═══════════════════════════════════════ */
 
 let currentOrder = null;
 let paymentInfo = null;
+let orderId = null;
+let refreshInterval = null;
+
+const REFRESH_INTERVAL = 15000; // 15s
 
 /* ═══════════════════════════════════════
-              Init
+   🚀 INIT
    ═══════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -17,14 +22,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   await I18N.load(initialLang);
   I18N.apply();
 
-  // Logout
+  // ─── Logout ───
   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) logoutBtn.addEventListener('click', () => Auth.logout());
+
+  // ─── Theme toggle ───
+  const themeBtn = document.getElementById('themeToggle');
+  if (themeBtn) themeBtn.addEventListener('click', () => Theme.toggle());
 
   showAdminButton();
   renderUserInfo();
 
-  // Copy ref
+  // ─── Copy ref (top) ───
   const refCopy = document.getElementById('refCopy');
   if (refCopy) {
     refCopy.addEventListener('click', () => {
@@ -33,18 +42,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Setup copy buttons
+  // ─── Setup copy buttons ───
   setupCopyButtons();
 
-  // Load order
+  // ─── Get order ID from URL ───
   const params = new URLSearchParams(window.location.search);
-  const orderId = params.get('id');
+  orderId = params.get('id');
 
   if (!orderId) {
     showError('Order ID missing.');
     return;
   }
 
+  // ─── Load ───
   try {
     const [order, pInfo] = await Promise.all([
       API.getMyOrder(orderId),
@@ -55,6 +65,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     paymentInfo = pInfo;
 
     render();
+
+    // ─── Start auto-refresh (اگه order در جریانه) ───
+    if (isOrderActive(order.status)) {
+      startOrderPolling();
+    }
+
   } catch (err) {
     console.error('Load error:', err);
     showError(err.detail || 'Could not load order.');
@@ -62,7 +78,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 /* ═══════════════════════════════════════
-              Helpers
+   👤 USER HELPERS
    ═══════════════════════════════════════ */
 
 function showAdminButton() {
@@ -86,7 +102,42 @@ function renderUserInfo() {
 }
 
 /* ═══════════════════════════════════════
-              Render
+   🔄 AUTO-REFRESH
+   ═══════════════════════════════════════ */
+
+function isOrderActive(status) {
+  return ['PENDING', 'AWAITING_REVIEW', 'PROCESSING'].includes(status);
+}
+
+function startOrderPolling() {
+  if (refreshInterval) clearInterval(refreshInterval);
+
+  refreshInterval = setInterval(async () => {
+    if (document.hidden) return;
+    if (!currentOrder || !orderId) return;
+
+    try {
+      const fresh = await API.getMyOrder(orderId);
+
+      // اگه status عوض شد → reload
+      if (fresh.status !== currentOrder.status) {
+        Notify.success('Order status updated!');
+        setTimeout(() => window.location.reload(), 1000);
+        return;
+      }
+
+      // اگه دیگه فعال نیست → متوقف کن
+      if (!isOrderActive(fresh.status)) {
+        clearInterval(refreshInterval);
+      }
+    } catch (err) {
+      // silent
+    }
+  }, REFRESH_INTERVAL);
+}
+
+/* ═══════════════════════════════════════
+   🎨 RENDER
    ═══════════════════════════════════════ */
 
 function render() {
@@ -102,8 +153,8 @@ function render() {
   // Status banner
   renderStatusBanner(o.status);
 
-  // Progress timeline
-  renderProgress(o.status);
+  // Progress timeline (با تأخیر کوچیک برای انیمیشن)
+  setTimeout(() => renderProgress(o.status), 80);
 
   // Order summary
   setText('detailSide', isBuy ? '▲ BUY USDT' : '▼ SELL USDT');
@@ -122,7 +173,7 @@ function render() {
   setText('detailTotal', `${fmt(o.net_afn)} AFN`);
   setText('detailTotalLabel', isBuy ? 'Total to Pay' : 'Total to Receive');
 
-  // Payment section
+  // ─── Payment Section ───
   if (o.status === 'PENDING' && paymentInfo) {
     renderPaymentSection(o, isBuy, fmt);
     document.getElementById('paymentBox').style.display = 'block';
@@ -136,7 +187,7 @@ function render() {
     document.getElementById('cancelBox').style.display = 'none';
   }
 
-  // User submitted ref (shown for AWAITING_REVIEW / PROCESSING / COMPLETED / REJECTED)
+  // ─── User submitted ref ───
   if (o.user_payment_reference) {
     document.getElementById('userRefBox').style.display = 'block';
     setText('userRefValue', o.user_payment_reference);
@@ -148,7 +199,7 @@ function render() {
     }
   }
 
-  // Admin note
+  // ─── Admin note ───
   if (o.admin_note) {
     document.getElementById('adminNoteBox').style.display = 'block';
     const box = document.getElementById('adminNoteBox');
@@ -167,7 +218,7 @@ function render() {
 }
 
 /* ═══════════════════════════════════════
-              Status Banner
+   📢 STATUS BANNER
    ═══════════════════════════════════════ */
 
 function renderStatusBanner(status) {
@@ -221,7 +272,7 @@ function renderStatusBanner(status) {
 }
 
 /* ═══════════════════════════════════════
-              Progress Timeline
+   🎯 PROGRESS TIMELINE
    ═══════════════════════════════════════ */
 
 function renderProgress(status) {
@@ -229,71 +280,67 @@ function renderProgress(status) {
   const currentIdx = stages.indexOf(status);
 
   // Reset all
-  document.querySelectorAll('.progress-stage').forEach(el => {
+  document.querySelectorAll('.progress-stage').forEach((el) => {
     el.classList.remove('done', 'active', 'cancelled', 'rejected');
   });
-  document.querySelectorAll('.progress-line').forEach(el => {
+  document.querySelectorAll('.progress-line').forEach((el) => {
     el.classList.remove('done', 'active');
   });
 
-  // Set current
+  // ─── Cancelled / Rejected: همه سرخ ───
   if (status === 'CANCELLED' || status === 'REJECTED') {
-    // همه سرخ
-    document.querySelectorAll('.progress-stage').forEach(el => {
+    document.querySelectorAll('.progress-stage').forEach((el) => {
       el.classList.add(status === 'REJECTED' ? 'rejected' : 'cancelled');
     });
     return;
   }
 
-  document.querySelectorAll('.progress-stage').forEach(el => {
+  // ─── Normal flow ───
+  document.querySelectorAll('.progress-stage').forEach((el) => {
     const stage = el.dataset.stage;
     const idx = stages.indexOf(stage);
+    const dot = el.querySelector('.progress-stage-dot');
 
     if (idx < currentIdx) {
       el.classList.add('done');
-      // تغییر محتوا به ✓
-      const dot = el.querySelector('.progress-stage-dot');
       if (dot) dot.textContent = '✓';
     } else if (idx === currentIdx) {
       el.classList.add('active');
+      if (dot) dot.textContent = (idx + 1).toString();
     } else {
-      // آینده - شماره
-      const dot = el.querySelector('.progress-stage-dot');
       if (dot) dot.textContent = (idx + 1).toString();
     }
   });
 
   // Lines
-  document.querySelectorAll('.progress-line').forEach(el => {
+  document.querySelectorAll('.progress-line').forEach((el) => {
     const lineNum = parseInt(el.dataset.line);
     if (lineNum <= currentIdx) {
       el.classList.add('done');
-    } else if (lineNum === currentIdx + 1) {
-      // نیمه فعال — فعلاً done
     }
   });
 
   // Info steps (کنار)
-  document.querySelectorAll('.info-step').forEach(el => {
+  document.querySelectorAll('.info-step').forEach((el) => {
     const stage = el.dataset.step;
     const idx = stages.indexOf(stage);
+    const num = el.querySelector('.info-step-num');
 
     el.classList.remove('done', 'active');
     if (idx < currentIdx) {
       el.classList.add('done');
-      const num = el.querySelector('.info-step-num');
       if (num) num.textContent = '✓';
     } else if (idx === currentIdx) {
       el.classList.add('active');
+      if (num) num.textContent = (idx + 1).toString();
     } else {
-      const num = el.querySelector('.info-step-num');
       if (num) num.textContent = (idx + 1).toString();
     }
   });
 }
 
 /* ═══════════════════════════════════════
-              Payment Section
+   💳 PAYMENT SECTION
    ═══════════════════════════════════════ */
 
 function renderPaymentSection(order, isBuy, fmt) {
@@ -301,7 +348,7 @@ function renderPaymentSection(order, isBuy, fmt) {
   const usdtSection = document.getElementById('usdtPaymentSection');
 
   if (isBuy) {
-    // BUY: کاربر AFN میده
+    // ─── BUY: کاربر AFN میده ───
     afnSection.style.display = 'block';
     usdtSection.style.display = 'none';
 
@@ -315,18 +362,16 @@ function renderPaymentSection(order, isBuy, fmt) {
       warning.innerHTML = `⚠ After sending <strong>${fmt(order.net_afn)} AFN</strong> via Hesab Pay, copy the transaction reference and paste it in the form below.`;
     }
 
-    // تغییر label فرم
     setText('refLabel', 'Hesab Pay Transaction Reference');
     setText('refHint', 'Paste the transaction ID from your Hesab Pay app.');
 
-    // info steps
     setText('infoStep1Text', 'Transfer the AFN amount via Hesab Pay.');
     setText('infoStep2Text', 'Copy the transaction reference from Hesab Pay.');
     setText('infoStep3Text', 'Our team verifies your payment.');
     setText('infoStep4Text', 'USDT is sent to your wallet.');
 
   } else {
-    // SELL: کاربر USDT میده
+    // ─── SELL: کاربر USDT میده ───
     afnSection.style.display = 'none';
     usdtSection.style.display = 'block';
 
@@ -351,11 +396,11 @@ function renderPaymentSection(order, isBuy, fmt) {
 }
 
 /* ═══════════════════════════════════════
-              Copy Buttons
+   📋 COPY BUTTONS
    ═══════════════════════════════════════ */
 
 function setupCopyButtons() {
-  document.querySelectorAll('.copy-btn').forEach(btn => {
+  document.querySelectorAll('.copy-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       const targetId = btn.dataset.copy;
       const target = document.getElementById(targetId);
@@ -388,12 +433,14 @@ function fallbackCopy(text, btnEl) {
   textarea.style.opacity = '0';
   document.body.appendChild(textarea);
   textarea.select();
+
   try {
     document.execCommand('copy');
     showCopied(btnEl);
   } catch (err) {
     Notify.error('Could not copy.');
   }
+
   document.body.removeChild(textarea);
 }
 
@@ -419,7 +466,7 @@ function showCopied(btnEl) {
 }
 
 /* ═══════════════════════════════════════
-              Submit Form
+   📤 SUBMIT FORM
    ═══════════════════════════════════════ */
 
 function setupSubmitForm() {
@@ -460,7 +507,7 @@ function setupSubmitForm() {
 }
 
 /* ═══════════════════════════════════════
-              Cancel Order
+   ❌ CANCEL ORDER
    ═══════════════════════════════════════ */
 
 function setupCancelButton() {
@@ -498,7 +545,7 @@ function setupCancelButton() {
 }
 
 /* ═══════════════════════════════════════
-              Error
+   ⚠️ ERROR
    ═══════════════════════════════════════ */
 
 function showError(msg) {
@@ -510,13 +557,37 @@ function showError(msg) {
       ${msg}
     </div>
     <div style="text-align:center; margin-top:20px;">
-      <a href="orders.html" class="btn btn-outline">← Back to Orders</a>
+      <a href="orders.html" class="btn btn-outline" style="display:inline-flex;padding:12px 20px;background:transparent;color:#1E40AF;border:1.5px solid rgba(30,64,175,0.3);border-radius:12px;font-size:13px;font-weight:800;text-decoration:none;">
+        ← Back to Orders
+      </a>
     </div>
   `;
 }
 
 /* ═══════════════════════════════════════
-              Helpers
+   🧹 CLEANUP
+   ═══════════════════════════════════════ */
+
+window.addEventListener('beforeunload', () => {
+  if (refreshInterval) clearInterval(refreshInterval);
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && currentOrder && isOrderActive(currentOrder.status)) {
+    startOrderPolling();
+  }
+});
+
+/* ═══════════════════════════════════════
+   🌍 EXPOSE
+   ═══════════════════════════════════════ */
+
+window.Order = {
+  reload: () => window.location.reload(),
+};
+
+/* ═══════════════════════════════════════
+   🛠️ HELPERS
    ═══════════════════════════════════════ */
 
 function setText(id, value) {

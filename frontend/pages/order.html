@@ -2,39 +2,42 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Order details — Aryana Currency">
-  <meta name="theme-color" content="#0B0E11">
+  <meta name="theme-color" content="#FAFBFF">
 
   <title>Order | ARYANA CURRENCY</title>
 
-<script>
-  (function() {
-    try {
-      var saved = localStorage.getItem('aryana_theme');
-      var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      document.documentElement.classList.add(theme);
-      document.documentElement.setAttribute('data-theme', theme);
-    } catch (e) {}
-  })();
-</script>
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('aryana_theme') || 'light';
+        document.documentElement.classList.add(saved);
+        document.documentElement.setAttribute('data-theme', saved);
+        setTimeout(function () {
+          document.documentElement.classList.add('theme-ready');
+        }, 50);
+      } catch (e) {}
+    })();
+  </script>
 
   <link rel="icon" type="image/png" href="../assets/images/logo.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/css/theme-v2.css">
   <link rel="stylesheet" href="../assets/css/ui-v2.css">
+  <link rel="stylesheet" href="../assets/css/command-palette.css">
   <link rel="stylesheet" href="../assets/css/dashboard-v2.css">
   <link rel="stylesheet" href="../assets/css/order-v2.css">
   <link rel="stylesheet" href="../assets/css/notifications.css">
   <link rel="stylesheet" href="../assets/css/footer.css">
+  <link rel="stylesheet" href="../assets/css/pwa.css">
 </head>
 <body>
 
-  <!-- Header -->
   <header class="app-header">
     <div class="container app-header-inner">
 
@@ -52,13 +55,22 @@
             <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
             <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
           </svg>
-          <span>Dashboard</span>
+          <span data-i18n="navDashboard">Dashboard</span>
         </a>
         <a href="exchange.html" class="app-nav-link">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12M17 20l4-4M17 20l-4-4"/>
           </svg>
-          <span>Trade</span>
+          <span data-i18n="navTrade">Trade</span>
+        </a>
+        <a href="p2p/index.html" class="app-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span data-i18n="navP2P">P2P</span>
         </a>
         <a href="orders.html" class="app-nav-link active">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -67,18 +79,39 @@
             <line x1="16" y1="13" x2="8" y2="13"/>
             <line x1="16" y1="17" x2="8" y2="17"/>
           </svg>
-          <span>Orders</span>
+          <span data-i18n="navOrders">Orders</span>
         </a>
         <a href="profile.html" class="app-nav-link">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
             <circle cx="12" cy="7" r="4"/>
           </svg>
-          <span>Profile</span>
+          <span data-i18n="navProfile">Profile</span>
         </a>
       </nav>
 
       <div class="app-header-actions">
+        <button class="cmd-trigger" data-cmd-trigger type="button" aria-label="Open command palette">
+          <span class="cmd-trigger-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <span>Search...</span>
+          </span>
+          <kbd class="cmd-kbd">⌘K</kbd>
+        </button>
+
+        <button class="cmd-trigger cmd-trigger-compact" data-cmd-trigger type="button" aria-label="Open command palette">
+          <span class="cmd-trigger-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <span>Search</span>
+          </span>
+        </button>
+
         <a href="admin/index.html" class="icon-btn" id="adminPanelBtn" style="display:none;" title="Admin Panel">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 2l3 6 6 1-4.5 4.5L18 20l-6-3-6 3 1.5-6.5L3 9l6-1z"/>
@@ -90,7 +123,7 @@
           <span class="user-name" id="userName">User</span>
         </a>
 
-        <button class="icon-btn" id="logoutBtn" title="Logout">
+        <button class="icon-btn" id="logoutBtn" title="Logout" aria-label="Logout">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
             <polyline points="16 17 21 12 16 7"/>
@@ -102,28 +135,24 @@
     </div>
   </header>
 
-  <!-- Main -->
   <main class="container app-main">
 
-    <!-- Loading -->
     <div class="order-loading" id="loadingBox">
-      <div class="spinner spinner-lg" style="color: var(--gold);"></div>
-      <p style="color: var(--text-secondary); font-size: 13px;">Loading order...</p>
+      <div class="spinner spinner-lg"></div>
+      <p>Loading order...</p>
     </div>
 
-    <!-- Content -->
     <div id="contentBox" style="display:none;">
 
-      <!-- Page Header -->
       <div class="page-header-row">
-        <a href="orders.html" class="back-btn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <a href="orders.html" class="back-btn" aria-label="Back">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="19" y1="12" x2="5" y2="12"/>
             <polyline points="12 19 5 12 12 5"/>
           </svg>
         </a>
         <div>
-          <h1 style="font-size:22px; font-weight:800; letter-spacing:-0.5px;">Order Details</h1>
+          <h1>Order Details</h1>
           <div class="order-ref-copy" id="refCopy">
             <span id="orderRef">—</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -134,7 +163,6 @@
         </div>
       </div>
 
-      <!-- Status Banner -->
       <div class="status-banner pending" id="statusBanner">
         <div class="status-banner-icon" id="statusIcon">⏳</div>
         <div class="status-banner-content">
@@ -143,7 +171,6 @@
         </div>
       </div>
 
-      <!-- Progress Timeline -->
       <div class="progress-timeline" id="progressTimeline">
         <div class="progress-stage done" data-stage="PENDING">
           <div class="progress-stage-dot">✓</div>
@@ -166,13 +193,10 @@
         </div>
       </div>
 
-      <!-- Order Layout -->
       <div class="order-layout">
 
-        <!-- LEFT -->
         <div>
 
-          <!-- Order Summary -->
           <div class="order-card">
             <div class="card-title">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -210,7 +234,6 @@
             </div>
           </div>
 
-          <!-- Payment Instructions -->
           <div class="payment-box" id="paymentBox" style="display:none;">
             <div class="payment-box-header">
               <div class="payment-box-icon">
@@ -225,7 +248,6 @@
               </div>
             </div>
 
-            <!-- AFN Payment (for BUY) -->
             <div id="afnPaymentSection" style="display:none;">
               <div class="payment-field">
                 <label class="payment-field-label">Hesab Pay Number</label>
@@ -256,7 +278,6 @@
               </div>
             </div>
 
-            <!-- USDT Payment (for SELL) -->
             <div id="usdtPaymentSection" style="display:none;">
               <div class="payment-field">
                 <label class="payment-field-label">Send USDT (TRC20) to</label>
@@ -292,7 +313,6 @@
             </div>
           </div>
 
-          <!-- Submit Form -->
           <div class="order-card" id="submitBox" style="display:none;">
             <div class="card-title">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -335,7 +355,6 @@
             </form>
           </div>
 
-          <!-- User's submitted ref (shown after submit) -->
           <div class="order-card" id="userRefBox" style="display:none;">
             <div class="card-title">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -357,16 +376,14 @@
             </div>
           </div>
 
-          <!-- Admin Note -->
           <div class="admin-note-box" id="adminNoteBox" style="display:none;">
             <div class="admin-note-label" id="adminNoteLabel">Admin Note</div>
             <div class="admin-note-text" id="adminNoteText">—</div>
           </div>
 
-          <!-- Cancel Button -->
           <div class="order-actions" id="cancelBox" style="display:none;">
-            <button type="button" class="btn btn-outline" id="cancelOrderBtn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <button type="button" class="btn-outline" id="cancelOrderBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18"/>
                 <line x1="6" y1="6" x2="18" y2="18"/>
               </svg>
@@ -376,7 +393,6 @@
 
         </div>
 
-        <!-- RIGHT: Side Info -->
         <aside class="side-info-card">
           <div class="side-info-header">
             <div class="side-info-icon">
@@ -430,14 +446,15 @@
 
   </main>
 
-  <!-- Scripts -->
   <script src="../assets/js/config.js"></script>
   <script src="../assets/js/i18n.js"></script>
   <script src="../assets/js/theme.js"></script>
   <script src="../assets/js/auth.js"></script>
   <script src="../assets/js/api.js"></script>
   <script src="../assets/js/notifications.js"></script>
+  <script src="../assets/js/command-palette.js"></script>
   <script src="../assets/js/order.js"></script>
   <script src="../assets/js/footer.js"></script>
+  <script src="../assets/js/pwa.js"></script>
 </body>
 </html>
