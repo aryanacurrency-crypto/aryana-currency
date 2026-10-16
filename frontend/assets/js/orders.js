@@ -1,11 +1,18 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Orders v2 Logic
-   Orders list (Binance-style)
+   ARYANA CURRENCY — Orders v3 Logic
+   Live · Filters · Auto-refresh
    ═══════════════════════════════════════ */
 
 let allOrders = [];
 let currentTab = 'open';
 let currentFilter = '';
+let refreshInterval = null;
+
+const REFRESH_INTERVAL = 30000; // 30s
+
+/* ═══════════════════════════════════════
+   🚀 INIT
+   ═══════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', async () => {
   Auth.requireLogin();
@@ -19,17 +26,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) logoutBtn.addEventListener('click', () => Auth.logout());
 
+  // Theme toggle
+  const themeBtn = document.getElementById('themeToggle');
+  if (themeBtn) themeBtn.addEventListener('click', () => Theme.toggle());
+
   showAdminButton();
   renderUserInfo();
 
-  // Main tabs
-  document.querySelectorAll('.main-tab').forEach(tab => {
+  // ─── Main tabs ───
+  document.querySelectorAll('.main-tab').forEach((tab) => {
     tab.addEventListener('click', () => {
-      document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.main-tab').forEach((t) => t.classList.remove('active'));
       tab.classList.add('active');
       currentTab = tab.dataset.tab;
 
-      // فیلتر Pill
+      // فیلتر pill ها فقط توی tab "all"
       const pills = document.getElementById('filterPills');
       if (pills) {
         pills.style.display = currentTab === 'all' ? 'flex' : 'none';
@@ -39,21 +50,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  // Filter pills (فقط در tab All)
-  document.querySelectorAll('.filter-pill').forEach(pill => {
+  // ─── Filter pills ───
+  document.querySelectorAll('.filter-pill').forEach((pill) => {
     pill.addEventListener('click', () => {
-      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.filter-pill').forEach((p) => p.classList.remove('active'));
       pill.classList.add('active');
       currentFilter = pill.dataset.filter;
       renderOrders();
     });
   });
 
+  // ─── Load ───
   await loadOrders();
+
+  // ─── Auto-refresh هر ۳۰s ───
+  startAutoRefresh();
 });
 
 /* ═══════════════════════════════════════
-              Helpers
+   👤 USER
    ═══════════════════════════════════════ */
 
 function showAdminButton() {
@@ -77,56 +92,85 @@ function renderUserInfo() {
 }
 
 /* ═══════════════════════════════════════
-              Load Orders
+   📋 LOAD ORDERS
    ═══════════════════════════════════════ */
 
 async function loadOrders() {
+  const loadingBox = document.getElementById('loadingBox');
+
   try {
+    // Profile
     try {
       const user = await API.me();
       Auth.setUser(user);
       showAdminButton();
-      const initial = (user.full_name || user.email || '?').charAt(0).toUpperCase();
-      const avatarEl = document.getElementById('userAvatar');
-      const nameEl = document.getElementById('userName');
-      if (avatarEl) avatarEl.textContent = initial;
-      if (nameEl) nameEl.textContent = (user.full_name || 'User').split(' ')[0];
+      renderUserInfo();
     } catch (e) {
       console.error('Profile load failed:', e);
     }
 
-    allOrders = await API.getMyOrders() || [];
+    // Orders
+    allOrders = (await API.getMyOrders()) || [];
 
-    document.getElementById('loadingBox').style.display = 'none';
+    if (loadingBox) loadingBox.style.display = 'none';
 
     renderStats();
     renderOrders();
 
   } catch (err) {
     console.error('Load orders failed:', err);
-    document.getElementById('loadingBox').innerHTML = `
-      <p style="color:var(--red); font-size:13px;">Could not load orders.</p>
-    `;
+
+    if (loadingBox) {
+      loadingBox.innerHTML = `
+        <p style="color:#EF4444; font-size:13px; font-weight:600;">
+          Could not load orders. Please try again.
+        </p>
+      `;
+    }
   }
 }
 
+function startAutoRefresh() {
+  if (refreshInterval) clearInterval(refreshInterval);
+
+  refreshInterval = setInterval(async () => {
+    if (document.hidden) return;
+
+    try {
+      allOrders = (await API.getMyOrders()) || [];
+      renderStats();
+
+      // فقط اگه tab فعلی خالی نیست، re-render کن
+      const list = document.getElementById('ordersList');
+      if (list && list.style.display !== 'none') {
+        renderOrders();
+      }
+    } catch (err) {
+      // silent
+    }
+  }, REFRESH_INTERVAL);
+}
+
 /* ═══════════════════════════════════════
-              Stats
+   📊 STATS
    ═══════════════════════════════════════ */
 
 function renderStats() {
   const total = allOrders.length;
-  const completed = allOrders.filter(o => o.status === 'COMPLETED').length;
-  const pending = allOrders.filter(o =>
-    o.status === 'PENDING' || o.status === 'AWAITING_REVIEW' || o.status === 'PROCESSING'
+
+  const completed = allOrders.filter((o) => o.status === 'COMPLETED').length;
+
+  const pending = allOrders.filter((o) =>
+    ['PENDING', 'AWAITING_REVIEW', 'PROCESSING'].includes(o.status)
   ).length;
+
   const volume = allOrders
-    .filter(o => o.status === 'COMPLETED')
+    .filter((o) => o.status === 'COMPLETED')
     .reduce((sum, o) => sum + Number(o.amount_usdt || 0), 0);
 
-  const fmt = (n, decimals = 2) => Number(n).toLocaleString('en-US', {
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals,
+  const fmt = (n, d = 2) => Number(n).toLocaleString('en-US', {
+    minimumFractionDigits: d,
+    maximumFractionDigits: d,
   });
 
   setText('statTotal', total);
@@ -136,36 +180,36 @@ function renderStats() {
 
   // Tab counts
   setText('tabCountOpen', pending);
-  setText('tabCountHistory', completed);
+  setText('tabCountHistory', allOrders.length - pending);
   setText('tabCountAll', total);
 }
 
 /* ═══════════════════════════════════════
-              Render Orders
+   🎨 RENDER ORDERS
    ═══════════════════════════════════════ */
 
 function renderOrders() {
   const list = document.getElementById('ordersList');
   const empty = document.getElementById('emptyBox');
 
-  // فیلتر بر اساس tab
+  // ─── فیلتر ───
   let filtered = allOrders;
 
   if (currentTab === 'open') {
-    filtered = allOrders.filter(o =>
-      o.status === 'PENDING' || o.status === 'AWAITING_REVIEW' || o.status === 'PROCESSING'
+    filtered = allOrders.filter((o) =>
+      ['PENDING', 'AWAITING_REVIEW', 'PROCESSING'].includes(o.status)
     );
   } else if (currentTab === 'history') {
-    filtered = allOrders.filter(o =>
-      o.status === 'COMPLETED' || o.status === 'CANCELLED' || o.status === 'REJECTED'
+    filtered = allOrders.filter((o) =>
+      ['COMPLETED', 'CANCELLED', 'REJECTED'].includes(o.status)
     );
   }
 
-  // فیلتر بر اساس side (در tab All)
   if (currentTab === 'all' && currentFilter) {
-    filtered = filtered.filter(o => o.side === currentFilter);
+    filtered = filtered.filter((o) => o.side === currentFilter);
   }
 
+  // ─── خالی ───
   if (!filtered.length) {
     list.style.display = 'none';
     empty.style.display = 'block';
@@ -186,18 +230,20 @@ function renderOrders() {
     return;
   }
 
+  // ─── Render ───
   empty.style.display = 'none';
   list.style.display = 'flex';
   list.innerHTML = '';
 
-  filtered.forEach(order => {
+  filtered.forEach((order, i) => {
     const card = createOrderCard(order);
+    card.style.animationDelay = `${i * 40}ms`;
     list.appendChild(card);
   });
 }
 
 /* ═══════════════════════════════════════
-              Order Card
+   🃏 ORDER CARD
    ═══════════════════════════════════════ */
 
 function createOrderCard(order) {
@@ -206,10 +252,10 @@ function createOrderCard(order) {
   const card = document.createElement('div');
   card.className = `order-card-item ${isBuy ? 'buy' : 'sell'}`;
   card.onclick = () => {
-    window.location.href = `order-v2.html?id=${order.id}`;
+    window.location.href = `order.html?id=${order.id}`;
   };
 
-  // Status config
+  // ─── Status Config ───
   const statusConfig = {
     'PENDING': { cls: 'pending', text: 'Pending' },
     'AWAITING_REVIEW': { cls: 'review', text: 'In Review' },
@@ -218,22 +264,35 @@ function createOrderCard(order) {
     'CANCELLED': { cls: 'cancelled', text: 'Cancelled' },
     'REJECTED': { cls: 'rejected', text: 'Rejected' },
   };
+
   const s = statusConfig[order.status] || { cls: '', text: order.status };
 
-  // Progress steps
+  // ─── Progress ───
   const progressMap = {
     'PENDING': 1,
     'AWAITING_REVIEW': 2,
     'PROCESSING': 3,
     'COMPLETED': 4,
   };
+
   const currentStep = progressMap[order.status] || 0;
 
   let progressHtml = '';
+
   if (order.status === 'CANCELLED') {
-    progressHtml = `<div class="progress-step cancelled"></div><div class="progress-step cancelled"></div><div class="progress-step cancelled"></div><div class="progress-step cancelled"></div>`;
+    progressHtml = `
+      <div class="progress-step cancelled"></div>
+      <div class="progress-step cancelled"></div>
+      <div class="progress-step cancelled"></div>
+      <div class="progress-step cancelled"></div>
+    `;
   } else if (order.status === 'REJECTED') {
-    progressHtml = `<div class="progress-step rejected"></div><div class="progress-step rejected"></div><div class="progress-step rejected"></div><div class="progress-step rejected"></div>`;
+    progressHtml = `
+      <div class="progress-step rejected"></div>
+      <div class="progress-step rejected"></div>
+      <div class="progress-step rejected"></div>
+      <div class="progress-step rejected"></div>
+    `;
   } else {
     for (let i = 1; i <= 4; i++) {
       if (i < currentStep) {
@@ -246,7 +305,7 @@ function createOrderCard(order) {
     }
   }
 
-  // Time ago
+  // ─── Time ───
   const timeAgo = getTimeAgo(new Date(order.created_at));
 
   const fmt = (n, d = 2) => Number(n).toLocaleString('en-US', {
@@ -254,6 +313,7 @@ function createOrderCard(order) {
     maximumFractionDigits: d,
   });
 
+  // ─── HTML ───
   card.innerHTML = `
     <div class="order-card-head">
       <div class="order-side-badge">
@@ -268,7 +328,7 @@ function createOrderCard(order) {
           <div class="order-side-title ${isBuy ? 'buy' : 'sell'}">
             ${isBuy ? 'BUY USDT' : 'SELL USDT'}
           </div>
-          <div class="order-side-ref">${order.reference}</div>
+          <div class="order-side-ref">${order.reference || '—'}</div>
         </div>
       </div>
 
@@ -323,7 +383,7 @@ function createOrderCard(order) {
 }
 
 /* ═══════════════════════════════════════
-              Helpers
+   🛠️ HELPERS
    ═══════════════════════════════════════ */
 
 function getTimeAgo(date) {
@@ -347,3 +407,25 @@ function setText(id, value) {
   const el = document.getElementById(id);
   if (el) el.textContent = value;
 }
+
+/* ═══════════════════════════════════════
+   🧹 CLEANUP
+   ═══════════════════════════════════════ */
+
+window.addEventListener('beforeunload', () => {
+  if (refreshInterval) clearInterval(refreshInterval);
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) {
+    loadOrders();
+  }
+});
+
+/* ═══════════════════════════════════════
+   🌍 EXPOSE
+   ═══════════════════════════════════════ */
+
+window.Orders = {
+  reload: loadOrders,
+};

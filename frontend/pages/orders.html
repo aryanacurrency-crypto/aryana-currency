@@ -2,27 +2,29 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="My orders — Aryana Currency">
-  <meta name="theme-color" content="#0B0E11">
+  <meta name="theme-color" content="#FAFBFF">
 
   <title>My Orders | ARYANA CURRENCY</title>
 
-<script>
-  (function() {
-    try {
-      var saved = localStorage.getItem('aryana_theme');
-      var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      document.documentElement.classList.add(theme);
-      document.documentElement.setAttribute('data-theme', theme);
-    } catch (e) {}
-  })();
-</script>
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('aryana_theme') || 'light';
+        document.documentElement.classList.add(saved);
+        document.documentElement.setAttribute('data-theme', saved);
+        setTimeout(function () {
+          document.documentElement.classList.add('theme-ready');
+        }, 50);
+      } catch (e) {}
+    })();
+  </script>
 
   <!-- PWA -->
   <link rel="manifest" href="../manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Aryana">
   <link rel="apple-touch-icon" href="../assets/images/icon-192.png">
 
@@ -30,10 +32,11 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/css/theme-v2.css">
   <link rel="stylesheet" href="../assets/css/ui-v2.css">
+  <link rel="stylesheet" href="../assets/css/command-palette.css">
   <link rel="stylesheet" href="../assets/css/dashboard-v2.css">
   <link rel="stylesheet" href="../assets/css/orders-v2.css">
   <link rel="stylesheet" href="../assets/css/notifications.css">
@@ -42,7 +45,9 @@
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- ═══════════════════════════════════════
+       HEADER
+       ═══════════════════════════════════════ -->
   <header class="app-header">
     <div class="container app-header-inner">
 
@@ -60,13 +65,22 @@
             <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
             <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
           </svg>
-          <span>Dashboard</span>
+          <span data-i18n="navDashboard">Dashboard</span>
         </a>
         <a href="exchange.html" class="app-nav-link">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12M17 20l4-4M17 20l-4-4"/>
           </svg>
-          <span>Trade</span>
+          <span data-i18n="navTrade">Trade</span>
+        </a>
+        <a href="p2p/index.html" class="app-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span data-i18n="navP2P">P2P</span>
         </a>
         <a href="orders.html" class="app-nav-link active">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -75,18 +89,39 @@
             <line x1="16" y1="13" x2="8" y2="13"/>
             <line x1="16" y1="17" x2="8" y2="17"/>
           </svg>
-          <span>Orders</span>
+          <span data-i18n="navOrders">Orders</span>
         </a>
         <a href="profile.html" class="app-nav-link">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
             <circle cx="12" cy="7" r="4"/>
           </svg>
-          <span>Profile</span>
+          <span data-i18n="navProfile">Profile</span>
         </a>
       </nav>
 
       <div class="app-header-actions">
+        <button class="cmd-trigger" data-cmd-trigger type="button" aria-label="Open command palette">
+          <span class="cmd-trigger-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <span>Search...</span>
+          </span>
+          <kbd class="cmd-kbd">⌘K</kbd>
+        </button>
+
+        <button class="cmd-trigger cmd-trigger-compact" data-cmd-trigger type="button" aria-label="Open command palette">
+          <span class="cmd-trigger-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <span>Search</span>
+          </span>
+        </button>
+
         <a href="admin/index.html" class="icon-btn" id="adminPanelBtn" style="display:none;" title="Admin Panel">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 2l3 6 6 1-4.5 4.5L18 20l-6-3-6 3 1.5-6.5L3 9l6-1z"/>
@@ -104,7 +139,7 @@
           <span class="user-name" id="userName">User</span>
         </a>
 
-        <button class="icon-btn" id="logoutBtn" title="Logout">
+        <button class="icon-btn" id="logoutBtn" title="Logout" aria-label="Logout">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
             <polyline points="16 17 21 12 16 7"/>
@@ -116,15 +151,17 @@
     </div>
   </header>
 
-  <!-- Main -->
+  <!-- ═══════════════════════════════════════
+       MAIN
+       ═══════════════════════════════════════ -->
   <main class="container app-main">
 
     <!-- Page Header -->
     <div class="page-header-row">
       <div class="page-header-left">
         <div>
-          <h1>My Orders</h1>
-          <p>All your transactions in one place</p>
+          <h1 data-i18n="ordersTitle">My Orders</h1>
+          <p data-i18n="ordersSubtitle">All your transactions in one place</p>
         </div>
       </div>
 
@@ -133,7 +170,7 @@
           <line x1="12" y1="5" x2="12" y2="19"/>
           <line x1="5" y1="12" x2="19" y2="12"/>
         </svg>
-        <span>New Order</span>
+        <span data-i18n="newOrder">New Order</span>
       </a>
     </div>
 
@@ -145,8 +182,11 @@
             <line x1="8" y1="6" x2="21" y2="6"/>
             <line x1="8" y1="12" x2="21" y2="12"/>
             <line x1="8" y1="18" x2="21" y2="18"/>
+            <line x1="3" y1="6" x2="3.01" y2="6"/>
+            <line x1="3" y1="12" x2="3.01" y2="12"/>
+            <line x1="3" y1="18" x2="3.01" y2="18"/>
           </svg>
-          <span>Total Orders</span>
+          <span data-i18n="statTotalOrders">Total Orders</span>
         </div>
         <div class="stat-value" id="statTotal">—</div>
       </div>
@@ -157,7 +197,7 @@
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
             <polyline points="22 4 12 14.01 9 11.01"/>
           </svg>
-          <span>Completed</span>
+          <span data-i18n="statCompleted">Completed</span>
         </div>
         <div class="stat-value text-green" id="statCompleted">—</div>
       </div>
@@ -168,7 +208,7 @@
             <circle cx="12" cy="12" r="10"/>
             <polyline points="12 6 12 12 16 14"/>
           </svg>
-          <span>Pending</span>
+          <span data-i18n="statPending">Pending</span>
         </div>
         <div class="stat-value text-gold" id="statPending">—</div>
       </div>
@@ -179,7 +219,7 @@
             <line x1="12" y1="1" x2="12" y2="23"/>
             <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
           </svg>
-          <span>Total Volume</span>
+          <span data-i18n="statVolume">Total Volume</span>
         </div>
         <div class="stat-value" id="statVolume">— USDT</div>
       </div>
@@ -187,25 +227,25 @@
 
     <!-- Main Tabs -->
     <div class="main-tabs">
-      <button class="main-tab active" data-tab="open">
-        Open Orders
+      <button class="main-tab active" data-tab="open" type="button">
+        <span data-i18n="tabOpen">Open Orders</span>
         <span class="main-tab-count" id="tabCountOpen">0</span>
       </button>
-      <button class="main-tab" data-tab="history">
-        Order History
+      <button class="main-tab" data-tab="history" type="button">
+        <span data-i18n="tabHistory">Order History</span>
         <span class="main-tab-count" id="tabCountHistory">0</span>
       </button>
-      <button class="main-tab" data-tab="all">
-        All
+      <button class="main-tab" data-tab="all" type="button">
+        <span data-i18n="tabAll">All</span>
         <span class="main-tab-count" id="tabCountAll">0</span>
       </button>
     </div>
 
     <!-- Filter Pills -->
     <div class="filter-pills" id="filterPills" style="display:none;">
-      <button class="filter-pill active" data-filter="">All</button>
-      <button class="filter-pill" data-filter="BUY">Buy Only</button>
-      <button class="filter-pill" data-filter="SELL">Sell Only</button>
+      <button class="filter-pill active" data-filter="" type="button" data-i18n="filterAll">All</button>
+      <button class="filter-pill" data-filter="BUY" type="button" data-i18n="filterBuy">Buy Only</button>
+      <button class="filter-pill" data-filter="SELL" type="button" data-i18n="filterSell">Sell Only</button>
     </div>
 
     <!-- Orders Container -->
@@ -213,31 +253,30 @@
 
       <!-- Loading -->
       <div class="orders-loading" id="loadingBox">
-        <div class="spinner spinner-lg" style="color: var(--gold);"></div>
-        <p style="color: var(--text-secondary); font-size: 13px;">Loading orders...</p>
+        <div class="spinner spinner-lg"></div>
+        <p data-i18n="loadingOrders">Loading orders...</p>
       </div>
 
       <!-- Empty -->
       <div class="orders-empty" id="emptyBox" style="display:none;">
         <div class="orders-empty-illustration">
           <div class="orders-empty-icon">
-            <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
               <polyline points="14 2 14 8 20 8"/>
               <line x1="16" y1="13" x2="8" y2="13"/>
               <line x1="16" y1="17" x2="8" y2="17"/>
-              <polyline points="10 9 9 9 8 9"/>
             </svg>
           </div>
         </div>
-        <h3 id="emptyTitle">No orders yet</h3>
-        <p id="emptyText">Your transactions will appear here. Start by making your first exchange.</p>
+        <h3 id="emptyTitle" data-i18n="emptyTitle">No orders yet</h3>
+        <p id="emptyText" data-i18n="emptyText">Your transactions will appear here. Start by making your first exchange.</p>
         <a href="exchange.html" class="btn btn-primary">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="5" x2="12" y2="19"/>
             <line x1="5" y1="12" x2="19" y2="12"/>
           </svg>
-          <span>Create your first order</span>
+          <span data-i18n="createFirstOrder">Create your first order</span>
         </a>
       </div>
 
@@ -248,13 +287,13 @@
 
   </main>
 
-  <!-- Scripts -->
   <script src="../assets/js/config.js"></script>
   <script src="../assets/js/i18n.js"></script>
   <script src="../assets/js/theme.js"></script>
   <script src="../assets/js/auth.js"></script>
   <script src="../assets/js/api.js"></script>
   <script src="../assets/js/notifications.js"></script>
+  <script src="../assets/js/command-palette.js"></script>
   <script src="../assets/js/orders.js"></script>
   <script src="../assets/js/footer.js"></script>
   <script src="../assets/js/pwa.js"></script>
