@@ -1,14 +1,16 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Withdraw v2 Logic
+   ARYANA CURRENCY — Withdraw v3 Logic
+   Light · Navy-Purple · ARYANA OS
    ═══════════════════════════════════════ */
 
 let currentCurrency = 'USDT';
 let currentNetwork = 'TRC20';
 let currentWallets = null;
 let myWithdrawals = [];
+let pendingWithdrawal = null;
 
 /* ═══════════════════════════════════════
-              Init
+   🚀 INIT
    ═══════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -19,15 +21,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   await I18N.load(initialLang);
   I18N.apply();
 
-  // Logout
+  // ─── Logout ───
   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) logoutBtn.addEventListener('click', () => Auth.logout());
+
+  // ─── Theme toggle ───
+  const themeBtn = document.getElementById('themeToggle');
+  if (themeBtn) themeBtn.addEventListener('click', () => Theme.toggle());
 
   showAdminButton();
   renderUserInfo();
 
-  // Currency tabs
-  document.querySelectorAll('.currency-tab').forEach(tab => {
+  // ─── Currency tabs ───
+  document.querySelectorAll('.currency-tab').forEach((tab) => {
     tab.addEventListener('click', () => {
       const cur = tab.dataset.currency;
       if (cur === currentCurrency) return;
@@ -36,11 +42,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  // Max button
+  // ─── Max button ───
   const maxBtn = document.getElementById('maxBtn');
   if (maxBtn) maxBtn.addEventListener('click', useMaxBalance);
 
-  // Input validation
+  // ─── Amount input ───
   const amountInput = document.getElementById('amount');
   if (amountInput) {
     amountInput.addEventListener('input', (e) => {
@@ -51,18 +57,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Form
+  // ─── Form ───
   const form = document.getElementById('withdrawForm');
   if (form) form.addEventListener('submit', handleSubmit);
 
-  // Modal
+  // ─── Modal ───
   const cancelConfirmBtn = document.getElementById('cancelConfirmBtn');
   if (cancelConfirmBtn) cancelConfirmBtn.addEventListener('click', closeConfirmModal);
 
   const confirmWithdrawBtn = document.getElementById('confirmWithdrawBtn');
   if (confirmWithdrawBtn) confirmWithdrawBtn.addEventListener('click', confirmWithdrawal);
 
-  // Load data
+  // ─── Esc to close modal ───
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const modal = document.getElementById('confirmModal');
+      if (modal && modal.classList.contains('show')) {
+        closeConfirmModal();
+      }
+    }
+  });
+
+  // ─── Load data ───
   await Promise.all([
     loadProfile(),
     loadWallets(),
@@ -73,7 +89,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 /* ═══════════════════════════════════════
-              Helpers
+   👤 HELPERS
    ═══════════════════════════════════════ */
 
 function showAdminButton() {
@@ -97,7 +113,7 @@ function renderUserInfo() {
 }
 
 /* ═══════════════════════════════════════
-              Load Data
+   📥 LOAD DATA
    ═══════════════════════════════════════ */
 
 async function loadProfile() {
@@ -127,7 +143,7 @@ async function loadWallets() {
 
 async function loadMyWithdrawals() {
   try {
-    myWithdrawals = await API.request('/withdrawals/my') || [];
+    myWithdrawals = (await API.request('/withdrawals/my')) || [];
     renderRecentWithdrawals();
   } catch (err) {
     console.error('Withdrawals load failed:', err);
@@ -137,12 +153,12 @@ async function loadMyWithdrawals() {
 }
 
 /* ═══════════════════════════════════════
-              Apply Currency
+   💱 APPLY CURRENCY
    ═══════════════════════════════════════ */
 
 function applyCurrency() {
   // Tabs
-  document.querySelectorAll('.currency-tab').forEach(tab => {
+  document.querySelectorAll('.currency-tab').forEach((tab) => {
     tab.classList.toggle('active', tab.dataset.currency === currentCurrency);
   });
 
@@ -161,8 +177,8 @@ function applyCurrency() {
     networkField.style.display = isUsdt ? 'block' : 'none';
   }
 
-  // Network tabs (فقط USDT)
-  if (isUsdt) {
+  // Network tabs
+  if (isUsdt && typeof renderNetworkTabs === 'function') {
     renderNetworkTabs('networkTabs', (id) => {
       applyNetwork(id);
     }, currentNetwork);
@@ -205,20 +221,20 @@ function applyCurrency() {
 
 function applyNetwork(networkId) {
   currentNetwork = networkId;
-  const net = getNetwork(networkId);
 
-  // Labels
+  if (typeof getNetwork !== 'function') return;
+  const net = getNetwork(networkId);
+  if (!net) return;
+
   setText('destinationLabel', `USDT Wallet Address (${net.label})`);
   setText('destinationHint', net.hint);
 
-  // Placeholder
   const destInput = document.getElementById('destination');
   if (destInput) {
     destInput.placeholder = net.placeholder;
     destInput.value = '';
   }
 
-  // Min hint (اگه USDT هست)
   if (currentCurrency === 'USDT') {
     setText('minHint', `Minimum: ${net.minDeposit}`);
   }
@@ -258,7 +274,7 @@ function updateBalanceDisplay() {
 }
 
 /* ═══════════════════════════════════════
-              Max Balance
+   💯 MAX BALANCE
    ═══════════════════════════════════════ */
 
 function useMaxBalance() {
@@ -287,10 +303,8 @@ function useMaxBalance() {
 }
 
 /* ═══════════════════════════════════════
-              Submit
+   📤 SUBMIT
    ═══════════════════════════════════════ */
-
-let pendingWithdrawal = null;
 
 function handleSubmit(e) {
   e.preventDefault();
@@ -301,7 +315,7 @@ function handleSubmit(e) {
 
   const isUsdt = currentCurrency === 'USDT';
 
-  // Validation
+  // ─── Validation ───
   if (!amount || amount <= 0) {
     Notify.warning('Please enter a valid amount.');
     return;
@@ -351,7 +365,7 @@ function handleSubmit(e) {
     return;
   }
 
-  // Check balance
+  // Balance
   if (currentWallets) {
     const wallet = isUsdt ? currentWallets.usdt : currentWallets.afn;
     if (wallet) {
@@ -379,7 +393,7 @@ function handleSubmit(e) {
 }
 
 /* ═══════════════════════════════════════
-              Confirm Modal
+   ✅ CONFIRM MODAL
    ═══════════════════════════════════════ */
 
 function openConfirmModal(data) {
@@ -442,14 +456,14 @@ async function confirmWithdrawal() {
         amount: String(pendingWithdrawal.amount),
         destination: pendingWithdrawal.destination,
         destination_holder: pendingWithdrawal.destinationHolder,
-        network: pendingWithdrawal.network,
       }),
     });
 
     closeConfirmModal();
     Notify.success('Withdrawal request submitted! Awaiting review.');
 
-    document.getElementById('withdrawForm').reset();
+    const form = document.getElementById('withdrawForm');
+    if (form) form.reset();
 
     setTimeout(async () => {
       await loadWallets();
@@ -464,7 +478,8 @@ async function confirmWithdrawal() {
     if (msg.includes('موجودی')) {
       msg = 'Insufficient balance.';
     } else if (msg.includes('حداقل')) {
-      msg = msg.replace('حداقل برداشت تتر', 'Minimum withdrawal is').replace('است', 'USDT.').replace('حداقل برداشت افغانی', 'Minimum withdrawal is');
+      if (msg.includes('تتر')) msg = 'Minimum withdrawal is 10 USDT.';
+      else if (msg.includes('افغانی')) msg = 'Minimum withdrawal is 500 AFN.';
     }
 
     Notify.error(msg);
@@ -475,7 +490,7 @@ async function confirmWithdrawal() {
 }
 
 /* ═══════════════════════════════════════
-              Recent Withdrawals
+   📜 RECENT WITHDRAWALS
    ═══════════════════════════════════════ */
 
 function renderRecentWithdrawals() {
@@ -508,7 +523,7 @@ function renderRecentWithdrawals() {
 
   container.innerHTML = '';
 
-  recent.forEach(w => {
+  recent.forEach((w) => {
     const s = statusMap[w.status] || { cls: '', text: w.status };
     const date = new Date(w.created_at).toLocaleDateString('en-US', {
       month: 'short',
@@ -535,7 +550,7 @@ function renderRecentWithdrawals() {
 }
 
 /* ═══════════════════════════════════════
-              Helpers
+   🛠️ HELPERS
    ═══════════════════════════════════════ */
 
 function setText(id, value) {

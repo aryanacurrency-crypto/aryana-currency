@@ -1,9 +1,11 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Deposit Light Fix + Confirm Form
-   Override دارک‌ها + استایل فرم تأیید
+   ARYANA CURRENCY — Deposit + Withdraw Light Fix
+   Override همه‌ی دارک‌ها + فرم تأیید
    ═══════════════════════════════════════ */
 
-/* ═══ Main Deposit Card ═══ */
+/* ═══════════════════════════════════════
+   💳 DEPOSIT — Main Card
+   ═══════════════════════════════════════ */
 
 .deposit-card {
   background:
@@ -81,7 +83,7 @@
 .info-value { color: #0F172A !important; }
 .info-value.sans { color: #0F172A !important; }
 
-/* ═══ Network Tabs (اصلاح) ═══ */
+/* ═══ Network Tabs ═══ */
 
 .network-tabs {
   display: grid !important;
@@ -157,6 +159,14 @@
 }
 
 .warning-box.info .warning-icon { color: #3B82F6 !important; }
+
+.warning-box.warning {
+  background: rgba(245, 158, 11, 0.06) !important;
+  border: 1px solid rgba(245, 158, 11, 0.2) !important;
+  border-inline-start: 3px solid #F59E0B !important;
+}
+
+.warning-box.warning .warning-icon { color: #F59E0B !important; }
 
 .warning-text { color: #64748B !important; }
 .warning-text strong { color: #0F172A !important; }
@@ -252,7 +262,7 @@
 }
 
 /* ═══════════════════════════════════════
-   ✅ CONFIRM FORM — "I've Paid"
+   ✅ CONFIRM DEPOSIT FORM
    ═══════════════════════════════════════ */
 
 .confirm-deposit-card {
@@ -311,9 +321,7 @@
   font-weight: 500;
 }
 
-.confirm-form .field {
-  margin-bottom: var(--space-4);
-}
+.confirm-form .field { margin-bottom: var(--space-4); }
 
 .confirm-form .field-label {
   display: block;
@@ -363,14 +371,7 @@
   font-weight: 500;
 }
 
-.confirm-form .field-hint.warning {
-  color: #D97706;
-}
-
-/* ─── Amount Input with Currency Tag ─── */
-.confirm-amount-wrap {
-  position: relative;
-}
+.confirm-amount-wrap { position: relative; }
 
 .confirm-amount-wrap .field-input {
   padding-right: 90px;
@@ -395,7 +396,6 @@
   pointer-events: none;
 }
 
-/* ─── Amount Info Row ─── */
 .confirm-amount-info {
   display: flex;
   align-items: center;
@@ -408,10 +408,7 @@
   font-size: 12px;
 }
 
-.confirm-amount-info-label {
-  color: #64748B;
-  font-weight: 600;
-}
+.confirm-amount-info-label { color: #64748B; font-weight: 600; }
 
 .confirm-amount-info-value {
   color: #1E40AF;
@@ -420,7 +417,6 @@
   font-family: var(--font-mono);
 }
 
-/* ─── Submit Button ─── */
 .confirm-submit-btn {
   width: 100%;
   padding: 16px;
@@ -458,12 +454,8 @@
   box-shadow: none !important;
 }
 
-.confirm-submit-btn svg {
-  width: 18px;
-  height: 18px;
-}
+.confirm-submit-btn svg { width: 18px; height: 18px; }
 
-/* ─── Info Box (بالای فرم) ─── */
 .confirm-info-box {
   display: flex;
   align-items: flex-start;
@@ -487,9 +479,191 @@
   margin-top: 1px;
 }
 
-.confirm-info-box strong {
-  color: #0F172A;
-  font-weight: 800;
+.confirm-info-box strong { color: #0F172A; font-weight: 800; }
+
+/* ═══════════════════════════════════════
+   💰 WITHDRAW — Balance Card
+   ═══════════════════════════════════════ */
+
+.balance-info-card {
+  background: linear-gradient(135deg, #EFF6FF 0%, #F5F3FF 100%) !important;
+  border: 1px solid rgba(30, 64, 175, 0.15) !important;
+}
+
+.balance-info-label { color: #64748B !important; }
+.balance-info-value { color: #0F172A !important; }
+.balance-info-value small { color: #64748B !important; }
+.balance-info-locked { color: #D97706 !important; }
+
+/* ═══ Withdraw Form ═══ */
+
+.withdraw-form .field-label { color: #64748B !important; }
+
+.withdraw-form .field-label .max-btn {
+  color: #1E40AF !important;
+  background: #EFF6FF !important;
+  border: 1px solid rgba(30, 64, 175, 0.15) !important;
+}
+
+.withdraw-form .field-label .max-btn:hover {
+  background: #1E40AF !important;
+  color: white !important;
+}
+
+.withdraw-form .field-input {
+  background: #F8FAFF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+.withdraw-form .field-input:focus {
+  border-color: #1E40AF !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.08) !important;
+}
+
+.withdraw-form .field-input::placeholder { color: #94A3B8 !important; }
+.withdraw-form .field-hint { color: #94A3B8 !important; }
+.amount-input-tag { color: #1E40AF !important; }
+
+/* ═══ Submit Button (SELL style) ═══ */
+
+.trade-submit[data-side="SELL"] {
+  background: linear-gradient(135deg, #EF4444, #DC2626) !important;
+  color: white !important;
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.25) !important;
+  border: none !important;
+  border-radius: 14px !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  transition: all 0.25s ease !important;
+}
+
+.trade-submit[data-side="SELL"]:hover:not(:disabled) {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 32px rgba(239, 68, 68, 0.4) !important;
+}
+
+.trade-submit[data-side="SELL"]:active:not(:disabled) {
+  transform: translateY(0) scale(0.98) !important;
+}
+
+.trade-submit[data-side="SELL"]:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+/* ═══ Recent Withdrawals ═══ */
+
+.recent-title { color: #94A3B8 !important; }
+
+.withdrawal-item {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.04) !important;
+}
+
+.withdrawal-item:hover {
+  border-color: rgba(30, 64, 175, 0.3) !important;
+  box-shadow: 0 6px 20px rgba(30, 64, 175, 0.06) !important;
+  transform: translateY(-1px) !important;
+}
+
+.withdrawal-item-ref { color: #94A3B8 !important; }
+.withdrawal-item-amount { color: #0F172A !important; }
+.withdrawal-item-amount small { color: #64748B !important; }
+.withdrawal-item-date { color: #94A3B8 !important; }
+
+.withdrawal-status.pending {
+  background: rgba(245, 158, 11, 0.12) !important;
+  color: #D97706 !important;
+}
+
+.withdrawal-status.processing {
+  background: rgba(124, 58, 237, 0.12) !important;
+  color: #7C3AED !important;
+}
+
+.withdrawal-status.completed {
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #059669 !important;
+}
+
+.withdrawal-status.rejected,
+.withdrawal-status.cancelled {
+  background: rgba(239, 68, 68, 0.12) !important;
+  color: #DC2626 !important;
+}
+
+.withdrawals-empty { color: #94A3B8 !important; }
+
+/* ═══ Confirm Modal ═══ */
+
+.confirm-modal {
+  background: rgba(15, 23, 42, 0.4) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+.confirm-modal-content {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  box-shadow: 0 24px 60px rgba(30, 64, 175, 0.15) !important;
+}
+
+.confirm-modal-icon {
+  background: linear-gradient(135deg, #1E40AF, #7C3AED) !important;
+  color: white !important;
+  box-shadow: 0 8px 20px rgba(30, 64, 175, 0.25) !important;
+}
+
+.confirm-modal-title { color: #0F172A !important; }
+.confirm-modal-subtitle { color: #64748B !important; }
+
+.confirm-modal-details {
+  background: #F8FAFF !important;
+  border: 1px solid #E2E8F0 !important;
+}
+
+.confirm-modal-row { color: #64748B !important; }
+.confirm-modal-row span:first-child { color: #64748B !important; }
+
+.confirm-modal-row span:last-child {
+  color: #0F172A !important;
+  font-weight: 800 !important;
+}
+
+.confirm-modal-actions .btn-secondary {
+  background: #F5F7FF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  color: #0F172A !important;
+  border-radius: 12px !important;
+  font-weight: 800 !important;
+}
+
+.confirm-modal-actions .btn-secondary:hover {
+  border-color: #1E40AF !important;
+  color: #1E40AF !important;
+  background: #EFF6FF !important;
+}
+
+.confirm-modal-actions .btn-primary {
+  background: linear-gradient(135deg, #1E40AF, #7C3AED) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 12px !important;
+  font-weight: 800 !important;
+  box-shadow: 0 6px 16px rgba(30, 64, 175, 0.25) !important;
+}
+
+.confirm-modal-actions .btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 8px 20px rgba(30, 64, 175, 0.35) !important;
 }
 
 /* ═══ Responsive ═══ */
@@ -500,16 +674,7 @@
     border-radius: 16px;
   }
 
-  .confirm-header-icon {
-    width: 36px;
-    height: 36px;
-  }
-
-  .confirm-header-title {
-    font-size: 15px;
-  }
-
-  .confirm-amount-wrap .field-input {
-    font-size: 16px;
-  }
+  .confirm-header-icon { width: 36px; height: 36px; }
+  .confirm-header-title { font-size: 15px; }
+  .confirm-amount-wrap .field-input { font-size: 16px; }
 }
