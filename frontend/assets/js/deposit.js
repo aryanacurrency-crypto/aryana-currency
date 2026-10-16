@@ -1,10 +1,15 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Deposit v2 Logic
+   ARYANA CURRENCY — Deposit v3 Logic
+   Light · Navy-Purple · ARYANA OS
    ═══════════════════════════════════════ */
 
 let paymentInfo = null;
 let currentCurrency = 'USDT';
 let currentNetwork = 'TRC20';
+
+/* ═══════════════════════════════════════
+   🚀 INIT
+   ═══════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', async () => {
   Auth.requireLogin();
@@ -14,15 +19,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   await I18N.load(initialLang);
   I18N.apply();
 
-  // Logout
+  // ─── Logout ───
   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) logoutBtn.addEventListener('click', () => Auth.logout());
+
+  // ─── Theme toggle ───
+  const themeBtn = document.getElementById('themeToggle');
+  if (themeBtn) themeBtn.addEventListener('click', () => Theme.toggle());
 
   showAdminButton();
   renderUserInfo();
 
-  // Currency tabs
-  document.querySelectorAll('.currency-tab').forEach(tab => {
+  // ─── Currency tabs ───
+  document.querySelectorAll('.currency-tab').forEach((tab) => {
     tab.addEventListener('click', () => {
       const cur = tab.dataset.currency;
       if (cur === currentCurrency) return;
@@ -32,7 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  // Copy button
+  // ─── Copy button ───
   const copyBtn = document.getElementById('copyAddressBtn');
   if (copyBtn) {
     copyBtn.addEventListener('click', () => {
@@ -43,15 +52,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Load payment info
+  // ─── Load payment info ───
   await loadPaymentInfo();
 
-  // Apply default currency
+  // ─── Apply default currency ───
   applyCurrency();
 });
 
 /* ═══════════════════════════════════════
-              Helpers
+   👤 HELPERS
    ═══════════════════════════════════════ */
 
 function showAdminButton() {
@@ -75,7 +84,7 @@ function renderUserInfo() {
 }
 
 /* ═══════════════════════════════════════
-              Load Payment Info
+   📥 LOAD PAYMENT INFO
    ═══════════════════════════════════════ */
 
 async function loadPaymentInfo() {
@@ -88,12 +97,12 @@ async function loadPaymentInfo() {
 }
 
 /* ═══════════════════════════════════════
-              Apply Currency
+   💱 APPLY CURRENCY
    ═══════════════════════════════════════ */
 
 function applyCurrency() {
   // Tabs
-  document.querySelectorAll('.currency-tab').forEach(tab => {
+  document.querySelectorAll('.currency-tab').forEach((tab) => {
     tab.classList.toggle('active', tab.dataset.currency === currentCurrency);
   });
 
@@ -105,11 +114,11 @@ function applyCurrency() {
 }
 
 function applyUsdt() {
-  // Card header
+  // ─── Card header ───
   setText('cardTitle', 'Deposit USDT');
   setText('cardSubtitle', 'Choose a network, then send USDT to the address below.');
 
-  // Icon
+  // ─── Icon ───
   const icon = document.getElementById('cardIcon');
   if (icon) {
     icon.innerHTML = `
@@ -120,63 +129,81 @@ function applyUsdt() {
     `;
   }
 
-  // Network block رو نشون بده
+  // ─── Network block رو نشون بده ───
   const networkBlock = document.getElementById('networkBlock');
   if (networkBlock) networkBlock.style.display = 'block';
 
-  // Network tabs رو رندر کن
-  renderNetworkTabs('networkTabs', (id) => {
-    applyNetwork(id);
-  }, currentNetwork);
+  // ─── Network tabs رو رندر کن ───
+  if (typeof renderNetworkTabs === 'function') {
+    renderNetworkTabs('networkTabs', (id) => {
+      applyNetwork(id);
+    }, currentNetwork);
+  }
 
-  // شبکه فعلی رو اعمال کن
+  // ─── شبکه فعلی رو اعمال کن ───
   applyNetwork(currentNetwork);
 
-  // Address wrap
+  // ─── Address wrap ───
   const addressWrap = document.getElementById('addressValueWrap');
   if (addressWrap) addressWrap.classList.remove('hesab');
 
-  // Visual block
+  // ─── Visual block ───
   setText('visualLabel', 'Use Copy Button');
   setText('visualText', 'Tap the copy button to copy the address, then paste it in your wallet app.');
-}
 
-function applyNetwork(networkId) {
-  currentNetwork = networkId;
-  const net = getNetwork(networkId);
-
-  // Info list
-  setText('networkValue', net.fullName);
-  setText('minValue', net.minDeposit);
-
-  // Address label
-  setText('addressLabel', `USDT Wallet Address (${net.label})`);
-
-  // Wallet address from API
-  const walletAddress = paymentInfo?.[net.walletField]
-    || paymentInfo?.usdt_wallet
-    || '—';
-  setText('addressValue', walletAddress);
-
-  // Danger warning
-  const dangerText = document.getElementById('warningDangerText');
-  if (dangerText) {
-    dangerText.innerHTML = `<strong>Important:</strong> ${net.warning}`;
-  }
-
-  // Info warning
+  // ─── Info warning ───
   const infoText = document.getElementById('warningInfoText');
   if (infoText) {
     infoText.textContent = 'Deposits are processed within 30 minutes. After sending, place a SELL order on the Trade page.';
   }
 }
 
+function applyNetwork(networkId) {
+  currentNetwork = networkId;
+
+  if (typeof getNetwork !== 'function') {
+    console.warn('networks.js not loaded — using fallback');
+    return;
+  }
+
+  const net = getNetwork(networkId);
+  if (!net) return;
+
+  // ─── Info list ───
+  setText('networkValue', net.fullName);
+  setText('minValue', net.minDeposit);
+
+  // ─── Address label ───
+  setText('addressLabel', `USDT Wallet Address (${net.label})`);
+
+  // ─── Wallet address: per-network → general → fallback ───
+  const walletAddress =
+    paymentInfo?.[net.walletField] ||          // per-network (usdt_wallet_trc20)
+    paymentInfo?.usdt_wallet ||                // general USDT
+    paymentInfo?.wallet_address ||             // generic fallback
+    '—';
+
+  setText('addressValue', walletAddress);
+
+  // ─── Danger warning ───
+  const dangerText = document.getElementById('warningDangerText');
+  if (dangerText) {
+    dangerText.innerHTML = `<strong>Important:</strong> ${net.warning}`;
+  }
+
+  // ─── Danger currency span ───
+  const dangerCur = document.getElementById('dangerCurrency');
+  if (dangerCur) {
+    dangerCur.textContent = `USDT (${net.label})`;
+  }
+}
+
 function applyAfn() {
-  // Card header
+  // ─── Card header ───
   setText('cardTitle', 'Deposit AFN');
   setText('cardSubtitle', 'Send Afghan Afghani via Hesab Pay to the number below.');
 
-  // Icon
+  // ─── Icon ───
   const icon = document.getElementById('cardIcon');
   if (icon) {
     icon.innerHTML = `
@@ -187,11 +214,11 @@ function applyAfn() {
     `;
   }
 
-  // Network block مخفی
+  // ─── Network block مخفی ───
   const networkBlock = document.getElementById('networkBlock');
   if (networkBlock) networkBlock.style.display = 'none';
 
-  // Address
+  // ─── Address ───
   setText('addressLabel', 'Hesab Pay Number');
 
   const addressWrap = document.getElementById('addressValueWrap');
@@ -199,14 +226,15 @@ function applyAfn() {
 
   setText('addressValue', paymentInfo?.hesab_pay || '—');
 
-  // Visual block
+  // ─── Visual block ───
   setText('visualLabel', 'Use Copy Button');
   setText('visualText', 'Tap the copy button to copy the number, then paste it in your Hesab Pay app.');
 
-  // Warnings
+  // ─── Warnings ───
   const dangerText = document.getElementById('warningDangerText');
   if (dangerText) {
-    dangerText.innerHTML = `<strong>Important:</strong> Send only <span>AFN via Hesab Pay</span> to this number. Confirm the account holder name is <strong>${paymentInfo?.hesab_pay_holder || 'ARYANA CURRENCY'}</strong> before sending.`;
+    const holder = paymentInfo?.hesab_pay_holder || 'ARYANA CURRENCY';
+    dangerText.innerHTML = `<strong>Important:</strong> Send only <span>AFN via Hesab Pay</span> to this number. Confirm the account holder name is <strong>${holder}</strong> before sending.`;
   }
 
   const infoText = document.getElementById('warningInfoText');
@@ -216,7 +244,7 @@ function applyAfn() {
 }
 
 /* ═══════════════════════════════════════
-              Copy
+   📋 COPY
    ═══════════════════════════════════════ */
 
 function copyText(text, btnEl) {
@@ -243,12 +271,14 @@ function fallbackCopy(text, btnEl) {
   textarea.style.opacity = '0';
   document.body.appendChild(textarea);
   textarea.select();
+
   try {
     document.execCommand('copy');
     showCopied(btnEl);
   } catch (err) {
     Notify.error('Could not copy.');
   }
+
   document.body.removeChild(textarea);
 }
 
@@ -276,7 +306,7 @@ function showCopied(btnEl) {
 }
 
 /* ═══════════════════════════════════════
-              Helpers
+   🛠️ HELPERS
    ═══════════════════════════════════════ */
 
 function setText(id, value) {
