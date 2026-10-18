@@ -1,10 +1,10 @@
 ﻿<!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Order Detail — Aryana Currency Admin">
-  <meta name="theme-color" content="#0B0E11">
+  <meta name="theme-color" content="#1E40AF">
 
   <title>Order Detail | Admin — ARYANA CURRENCY</title>
 
@@ -12,20 +12,19 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../../assets/css/theme-v2.css">
   <link rel="stylesheet" href="../../assets/css/ui-v2.css">
   <link rel="stylesheet" href="../../assets/css/dashboard-v2.css">
   <link rel="stylesheet" href="../../assets/css/admin-v2.css">
+  <link rel="stylesheet" href="../../assets/css/admin-fix.css">
   <link rel="stylesheet" href="../../assets/css/notifications.css">
 </head>
 <body data-admin-page="orders">
 
-  <!-- Admin Topbar -->
   <header class="admin-topbar">
     <div class="admin-topbar-inner">
-
       <a href="index.html" class="admin-brand">
         <img src="../../assets/images/logo.png" alt="ARYANA CURRENCY">
         <div class="admin-brand-text">
@@ -33,7 +32,6 @@
           <small>ADMIN PANEL</small>
         </div>
       </a>
-
       <div class="admin-topbar-actions">
         <a href="../dashboard.html" class="icon-btn" title="Back to site">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -41,8 +39,7 @@
             <polyline points="12 19 5 12 12 5"/>
           </svg>
         </a>
-
-        <button class="icon-btn" id="logoutBtn" title="Logout">
+        <button type="button" class="icon-btn" id="logoutBtn" title="Logout">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
             <polyline points="16 17 21 12 16 7"/>
@@ -50,28 +47,18 @@
           </svg>
         </button>
       </div>
-
     </div>
   </header>
 
-  <!-- Admin Layout -->
   <div class="admin-layout">
-
-    <!-- Sidebar (auto) -->
     <aside class="admin-sidebar"></aside>
 
-    <!-- Main -->
     <main class="admin-main">
-
-      <!-- Loading -->
       <div id="loadingBox" class="admin-empty">
-        <div class="spinner spinner-lg" style="color: var(--gold); margin: 0 auto;"></div>
+        <div class="spinner spinner-lg" style="margin: 0 auto;"></div>
       </div>
 
-      <!-- Content -->
       <div id="contentBox" style="display:none;">
-
-        <!-- Back + Header -->
         <div class="admin-back-row">
           <a href="orders.html" class="admin-back-btn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -81,7 +68,7 @@
           </a>
           <div>
             <h1 style="font-size:20px; font-weight:800; letter-spacing:-0.5px;">Order Details</h1>
-            <button class="admin-ref-copy" id="refCopy">
+            <button type="button" class="admin-ref-copy" id="refCopy">
               <span id="orderRef">—</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
@@ -91,7 +78,6 @@
           </div>
         </div>
 
-        <!-- Status Banner -->
         <div class="admin-status-banner pending" id="statusBanner">
           <div class="admin-status-icon" id="statusIcon">⏳</div>
           <div class="admin-status-content">
@@ -100,13 +86,8 @@
           </div>
         </div>
 
-        <!-- Detail Layout -->
         <div class="admin-detail-layout">
-
-          <!-- LEFT -->
           <div>
-
-            <!-- User Info -->
             <div class="admin-detail-card">
               <div class="admin-detail-card-title">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -144,7 +125,6 @@
               </div>
             </div>
 
-            <!-- Order Summary -->
             <div class="admin-detail-card">
               <div class="admin-detail-card-title">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -182,7 +162,6 @@
               </div>
             </div>
 
-            <!-- User Submitted Reference -->
             <div class="admin-detail-card" id="userRefCard" style="display:none;">
               <div class="admin-detail-card-title">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -208,7 +187,6 @@
               </div>
             </div>
 
-            <!-- Admin Actions -->
             <div class="admin-detail-card" id="actionsCard" style="display:none;">
               <div class="admin-detail-card-title">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -222,12 +200,7 @@
                   <label class="field-label" for="platformRef" id="platformRefLabel">
                     Platform Payment Reference
                   </label>
-                  <input
-                    type="text"
-                    id="platformRef"
-                    class="field-input"
-                    placeholder="TXID / Hesab Pay ref"
-                  >
+                  <input type="text" id="platformRef" class="field-input" placeholder="TXID / Hesab Pay ref">
                   <div class="field-hint" id="platformRefHint">
                     The reference you used to send the funds to the user.
                   </div>
@@ -235,12 +208,7 @@
 
                 <div class="field">
                   <label class="field-label" for="adminNote">Admin Note (optional)</label>
-                  <textarea
-                    id="adminNote"
-                    class="field-input"
-                    rows="2"
-                    placeholder="Any internal note..."
-                  ></textarea>
+                  <textarea id="adminNote" class="field-input" rows="2" placeholder="Any internal note..."></textarea>
                 </div>
 
                 <div class="admin-action-buttons">
@@ -273,15 +241,12 @@
               </div>
             </div>
 
-            <!-- Admin Note (for completed/rejected) -->
             <div class="admin-note-box" id="adminNoteBox" style="display:none;">
               <div class="admin-note-label" id="adminNoteLabel">Admin Note</div>
               <div class="admin-note-text" id="adminNoteText">—</div>
             </div>
-
           </div>
 
-          <!-- RIGHT: Timeline -->
           <aside>
             <div class="admin-detail-card">
               <div class="admin-detail-card-title">
@@ -327,14 +292,11 @@
               </div>
             </div>
           </aside>
-
         </div>
       </div>
-
     </main>
   </div>
 
-  <!-- Scripts -->
   <script src="../../assets/js/config.js"></script>
   <script src="../../assets/js/i18n.js"></script>
   <script src="../../assets/js/theme.js"></script>

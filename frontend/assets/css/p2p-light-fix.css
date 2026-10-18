@@ -1,0 +1,612 @@
+/* ═══════════════════════════════════════
+   ARYANA CURRENCY — P2P Light Fix
+   Override دارک‌ها به Navy-Purple روشن
+   ═══════════════════════════════════════ */
+
+/* ═══════════════════════════════════════
+   🏗️ PAGE LAYOUT
+   ═══════════════════════════════════════ */
+
+.p2p-main {
+  padding: var(--space-6) 0 var(--space-12);
+  background: #FAFBFF !important;
+}
+
+.p2p-page-header h1 {
+  color: #0F172A !important;
+}
+
+.p2p-page-header p {
+  color: #64748B !important;
+}
+
+/* ─── Back Button ─── */
+.back-btn {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  color: #64748B !important;
+}
+
+.back-btn:hover {
+  background: #EFF6FF !important;
+  color: #1E40AF !important;
+  border-color: #1E40AF !important;
+}
+
+/* ═══════════════════════════════════════
+   🎚️ TABS (Buy/Sell)
+   ═══════════════════════════════════════ */
+
+.p2p-tabs {
+  background: #F5F7FF !important;
+  border: 1px solid #E2E8F0 !important;
+}
+
+.p2p-tab {
+  color: #64748B !important;
+  font-weight: 800 !important;
+}
+
+.p2p-tab:hover {
+  color: #1E40AF !important;
+  background: #EFF6FF !important;
+}
+
+.p2p-tab.active {
+  background: linear-gradient(135deg, #1E40AF, #7C3AED) !important;
+  color: white !important;
+  box-shadow: 0 8px 20px rgba(30, 64, 175, 0.25) !important;
+}
+
+/* ═══════════════════════════════════════
+   🔘 ACTION BUTTONS
+   ═══════════════════════════════════════ */
+
+.p2p-filter-btn {
+  background: #FFFFFF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  color: #0F172A !important;
+  font-weight: 700 !important;
+}
+
+.p2p-filter-btn:hover {
+  background: #EFF6FF !important;
+  border-color: #1E40AF !important;
+  color: #1E40AF !important;
+}
+
+.p2p-create-btn {
+  background: linear-gradient(135deg, #1E40AF, #7C3AED) !important;
+  color: white !important;
+  box-shadow: 0 6px 16px rgba(30, 64, 175, 0.25) !important;
+  font-weight: 800 !important;
+}
+
+.p2p-create-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 28px rgba(124, 58, 237, 0.35) !important;
+}
+
+/* ═══════════════════════════════════════
+   🃏 AD CARDS
+   ═══════════════════════════════════════ */
+
+.p2p-ad-card {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  box-shadow: 0 4px 16px rgba(30, 64, 175, 0.04) !important;
+}
+
+.p2p-ad-card:hover {
+  border-color: rgba(30, 64, 175, 0.35) !important;
+  box-shadow: 0 12px 32px rgba(30, 64, 175, 0.1) !important;
+  transform: translateY(-3px) !important;
+}
+
+/* ─── Seller Info ─── */
+
+.p2p-seller-avatar {
+  background: linear-gradient(135deg, #1E40AF, #7C3AED) !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.25) !important;
+}
+
+.p2p-seller-name {
+  color: #0F172A !important;
+}
+
+.p2p-seller-trades {
+  color: #64748B !important;
+}
+
+.p2p-trust-score {
+  background: rgba(16, 185, 129, 0.12) !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  color: #059669 !important;
+}
+
+/* ─── Ad Rows ─── */
+
+.p2p-ad-divider {
+  background: #F0F4FF !important;
+}
+
+.p2p-ad-label {
+  color: #64748B !important;
+}
+
+.p2p-ad-value {
+  color: #0F172A !important;
+}
+
+.p2p-ad-value.gold {
+  background: linear-gradient(135deg, #1E40AF, #7C3AED) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+/* ─── Ad Action ─── */
+
+.p2p-ad-action {
+  border-top: 1px solid #F0F4FF !important;
+}
+
+.p2p-ad-method {
+  color: #64748B !important;
+}
+
+.p2p-ad-method-icon {
+  color: #1E40AF !important;
+}
+
+/* ─── Buy Button (سبز) ─── */
+
+.p2p-ad-buy-btn {
+  background: linear-gradient(135deg, #10B981, #059669) !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25) !important;
+  font-weight: 800 !important;
+}
+
+.p2p-ad-buy-btn:hover:not(:disabled) {
+  transform: translateY(-1px) scale(1.02) !important;
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35) !important;
+}
+
+/* ═══════════════════════════════════════
+   📝 FORM CARD (Create Ad)
+   ═══════════════════════════════════════ */
+
+.p2p-form-card {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  box-shadow: 0 8px 24px rgba(30, 64, 175, 0.04) !important;
+}
+
+.p2p-field-label {
+  color: #64748B !important;
+  font-weight: 800 !important;
+}
+
+.p2p-field-hint {
+  color: #94A3B8 !important;
+}
+
+.p2p-field-input-wrap {
+  background: #F8FAFF !important;
+  border: 1.5px solid #E2E8F0 !important;
+}
+
+.p2p-field-input-wrap:focus-within {
+  border-color: #1E40AF !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.08) !important;
+}
+
+.p2p-field-input {
+  color: #0F172A !important;
+}
+
+.p2p-field-input::placeholder {
+  color: #94A3B8 !important;
+}
+
+.p2p-field-suffix {
+  color: #1E40AF !important;
+  border-left: 1px solid #E2E8F0 !important;
+  font-weight: 800 !important;
+}
+
+/* ─── Summary Box ─── */
+
+.p2p-summary-box {
+  background: #F8FAFF !important;
+  border: 1px solid #E2E8F0 !important;
+}
+
+.p2p-summary-row span:first-child {
+  color: #64748B !important;
+}
+
+.p2p-summary-row span:last-child {
+  color: #0F172A !important;
+}
+
+.p2p-summary-row.total {
+  border-top: 1px solid #E2E8F0 !important;
+}
+
+.p2p-summary-row.total span:last-child {
+  background: linear-gradient(135deg, #1E40AF, #7C3AED) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
+  font-weight: 800 !important;
+}
+
+/* ─── Submit Button ─── */
+
+.p2p-submit-btn {
+  background: linear-gradient(135deg, #1E40AF, #7C3AED) !important;
+  color: white !important;
+  box-shadow: 0 6px 20px rgba(30, 64, 175, 0.25) !important;
+  font-weight: 800 !important;
+}
+
+.p2p-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 28px rgba(124, 58, 237, 0.35) !important;
+}
+
+/* ═══════════════════════════════════════
+   ⚠️ ALERTS
+   ═══════════════════════════════════════ */
+
+.p2p-alert.info {
+  background: rgba(59, 130, 246, 0.06) !important;
+  border: 1px solid rgba(59, 130, 246, 0.2) !important;
+  color: #2563EB !important;
+}
+
+.p2p-alert.success {
+  background: rgba(16, 185, 129, 0.06) !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+  color: #059669 !important;
+}
+
+.p2p-alert.danger {
+  background: rgba(239, 68, 68, 0.06) !important;
+  border: 1px solid rgba(239, 68, 68, 0.2) !important;
+  color: #DC2626 !important;
+}
+
+.p2p-alert.warning {
+  background: rgba(245, 158, 11, 0.06) !important;
+  border: 1px solid rgba(245, 158, 11, 0.2) !important;
+  color: #D97706 !important;
+}
+
+/* ═══════════════════════════════════════
+   📭 EMPTY STATE
+   ═══════════════════════════════════════ */
+
+.p2p-empty {
+  background: #FFFFFF !important;
+  border: 1px dashed #E2E8F0 !important;
+}
+
+.p2p-empty-icon {
+  background: linear-gradient(135deg, #EFF6FF, #F5F3FF) !important;
+  color: #1E40AF !important;
+}
+
+.p2p-empty h3 {
+  color: #0F172A !important;
+}
+
+.p2p-empty p {
+  color: #64748B !important;
+}
+
+/* ═══════════════════════════════════════
+   📋 ORDER CARDS
+   ═══════════════════════════════════════ */
+
+.p2p-order-card {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  box-shadow: 0 4px 16px rgba(30, 64, 175, 0.04) !important;
+}
+
+.p2p-order-card:hover {
+  border-color: rgba(30, 64, 175, 0.3) !important;
+  box-shadow: 0 12px 32px rgba(30, 64, 175, 0.1) !important;
+  transform: translateY(-2px) !important;
+}
+
+.p2p-order-ref {
+  color: #94A3B8 !important;
+}
+
+/* ─── Status Badges ─── */
+
+.p2p-status-badge.pending {
+  background: rgba(245, 158, 11, 0.12) !important;
+  color: #D97706 !important;
+  border: 1px solid rgba(245, 158, 11, 0.2) !important;
+}
+
+.p2p-status-badge.review {
+  background: rgba(59, 130, 246, 0.12) !important;
+  color: #2563EB !important;
+  border: 1px solid rgba(59, 130, 246, 0.2) !important;
+}
+
+.p2p-status-badge.processing {
+  background: rgba(124, 58, 237, 0.12) !important;
+  color: #7C3AED !important;
+  border: 1px solid rgba(124, 58, 237, 0.2) !important;
+}
+
+.p2p-status-badge.completed {
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #059669 !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+}
+
+.p2p-status-badge.cancelled {
+  background: #F5F7FF !important;
+  color: #94A3B8 !important;
+  border: 1px solid #E2E8F0 !important;
+}
+
+.p2p-status-badge.disputed {
+  background: rgba(239, 68, 68, 0.12) !important;
+  color: #DC2626 !important;
+  border: 1px solid rgba(239, 68, 68, 0.2) !important;
+}
+
+/* ═══════════════════════════════════════
+   ⏱️ TIMER
+   ═══════════════════════════════════════ */
+
+.p2p-timer {
+  background: rgba(245, 158, 11, 0.08) !important;
+  border: 1px solid rgba(245, 158, 11, 0.25) !important;
+  color: #D97706 !important;
+  font-weight: 800 !important;
+}
+
+.p2p-timer.danger {
+  background: rgba(239, 68, 68, 0.08) !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+  color: #DC2626 !important;
+}
+
+/* ═══════════════════════════════════════
+   ⏳ LOADING
+   ═══════════════════════════════════════ */
+
+.p2p-loading {
+  color: #64748B !important;
+}
+
+.p2p-spinner {
+  border: 2px solid #E2E8F0 !important;
+  border-top-color: #1E40AF !important;
+}
+
+/* ═══════════════════════════════════════
+   🪟 MODAL
+   ═══════════════════════════════════════ */
+
+.p2p-modal-overlay {
+  background: rgba(15, 23, 42, 0.5) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+.p2p-modal {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  box-shadow: 0 24px 60px rgba(30, 64, 175, 0.2) !important;
+}
+
+.p2p-modal-header {
+  background: #FFFFFF !important;
+  border-bottom: 1px solid #F0F4FF !important;
+}
+
+.p2p-modal-header h3 {
+  color: #0F172A !important;
+}
+
+.p2p-modal-close {
+  color: #64748B !important;
+}
+
+.p2p-modal-close:hover {
+  background: #F0F4FF !important;
+  color: #0F172A !important;
+}
+
+.p2p-modal-seller {
+  background: #F8FAFF !important;
+}
+
+.p2p-modal-info > div {
+  background: #F8FAFF !important;
+}
+
+.p2p-modal-info span {
+  color: #64748B !important;
+}
+
+.p2p-modal-info strong {
+  color: #0F172A !important;
+}
+
+/* ─── Modal Buttons ─── */
+
+.p2p-modal-footer {
+  border-top: 1px solid #F0F4FF !important;
+}
+
+/* ═══════════════════════════════════════
+   🍞 TOASTS
+   ═══════════════════════════════════════ */
+
+.p2p-toast {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  box-shadow: 0 12px 32px rgba(30, 64, 175, 0.15) !important;
+  color: #0F172A !important;
+}
+
+.p2p-toast-message {
+  color: #0F172A !important;
+}
+
+.p2p-toast-success {
+  border-left: 3px solid #10B981 !important;
+}
+
+.p2p-toast-success .p2p-toast-icon {
+  color: #10B981 !important;
+}
+
+.p2p-toast-error {
+  border-left: 3px solid #EF4444 !important;
+}
+
+.p2p-toast-error .p2p-toast-icon {
+  color: #EF4444 !important;
+}
+
+.p2p-toast-warning {
+  border-left: 3px solid #F59E0B !important;
+}
+
+.p2p-toast-warning .p2p-toast-icon {
+  color: #F59E0B !important;
+}
+
+.p2p-toast-info {
+  border-left: 3px solid #1E40AF !important;
+}
+
+.p2p-toast-info .p2p-toast-icon {
+  color: #1E40AF !important;
+}
+
+.p2p-toast-close {
+  color: #94A3B8 !important;
+}
+
+.p2p-toast-close:hover {
+  background: #F0F4FF !important;
+  color: #0F172A !important;
+}
+
+/* ═══════════════════════════════════════
+   ❓ CONFIRM DIALOG
+   ═══════════════════════════════════════ */
+
+.p2p-confirm-overlay {
+  background: rgba(15, 23, 42, 0.5) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+.p2p-confirm {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  box-shadow: 0 24px 60px rgba(30, 64, 175, 0.2) !important;
+}
+
+.p2p-confirm-title {
+  color: #0F172A !important;
+}
+
+.p2p-confirm-message {
+  color: #64748B !important;
+}
+
+.p2p-confirm-input {
+  background: #F8FAFF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+.p2p-confirm-input:focus {
+  border-color: #1E40AF !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.08) !important;
+}
+
+.p2p-confirm-btn.cancel {
+  background: #F5F7FF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  color: #0F172A !important;
+  font-weight: 800 !important;
+}
+
+.p2p-confirm-btn.cancel:hover {
+  background: #EFF6FF !important;
+  border-color: #1E40AF !important;
+  color: #1E40AF !important;
+}
+
+.p2p-confirm-btn.primary {
+  background: linear-gradient(135deg, #1E40AF, #7C3AED) !important;
+  color: white !important;
+  box-shadow: 0 6px 16px rgba(30, 64, 175, 0.25) !important;
+}
+
+.p2p-confirm-btn.danger {
+  background: linear-gradient(135deg, #EF4444, #DC2626) !important;
+  color: white !important;
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.25) !important;
+}
+
+/* ═══════════════════════════════════════
+   🌐 RTL
+   ═══════════════════════════════════════ */
+
+[dir="rtl"] .back-btn svg {
+  transform: scaleX(-1);
+}
+
+/* ═══════════════════════════════════════
+   📱 RESPONSIVE
+   ═══════════════════════════════════════ */
+
+@media (max-width: 640px) {
+  .p2p-tabs {
+    max-width: 100% !important;
+  }
+
+  .p2p-list,
+  .p2p-orders-list {
+    grid-template-columns: 1fr !important;
+  }
+
+  .p2p-form-card {
+    padding: var(--space-4) !important;
+  }
+
+  .p2p-field-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .p2p-modal {
+    border-radius: 16px !important;
+  }
+
+  .p2p-modal-info {
+    grid-template-columns: 1fr !important;
+  }
+}

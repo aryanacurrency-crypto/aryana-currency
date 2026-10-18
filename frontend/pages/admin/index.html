@@ -1,39 +1,37 @@
 ﻿<!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Admin Dashboard — Aryana Currency">
-  <meta name="theme-color" content="#0B0E11">
+  <meta name="theme-color" content="#1E40AF">
 
   <title>Admin | ARYANA CURRENCY</title>
 
-  <link rel="icon" type="image/png" href="/assets/images/logo.png">
+  <link rel="icon" type="image/png" href="../../assets/images/logo.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/assets/css/theme-v2.css">
-  <link rel="stylesheet" href="/assets/css/ui-v2.css">
-  <link rel="stylesheet" href="/assets/css/dashboard-v2.css">
-  <link rel="stylesheet" href="/assets/css/admin-v2.css">
-  <link rel="stylesheet" href="/assets/css/notifications.css">
+  <link rel="stylesheet" href="../../assets/css/theme-v2.css">
+  <link rel="stylesheet" href="../../assets/css/ui-v2.css">
+  <link rel="stylesheet" href="../../assets/css/dashboard-v2.css">
+  <link rel="stylesheet" href="../../assets/css/admin-v2.css">
+  <link rel="stylesheet" href="../../assets/css/admin-fix.css">
+  <link rel="stylesheet" href="../../assets/css/notifications.css">
 </head>
 <body>
 
-  <!-- Admin Topbar -->
   <header class="admin-topbar">
     <div class="admin-topbar-inner">
-
       <a href="index.html" class="admin-brand">
-        <img src="/assets/images/logo.png" alt="ARYANA CURRENCY">
+        <img src="../../assets/images/logo.png" alt="ARYANA CURRENCY">
         <div class="admin-brand-text">
           ARYANA
           <small>ADMIN PANEL</small>
         </div>
       </a>
-
       <div class="admin-topbar-actions">
         <a href="../dashboard.html" class="icon-btn" title="Back to site">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -41,15 +39,13 @@
             <polyline points="12 19 5 12 12 5"/>
           </svg>
         </a>
-
-        <button class="icon-btn" id="refreshBtn" title="Refresh">
+        <button type="button" class="icon-btn" id="refreshBtn" title="Refresh">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="23 4 23 10 17 10"/>
             <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
           </svg>
         </button>
-
-        <button class="icon-btn" id="logoutBtn" title="Logout">
+        <button type="button" class="icon-btn" id="logoutBtn" title="Logout">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
             <polyline points="16 17 21 12 16 7"/>
@@ -57,117 +53,25 @@
           </svg>
         </button>
       </div>
-
     </div>
   </header>
 
-  <!-- Admin Layout -->
   <div class="admin-layout">
+    <aside class="admin-sidebar"></aside>
 
-    <!-- Sidebar -->
-    <aside class="admin-sidebar">
-      <nav class="admin-nav">
-        <a href="index.html" class="admin-nav-item active">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-          </svg>
-          <span class="nav-text">Dashboard</span>
-        </a>
-
-        <a href="orders.html" class="admin-nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-          </svg>
-          <span class="nav-text">Orders</span>
-          <span class="nav-count" id="countOrders" style="display:none;">0</span>
-        </a>
-
-        <a href="p2p-orders.html" class="admin-nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-            <circle cx="9" cy="7" r="4"/>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-          </svg>
-          <span class="nav-text">P2P Orders</span>
-          <span class="nav-count" id="countP2P" style="display:none;">0</span>
-        </a>
-
-        <a href="kyc.html" class="admin-nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 12l2 2 4-4"/>
-            <path d="M21 12c0 5-3.5 8.5-9 10-5.5-1.5-9-5-9-10V5l9-3 9 3z"/>
-          </svg>
-          <span class="nav-text">KYC</span>
-          <span class="nav-count" id="countKyc" style="display:none;">0</span>
-        </a>
-
-        <a href="withdrawals.html" class="admin-nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="19" x2="12" y2="5"/>
-            <polyline points="5 12 12 5 19 12"/>
-          </svg>
-          <span class="nav-text">Withdrawals</span>
-          <span class="nav-count" id="countWithdrawals" style="display:none;">0</span>
-        </a>
-
-        <a href="rates.html" class="admin-nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-          </svg>
-          <span class="nav-text">Rates</span>
-        </a>
-
-        <a href="users.html" class="admin-nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
-          </svg>
-          <span class="nav-text">Users</span>
-        </a>
-
-        <a href="settings.html" class="admin-nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"/>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-          </svg>
-          <span class="nav-text">Settings</span>
-        </a>
-
-        <div class="admin-nav-divider"></div>
-
-        <a href="../dashboard.html" class="admin-nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12"/>
-            <polyline points="12 19 5 12 12 5"/>
-          </svg>
-          <span class="nav-text">Back to site</span>
-        </a>
-      </nav>
-    </aside>
-
-    <!-- Main -->
     <main class="admin-main">
-
-      <!-- Page Header -->
       <div class="admin-page-header">
         <h1>Dashboard</h1>
         <p>Overview of your platform activity</p>
       </div>
 
-      <!-- Loading -->
       <div id="loadingBox" class="admin-empty">
-        <div class="spinner spinner-lg" style="color: var(--gold); margin: 0 auto;"></div>
+        <div class="spinner spinner-lg" style="margin: 0 auto;"></div>
       </div>
 
-      <!-- Content -->
       <div id="contentBox" style="display:none;">
 
-        <!-- Stats Grid -->
         <div class="admin-stats-grid">
-
           <div class="admin-stat-card gold">
             <div class="admin-stat-header">
               <div class="admin-stat-icon gold">
@@ -223,10 +127,8 @@
             <div class="admin-stat-label">Total Fees (AFN)</div>
             <div class="admin-stat-sub">From completed orders</div>
           </div>
-
         </div>
 
-        <!-- Pending Orders -->
         <section class="admin-section">
           <div class="admin-section-header">
             <h2 class="admin-section-title">
@@ -263,7 +165,6 @@
           </div>
         </section>
 
-        <!-- Quick Stats Row -->
         <section class="admin-section">
           <div class="admin-section-header">
             <h2 class="admin-section-title">
@@ -292,28 +193,26 @@
               <div class="admin-stat-label">Total USDT Traded</div>
             </div>
             <div class="admin-stat-card">
-              <div class="admin-stat-value" id="statP2PPending" style="color:var(--gold);">—</div>
+              <div class="admin-stat-value" id="statP2PPending" style="color:var(--navy-500);">—</div>
               <div class="admin-stat-label">P2P Pending Review</div>
             </div>
             <div class="admin-stat-card">
-              <div class="admin-stat-value" id="statP2PDisputed" style="color:var(--red);">—</div>
+              <div class="admin-stat-value" id="statP2PDisputed" style="color:var(--red-500);">—</div>
               <div class="admin-stat-label">P2P Disputed</div>
             </div>
           </div>
         </section>
 
       </div>
-
     </main>
   </div>
 
-  <!-- Scripts -->
-  <script src="/assets/js/config.js"></script>
-  <script src="/assets/js/i18n.js"></script>
-  <script src="/assets/js/theme.js"></script>
-  <script src="/assets/js/auth.js"></script>
-  <script src="/assets/js/api.js"></script>
-  <script src="/assets/js/notifications.js"></script>
-  <script src="/assets/js/admin-v2/dashboard.js"></script>
+  <script src="../../assets/js/config.js"></script>
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/theme.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/api.js"></script>
+  <script src="../../assets/js/notifications.js"></script>
+  <script src="../../assets/js/admin-v2/dashboard.js"></script>
 </body>
 </html>

@@ -1,0 +1,93 @@
+/* ═══════════════════════════════════════
+   ARYANA — Admin Fix Layer
+   Override نهایی برای یکپارچگی با theme-v2
+   ═══════════════════════════════════════ */
+
+/* ─── اطمینان از فونت درست ─── */
+.admin-main,
+.admin-main *,
+.admin-page-header h1,
+.admin-stat-value,
+.admin-table,
+.admin-section-title,
+.admin-detail-card-title,
+.settings-tab,
+.admin-btn {
+  font-family: var(--font-sans);
+}
+
+.admin-table .cell-mono,
+.admin-ref-copy,
+.user-ref-value,
+.admin-detail-value.mono,
+.mono-input {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+[dir="rtl"] .admin-main,
+[dir="rtl"] .admin-main * {
+  font-family: var(--font-arabic);
+}
+
+[dir="rtl"] .cell-mono,
+[dir="rtl"] .mono,
+[dir="rtl"] .admin-ref-copy,
+[dir="rtl"] .user-ref-value,
+[dir="rtl"] .admin-detail-value.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Override hardcoded colors قدیمی ─── */
+.admin-stat-card::before {
+  opacity: 0.10 !important;
+}
+
+/* ─── Spinnerها رنگ Navy بگیرن ─── */
+.admin-main .spinner {
+  color: var(--navy-500) !important;
+}
+
+/* ─── اطمینان از اسکرول‌بار تمیز ─── */
+.admin-sidebar::-webkit-scrollbar,
+.admin-table-wrap::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb,
+.admin-table-wrap::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: var(--radius-full);
+}
+
+/* ─── Focus ring سازگار ─── */
+.admin-btn:focus-visible,
+.admin-nav-item:focus-visible,
+.settings-tab:focus-visible {
+  outline: 2px solid var(--navy-500);
+  outline-offset: 2px;
+}
+
+/* ─── Footer safe area ─── */
+.admin-main {
+  padding-bottom: max(var(--space-10), env(safe-area-inset-bottom));
+}
+
+/* ─── Command Palette z-index بالاتر از admin ─── */
+.command-palette,
+.command-palette-overlay {
+  z-index: 9999 !important;
+}
+
+/* ─── اطمینان از اینکه badgeها در RTL درست بشینن ─── */
+[dir="rtl"] .admin-badge,
+[dir="rtl"] .kyc-inline {
+  direction: rtl;
+}
+
+/* ─── اطمینان از gradient brand روی hover نباشه ─── */
+.admin-section-link {
+  background: none !important;
+}
