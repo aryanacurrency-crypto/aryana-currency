@@ -67,27 +67,23 @@ const Auth = {
 
   // ═══════════════════════════════════════
   //  KYC Verification Check (Server-Side)
+  //  کاملاً بر اساس فیلد is_verified در بک‌اند
   // ═══════════════════════════════════════
   async checkKycVerified() {
     // 1. چک سریع از روی لوکال استوری
     const user = this.getUser();
-    if (user) {
-      const status = String(user.kyc_status || user.kycStatus || '').toLowerCase();
-      if (status === 'verified' || status === 'approved' || status === 'true' || user.is_kyc_verified === true || user.kyc_verified === true) {
-        return true;
-      }
+    if (user && user.is_verified === true) {
+      return true;
     }
 
-    // 2. اگه لوکال استوری ناقص بود یا قدیمی بود، مستقیم از سرور می‌پرسیم
+    // 2. اگه لوکال استوری قدیمی بود، مستقیم از سرور می‌پرسیم
     try {
-      // چک می‌کنیم که API در دسترس باشه
       if (typeof API === 'undefined') return false;
       
       const freshUser = await API.me();
       if (freshUser) {
         this.setUser(freshUser); // آپدیت لوکال استوری برای بارهای بعدی
-        const freshStatus = String(freshUser.kyc_status || freshUser.kycStatus || '').toLowerCase();
-        if (freshStatus === 'verified' || freshStatus === 'approved' || freshStatus === 'true' || freshUser.is_kyc_verified === true || freshUser.kyc_verified === true) {
+        if (freshUser.is_verified === true) {
           return true;
         }
       }
