@@ -759,3 +759,101 @@ window.Dashboard = {
     loadRecentOrders();
   },
 };
+
+
+/* ═══════════════════════════════════════
+   🔒 KYC GATE — جلوگیری از واریز بدون احراز هویت
+   ═══════════════════════════════════════ */
+
+document.addEventListener('DOMContentLoaded', () => {
+  // پیدا کردن تمام لینک‌هایی که به deposit.html اشاره می‌کنند
+  const depositLinks = document.querySelectorAll('a[href*="deposit.html"]');
+  
+  depositLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      const user = Auth.getUser();
+      
+      // اگر کاربر لاگین نبود یا KYC تایید نشده بود
+      if (!user || user.kyc_status !== 'VERIFIED') {
+        e.preventDefault(); // جلوگیری از رفتن به صفحه
+        
+        // نمایش هشدار شیک
+        showKycWarningModal();
+      }
+    });
+  });
+});
+
+// تابع ساخت و نمایش مودال KYC
+function showKycWarningModal() {
+  // اگر مودال از قبل ساخته شده، فقط نمایشش بده
+  let modal = document.getElementById('kycWarningModal');
+  
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'kycWarningModal';
+    modal.innerHTML = `
+      <div class="kyc-modal-overlay show" id="kycModalOverlay" style="position:fixed;inset:0;background:rgba(15,23,42,0.6);backdrop-filter:blur(4px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;transition:opacity 0.3s ease;">
+        <div class="kyc-modal" style="background:#FFFFFF;border-radius:24px;padding:32px 24px;max-width:400px;width:100%;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,0.1);transform:translateY(20px);transition:transform 0.3s ease;">
+          <div style="width:64px;height:64px;background:#FEF2F2;color:#EF4444;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <h2 style="font-size:20px;font-weight:800;color:#0F172A;margin-bottom:12px;">Identity Verification Required</h2>
+          <p style="font-size:14px;color:#64748B;line-height:1.6;margin-bottom:24px;">
+            To protect your account and comply with regulations, you must complete KYC verification before making deposits or trades.
+          </p>
+          <a href="kyc.html" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:linear-gradient(135deg,#1E40AF,#7C3AED);color:white;font-size:15px;font-weight:700;border-radius:12px;text-decoration:none;transition:transform 0.2s;border:none;cursor:pointer;margin-bottom:12px;">
+            Verify Identity Now
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+          <button type="button" id="closeKycModal" style="display:inline-flex;align-items:center;justify-content:center;width:100%;padding:14px;background:transparent;color:#64748B;font-size:15px;font-weight:700;border-radius:12px;border:none;cursor:pointer;transition:background 0.2s;">
+            Maybe Later
+          </button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    
+    // انیمیشن ورود
+    setTimeout(() => {
+      document.getElementById('kycModalOverlay').style.opacity = '1';
+      document.querySelector('#kycWarningModal .kyc-modal').style.transform = 'translateY(0)';
+    }, 10);
+    
+    // بستن مودال
+    document.getElementById('closeKycModal').addEventListener('click', () => {
+      closeKycModal();
+    });
+    
+    document.getElementById('kycModalOverlay').addEventListener('click', (e) => {
+      if (e.target.id === 'kycModalOverlay') {
+        closeKycModal();
+      }
+    });
+  } else {
+    // اگر از قبل بود، فقط نشون بده
+    modal.style.display = 'block';
+    setTimeout(() => {
+      document.getElementById('kycModalOverlay').style.opacity = '1';
+      document.querySelector('#kycWarningModal .kyc-modal').style.transform = 'translateY(0)';
+    }, 10);
+  }
+}
+
+function closeKycModal() {
+  const overlay = document.getElementById('kycModalOverlay');
+  if (overlay) {
+    overlay.style.opacity = '0';
+    document.querySelector('#kycWarningModal .kyc-modal').style.transform = 'translateY(20px)';
+    setTimeout(() => {
+      document.getElementById('kycWarningModal').style.display = 'none';
+    }, 300);
+  }
+}
