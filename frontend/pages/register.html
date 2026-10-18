@@ -37,8 +37,79 @@
   <link rel="stylesheet" href="../assets/css/ui-v2.css">
   <link rel="stylesheet" href="../assets/css/notifications.css">
   <link rel="stylesheet" href="../assets/css/auth-v2.css">
+
+  <!-- استایل اختصاصی دکمه بازگشت -->
+  <style>
+    .back-to-site {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      font-family: var(--font-sans);
+      z-index: 100;
+    }
+
+    [dir="rtl"] .back-to-site {
+      left: auto;
+      right: 24px;
+    }
+
+    .back-to-site:hover {
+      background: var(--navy-50);
+      border-color: var(--navy-200);
+      color: var(--navy-500);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.1);
+    }
+
+    .back-to-site svg {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .back-to-site:hover svg {
+      transform: translateX(-4px);
+    }
+
+    @media (max-width: 640px) {
+      .back-to-site {
+        top: 16px;
+        left: 16px;
+        padding: 8px 14px;
+        font-size: 12px;
+      }
+      [dir="rtl"] .back-to-site {
+        left: auto;
+        right: 16px;
+      }
+    }
+  </style>
 </head>
 <body class="auth-body">
+
+  <!-- ═══════════════════════════════════════
+       BACK TO SITE LINK
+       ═══════════════════════════════════════ -->
+  <a href="../index.html" class="back-to-site">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="19" y1="12" x2="5" y2="12"/>
+      <polyline points="12 19 5 12 12 5"/>
+    </svg>
+    <span>Back to Site</span>
+  </a>
 
   <div class="auth-card">
 
