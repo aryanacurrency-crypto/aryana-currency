@@ -15,16 +15,6 @@ const POLL_INTERVAL = 5000;   // 5s — rate
 const CLOCK_INTERVAL = 1000;  // 1s — clock
 
 /* ═══════════════════════════════════════
-   🛡️ KYC CHECK HELPER
-   ═══════════════════════════════════════ */
-function isKycVerified() {
-  const user = Auth.getUser();
-  if (!user) return false;
-  const status = String(user.kyc_status || user.kycStatus || '').toLowerCase();
-  return status === 'verified' || status === 'true' || user.is_kyc_verified === true;
-}
-
-/* ═══════════════════════════════════════
    🚀 INIT
    ═══════════════════════════════════════ */
 
@@ -121,12 +111,7 @@ function renderClock() {
   const now = new Date();
   const lang = I18N.currentLang || 'en';
 
-  const localeMap = {
-    en: 'en-US',
-    fa: 'fa-IR',
-    ps: 'ps-AF',
-  };
-
+  const localeMap = { en: 'en-US', fa: 'fa-IR', ps: 'ps-AF' };
   const locale = localeMap[lang] || 'en-US';
 
   const dateOpts = { weekday: 'long', month: 'short', day: 'numeric' };
@@ -154,11 +139,9 @@ function renderUserInfo() {
   setText('userName', firstName);
   setText('welcomeName', firstName);
 
-  // Referral code
   const refCode = user.referral_code || user.username || `ARY${String(user.id || 0).padStart(3, '0')}`;
   setText('referralCode', refCode.toUpperCase());
 
-  // Member since
   if (user.created_at) {
     const d = new Date(user.created_at);
     const month = d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
@@ -219,7 +202,6 @@ async function loadRate() {
 
       updateRateUI(rate);
 
-      // اضافه کردن به history برای sparkline
       const price = Number(rate.sell_price_afn);
       rateHistory.push(price);
       if (rateHistory.length > 20) rateHistory.shift();
@@ -236,12 +218,10 @@ function updateRateUI(rate) {
   const sellPrice = Number(rate.sell_price_afn);
   const buyPrice = Number(rate.buy_price_afn);
 
-  // Stat card
   const el = document.getElementById('statUsdtPrice');
   if (el) {
     el.textContent = formatNumber(sellPrice, 2) + ' AFN';
 
-    // Flash effect
     if (previousRate && previousRate.sell_price_afn) {
       const prev = Number(previousRate.sell_price_afn);
       if (sellPrice > prev) {
@@ -257,7 +237,6 @@ function updateRateUI(rate) {
     }
   }
 
-  // Rate trend badge
   const trendEl = document.getElementById('rateTrend');
   if (trendEl && previousRate) {
     const prev = Number(previousRate.sell_price_afn);
@@ -289,17 +268,11 @@ function updateMarketPrices(rate) {
   setText('marketAfnPrice', formatNumber(1 / sellPrice, 6) + ' USDT');
 }
 
-/* ═══════════════════════════════════════
-   ⚡ LIVE POLLING
-   ═══════════════════════════════════════ */
-
 function startLivePolling() {
   if (pollingInterval) clearInterval(pollingInterval);
 
   pollingInterval = setInterval(async () => {
-    // Only poll when tab is visible
     if (document.hidden) return;
-
     await loadRate();
   }, POLL_INTERVAL);
 }
@@ -314,10 +287,8 @@ function drawSparkline() {
 
   if (!line || !area) return;
 
-  // حداقل ۲ نقطه لازم داریم
   let data = rateHistory.slice();
   if (data.length < 2) {
-    // داده مصنوعی برای بار اول
     data = [70.2, 70.3, 70.1, 70.4, 70.5, 70.45, 70.55, 70.5];
   }
 
@@ -337,10 +308,7 @@ function drawSparkline() {
     return { x, y };
   });
 
-  // Line path
   const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
-
-  // Area path (close it)
   const areaPath = linePath + ` L${points[points.length - 1].x.toFixed(1)},${H} L${points[0].x.toFixed(1)},${H} Z`;
 
   line.setAttribute('d', linePath);
@@ -360,27 +328,21 @@ async function loadWallets() {
     const afn = wallets.afn || {};
 
     const usdtBalance = Number(usdt.balance || 0);
-    const usdtLocked = Number(usdt.locked_balance || 0);
     const afnBalance = Number(afn.balance || 0);
 
-    // تبدیل AFN به USDT
     const rate = currentRate ? Number(currentRate.sell_price_afn) : 70.5;
     const afnInUsdt = afnBalance / rate;
-
     const totalUsdt = usdtBalance + afnInUsdt;
 
-    // Animate count-up
     animateNumber('totalBalance', totalUsdt, '$', 2);
     setText('totalEquivalent', `≈ ${formatNumber(totalUsdt, 2)} USDT`);
 
-    // Change badge (placeholder — بعداً از history میانگین می‌گیریم)
     const changeEl = document.getElementById('balanceChange');
     if (changeEl) {
-      const change = 2.45; // placeholder
+      const change = 2.45;
       const isUp = change >= 0;
       changeEl.classList.toggle('up', isUp);
       changeEl.classList.toggle('down', !isUp);
-
       const span = changeEl.querySelector('span');
       if (span) span.textContent = (isUp ? '+' : '') + change.toFixed(2) + '%';
     }
@@ -525,10 +487,6 @@ async function loadRecentOrders() {
 
 async function loadReferral() {
   try {
-    // اگر API جداگانه داری اینجا صدا بزن
-    // const data = await API.getReferralStats();
-
-    // فعلاً placeholder
     setText('referralInvited', '0');
     setText('referralEarned', '0 AFN');
   } catch (err) {
@@ -556,8 +514,6 @@ function copyReferralCode() {
 
 async function loadWheelTickets() {
   try {
-    // اگر API داری: const data = await API.getWheelTickets();
-    // فعلاً placeholder
     setText('wheelTickets', '3');
     setText('wheelTicketsQuick', '3');
   } catch (err) {
@@ -571,12 +527,10 @@ async function loadWheelTickets() {
 
 async function loadVipStatus() {
   try {
-    // placeholder — بعداً از API می‌گیریم
     setText('vipLevel', 'Level 1');
     setText('vipName', 'Silver');
     setText('vipNext', 'Gold');
     setText('vipProgressPct', '45%');
-
     const fill = document.getElementById('vipProgressFill');
     if (fill) fill.style.width = '45%';
   } catch (err) {
@@ -594,7 +548,6 @@ function generateInsights() {
 
   const insights = [];
 
-  // Insight 1: Rate
   if (currentRate) {
     insights.push({
       icon: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',
@@ -603,7 +556,6 @@ function generateInsights() {
     });
   }
 
-  // Insight 2: Wheel tickets
   const wheelEl = document.getElementById('wheelTickets');
   const tickets = wheelEl ? wheelEl.textContent : '0';
   if (Number(tickets) > 0) {
@@ -614,14 +566,12 @@ function generateInsights() {
     });
   }
 
-  // Insight 3: Referral
   insights.push({
     icon: '<polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/>',
     title: 'Earn with referrals',
     text: 'Invite friends and earn <strong>10%</strong> of every trade they make.',
   });
 
-  // Render
   container.innerHTML = insights.map(i => `
     <div class="insight-card">
       <div class="insight-icon">
@@ -656,25 +606,18 @@ function formatNumber(n, decimals = 2) {
 
 function getTimeAgo(date) {
   const seconds = Math.floor((new Date() - date) / 1000);
-
   const lang = I18N.currentLang || 'en';
-
   const labels = {
     en: { now: 'Just now', m: 'm', h: 'h', d: 'd' },
     fa: { now: 'همین الان', m: 'د', h: 'س', d: 'ر' },
     ps: { now: 'همدا اوس', m: 'د', h: 'س', d: 'و' },
   };
-
   const L = labels[lang] || labels.en;
-
   if (seconds < 60) return L.now;
-
   const minutes = Math.floor(seconds / 60);
   if (minutes < 60) return `${minutes}${L.m}`;
-
   const hours = Math.floor(minutes / 60);
   if (hours < 24) return `${hours}${L.h}`;
-
   const days = Math.floor(hours / 24);
   return `${days}${L.d}`;
 }
@@ -682,25 +625,18 @@ function getTimeAgo(date) {
 function animateNumber(id, target, prefix = '', decimals = 0, duration = 800) {
   const el = document.getElementById(id);
   if (!el) return;
-
   const start = 0;
   const startTime = performance.now();
-
   function tick(now) {
     const elapsed = now - startTime;
     const progress = Math.min(elapsed / duration, 1);
-
-    // easeOutCubic
     const eased = 1 - Math.pow(1 - progress, 3);
-
     const current = start + (target - start) * eased;
-
     if (decimals > 0) {
       el.textContent = prefix + formatNumber(current, decimals);
     } else {
       el.textContent = prefix + Math.round(current).toLocaleString('en-US');
     }
-
     if (progress < 1) {
       requestAnimationFrame(tick);
     } else {
@@ -711,7 +647,6 @@ function animateNumber(id, target, prefix = '', decimals = 0, duration = 800) {
       }
     }
   }
-
   requestAnimationFrame(tick);
 }
 
@@ -719,8 +654,6 @@ function copyToClipboard(text) {
   if (navigator.clipboard && window.isSecureContext) {
     return navigator.clipboard.writeText(text);
   }
-
-  // Fallback
   return new Promise((resolve, reject) => {
     try {
       const tmp = document.createElement('textarea');
@@ -738,18 +671,10 @@ function copyToClipboard(text) {
   });
 }
 
-/* ═══════════════════════════════════════
-   🧹 CLEANUP
-   ═══════════════════════════════════════ */
-
 window.addEventListener('beforeunload', () => {
   if (pollingInterval) clearInterval(pollingInterval);
   if (clockInterval) clearInterval(clockInterval);
 });
-
-/* ═══════════════════════════════════════
-   👁️ VISIBILITY (رفرش وقتی برگشت)
-   ═══════════════════════════════════════ */
 
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden) {
@@ -757,10 +682,6 @@ document.addEventListener('visibilitychange', () => {
     loadWallets();
   }
 });
-
-/* ═══════════════════════════════════════
-   🌍 EXPOSE
-   ═══════════════════════════════════════ */
 
 window.Dashboard = {
   reload: () => {
@@ -776,25 +697,25 @@ window.Dashboard = {
    ═══════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // پیدا کردن تمام لینک‌هایی که به deposit.html اشاره می‌کنند
   const depositLinks = document.querySelectorAll('a[href*="deposit.html"]');
   
   depositLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      // استفاده از تابع قدرتمند isKycVerified
-      if (!isKycVerified()) {
-        e.preventDefault(); // جلوگیری از رفتن به صفحه
-        
-        // نمایش هشدار شیک
-        showKycWarningModal();
+    link.addEventListener('click', async (e) => {
+      e.preventDefault(); // همیشه اول جلوگیری می‌کنیم
+
+      // از تابع قدرتمند auth.js استفاده می‌کنیم که خودش با سرور چک می‌کنه
+      const isVerified = await Auth.checkKycVerified();
+
+      if (isVerified) {
+        window.location.href = link.href; // اگه تایید شد، برو به دیپازیت
+      } else {
+        showKycWarningModal(); // اگه تایید نشد، مودال رو نشون بده
       }
     });
   });
 });
 
-// تابع ساخت و نمایش مودال KYC
 function showKycWarningModal() {
-  // اگر مودال از قبل ساخته شده، فقط نمایشش بده
   let modal = document.getElementById('kycWarningModal');
   
   if (!modal) {
@@ -829,13 +750,11 @@ function showKycWarningModal() {
     `;
     document.body.appendChild(modal);
     
-    // انیمیشن ورود
     setTimeout(() => {
       document.getElementById('kycModalOverlay').style.opacity = '1';
       document.querySelector('#kycWarningModal .kyc-modal').style.transform = 'translateY(0)';
     }, 10);
     
-    // بستن مودال
     document.getElementById('closeKycModal').addEventListener('click', () => {
       closeKycModal();
     });
@@ -846,7 +765,6 @@ function showKycWarningModal() {
       }
     });
   } else {
-    // اگر از قبل بود، فقط نشون بده
     modal.style.display = 'block';
     setTimeout(() => {
       document.getElementById('kycModalOverlay').style.opacity = '1';
