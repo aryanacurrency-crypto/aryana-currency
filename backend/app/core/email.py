@@ -55,14 +55,62 @@ def _send_email(to_email: str, subject: str, html_body: str) -> bool:
         return False
 
 
+def _send_email_with_reply(
+    to_email: str,
+    subject: str,
+    html_body: str,
+    reply_to_email: str,
+    reply_to_name: str = "",
+) -> bool:
+    """
+    ارسال ایمیل با Reply-To (برای فرم تماس).
+    ادمین از Gmail مستقیم Reply می‌زنه به کاربر.
+    """
+    if not settings.BREVO_API_KEY:
+        logger.warning("BREVO_API_KEY not configured — email not sent.")
+        return False
+
+    try:
+        url = "https://api.brevo.com/v3/smtp/email"
+        headers = {
+            "accept": "application/json",
+            "api-key": settings.BREVO_API_KEY,
+            "content-type": "application/json",
+        }
+        payload = {
+            "sender": {
+                "name": settings.SMTP_FROM_NAME,
+                "email": settings.BREVO_FROM_EMAIL,
+            },
+            "to": [{"email": to_email}],
+            "replyTo": {
+                "email": reply_to_email,
+                "name": reply_to_name or reply_to_email,
+            },
+            "subject": subject,
+            "htmlContent": html_body,
+        }
+
+        with httpx.Client(timeout=15) as client:
+            response = client.post(url, json=payload, headers=headers)
+            if response.status_code not in [200, 201, 202]:
+                logger.error(f"Brevo API Error: {response.text}")
+                return False
+
+        logger.info(f"Contact email sent to {to_email} (reply-to: {reply_to_email})")
+        return True
+
+    except Exception as e:
+        logger.error(f"Failed to send contact email: {e}")
+        return False
+
+
 # ═══════════════════════════════════════
 #       Email wrapper (HTML base)
 # ═══════════════════════════════════════
 
 def _wrap_html(title: str, content_html: str) -> str:
-    """
-    قالب HTML مشترک برای همه ایمیل‌ها.
-    """
+    """قالب HTML مشترک برای همه ایمیل‌ها."""
     return f"""
     <!DOCTYPE html>
     <html dir="rtl" lang="fa">
@@ -113,9 +161,7 @@ def _wrap_html(title: str, content_html: str) -> str:
 # ═══════════════════════════════════════
 
 def send_password_reset_email(email: str, reset_token: str) -> bool:
-    """
-    ارسال ایمیل بازنشانی رمز عبور.
-    """
+    """ارسال ایمیل بازنشانی رمز عبور."""
     reset_link = f"{settings.FRONTEND_URL}/pages/reset-password.html?token={reset_token}"
 
     logger.warning("=" * 60)
@@ -150,9 +196,7 @@ def send_password_reset_email(email: str, reset_token: str) -> bool:
 # ═══════════════════════════════════════
 
 def send_welcome_email(email: str, full_name: str | None = None) -> bool:
-    """
-    ارسال ایمیل خوش‌آمدگویی بعد از ثبت‌نام.
-    """
+    """ارسال ایمیل خوش‌آمدگویی بعد از ثبت‌نام."""
     logger.info(f"Sending welcome email to {email}")
 
     name = full_name or "کاربر عزیز"
@@ -163,9 +207,7 @@ def send_welcome_email(email: str, full_name: str | None = None) -> bool:
       <p>
         به <span class="highlight">Aryana Currency</span> خوش آمدید! 🎉
       </p>
-      <p>
-        حساب شما با موفقیت ساخته شد. حالا می‌توانید:
-      </p>
+      <p>حساب شما با موفقیت ساخته شد. حالا می‌توانید:</p>
 
       <div class="info-box">
         <div class="info-row">
@@ -214,20 +256,17 @@ def send_order_completed_email(
     email: str,
     full_name: str | None,
     order_reference: str,
-    side: str,           # "BUY" یا "SELL"
+    side: str,
     amount_usdt: float,
     rate_afn: float,
     total_afn: float,
     fee_afn: float,
 ) -> bool:
-    """
-    ارسال ایمیل تأیید تکمیل سفارش.
-    """
+    """ارسال ایمیل تأیید تکمیل سفارش."""
     logger.info(f"Sending order completed email to {email} — {order_reference}")
 
     name = full_name or "کاربر عزیز"
     is_buy = side == "BUY"
-
     side_label = "خرید" if is_buy else "فروش"
     side_color = "#0ECB81" if is_buy else "#F6465D"
 
@@ -235,12 +274,8 @@ def send_order_completed_email(
 
     content = f"""
       <p>سلام <strong>{name}</strong>،</p>
-
       <span class="success-badge">✅ سفارش تکمیل شد</span>
-
-      <p>
-        سفارش <strong>{side_label} USDT</strong> شما با موفقیت تکمیل شد.
-      </p>
+      <p>سفارش <strong>{side_label} USDT</strong> شما با موفقیت تکمیل شد.</p>
 
       <div class="info-box">
         <div class="info-row">
@@ -281,3 +316,69 @@ def send_order_completed_email(
 
     html = _wrap_html(f"سفارش {side_label} USDT تکمیل شد", content)
     return _send_email(email, f"سفارش {side_label} USDT تکمیل شد — {order_reference}", html)
+
+
+# ═══════════════════════════════════════
+#       ۴. Contact Message (جدید)
+# ═══════════════════════════════════════
+
+def send_contact_message_email(
+    name: str,
+    user_email: str,
+    subject: str,
+    message: str,
+) -> bool:
+    """
+    ارسال پیام فرم Contact به ایمیل پشتیبانی.
+    ادمین از Gmail می‌بینه و مستقیم Reply می‌زنه.
+    """
+    to_email = settings.BREVO_FROM_EMAIL
+
+    logger.info(f"Sending contact message from {user_email} to {to_email}")
+
+    # Escape HTML
+    safe_name = str(name).replace("<", "&lt;").replace(">", "&gt;")
+    safe_email = str(user_email).replace("<", "&lt;").replace(">", "&gt;")
+    safe_subject = str(subject).replace("<", "&lt;").replace(">", "&gt;")
+    safe_message = str(message).replace("<", "&lt;").replace(">", "&gt;").replace("\n", "<br>")
+
+    content = f"""
+      <p>پیام جدید از فرم تماس Aryana Currency:</p>
+
+      <div class="info-box">
+        <div class="info-row">
+          <span>نام</span>
+          <span>{safe_name}</span>
+        </div>
+        <div class="info-row">
+          <span>ایمیل</span>
+          <span style="direction: ltr; text-align: left;">{safe_email}</span>
+        </div>
+        <div class="info-row">
+          <span>موضوع</span>
+          <span>{safe_subject}</span>
+        </div>
+      </div>
+
+      <h3 style="color: #0B0E11; font-size: 15px; margin: 20px 0 10px;">پیام:</h3>
+      <div style="background: #f7f7f7; padding: 16px 18px; border-radius: 8px; font-size: 13px; line-height: 1.8; color: #2d3748; border-right: 3px solid #F0B90B;">
+        {safe_message}
+      </div>
+
+      <div class="warning">
+        <strong>📧 برای پاسخ:</strong>
+        روی ایمیل <span style="direction: ltr; display: inline-block;">{safe_email}</span> کلیک کنید و مستقیم Reply بزنید.
+      </div>
+    """
+
+    html = _wrap_html(f"پیام تماس جدید — {subject}", content)
+
+    admin_subject = f"📩 پیام تماس: {subject} — از {name}"
+
+    return _send_email_with_reply(
+        to_email=to_email,
+        subject=admin_subject,
+        html_body=html,
+        reply_to_email=user_email,
+        reply_to_name=name,
+    )
