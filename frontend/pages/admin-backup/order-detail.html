@@ -1,0 +1,309 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Order Detail — Aryana Currency Admin">
+  <meta name="theme-color" content="#1E40AF">
+
+  <title>Order Detail | Admin — ARYANA CURRENCY</title>
+
+  <link rel="icon" type="image/png" href="../../assets/images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../assets/css/theme-v2.css">
+  <link rel="stylesheet" href="../../assets/css/ui-v2.css">
+  <link rel="stylesheet" href="../../assets/css/dashboard-v2.css">
+  <link rel="stylesheet" href="../../assets/css/admin-v2.css">
+  <link rel="stylesheet" href="../../assets/css/admin-fix.css">
+  <link rel="stylesheet" href="../../assets/css/notifications.css">
+</head>
+<body data-admin-page="orders">
+
+  <header class="admin-topbar">
+    <div class="admin-topbar-inner">
+      <a href="index.html" class="admin-brand">
+        <img src="../../assets/images/logo.png" alt="ARYANA CURRENCY">
+        <div class="admin-brand-text">
+          ARYANA
+          <small>ADMIN PANEL</small>
+        </div>
+      </a>
+      <div class="admin-topbar-actions">
+        <a href="../dashboard.html" class="icon-btn" title="Back to site">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/>
+            <polyline points="12 19 5 12 12 5"/>
+          </svg>
+        </a>
+        <button type="button" class="icon-btn" id="logoutBtn" title="Logout">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="admin-layout">
+    <aside class="admin-sidebar"></aside>
+
+    <main class="admin-main">
+      <div id="loadingBox" class="admin-empty">
+        <div class="spinner spinner-lg" style="margin: 0 auto;"></div>
+      </div>
+
+      <div id="contentBox" style="display:none;">
+        <div class="admin-back-row">
+          <a href="orders.html" class="admin-back-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"/>
+              <polyline points="12 19 5 12 12 5"/>
+            </svg>
+          </a>
+          <div>
+            <h1 style="font-size:20px; font-weight:800; letter-spacing:-0.5px;">Order Details</h1>
+            <button type="button" class="admin-ref-copy" id="refCopy">
+              <span id="orderRef">—</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="admin-status-banner pending" id="statusBanner">
+          <div class="admin-status-icon" id="statusIcon">⏳</div>
+          <div class="admin-status-content">
+            <div class="admin-status-title" id="statusTitle">—</div>
+            <div class="admin-status-text" id="statusText">—</div>
+          </div>
+        </div>
+
+        <div class="admin-detail-layout">
+          <div>
+            <div class="admin-detail-card">
+              <div class="admin-detail-card-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                User Information
+              </div>
+
+              <div class="admin-detail-rows">
+                <div class="admin-detail-row">
+                  <span class="admin-detail-label">Name</span>
+                  <span class="admin-detail-value" id="userName">—</span>
+                </div>
+                <div class="admin-detail-row">
+                  <span class="admin-detail-label">Email</span>
+                  <span class="admin-detail-value" id="userEmail">—</span>
+                </div>
+                <div class="admin-detail-row">
+                  <span class="admin-detail-label">Phone</span>
+                  <span class="admin-detail-value" id="userPhone">—</span>
+                </div>
+                <div class="admin-detail-row">
+                  <span class="admin-detail-label">KYC Status</span>
+                  <span class="admin-detail-value" id="userKyc">—</span>
+                </div>
+                <div class="admin-detail-row">
+                  <span class="admin-detail-label">Hesab Pay</span>
+                  <span class="admin-detail-value mono" id="userHesabPay">—</span>
+                </div>
+                <div class="admin-detail-row">
+                  <span class="admin-detail-label">USDT Wallet</span>
+                  <span class="admin-detail-value mono" id="userWallet">—</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="admin-detail-card">
+              <div class="admin-detail-card-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 11l3 3L22 4"/>
+                  <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                </svg>
+                Order Summary
+              </div>
+
+              <div class="admin-detail-rows">
+                <div class="admin-detail-row">
+                  <span class="admin-detail-label">Type</span>
+                  <span class="admin-detail-value" id="detailSide">—</span>
+                </div>
+                <div class="admin-detail-row">
+                  <span class="admin-detail-label">Amount</span>
+                  <span class="admin-detail-value" id="detailAmount">—</span>
+                </div>
+                <div class="admin-detail-row">
+                  <span class="admin-detail-label">Rate</span>
+                  <span class="admin-detail-value" id="detailRate">—</span>
+                </div>
+                <div class="admin-detail-row">
+                  <span class="admin-detail-label">Gross Amount</span>
+                  <span class="admin-detail-value" id="detailGross">—</span>
+                </div>
+                <div class="admin-detail-row">
+                  <span class="admin-detail-label">Platform Fee</span>
+                  <span class="admin-detail-value" id="detailFee">—</span>
+                </div>
+                <div class="admin-detail-row total">
+                  <span class="admin-detail-label" id="detailTotalLabel">Total</span>
+                  <span class="admin-detail-value" id="detailTotal">—</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="admin-detail-card" id="userRefCard" style="display:none;">
+              <div class="admin-detail-card-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                Payment Reference (User-Submitted)
+              </div>
+
+              <div class="user-ref-box">
+                <div class="user-ref-label" id="refBoxLabel">Transaction Reference</div>
+                <div class="user-ref-value">
+                  <span id="userRefValue">—</span>
+                  <button type="button" class="copy-btn" id="copyUserRefBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+                <div class="user-ref-note" id="userNoteText" style="display:none;">—</div>
+              </div>
+            </div>
+
+            <div class="admin-detail-card" id="actionsCard" style="display:none;">
+              <div class="admin-detail-card-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2l3 6 6 1-4.5 4.5L18 20l-6-3-6 3 1.5-6.5L3 9l6-1z"/>
+                </svg>
+                Admin Actions
+              </div>
+
+              <div class="admin-action-form">
+                <div class="field">
+                  <label class="field-label" for="platformRef" id="platformRefLabel">
+                    Platform Payment Reference
+                  </label>
+                  <input type="text" id="platformRef" class="field-input" placeholder="TXID / Hesab Pay ref">
+                  <div class="field-hint" id="platformRefHint">
+                    The reference you used to send the funds to the user.
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="field-label" for="adminNote">Admin Note (optional)</label>
+                  <textarea id="adminNote" class="field-input" rows="2" placeholder="Any internal note..."></textarea>
+                </div>
+
+                <div class="admin-action-buttons">
+                  <button type="button" class="admin-action-btn primary" id="completeBtn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Complete Order
+                  </button>
+
+                  <button type="button" class="admin-action-btn danger" id="rejectBtn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18"/>
+                      <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                    Reject Order
+                  </button>
+                </div>
+              </div>
+
+              <div class="admin-warning">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                  <line x1="12" y1="9" x2="12" y2="13"/>
+                  <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                <div>
+                  <strong>Important:</strong> Completing this order will update the user's balance and record ledger entries. This action cannot be undone.
+                </div>
+              </div>
+            </div>
+
+            <div class="admin-note-box" id="adminNoteBox" style="display:none;">
+              <div class="admin-note-label" id="adminNoteLabel">Admin Note</div>
+              <div class="admin-note-text" id="adminNoteText">—</div>
+            </div>
+          </div>
+
+          <aside>
+            <div class="admin-detail-card">
+              <div class="admin-detail-card-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                Status Timeline
+              </div>
+
+              <div class="info-steps" id="timelineSteps" style="display:flex; flex-direction:column; gap:var(--space-4);">
+                <div class="info-step" data-step="PENDING">
+                  <div class="info-step-num">1</div>
+                  <div>
+                    <div class="info-step-title">Order Placed</div>
+                    <div class="info-step-text">User created the order.</div>
+                  </div>
+                </div>
+
+                <div class="info-step" data-step="AWAITING_REVIEW">
+                  <div class="info-step-num">2</div>
+                  <div>
+                    <div class="info-step-title">Payment Submitted</div>
+                    <div class="info-step-text">User submitted the reference.</div>
+                  </div>
+                </div>
+
+                <div class="info-step" data-step="PROCESSING">
+                  <div class="info-step-num">3</div>
+                  <div>
+                    <div class="info-step-title">Processing</div>
+                    <div class="info-step-text">Admin approved, sending funds.</div>
+                  </div>
+                </div>
+
+                <div class="info-step" data-step="COMPLETED">
+                  <div class="info-step-num">4</div>
+                  <div>
+                    <div class="info-step-title">Completed</div>
+                    <div class="info-step-text">Funds delivered.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../assets/js/config.js"></script>
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/theme.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/api.js"></script>
+  <script src="../../assets/js/notifications.js"></script>
+  <script src="../../assets/js/admin-v2/common.js"></script>
+  <script src="../../assets/js/admin-v2/order-detail.js"></script>
+</body>
+</html>

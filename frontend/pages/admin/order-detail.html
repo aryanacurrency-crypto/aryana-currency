@@ -1,12 +1,17 @@
-Ôªø<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Order Detail ‚Äî Aryana Currency Admin">
+  <meta name="description" content="Order Detail ó Aryana Currency Admin">
   <meta name="theme-color" content="#1E40AF">
+<link rel="manifest" href="/manifest-admin.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ARYANA Admin">
+<link rel="apple-touch-icon" href="/assets/images/icon-192.png">
 
-  <title>Order Detail | Admin ‚Äî ARYANA CURRENCY</title>
+  <title>Order Detail | Admin ó ARYANA CURRENCY</title>
 
   <link rel="icon" type="image/png" href="../../assets/images/logo.png">
 
@@ -69,7 +74,7 @@
           <div>
             <h1 style="font-size:20px; font-weight:800; letter-spacing:-0.5px;">Order Details</h1>
             <button type="button" class="admin-ref-copy" id="refCopy">
-              <span id="orderRef">‚Äî</span>
+              <span id="orderRef">ó</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
@@ -79,10 +84,10 @@
         </div>
 
         <div class="admin-status-banner pending" id="statusBanner">
-          <div class="admin-status-icon" id="statusIcon">‚è≥</div>
+          <div class="admin-status-icon" id="statusIcon">?</div>
           <div class="admin-status-content">
-            <div class="admin-status-title" id="statusTitle">‚Äî</div>
-            <div class="admin-status-text" id="statusText">‚Äî</div>
+            <div class="admin-status-title" id="statusTitle">ó</div>
+            <div class="admin-status-text" id="statusText">ó</div>
           </div>
         </div>
 
@@ -100,27 +105,27 @@
               <div class="admin-detail-rows">
                 <div class="admin-detail-row">
                   <span class="admin-detail-label">Name</span>
-                  <span class="admin-detail-value" id="userName">‚Äî</span>
+                  <span class="admin-detail-value" id="userName">ó</span>
                 </div>
                 <div class="admin-detail-row">
                   <span class="admin-detail-label">Email</span>
-                  <span class="admin-detail-value" id="userEmail">‚Äî</span>
+                  <span class="admin-detail-value" id="userEmail">ó</span>
                 </div>
                 <div class="admin-detail-row">
                   <span class="admin-detail-label">Phone</span>
-                  <span class="admin-detail-value" id="userPhone">‚Äî</span>
+                  <span class="admin-detail-value" id="userPhone">ó</span>
                 </div>
                 <div class="admin-detail-row">
                   <span class="admin-detail-label">KYC Status</span>
-                  <span class="admin-detail-value" id="userKyc">‚Äî</span>
+                  <span class="admin-detail-value" id="userKyc">ó</span>
                 </div>
                 <div class="admin-detail-row">
                   <span class="admin-detail-label">Hesab Pay</span>
-                  <span class="admin-detail-value mono" id="userHesabPay">‚Äî</span>
+                  <span class="admin-detail-value mono" id="userHesabPay">ó</span>
                 </div>
                 <div class="admin-detail-row">
                   <span class="admin-detail-label">USDT Wallet</span>
-                  <span class="admin-detail-value mono" id="userWallet">‚Äî</span>
+                  <span class="admin-detail-value mono" id="userWallet">ó</span>
                 </div>
               </div>
             </div>
@@ -137,27 +142,27 @@
               <div class="admin-detail-rows">
                 <div class="admin-detail-row">
                   <span class="admin-detail-label">Type</span>
-                  <span class="admin-detail-value" id="detailSide">‚Äî</span>
+                  <span class="admin-detail-value" id="detailSide">ó</span>
                 </div>
                 <div class="admin-detail-row">
                   <span class="admin-detail-label">Amount</span>
-                  <span class="admin-detail-value" id="detailAmount">‚Äî</span>
+                  <span class="admin-detail-value" id="detailAmount">ó</span>
                 </div>
                 <div class="admin-detail-row">
                   <span class="admin-detail-label">Rate</span>
-                  <span class="admin-detail-value" id="detailRate">‚Äî</span>
+                  <span class="admin-detail-value" id="detailRate">ó</span>
                 </div>
                 <div class="admin-detail-row">
                   <span class="admin-detail-label">Gross Amount</span>
-                  <span class="admin-detail-value" id="detailGross">‚Äî</span>
+                  <span class="admin-detail-value" id="detailGross">ó</span>
                 </div>
                 <div class="admin-detail-row">
                   <span class="admin-detail-label">Platform Fee</span>
-                  <span class="admin-detail-value" id="detailFee">‚Äî</span>
+                  <span class="admin-detail-value" id="detailFee">ó</span>
                 </div>
                 <div class="admin-detail-row total">
                   <span class="admin-detail-label" id="detailTotalLabel">Total</span>
-                  <span class="admin-detail-value" id="detailTotal">‚Äî</span>
+                  <span class="admin-detail-value" id="detailTotal">ó</span>
                 </div>
               </div>
             </div>
@@ -174,7 +179,7 @@
               <div class="user-ref-box">
                 <div class="user-ref-label" id="refBoxLabel">Transaction Reference</div>
                 <div class="user-ref-value">
-                  <span id="userRefValue">‚Äî</span>
+                  <span id="userRefValue">ó</span>
                   <button type="button" class="copy-btn" id="copyUserRefBtn">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
@@ -183,7 +188,7 @@
                     <span>Copy</span>
                   </button>
                 </div>
-                <div class="user-ref-note" id="userNoteText" style="display:none;">‚Äî</div>
+                <div class="user-ref-note" id="userNoteText" style="display:none;">ó</div>
               </div>
             </div>
 
@@ -243,7 +248,7 @@
 
             <div class="admin-note-box" id="adminNoteBox" style="display:none;">
               <div class="admin-note-label" id="adminNoteLabel">Admin Note</div>
-              <div class="admin-note-text" id="adminNoteText">‚Äî</div>
+              <div class="admin-note-text" id="adminNoteText">ó</div>
             </div>
           </div>
 
@@ -305,5 +310,6 @@
   <script src="../../assets/js/notifications.js"></script>
   <script src="../../assets/js/admin-v2/common.js"></script>
   <script src="../../assets/js/admin-v2/order-detail.js"></script>
+<script src="../../assets/js/admin-pwa.js"></script>
 </body>
 </html>

@@ -1,25 +1,19 @@
 /* ═══════════════════════════════════════
-   ARYANA — Admin Fix Layer
-   Override نهایی برای یکپارچگی با theme-v2
+   ARYANA — Admin Fix + Mobile-First
+   Navy-Purple · RTL · PWA · Touch-Optimized
    ═══════════════════════════════════════ */
 
-/* ─── اطمینان از فونت درست ─── */
-.admin-main,
-.admin-main *,
-.admin-page-header h1,
-.admin-stat-value,
-.admin-table,
-.admin-section-title,
-.admin-detail-card-title,
-.settings-tab,
+/* ─── Font consistency ─── */
+.admin-main, .admin-main *,
+.admin-page-header h1, .admin-stat-value,
+.admin-table, .admin-section-title,
+.admin-detail-card-title, .settings-tab,
 .admin-btn {
   font-family: var(--font-sans);
 }
 
-.admin-table .cell-mono,
-.admin-ref-copy,
-.user-ref-value,
-.admin-detail-value.mono,
+.admin-table .cell-mono, .admin-ref-copy,
+.user-ref-value, .admin-detail-value.mono,
 .mono-input {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
@@ -30,39 +24,26 @@
   font-family: var(--font-arabic);
 }
 
-[dir="rtl"] .cell-mono,
-[dir="rtl"] .mono,
-[dir="rtl"] .admin-ref-copy,
-[dir="rtl"] .user-ref-value,
+[dir="rtl"] .cell-mono, [dir="rtl"] .mono,
+[dir="rtl"] .admin-ref-copy, [dir="rtl"] .user-ref-value,
 [dir="rtl"] .admin-detail-value.mono {
   font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
 }
 
-/* ─── Override hardcoded colors قدیمی ─── */
-.admin-stat-card::before {
-  opacity: 0.10 !important;
-}
+/* ─── Fixes ─── */
+.admin-stat-card::before { opacity: 0.10 !important; }
+.admin-main .spinner { color: var(--navy-500) !important; }
 
-/* ─── Spinnerها رنگ Navy بگیرن ─── */
-.admin-main .spinner {
-  color: var(--navy-500) !important;
-}
-
-/* ─── اطمینان از اسکرول‌بار تمیز ─── */
 .admin-sidebar::-webkit-scrollbar,
 .admin-table-wrap::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 6px; height: 6px;
 }
-
 .admin-sidebar::-webkit-scrollbar-thumb,
 .admin-table-wrap::-webkit-scrollbar-thumb {
   background: var(--border-strong);
   border-radius: var(--radius-full);
 }
 
-/* ─── Focus ring سازگار ─── */
 .admin-btn:focus-visible,
 .admin-nav-item:focus-visible,
 .settings-tab:focus-visible {
@@ -70,24 +51,482 @@
   outline-offset: 2px;
 }
 
-/* ─── Footer safe area ─── */
 .admin-main {
   padding-bottom: max(var(--space-10), env(safe-area-inset-bottom));
 }
 
-/* ─── Command Palette z-index بالاتر از admin ─── */
-.command-palette,
-.command-palette-overlay {
-  z-index: 9999 !important;
-}
+.command-palette, .command-palette-overlay { z-index: 9999 !important; }
 
-/* ─── اطمینان از اینکه badgeها در RTL درست بشینن ─── */
 [dir="rtl"] .admin-badge,
-[dir="rtl"] .kyc-inline {
-  direction: rtl;
+[dir="rtl"] .kyc-inline { direction: rtl; }
+
+.admin-section-link { background: none !important; }
+
+/* ═══════════════════════════════════════
+   📱 MOBILE-FIRST ENHANCEMENTS
+   ═══════════════════════════════════════ */
+
+/* ─── PWA standalone safe area ─── */
+@media (display-mode: standalone) {
+  .admin-topbar {
+    padding-top: env(safe-area-inset-top);
+  }
+  .admin-main {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 90px);
+  }
 }
 
-/* ─── اطمینان از gradient brand روی hover نباشه ─── */
-.admin-section-link {
-  background: none !important;
+/* ─── Bottom Nav Drawer (mobile) ─── */
+@media (max-width: 768px) {
+
+  /* ── Topbar ── */
+  .admin-topbar-inner {
+    height: 60px;
+    width: 100%;
+    padding-inline: 12px;
+  }
+  .admin-brand img { width: 32px; height: 32px; }
+  .admin-brand-text { font-size: 12px; }
+  .admin-brand-text small { font-size: 8px; letter-spacing: 2px; }
+
+  /* ── Layout ── */
+  .admin-layout {
+    display: block;
+    padding-bottom: 72px;
+  }
+  .admin-main {
+    padding: 16px 14px calc(96px + env(safe-area-inset-bottom));
+  }
+
+  /* ── Sidebar → Bottom Sheet Drawer ── */
+  .admin-sidebar {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    top: auto;
+    height: auto;
+    max-height: 75vh;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-subtle);
+    border-inline-end: none;
+    border-radius: 24px 24px 0 0;
+    padding: 8px 12px calc(12px + env(safe-area-inset-bottom));
+    box-shadow: 0 -8px 32px rgba(15, 30, 61, 0.15);
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 900;
+    transform: translateY(calc(100% - 76px));
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .admin-sidebar.open {
+    transform: translateY(0);
+  }
+
+  /* Handle bar */
+  .admin-sidebar::before {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 4px;
+    margin: 6px auto 12px;
+    background: var(--border-strong);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+  }
+
+  .admin-nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    overflow: visible;
+    padding: 0;
+  }
+
+  .admin-nav-item {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 10px 6px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    text-align: center;
+    min-height: 60px;
+    position: relative;
+  }
+
+  .admin-nav-item svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .admin-nav-item span.nav-text {
+    display: block !important;
+    font-size: 10px;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .admin-nav-item.active {
+    background: var(--navy-50);
+    color: var(--navy-500);
+    border-color: var(--navy-100);
+  }
+
+  .admin-nav-item.active::before {
+    inset-inline-start: 50%;
+    top: 4px;
+    bottom: auto;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--navy-500), var(--purple-600));
+  }
+
+  .admin-nav-item .nav-count {
+    position: absolute;
+    top: 4px;
+    inset-inline-end: 4px;
+    margin: 0;
+    font-size: 9px;
+    padding: 1px 6px;
+    min-width: 18px;
+  }
+
+  .admin-nav-divider {
+    grid-column: 1 / -1;
+    margin: 8px 0;
+  }
+
+  /* ── Hide divider nav item on mobile (back to site) ── */
+  .admin-nav > a:last-child {
+    display: none;
+  }
+
+  /* ── Page Header ── */
+  .admin-page-header { margin-bottom: 16px; }
+  .admin-page-header h1 { font-size: 20px; }
+  .admin-page-header p { font-size: 12px; }
+
+  /* ── Stat Cards: 2 columns ── */
+  .admin-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px;
+  }
+  .admin-stat-card { padding: 14px; }
+  .admin-stat-value { font-size: 22px; }
+  .admin-stat-label { font-size: 11px; }
+  .admin-stat-icon { width: 34px; height: 34px; }
+  .admin-stat-icon svg { width: 16px; height: 16px; }
+
+  /* ── Filter Bar: stack vertically ── */
+  .admin-filter-bar {
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .admin-filter-bar .field-input,
+  .admin-filter-bar select {
+    max-width: 100% !important;
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  /* ── Table → Card List ── */
+  .admin-table-wrap {
+    border-radius: 16px;
+    overflow: visible;
+    background: transparent;
+    border: none;
+  }
+
+  .admin-table {
+    display: block;
+    min-width: 0;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+  }
+
+  .admin-table thead { display: none; }
+
+  .admin-table tbody {
+    display: block;
+    width: 100%;
+  }
+
+  .admin-table tbody tr {
+    display: block;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    transition: all 0.2s ease;
+  }
+
+  .admin-table tbody tr:active {
+    transform: scale(0.985);
+    border-color: var(--navy-200);
+  }
+
+  .admin-table tbody td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--border-subtle);
+    font-size: 13px;
+    text-align: start;
+  }
+
+  .admin-table tbody td:last-child {
+    border-bottom: none;
+    padding-top: 12px;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  /* Label via data-label */
+  .admin-table tbody td::before {
+    content: attr(data-label);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-tertiary);
+    flex-shrink: 0;
+  }
+
+  .admin-table tbody td:last-child::before {
+    display: none;
+  }
+
+  /* Actions full width */
+  .admin-actions {
+    width: 100%;
+    justify-content: stretch;
+    gap: 8px;
+  }
+
+  .admin-actions .admin-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 10px 12px;
+    font-size: 12px;
+    min-height: 40px;
+  }
+
+  /* ── Buttons 44px+ ── */
+  .admin-btn {
+    min-height: 40px;
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+
+  .admin-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .admin-section-title { font-size: 16px; }
+  .admin-section-title svg { width: 18px; height: 18px; }
+
+  /* ── Detail Card ── */
+  .admin-detail-card {
+    padding: 16px;
+    border-radius: 18px;
+    margin-bottom: 12px;
+  }
+  .admin-detail-card-title {
+    font-size: 13px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+  }
+  .admin-detail-row {
+    padding: 10px 0;
+    font-size: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .admin-detail-value {
+    text-align: start;
+    width: 100%;
+    font-size: 13px;
+  }
+  .admin-detail-row.total {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* ── Status Banner ── */
+  .admin-status-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    border-radius: 18px;
+  }
+  .admin-status-icon { width: 44px; height: 44px; font-size: 20px; }
+  .admin-status-title { font-size: 15px; }
+  .admin-status-text { font-size: 12px; }
+
+  /* ── Settings Tabs → Horizontal Scroll ── */
+  .settings-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    margin-bottom: 14px;
+    padding-bottom: 2px;
+  }
+  .settings-tab {
+    padding: 10px 16px;
+    font-size: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .settings-tab svg { width: 14px; height: 14px; }
+
+  /* ── Settings Grid → 1 column ── */
+  .settings-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .settings-actions .admin-btn,
+  .settings-actions .btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  /* ── Form fields ── */
+  .field-input,
+  .field select,
+  .field textarea {
+    min-height: 44px;
+    font-size: 14px !important;
+    padding: 12px 14px !important;
+  }
+
+  /* iOS zoom fix */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+
+  /* ── Back row ── */
+  .admin-back-row {
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .admin-back-btn { width: 44px; height: 44px; }
+  .admin-back-row h1 { font-size: 17px !important; }
+
+  /* ── Action buttons grid ── */
+  .admin-action-buttons {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .admin-action-btn {
+    min-height: 48px;
+    font-size: 14px;
+  }
+
+  /* ── Empty state ── */
+  .admin-empty { padding: 40px 20px; }
+  .admin-empty-icon { font-size: 36px; }
+  .admin-empty h3 { font-size: 14px; }
+  .admin-empty p { font-size: 12px; }
+}
+
+/* ─── Extra small phones ─── */
+@media (max-width: 380px) {
+  .admin-stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .admin-nav { grid-template-columns: repeat(3, 1fr); }
+  .admin-nav-item span.nav-text { font-size: 9px; }
+  .admin-brand-text { display: none; }
+}
+
+/* ─── PWA install prompt banner ─── */
+.arya-install-prompt {
+  position: fixed;
+  bottom: calc(90px + env(safe-area-inset-bottom));
+  inset-inline: 12px;
+  z-index: 950;
+  background: linear-gradient(135deg, var(--navy-500), var(--purple-600));
+  color: #fff;
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 12px 32px rgba(30, 64, 175, 0.35);
+  animation: slideUpIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.arya-install-prompt.hidden { display: none; }
+
+.arya-install-prompt-icon {
+  width: 40px; height: 40px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.arya-install-prompt-text {
+  flex: 1;
+  font-size: 12px;
+  line-height: 1.4;
+  font-family: var(--font-sans);
+}
+
+.arya-install-prompt-text strong {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+.arya-install-prompt button {
+  background: #fff;
+  color: var(--navy-500);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  flex-shrink: 0;
+}
+
+.arya-install-prompt .close-install {
+  background: transparent;
+  color: rgba(255,255,255,0.85);
+  padding: 4px;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+}
+
+@keyframes slideUpIn {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }

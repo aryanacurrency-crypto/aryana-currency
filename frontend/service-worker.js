@@ -1,13 +1,13 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Service Worker v2
-   Network-First · Cache-Busting · Admin-Aware
+   ARYANA CURRENCY — Service Worker
+   Version: v5 · Network-First · Admin-Aware · PWA
    ═══════════════════════════════════════ */
 
-/* ⚠️ هر بار که فایل‌های CSS/JS رو تغییر دادی، این عدد رو +1 کن */
-const CACHE_VERSION = 'v3';
+/* ⚠️ هر بار فایل CSS/JS/HTML تغییر کرد، این عدد رو +1 کن */
+const CACHE_VERSION = 'v5';
 const CACHE_NAME = `aryana-cache-${CACHE_VERSION}`;
 
-/* ─── فایل‌هایی که همیشه باید کش بشن (App Shell) ─── */
+/* ─── App Shell (کاربر) ─── */
 const CORE_ASSETS = [
   '/',
   '/index.html',
@@ -41,14 +41,16 @@ const CORE_ASSETS = [
   '/assets/js/login.js',
   '/assets/js/register.js',
 
-  /* Images */
+  /* Images & Manifest */
   '/assets/images/logo.png',
   '/assets/images/icon-192.png',
   '/assets/images/icon-512.png',
+  '/manifest.json',
 ];
 
-/* ─── فایل‌های Admin (کش جداگانه — فقط اولین بار که باز شد) ─── */
+/* ─── Admin Panel ─── */
 const ADMIN_ASSETS = [
+  /* HTML */
   '/pages/admin/index.html',
   '/pages/admin/users.html',
   '/pages/admin/orders.html',
@@ -61,11 +63,13 @@ const ADMIN_ASSETS = [
   '/pages/admin/p2p-orders.html',
   '/pages/admin/p2p-order-detail.html',
 
+  /* CSS */
   '/assets/css/admin-v2.css',
   '/assets/css/admin-fix.css',
   '/assets/css/wheel-admin-v2.css',
   '/assets/css/p2p.css',
 
+  /* JS */
   '/assets/js/admin-v2/common.js',
   '/assets/js/admin-v2/dashboard.js',
   '/assets/js/admin-v2/users.js',
@@ -78,6 +82,10 @@ const ADMIN_ASSETS = [
   '/assets/js/admin-v2/wheel-settings.js',
   '/assets/js/admin-v2/p2p-orders.js',
   '/assets/js/admin-v2/p2p-order-detail.js',
+  '/assets/js/admin-pwa.js',
+
+  /* Admin Manifest */
+  '/manifest-admin.json',
 ];
 
 /* ═══════════════════════════════════════
@@ -87,17 +95,20 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      // اول CORE رو کش کن، بعد ADMIN (اگه شکست خورد، ادامه بده)
-      return cache
-        .addAll(CORE_ASSETS)
-        .catch((err) => {
-          console.warn('[SW] Some CORE assets failed:', err);
-        })
-        .then(() => cache.addAll(ADMIN_ASSETS))
-        .catch((err) => {
-          console.warn('[SW] Some ADMIN assets failed:', err);
-        });
+    caches.open(CACHE_NAME).then(async (cache) => {
+      try {
+        await cache.addAll(CORE_ASSETS);
+        console.log('[SW] CORE cached:', CORE_ASSETS.length);
+      } catch (err) {
+        console.warn('[SW] Some CORE assets failed:', err);
+      }
+
+      try {
+        await cache.addAll(ADMIN_ASSETS);
+        console.log('[SW] ADMIN cached:', ADMIN_ASSETS.length);
+      } catch (err) {
+        console.warn('[SW] Some ADMIN assets failed:', err);
+      }
     })
   );
 });
@@ -107,18 +118,17 @@ self.addEventListener('install', (event) => {
    ═══════════════════════════════════════ */
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches
-      .keys()
-      .then((keys) => {
-        return Promise.all(
+    caches.keys()
+      .then((keys) =>
+        Promise.all(
           keys
             .filter((key) => key !== CACHE_NAME)
             .map((key) => {
               console.log('[SW] Deleting old cache:', key);
               return caches.delete(key);
             })
-        );
-      })
+        )
+      )
       .then(() => self.clients.claim())
   );
 });
@@ -129,42 +139,32 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
 
-  // فقط GET
   if (request.method !== 'GET') return;
-
-  // API و Render رو کش نکن
   if (request.url.includes('/api/')) return;
   if (request.url.includes('onrender.com')) return;
-
-  // Don't cache external resources (Google Fonts, etc.) - let browser handle
   if (!request.url.startsWith(self.location.origin)) return;
 
-  // Network First
   event.respondWith(
     fetch(request)
       .then((response) => {
         if (response && response.status === 200) {
-          const responseClone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(request, responseClone).catch(() => {});
-          });
+          const clone = response.clone();
+          caches.open(CACHE_NAME)
+            .then((cache) => cache.put(request, clone).catch(() => {}));
         }
         return response;
       })
-      .catch(() => {
-        return caches.match(request).then((cached) => {
+      .catch(() =>
+        caches.match(request).then((cached) => {
           if (cached) return cached;
 
-          // Fallback برای navigation
           if (request.mode === 'navigate' || request.destination === 'document') {
-            // اگه URL شامل /pages/admin/ بود، به admin/index.html
             if (request.url.includes('/pages/admin/')) {
               return caches.match('/pages/admin/index.html');
             }
             return caches.match('/pages/dashboard.html');
           }
 
-          // Fallback برای CSS/JS
           if (request.destination === 'style' || request.destination === 'script') {
             return new Response('', {
               status: 503,
@@ -177,13 +177,13 @@ self.addEventListener('fetch', (event) => {
             status: 503,
             statusText: 'Service Unavailable',
           });
-        });
-      })
+        })
+      )
   );
 });
 
 /* ═══════════════════════════════════════
-   MESSAGE (از صفحه)
+   MESSAGE
    ═══════════════════════════════════════ */
 self.addEventListener('message', (event) => {
   if (!event.data) return;
@@ -194,9 +194,9 @@ self.addEventListener('message', (event) => {
 
   if (event.data.type === 'CLEAR_CACHE') {
     event.waitUntil(
-      caches.keys().then((keys) => {
-        return Promise.all(keys.map((key) => caches.delete(key)));
-      })
+      caches.keys().then((keys) =>
+        Promise.all(keys.map((key) => caches.delete(key)))
+      )
     );
   }
 

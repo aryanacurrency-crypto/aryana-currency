@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Settings — Aryana Currency Admin">
+  <meta name="theme-color" content="#1E40AF">
+
+  <title>Settings | Admin — ARYANA CURRENCY</title>
+
+  <link rel="icon" type="image/png" href="../../assets/images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../assets/css/theme-v2.css">
+  <link rel="stylesheet" href="../../assets/css/ui-v2.css">
+  <link rel="stylesheet" href="../../assets/css/dashboard-v2.css">
+  <link rel="stylesheet" href="../../assets/css/admin-v2.css">
+  <link rel="stylesheet" href="../../assets/css/admin-fix.css">
+  <link rel="stylesheet" href="../../assets/css/notifications.css">
+</head>
+<body data-admin-page="settings">
+
+  <header class="admin-topbar">
+    <div class="admin-topbar-inner">
+      <a href="index.html" class="admin-brand">
+        <img src="../../assets/images/logo.png" alt="ARYANA CURRENCY">
+        <div class="admin-brand-text">
+          ARYANA
+          <small>ADMIN PANEL</small>
+        </div>
+      </a>
+      <div class="admin-topbar-actions">
+        <a href="../dashboard.html" class="icon-btn" title="Back to site">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/>
+            <polyline points="12 19 5 12 12 5"/>
+          </svg>
+        </a>
+        <button type="button" class="icon-btn" id="refreshBtn" title="Refresh">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"/>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+          </svg>
+        </button>
+        <button type="button" class="icon-btn" id="logoutBtn" title="Logout">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="admin-layout">
+    <aside class="admin-sidebar"></aside>
+
+    <main class="admin-main">
+      <div class="admin-page-header">
+        <h1>Settings</h1>
+        <p>Manage contact info and payment details</p>
+      </div>
+
+      <div id="loadingBox" class="admin-empty">
+        <div class="spinner spinner-lg" style="margin: 0 auto;"></div>
+      </div>
+
+      <div id="contentBox" style="display:none;">
+
+        <div class="settings-tabs">
+          <button type="button" class="settings-tab active" data-tab="contact">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            Contact Info
+          </button>
+          <button type="button" class="settings-tab" data-tab="payment">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+              <line x1="1" y1="10" x2="23" y2="10"/>
+            </svg>
+            Payment Info
+          </button>
+        </div>
+
+        <!-- ═══ Tab: Contact Info ═══ -->
+        <div class="settings-panel active" id="panelContact">
+          <div class="admin-detail-card">
+            <div class="admin-detail-card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              Contact Info (Public)
+            </div>
+
+            <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: var(--space-4);">
+              This info appears on your Contact page.
+            </p>
+
+            <form id="contactForm">
+              <div class="settings-grid">
+                <div class="field">
+                  <label class="field-label" for="contactEmail">Email</label>
+                  <input type="email" id="contactEmail" class="field-input" placeholder="support@aryana.af">
+                </div>
+
+                <div class="field">
+                  <label class="field-label" for="contactTelegramChannel">
+                    Telegram Channel
+                    <span class="settings-badge blue">URL</span>
+                  </label>
+                  <input type="text" id="contactTelegramChannel" class="field-input mono-input" placeholder="https://t.me/aryana_currency">
+                </div>
+
+                <div class="field">
+                  <label class="field-label" for="contactTelegramSupport">
+                    Telegram Support
+                    <span class="settings-badge gold">@username</span>
+                  </label>
+                  <input type="text" id="contactTelegramSupport" class="field-input mono-input" placeholder="@aryana_support">
+                </div>
+
+                <div class="field">
+                  <label class="field-label" for="contactAddress">Address</label>
+                  <input type="text" id="contactAddress" class="field-input" placeholder="Kabul, Afghanistan">
+                </div>
+              </div>
+
+              <div class="settings-actions">
+                <button type="submit" class="admin-btn gold" id="saveContactBtn">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                    <polyline points="17 21 17 13 7 13 7 21"/>
+                    <polyline points="7 3 7 8 15 8"/>
+                  </svg>
+                  Save Contact Info
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- ═══ Tab: Payment Info ═══ -->
+        <div class="settings-panel" id="panelPayment">
+          <div class="admin-detail-card">
+            <div class="admin-detail-card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                <line x1="1" y1="10" x2="23" y2="10"/>
+              </svg>
+              Hesab Pay (AFN)
+            </div>
+
+            <div class="settings-grid">
+              <div class="field">
+                <label class="field-label" for="hesabPayNumber">Hesab Pay Number</label>
+                <input type="text" id="hesabPayNumber" class="field-input" placeholder="0700123456">
+              </div>
+
+              <div class="field">
+                <label class="field-label" for="hesabPayHolder">Account Holder Name</label>
+                <input type="text" id="hesabPayHolder" class="field-input" placeholder="ARYANA CURRENCY">
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-detail-card">
+            <div class="admin-detail-card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              USDT Wallet Addresses
+            </div>
+
+            <div class="settings-grid">
+              <div class="field" style="grid-column: 1 / -1;">
+                <label class="field-label" for="walletTrc20">
+                  TRC20 (Tron) <span class="settings-badge green">TRC20</span>
+                </label>
+                <input type="text" id="walletTrc20" class="field-input mono-input" placeholder="TXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+              </div>
+
+              <div class="field" style="grid-column: 1 / -1;">
+                <label class="field-label" for="walletBep20">
+                  BEP20 (BNB Chain) <span class="settings-badge gold">BEP20</span>
+                </label>
+                <input type="text" id="walletBep20" class="field-input mono-input" placeholder="0xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+              </div>
+
+              <div class="field" style="grid-column: 1 / -1;">
+                <label class="field-label" for="walletErc20">
+                  ERC20 (Ethereum) <span class="settings-badge blue">ERC20</span>
+                </label>
+                <input type="text" id="walletErc20" class="field-input mono-input" placeholder="0xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-detail-card">
+            <div class="admin-detail-card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              Limits
+            </div>
+
+            <div class="settings-grid">
+              <div class="field">
+                <label class="field-label" for="minDepositUsdt">Min Deposit (USDT)</label>
+                <input type="number" id="minDepositUsdt" class="field-input" step="0.01" min="0" placeholder="10">
+              </div>
+
+              <div class="field">
+                <label class="field-label" for="minWithdrawUsdt">Min Withdraw (USDT)</label>
+                <input type="number" id="minWithdrawUsdt" class="field-input" step="0.01" min="0" placeholder="10">
+              </div>
+
+              <div class="field">
+                <label class="field-label" for="minWithdrawAfn">Min Withdraw (AFN)</label>
+                <input type="number" id="minWithdrawAfn" class="field-input" step="1" min="0" placeholder="500">
+              </div>
+            </div>
+
+            <div class="settings-actions">
+              <button type="button" class="admin-btn gold" id="savePaymentBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                  <polyline points="17 21 17 13 7 13 7 21"/>
+                  <polyline points="7 3 7 8 15 8"/>
+                </svg>
+                Save Payment Info
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../../assets/js/config.js"></script>
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/theme.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/api.js"></script>
+  <script src="../../assets/js/notifications.js"></script>
+  <script src="../../assets/js/admin-v2/common.js"></script>
+  <script src="../../assets/js/admin-v2/settings.js"></script>
+</body>
+</html>

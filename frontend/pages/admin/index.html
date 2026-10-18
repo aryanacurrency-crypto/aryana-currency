@@ -1,10 +1,15 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Admin Dashboard â€” Aryana Currency">
+  <meta name="description" content="Admin Dashboard — Aryana Currency">
   <meta name="theme-color" content="#1E40AF">
+<link rel="manifest" href="/manifest-admin.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ARYANA Admin">
+<link rel="apple-touch-icon" href="/assets/images/icon-192.png">
 
   <title>Admin | ARYANA CURRENCY</title>
 
@@ -81,9 +86,9 @@
                 </svg>
               </div>
             </div>
-            <div class="admin-stat-value" id="statUsers">â€”</div>
+            <div class="admin-stat-value" id="statUsers">—</div>
             <div class="admin-stat-label">Total Users</div>
-            <div class="admin-stat-sub" id="statUsersSub">â€” verified</div>
+            <div class="admin-stat-sub" id="statUsersSub">— verified</div>
           </div>
 
           <div class="admin-stat-card green">
@@ -95,9 +100,9 @@
                 </svg>
               </div>
             </div>
-            <div class="admin-stat-value" id="statCompletedOrders">â€”</div>
+            <div class="admin-stat-value" id="statCompletedOrders">—</div>
             <div class="admin-stat-label">Completed Orders</div>
-            <div class="admin-stat-sub" id="statCompletedOrdersSub">â€” USDT traded</div>
+            <div class="admin-stat-sub" id="statCompletedOrdersSub">— USDT traded</div>
           </div>
 
           <div class="admin-stat-card red">
@@ -109,7 +114,7 @@
                 </svg>
               </div>
             </div>
-            <div class="admin-stat-value" id="statPendingOrders">â€”</div>
+            <div class="admin-stat-value" id="statPendingOrders">—</div>
             <div class="admin-stat-label">Pending Review</div>
             <div class="admin-stat-sub">Orders awaiting verification</div>
           </div>
@@ -123,7 +128,7 @@
                 </svg>
               </div>
             </div>
-            <div class="admin-stat-value" id="statFees">â€”</div>
+            <div class="admin-stat-value" id="statFees">—</div>
             <div class="admin-stat-label">Total Fees (AFN)</div>
             <div class="admin-stat-sub">From completed orders</div>
           </div>
@@ -139,12 +144,12 @@
               Orders Awaiting Review
               <span class="count-badge" id="pendingCountBadge">0</span>
             </h2>
-            <a href="orders.html" class="admin-section-link">View all â†’</a>
+            <a href="orders.html" class="admin-section-link">View all ?</a>
           </div>
 
           <div class="admin-table-wrap" id="pendingWrap">
             <div class="admin-empty" id="pendingEmpty" style="display:none;">
-              <div class="admin-empty-icon">âœ“</div>
+              <div class="admin-empty-icon">?</div>
               <h3>No pending orders</h3>
               <p>All orders have been processed</p>
             </div>
@@ -177,27 +182,27 @@
 
           <div class="admin-stats-grid">
             <div class="admin-stat-card">
-              <div class="admin-stat-value" id="statKycPending">â€”</div>
+              <div class="admin-stat-value" id="statKycPending">—</div>
               <div class="admin-stat-label">KYC Pending</div>
             </div>
             <div class="admin-stat-card">
-              <div class="admin-stat-value" id="statWithdrawalsPending">â€”</div>
+              <div class="admin-stat-value" id="statWithdrawalsPending">—</div>
               <div class="admin-stat-label">Withdrawals Pending</div>
             </div>
             <div class="admin-stat-card">
-              <div class="admin-stat-value" id="statTotalOrders">â€”</div>
+              <div class="admin-stat-value" id="statTotalOrders">—</div>
               <div class="admin-stat-label">Total Orders</div>
             </div>
             <div class="admin-stat-card">
-              <div class="admin-stat-value" id="statUsdtTraded">â€”</div>
+              <div class="admin-stat-value" id="statUsdtTraded">—</div>
               <div class="admin-stat-label">Total USDT Traded</div>
             </div>
             <div class="admin-stat-card">
-              <div class="admin-stat-value" id="statP2PPending" style="color:var(--navy-500);">â€”</div>
+              <div class="admin-stat-value" id="statP2PPending" style="color:var(--navy-500);">—</div>
               <div class="admin-stat-label">P2P Pending Review</div>
             </div>
             <div class="admin-stat-card">
-              <div class="admin-stat-value" id="statP2PDisputed" style="color:var(--red-500);">â€”</div>
+              <div class="admin-stat-value" id="statP2PDisputed" style="color:var(--red-500);">—</div>
               <div class="admin-stat-label">P2P Disputed</div>
             </div>
           </div>
@@ -215,5 +220,6 @@
   <script src="../../assets/js/notifications.js"></script>
   <script src="../../assets/js/admin-v2/common.js"></script>
   <script src="../../assets/js/admin-v2/dashboard.js"></script>
+<script src="../../assets/js/admin-pwa.js"></script>
 </body>
 </html>

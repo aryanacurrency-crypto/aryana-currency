@@ -1,12 +1,17 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Rates Management â€” Aryana Currency Admin">
+  <meta name="description" content="Rates Management — Aryana Currency Admin">
   <meta name="theme-color" content="#1E40AF">
+<link rel="manifest" href="/manifest-admin.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ARYANA Admin">
+<link rel="apple-touch-icon" href="/assets/images/icon-192.png">
 
-  <title>Rates | Admin â€” ARYANA CURRENCY</title>
+  <title>Rates | Admin — ARYANA CURRENCY</title>
 
   <link rel="icon" type="image/png" href="../../assets/images/logo.png">
 
@@ -79,7 +84,7 @@
               Platform Buys At
             </div>
             <div style="font-size:36px; font-weight:800; color:var(--green-500); letter-spacing:-1.5px; font-variant-numeric:tabular-nums;" id="currentBuy">
-              â€” AFN
+              — AFN
             </div>
             <div style="font-size:11px; color:var(--text-tertiary); margin-top:4px;">
               When user sells USDT
@@ -91,7 +96,7 @@
               Platform Sells At
             </div>
             <div style="font-size:36px; font-weight:800; color:var(--navy-500); letter-spacing:-1.5px; font-variant-numeric:tabular-nums;" id="currentSell">
-              â€” AFN
+              — AFN
             </div>
             <div style="font-size:11px; color:var(--text-tertiary); margin-top:4px;">
               When user buys USDT
@@ -100,8 +105,8 @@
         </div>
 
         <div style="display:flex; justify-content:space-between; align-items:center; padding-top:var(--space-4); border-top:1px solid var(--border-subtle); font-size:12px; color:var(--text-secondary);">
-          <span>Last updated: <strong id="currentUpdated" style="color:var(--text-primary);">â€”</strong></span>
-          <span id="spreadBadge" style="color:var(--navy-500); font-weight:700;">â€”</span>
+          <span>Last updated: <strong id="currentUpdated" style="color:var(--text-primary);">—</strong></span>
+          <span id="spreadBadge" style="color:var(--navy-500); font-weight:700;">—</span>
         </div>
       </div>
 
@@ -224,5 +229,6 @@
   <script src="../../assets/js/notifications.js"></script>
   <script src="../../assets/js/admin-v2/common.js"></script>
   <script src="../../assets/js/admin-v2/rates.js"></script>
+<script src="../../assets/js/admin-pwa.js"></script>
 </body>
 </html>

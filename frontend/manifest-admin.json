@@ -1,0 +1,66 @@
+{
+  "name": "ARYANA Admin",
+  "short_name": "ARYANA Admin",
+  "description": "Admin Panel for ARYANA CURRENCY — Exchange Management",
+  "id": "/pages/admin/",
+  "start_url": "/pages/admin/index.html",
+  "scope": "/pages/admin/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#FAFBFF",
+  "theme_color": "#1E40AF",
+  "lang": "fa",
+  "dir": "rtl",
+  "categories": ["finance", "business", "productivity"],
+  "icons": [
+    {
+      "src": "/assets/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Orders",
+      "short_name": "Orders",
+      "description": "View pending orders",
+      "url": "/pages/admin/orders.html",
+      "icons": [{ "src": "/assets/images/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "KYC",
+      "short_name": "KYC",
+      "description": "Review KYC requests",
+      "url": "/pages/admin/kyc.html",
+      "icons": [{ "src": "/assets/images/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Withdrawals",
+      "short_name": "Withdrawals",
+      "description": "Process withdrawals",
+      "url": "/pages/admin/withdrawals.html",
+      "icons": [{ "src": "/assets/images/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "P2P Orders",
+      "short_name": "P2P",
+      "description": "Manage P2P orders",
+      "url": "/pages/admin/p2p-orders.html",
+      "icons": [{ "src": "/assets/images/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
