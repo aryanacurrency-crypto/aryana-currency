@@ -1,34 +1,24 @@
 /* ═══════════════════════════════════════
    ARYANA CURRENCY — Admin v2 Dashboard
+   Uses AdminCommon for shared logic
    ═══════════════════════════════════════ */
 
+window.ADMIN_SKIP_AUTO_INIT = true;
+
 document.addEventListener('DOMContentLoaded', async () => {
-  Auth.requireLogin();
-  if (!Auth.isAdmin()) {
-    window.location.href = '../dashboard.html';
-    return;
-  }
+  // common.js خودش auth + sidebar + theme + i18n رو انجام می‌ده
+  await AdminCommon.init();
 
-  Theme.init();
-
-  const initialLang = I18N.detectInitialLang();
-  await I18N.load(initialLang);
-  I18N.apply();
-
-  // Logout
-  const logoutBtn = document.getElementById('logoutBtn');
-  if (logoutBtn) logoutBtn.addEventListener('click', () => Auth.logout());
-
-  // Refresh
+  // دکمه Refresh
   const refreshBtn = document.getElementById('refreshBtn');
   if (refreshBtn) {
     refreshBtn.addEventListener('click', () => {
       loadAll();
-      Notify.info('Refreshed');
+      if (typeof Notify !== 'undefined') Notify.info('Refreshed');
     });
   }
 
-  // Load all
+  // لود داده‌ها
   await loadAll();
 });
 
@@ -46,16 +36,13 @@ async function loadAll() {
       loadP2PStats(),
     ]);
 
-    document.getElementById('loadingBox').style.display = 'none';
-    document.getElementById('contentBox').style.display = 'block';
-
-    updateBadges();
-
+    AdminCommon.hideLoading();
   } catch (err) {
     console.error('Load failed:', err);
-    document.getElementById('loadingBox').innerHTML = `
-      <p style="color:var(--red); font-size:13px;">Failed to load dashboard.</p>
-    `;
+    const loading = document.getElementById('loadingBox');
+    if (loading) {
+      loading.innerHTML = `<p style="color:var(--red); font-size:13px;">Failed to load dashboard.</p>`;
+    }
   }
 }
 
@@ -63,12 +50,9 @@ async function loadAll() {
               Stats
    ═══════════════════════════════════════ */
 
-let statsData = {};
-
 async function loadStats() {
   try {
     const stats = await API.getAdminStats();
-    statsData = stats;
 
     const fmt = (n, d = 0) => Number(n).toLocaleString('en-US', {
       minimumFractionDigits: d,
@@ -79,14 +63,9 @@ async function loadStats() {
     setText('statCompletedOrders', fmt(stats.completed_orders));
     setText('statPendingOrders', fmt(stats.pending_orders));
     setText('statFees', fmt(stats.total_fees_afn, 0));
-
-    // Subs
     setText('statCompletedOrdersSub', `${fmt(stats.total_usdt_traded, 2)} USDT traded`);
-
-    // Overview stats
     setText('statTotalOrders', fmt(stats.total_orders));
     setText('statUsdtTraded', `${fmt(stats.total_usdt_traded, 0)} USDT`);
-
   } catch (err) {
     console.error('Stats load failed:', err);
   }
@@ -97,17 +76,7 @@ async function loadKycStats() {
     const stats = await API.getKycStats();
     setText('statKycPending', stats.pending_documents || 0);
     setText('statUsersSub', `${stats.verified_users || 0} verified`);
-
-    // Badge
-    const badge = document.getElementById('countKyc');
-    if (badge) {
-      if (stats.pending_documents > 0) {
-        badge.textContent = stats.pending_documents;
-        badge.style.display = 'inline-block';
-      } else {
-        badge.style.display = 'none';
-      }
-    }
+    AdminCommon.setBadge('kyc', stats.pending_documents || 0);
   } catch (err) {
     console.error('KYC stats load failed:', err);
   }
@@ -117,26 +86,12 @@ async function loadWithdrawalStats() {
   try {
     const stats = await API.request('/withdrawals/admin/stats');
     setText('statWithdrawalsPending', stats.pending || 0);
-
-    // Badge
-    const badge = document.getElementById('countWithdrawals');
-    if (badge) {
-      if (stats.pending > 0) {
-        badge.textContent = stats.pending;
-        badge.style.display = 'inline-block';
-      } else {
-        badge.style.display = 'none';
-      }
-    }
+    AdminCommon.setBadge('withdrawals', stats.pending || 0);
   } catch (err) {
     console.error('Withdrawal stats load failed:', err);
     setText('statWithdrawalsPending', '0');
   }
 }
-
-/* ═══════════════════════════════════════
-              P2P Stats
-   ═══════════════════════════════════════ */
 
 async function loadP2PStats() {
   try {
@@ -145,23 +100,9 @@ async function loadP2PStats() {
       API.getAdminP2PDisputed().catch(() => []),
     ]);
 
-    const totalPending = pending.length + disputed.length;
-
-    // Badge توی sidebar
-    const badge = document.getElementById('countP2P');
-    if (badge) {
-      if (totalPending > 0) {
-        badge.textContent = totalPending;
-        badge.style.display = 'inline-block';
-      } else {
-        badge.style.display = 'none';
-      }
-    }
-
-    // Stat cards
     setText('statP2PPending', pending.length);
     setText('statP2PDisputed', disputed.length);
-
+    AdminCommon.setBadge('p2p', pending.length + disputed.length);
   } catch (err) {
     console.error('P2P stats load failed:', err);
     setText('statP2PPending', '0');
@@ -179,23 +120,10 @@ async function loadPendingOrders() {
     const empty = document.getElementById('pendingEmpty');
     const table = document.getElementById('pendingTable');
     const body = document.getElementById('pendingBody');
-    const badge = document.getElementById('countOrders');
     const countBadge = document.getElementById('pendingCountBadge');
 
-    // Badge sidebar
-    if (badge) {
-      if (orders.length > 0) {
-        badge.textContent = orders.length;
-        badge.style.display = 'inline-block';
-      } else {
-        badge.style.display = 'none';
-      }
-    }
-
-    // Count badge section
-    if (countBadge) {
-      countBadge.textContent = orders.length;
-    }
+    if (countBadge) countBadge.textContent = orders.length;
+    AdminCommon.setBadge('orders', orders.length);
 
     if (!orders.length) {
       if (empty) empty.style.display = 'block';
@@ -211,16 +139,14 @@ async function loadPendingOrders() {
       const tr = document.createElement('tr');
       tr.style.cursor = 'pointer';
       tr.onclick = () => {
-        window.location.href = `order-detail-v2.html?id=${order.id}`;
+        window.location.href = `order-detail.html?id=${order.id}`;
       };
 
       const isBuy = order.side === 'BUY';
-
       const fmt = (n, d = 2) => Number(n).toLocaleString('en-US', {
         minimumFractionDigits: d,
         maximumFractionDigits: d,
       });
-
       const date = new Date(order.created_at).toLocaleDateString('en-US', {
         month: 'short',
         day: 'numeric',
@@ -230,31 +156,20 @@ async function loadPendingOrders() {
 
       tr.innerHTML = `
         <td><span class="cell-mono">${order.reference}</span></td>
-        <td>
-          <span class="admin-badge ${isBuy ? 'green' : 'red'}">
-            ${isBuy ? '▲ BUY' : '▼ SELL'}
-          </span>
-        </td>
-        <td>
-          <strong>${fmt(order.amount_usdt)}</strong>
-          <span class="cell-muted"> USDT</span>
-        </td>
-        <td>
-          <span class="admin-badge blue">In Review</span>
-        </td>
+        <td><span class="admin-badge ${isBuy ? 'green' : 'red'}">${isBuy ? '▲ BUY' : '▼ SELL'}</span></td>
+        <td><strong>${fmt(order.amount_usdt)}</strong><span class="cell-muted"> USDT</span></td>
+        <td><span class="admin-badge blue">In Review</span></td>
         <td class="cell-muted">${date}</td>
         <td>
           <div class="admin-actions">
-            <button class="admin-btn gold" onclick="event.stopPropagation(); window.location.href='order-detail-v2.html?id=${order.id}'">
+            <button type="button" class="admin-btn gold" onclick="event.stopPropagation(); window.location.href='order-detail.html?id=${order.id}'">
               Review →
             </button>
           </div>
         </td>
       `;
-
       body.appendChild(tr);
     });
-
   } catch (err) {
     console.error('Pending orders load failed:', err);
   }
@@ -263,10 +178,6 @@ async function loadPendingOrders() {
 /* ═══════════════════════════════════════
               Helpers
    ═══════════════════════════════════════ */
-
-function updateBadges() {
-  // already handled in individual loads
-}
 
 function setText(id, value) {
   const el = document.getElementById(id);
