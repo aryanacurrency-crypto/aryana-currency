@@ -142,7 +142,6 @@ function updateRateUI(rate) {
     const activeRate = currentSide === 'BUY' ? sellPrice : buyPrice;
     badge.textContent = `${fmt(activeRate)} AFN`;
 
-    // Flash effect
     if (previousRate) {
       const prev = currentSide === 'BUY'
         ? Number(previousRate.sell_price_afn)
@@ -185,7 +184,6 @@ function updateRateUI(rate) {
     }
   }
 
-  // ─── Live Rate Label (pair) ───
   const label = document.getElementById('liveRateLabel');
   if (label) {
     label.textContent = 'USDT / AFN';
@@ -196,7 +194,7 @@ function flashElement(el, newVal, oldVal) {
   if (!el || newVal === oldVal) return;
 
   el.classList.remove('flash-up', 'flash-down');
-  void el.offsetWidth; // reflow
+  void el.offsetWidth;
 
   if (newVal > oldVal) {
     el.classList.add('flash-up');
@@ -229,7 +227,6 @@ function drawSparkline() {
 
   let data = rateHistory.slice();
 
-  // اگه data کم بود، مصنوعی بساز
   if (data.length < 2) {
     data = [66.5, 66.6, 66.7, 66.65, 66.8, 66.75, 66.85, 66.80];
   }
@@ -291,10 +288,8 @@ function updateBalanceDisplay() {
   const payBalanceEl = document.getElementById('payBalance');
 
   if (currentSide === 'BUY') {
-    // کاربر AFN میده
     if (payBalanceEl) payBalanceEl.textContent = `${fmt(afnBal)} AFN`;
   } else {
-    // کاربر USDT میده
     if (payBalanceEl) payBalanceEl.textContent = `${fmt(usdtBal)} USDT`;
   }
 
@@ -321,16 +316,13 @@ function setupTabs() {
 function applySide() {
   const isBuy = currentSide === 'BUY';
 
-  // ─── Tabs ───
   document.querySelectorAll('.trade-tab').forEach((t) => {
     t.classList.toggle('active', t.dataset.side === currentSide);
   });
 
-  // ─── Titles ───
   setText('formTitle', isBuy ? 'Buy USDT' : 'Sell USDT');
   setText('stepsTitle', isBuy ? 'How to Buy' : 'How to Sell');
 
-  // ─── Submit Button ───
   const submitBtn = document.getElementById('submitBtn');
   if (submitBtn) {
     submitBtn.dataset.side = currentSide;
@@ -340,9 +332,7 @@ function applySide() {
     }
   }
 
-  // ─── Pay/Receive ───
   if (isBuy) {
-    // کاربر AFN میده، USDT میگیره
     setText('payLabel', 'You Pay');
     setText('receiveLabel', 'You Receive');
     setText('payCurrency', 'AFN');
@@ -360,7 +350,6 @@ function applySide() {
     if (badge && rate) badge.textContent = `${fmtNum(rate)} AFN`;
 
   } else {
-    // کاربر USDT میده، AFN میگیره
     setText('payLabel', 'You Pay');
     setText('receiveLabel', 'You Receive');
     setText('payCurrency', 'USDT');
@@ -378,19 +367,16 @@ function applySide() {
     if (badge && rate) badge.textContent = `${fmtNum(rate)} AFN`;
   }
 
-  // ─── Reset input ───
   const input = document.getElementById('amountUsdt');
   if (input) {
     input.value = '';
     input.placeholder = '0';
   }
 
-  // ─── Reset quick amounts ───
   document.querySelectorAll('.quick-amount').forEach((btn) => {
     btn.classList.remove('active');
   });
 
-  // ─── Balance ───
   updateBalanceDisplay();
 }
 
@@ -410,10 +396,8 @@ function setupInputs() {
   if (!input) return;
 
   input.addEventListener('input', (e) => {
-    // فقط اعداد و نقطه
     let value = e.target.value.replace(/[^\d.]/g, '');
 
-    // فقط یه نقطه
     const parts = value.split('.');
     if (parts.length > 2) {
       value = parts[0] + '.' + parts.slice(1).join('');
@@ -422,7 +406,6 @@ function setupInputs() {
     e.target.value = value;
     calculate();
 
-    // پاک کردن active از quick amounts
     document.querySelectorAll('.quick-amount').forEach((btn) => {
       if (parseFloat(btn.dataset.amount) !== parseFloat(value)) {
         btn.classList.remove('active');
@@ -441,7 +424,6 @@ function setupQuickAmounts() {
 
       input.value = btn.dataset.amount;
 
-      // Active state
       document.querySelectorAll('.quick-amount').forEach((b) => b.classList.remove('active'));
       btn.classList.add('active');
 
@@ -487,7 +469,6 @@ function calculate() {
     maximumFractionDigits: 2,
   });
 
-  // ─── حالت خالی ───
   if (amount <= 0) {
     if (output) output.value = '0';
     if (sumRate) sumRate.textContent = `${fmt(rate)} AFN`;
@@ -498,11 +479,10 @@ function calculate() {
   }
 
   if (isBuy) {
-    // کاربر AFN میده، USDT میگیره
-    const totalAfn = amount;                    // AFN کاربر میده
-    const grossUsdt = totalAfn / rate;          // USDT قبل از کارمزد
-    const feeAfn = totalAfn * 0.015;            // کارمزد به AFN
-    const netUsdt = (totalAfn - feeAfn) / rate; // USDT بعد از کارمزد
+    const totalAfn = amount;
+    const grossUsdt = totalAfn / rate;
+    const feeAfn = totalAfn * 0.015;
+    const netUsdt = (totalAfn - feeAfn) / rate;
 
     if (output) output.value = fmt(netUsdt);
     if (sumRate) sumRate.textContent = `${fmt(rate)} AFN`;
@@ -511,11 +491,10 @@ function calculate() {
     if (sumTotal) sumTotal.textContent = `${fmt(totalAfn)} AFN`;
 
   } else {
-    // کاربر USDT میده، AFN میگیره
-    const totalUsdt = amount;                   // USDT کاربر میده
-    const grossAfn = totalUsdt * rate;          // AFN قبل از کارمزد
-    const feeAfn = grossAfn * 0.015;            // کارمزد به AFN
-    const netAfn = grossAfn - feeAfn;           // AFN بعد از کارمزد
+    const totalUsdt = amount;
+    const grossAfn = totalUsdt * rate;
+    const feeAfn = grossAfn * 0.015;
+    const netAfn = grossAfn - feeAfn;
 
     if (output) output.value = fmt(netAfn);
     if (sumRate) sumRate.textContent = `${fmt(rate)} AFN`;
@@ -540,10 +519,17 @@ function setupForm() {
     e.preventDefault();
     if (errorBox) errorBox.style.display = 'none';
 
+    // ─── 🔒 KYC GATE ───
+    const user = Auth.getUser();
+    if (!user || user.kyc_status !== 'VERIFIED') {
+      showKycModal();
+      return;
+    }
+    // ───────────────────
+
     const input = document.getElementById('amountUsdt');
     const amount = parseFloat(input.value);
 
-    // Validation
     if (!amount || amount <= 0) {
       Notify.warning('Please enter a valid amount.');
       return;
@@ -551,9 +537,7 @@ function setupForm() {
 
     const isBuy = currentSide === 'BUY';
 
-    // حداقل
     if (isBuy) {
-      // کاربر AFN میده → حداقل معادل 10 USDT
       const rate = Number(currentRate.sell_price_afn);
       const minAfn = 10 * rate;
       if (amount < minAfn) {
@@ -561,13 +545,11 @@ function setupForm() {
         return;
       }
     } else {
-      // کاربر USDT میده → حداقل 10 USDT
       if (amount < 10) {
         Notify.warning('Minimum order is 10 USDT.');
         return;
       }
 
-      // چک موجودی USDT
       if (currentWallets) {
         const usdt = currentWallets.usdt || {};
         const avail = Number(usdt.balance || 0) - Number(usdt.locked_balance || 0);
@@ -578,13 +560,11 @@ function setupForm() {
       }
     }
 
-    // Disable button
     btn.disabled = true;
     const orig = btn.innerHTML;
     btn.innerHTML = '<span class="spinner"></span>';
 
     try {
-      // ساخت سفارش
       let amountUsdt;
       if (isBuy) {
         const rate = Number(currentRate.sell_price_afn);
@@ -613,6 +593,78 @@ function setupForm() {
       btn.innerHTML = orig;
     }
   });
+}
+
+/* ═══════════════════════════════════════
+   🛡️ KYC MODAL
+   ═══════════════════════════════════════ */
+
+function showKycModal() {
+  // ساخت مودال به صورت داینامیک
+  const modalHtml = `
+    <div id="kycModal" style="position:fixed;inset:0;background:rgba(15,23,42,0.6);backdrop-filter:blur(4px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;transition:opacity 0.3s ease;">
+      <div class="kyc-modal" style="background:#FFFFFF;border-radius:24px;padding:32px 24px;max-width:400px;width:100%;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,0.1);transform:translateY(20px);transition:transform 0.3s ease;">
+        <div style="width:64px;height:64px;background:#FEF2F2;color:#EF4444;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <h2 style="font-size:20px;font-weight:800;color:#0F172A;margin-bottom:12px;">Identity Verification Required</h2>
+        <p style="font-size:14px;color:#64748B;line-height:1.6;margin-bottom:24px;">
+          To protect your account and comply with regulations, you must complete KYC verification before making deposits or trades.
+        </p>
+        <a href="kyc.html" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:linear-gradient(135deg,#1E40AF,#7C3AED);color:white;font-size:15px;font-weight:700;border-radius:12px;text-decoration:none;transition:transform 0.2s;border:none;cursor:pointer;margin-bottom:12px;">
+          Verify Identity Now
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+        <button type="button" id="closeKycModalBtn" style="display:inline-flex;align-items:center;justify-content:center;width:100%;padding:14px;background:transparent;color:#64748B;font-size:15px;font-weight:700;border-radius:12px;border:none;cursor:pointer;transition:background 0.2s;">
+          Maybe Later
+        </button>
+      </div>
+    </div>
+  `;
+  
+  // اگه مودال قبلاً ساخته نشده، اضافه کن
+  if (!document.getElementById('kycModal')) {
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    
+    // انیمیشن ورود
+    setTimeout(() => {
+      const overlay = document.getElementById('kycModal');
+      if (overlay) {
+        overlay.style.opacity = '1';
+        overlay.querySelector('.kyc-modal').style.transform = 'translateY(0)';
+      }
+    }, 10);
+    
+    // دکمه بستن
+    document.getElementById('closeKycModalBtn').addEventListener('click', () => {
+      closeKycModal();
+    });
+    
+    // کلیک روی بک‌گراند
+    document.getElementById('kycModal').addEventListener('click', (e) => {
+      if (e.target.id === 'kycModal') {
+        closeKycModal();
+      }
+    });
+  }
+}
+
+function closeKycModal() {
+  const overlay = document.getElementById('kycModal');
+  if (overlay) {
+    overlay.style.opacity = '0';
+    overlay.querySelector('.kyc-modal').style.transform = 'translateY(20px)';
+    setTimeout(() => {
+      overlay.remove();
+    }, 300);
+  }
 }
 
 /* ═══════════════════════════════════════
