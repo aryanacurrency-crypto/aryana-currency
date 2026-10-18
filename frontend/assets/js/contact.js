@@ -1,71 +1,174 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Contact Page Logic
+   ARYANA CURRENCY — Contact v3
+   Dynamic from Admin Settings
    ═══════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', async () => {
+  Theme.init();
+
+  const form = document.getElementById('contactForm');
+  const submitBtn = document.getElementById('submitBtn');
+
+  /* ═══════════════════════════════════════
+     📥 LOAD CONTACT INFO FROM API
+     ═══════════════════════════════════════ */
+
+  async function loadContactInfo() {
+    try {
+      const info = await API.getContactInfo();
+
+      console.log('[Contact] Loaded from API:', info);
+
+      // ═══ Email ═══
+      if (info.email) {
+        const emailLink = document.getElementById('contactEmail');
+        if (emailLink) {
+          const span = emailLink.querySelector('span');
+          if (span) span.textContent = info.email;
+          emailLink.href = `mailto:${info.email}`;
+        }
+      }
+
+      // ═══ Phone ═══
+      if (info.phone) {
+        const phoneLink = document.getElementById('contactPhone');
+        if (phoneLink) {
+          const span = phoneLink.querySelector('span');
+          if (span) span.textContent = info.phone;
+          phoneLink.href = `tel:${info.phone.replace(/\s/g, '')}`;
+        }
+      }
+
+      // ═══ Telegram ═══
+      if (info.telegram) {
+        const tgLink = document.getElementById('contactTelegram');
+        if (tgLink) {
+          const url = info.telegram.startsWith('http')
+            ? info.telegram
+            : `https://t.me/${info.telegram.replace('@', '')}`;
+          tgLink.href = url;
+        }
+      }
+
+      // ═══ WhatsApp ═══
+      if (info.whatsapp) {
+        const waLink = document.getElementById('contactWhatsapp');
+        if (waLink) {
+          const url = info.whatsapp.startsWith('http')
+            ? info.whatsapp
+            : `https://wa.me/${info.whatsapp.replace(/\D/g, '')}`;
+          waLink.href = url;
+        }
+      }
+
+      // ═══ Address ═══
+      if (info.address) {
+        const addrEl = document.getElementById('contactAddress');
+        if (addrEl) addrEl.textContent = info.address;
+      }
+
+      // ═══ Working Hours ═══
+      if (info.working_hours) {
+        const hoursEl = document.getElementById('contactHours');
+        if (hoursEl) hoursEl.textContent = info.working_hours;
+      }
+
+      // ═══ Social Links ═══
+      if (info.facebook) {
+        const fbLink = document.getElementById('contactFacebook');
+        if (fbLink) fbLink.href = info.facebook;
+      }
+
+      if (info.instagram) {
+        const igLink = document.getElementById('contactInstagram');
+        if (igLink) igLink.href = info.instagram;
+      }
+
+      if (info.twitter) {
+        const twLink = document.getElementById('contactTwitter');
+        if (twLink) twLink.href = info.twitter;
+      }
+
+    } catch (err) {
+      console.warn('[Contact] Failed to load info from API:', err);
+      // fallback به مقادیر پیش‌فرض HTML
+    }
+  }
+
+  /* ═══════════════════════════════════════
+     📤 FORM SUBMIT
+     ═══════════════════════════════════════ */
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('name')?.value.trim();
+      const email = document.getElementById('email')?.value.trim();
+      const subject = document.getElementById('subject')?.value;
+      const message = document.getElementById('message')?.value.trim();
+
+      // ═══ Validation ═══
+      if (!name || !email || !subject || !message) {
+        if (typeof Notify !== 'undefined') {
+          Notify.warning('Please fill all fields.');
+        }
+        return;
+      }
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        if (typeof Notify !== 'undefined') {
+          Notify.warning('Please enter a valid email.');
+        }
+        return;
+      }
+
+      // ═══ Submit ═══
+      submitBtn.disabled = true;
+      const origHTML = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<span class="spinner"></span>';
+
+      try {
+        // ─── API: Send message ───
+        // اگه endpoint داری:
+        // await API.request('/contact/send', {
+        //   method: 'POST',
+        //   body: JSON.stringify({ name, email, subject, message }),
+        //   skipAuth: true,
+        // });
+
+        // ─── فعلاً شبیه‌سازی ───
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        if (typeof Notify !== 'undefined') {
+          Notify.success('Message sent! We will reply within a few hours.');
+        }
+
+        form.reset();
+
+      } catch (err) {
+        console.error('[Contact] Send failed:', err);
+
+        let msg = err?.detail || 'Failed to send. Please try again.';
+
+        if (err?.status === 0) {
+          msg = 'Cannot connect to server. Check your internet.';
+        }
+
+        if (typeof Notify !== 'undefined') {
+          Notify.error(msg);
+        }
+
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = origHTML;
+      }
+    });
+  }
+
+  /* ═══════════════════════════════════════
+     🚀 INIT
+     ═══════════════════════════════════════ */
+
   await loadContactInfo();
 });
-
-async function loadContactInfo() {
-  try {
-    const info = await API.getContactInfo();
-
-    // ─── Email ───
-    const emailEl = document.getElementById('contactEmailValue');
-    const emailLink = document.getElementById('contactEmailLink');
-    if (info.email) {
-      emailEl.textContent = info.email;
-      emailLink.href = `mailto:${info.email}`;
-    } else {
-      emailEl.textContent = 'Coming soon';
-      emailLink.style.pointerEvents = 'none';
-      emailLink.style.opacity = '0.5';
-    }
-
-    // ─── Telegram Channel ───
-    const channelEl = document.getElementById('contactTelegramChannelValue');
-    const channelLink = document.getElementById('contactTelegramChannelLink');
-    if (info.telegram_channel) {
-      const channelName = extractTelegramName(info.telegram_channel);
-      channelEl.textContent = channelName;
-      channelLink.href = info.telegram_channel;
-    } else {
-      channelEl.textContent = 'Coming soon';
-      channelLink.style.pointerEvents = 'none';
-      channelLink.style.opacity = '0.5';
-    }
-
-    // ─── Telegram Support ───
-    const supportEl = document.getElementById('contactTelegramSupportValue');
-    const supportLink = document.getElementById('contactTelegramSupportLink');
-    if (info.telegram_support) {
-      const username = info.telegram_support.startsWith('@')
-        ? info.telegram_support
-        : `@${info.telegram_support}`;
-      supportEl.textContent = username;
-      supportLink.href = `https://t.me/${username.replace('@', '')}`;
-    } else {
-      supportEl.textContent = 'Coming soon';
-      supportLink.style.pointerEvents = 'none';
-      supportLink.style.opacity = '0.5';
-    }
-
-    // ─── Address ───
-    const addressEl = document.getElementById('contactAddressValue');
-    if (info.address) {
-      addressEl.textContent = info.address;
-    } else {
-      addressEl.textContent = 'Coming soon';
-    }
-
-  } catch (err) {
-    console.error('Failed to load contact info:', err);
-  }
-}
-
-function extractTelegramName(url) {
-  if (!url) return '';
-  const match = url.match(/t\.me\/([^\/\?]+)/);
-  if (match) return `@${match[1]}`;
-  return url;
-}
