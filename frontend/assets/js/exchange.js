@@ -13,16 +13,6 @@ let pollingInterval = null;
 const POLL_INTERVAL = 5000; // 5s
 
 /* ═══════════════════════════════════════
-   🛡️ KYC CHECK HELPER
-   ═══════════════════════════════════════ */
-function isKycVerified() {
-  const user = Auth.getUser();
-  if (!user) return false;
-  const status = String(user.kyc_status || user.kycStatus || '').toLowerCase();
-  return status === 'verified' || status === 'true' || user.is_kyc_verified === true;
-}
-
-/* ═══════════════════════════════════════
    🚀 INIT
    ═══════════════════════════════════════ */
 
@@ -527,7 +517,8 @@ function setupForm() {
     if (errorBox) errorBox.style.display = 'none';
 
     // ─── 🔒 KYC GATE ───
-    if (!isKycVerified()) {
+    const isVerified = await Auth.checkKycVerified();
+    if (!isVerified) {
       showKycModal();
       return;
     }

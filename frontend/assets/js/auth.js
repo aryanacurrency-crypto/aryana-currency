@@ -67,30 +67,43 @@ const Auth = {
 
   // ═══════════════════════════════════════
   //  KYC Verification Check (Server-Side)
-  //  کاملاً بر اساس فیلد is_verified در بک‌اند
+  //  دقیقاً بر اساس فیلد is_verified
   // ═══════════════════════════════════════
   async checkKycVerified() {
+    console.log("🛡️ [KYC] Checking verification status...");
+    
     // 1. چک سریع از روی لوکال استوری
     const user = this.getUser();
-    if (user && user.is_verified === true) {
-      return true;
+    if (user) {
+      console.log("🛡️ [KYC] Local user is_verified:", user.is_verified);
+      if (user.is_verified === true) {
+        console.log("🛡️ [KYC] ✅ Verified from local storage");
+        return true;
+      }
     }
 
-    // 2. اگه لوکال استوری قدیمی بود، مستقیم از سرور می‌پرسیم
+    // 2. اگه لوکال استوری قدیمی بود یا مقدار نداشت، مستقیم از سرور می‌پرسیم
     try {
-      if (typeof API === 'undefined') return false;
+      if (typeof API === 'undefined') {
+        console.log("🛡️ [KYC] ❌ API undefined");
+        return false;
+      }
       
+      console.log("🛡️ [KYC] Fetching from server...");
       const freshUser = await API.me();
       if (freshUser) {
-        this.setUser(freshUser); // آپدیت لوکال استوری برای بارهای بعدی
+        console.log("🛡️ [KYC] Server user is_verified:", freshUser.is_verified);
+        this.setUser(freshUser); // آپدیت لوکال استوری
         if (freshUser.is_verified === true) {
+          console.log("🛡️ [KYC] ✅ Verified from server");
           return true;
         }
       }
     } catch (e) {
-      console.error('Failed to check KYC status from server:', e);
+      console.error('🛡️ [KYC] ❌ Failed to check from server:', e);
     }
 
+    console.log("🛡️ [KYC] ❌ Not verified");
     return false;
   }
 };
