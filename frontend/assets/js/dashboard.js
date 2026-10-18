@@ -15,6 +15,16 @@ const POLL_INTERVAL = 5000;   // 5s — rate
 const CLOCK_INTERVAL = 1000;  // 1s — clock
 
 /* ═══════════════════════════════════════
+   🛡️ KYC CHECK HELPER
+   ═══════════════════════════════════════ */
+function isKycVerified() {
+  const user = Auth.getUser();
+  if (!user) return false;
+  const status = String(user.kyc_status || user.kycStatus || '').toLowerCase();
+  return status === 'verified' || status === 'true' || user.is_kyc_verified === true;
+}
+
+/* ═══════════════════════════════════════
    🚀 INIT
    ═══════════════════════════════════════ */
 
@@ -771,10 +781,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
   depositLinks.forEach(link => {
     link.addEventListener('click', (e) => {
-      const user = Auth.getUser();
-      
-      // اگر کاربر لاگین نبود یا KYC تایید نشده بود
-      if (!user || user.kyc_status !== 'VERIFIED') {
+      // استفاده از تابع قدرتمند isKycVerified
+      if (!isKycVerified()) {
         e.preventDefault(); // جلوگیری از رفتن به صفحه
         
         // نمایش هشدار شیک

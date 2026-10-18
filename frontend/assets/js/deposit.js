@@ -8,6 +8,16 @@ let currentCurrency = 'USDT';
 let currentNetwork = 'TRC20';
 
 /* ═══════════════════════════════════════
+   🛡️ KYC CHECK HELPER
+   ═══════════════════════════════════════ */
+function isKycVerified() {
+  const user = Auth.getUser();
+  if (!user) return false;
+  const status = String(user.kyc_status || user.kycStatus || '').toLowerCase();
+  return status === 'verified' || status === 'true' || user.is_kyc_verified === true;
+}
+
+/* ═══════════════════════════════════════
    🚀 INIT
    ═══════════════════════════════════════ */
 
@@ -15,8 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   Auth.requireLogin();
   
   // ─── 🔒 KYC GATE ───
-  const user = Auth.getUser();
-  if (!user || user.kyc_status !== 'VERIFIED') {
+  if (!isKycVerified()) {
     document.querySelector('.app-main').style.display = 'none';
     showKycModal();
     return;
