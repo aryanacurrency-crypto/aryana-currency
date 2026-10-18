@@ -1939,3 +1939,108 @@
   0% { background-position: -1000px 0; }
   100% { background-position: 1000px 0; }
 }
+
+/* ═══════════════════════════════════════
+   👤 USER MENU (Profile Widget)
+   ═══════════════════════════════════════ */
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 12px 5px 6px;
+  border-radius: 999px;
+  background: #F8FAFF;
+  border: 1px solid #E2E8F0;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.user-menu:hover {
+  background: #FFFFFF;
+  border-color: rgba(30, 64, 175, 0.3);
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.08);
+  transform: translateY(-1px);
+}
+
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1E40AF, #7C3AED);
+  color: white;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  font-weight: 800;
+  font-family: var(--font-sans);
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.25);
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.user-name {
+  font-size: 13px;
+  font-weight: 800;
+  color: #0F172A;
+  max-width: 90px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-role {
+  font-size: 9px;
+  font-weight: 700;
+  color: #94A3B8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.user-chevron {
+  color: #94A3B8;
+  transition: transform 0.2s ease;
+  margin-left: 2px;
+}
+
+.user-menu:hover .user-chevron {
+  color: #1E40AF;
+  transform: translateX(2px);
+}
+
+/* 📱 موبایل: حذف متن و نگه داشتن فقط آواتار */
+@media (max-width: 768px) {
+  .user-menu {
+    padding: 0;
+    gap: 0;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+  
+  .user-menu:hover {
+    background: transparent;
+    box-shadow: none;
+    transform: none;
+  }
+  
+  .user-avatar {
+    width: 38px;
+    height: 38px;
+    font-size: 15px;
+    border: 2px solid #FFFFFF;
+    box-shadow: 0 0 0 1px #E2E8F0, 0 2px 8px rgba(30, 64, 175, 0.15);
+  }
+  
+  .user-info,
+  .user-chevron {
+    display: none;
+  }
+}
