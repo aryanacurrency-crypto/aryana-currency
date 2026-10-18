@@ -806,7 +806,7 @@ function showKycWarningModal() {
           <p style="font-size:14px;color:#64748B;line-height:1.6;margin-bottom:24px;">
             To protect your account and comply with regulations, you must complete KYC verification before making deposits or trades.
           </p>
-          <a href="kyc.html" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:linear-gradient(135deg,#1E40AF,#7C3AED);color:white;font-size:15px;font-weight:700;border-radius:12px;text-decoration:none;transition:transform 0.2s;border:none;cursor:pointer;margin-bottom:12px;">
+          <a href="profile.html" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:linear-gradient(135deg,#1E40AF,#7C3AED);color:white;font-size:15px;font-weight:700;border-radius:12px;text-decoration:none;transition:transform 0.2s;border:none;cursor:pointer;margin-bottom:12px;">
             Verify Identity Now
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <line x1="5" y1="12" x2="19" y2="12"/>

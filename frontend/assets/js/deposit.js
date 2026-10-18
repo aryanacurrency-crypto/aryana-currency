@@ -15,15 +15,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   Auth.requireLogin();
   
   // ─── 🔒 KYC GATE ───
-  // چک می‌کنیم که آیا کاربر احراز هویت کرده است یا خیر
   const user = Auth.getUser();
   if (!user || user.kyc_status !== 'VERIFIED') {
-    // مخفی کردن کل محتوای صفحه (هدر می‌مونه)
     document.querySelector('.app-main').style.display = 'none';
-    
-    // نمایش مودال هشدار KYC
     showKycModal();
-    return; // توقف اجرای بقیه کدها
+    return;
   }
   // ───────────────────
 
@@ -33,18 +29,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   await I18N.load(initialLang);
   I18N.apply();
 
-  // ─── Logout ───
   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) logoutBtn.addEventListener('click', () => Auth.logout());
 
-  // ─── Theme toggle ───
   const themeBtn = document.getElementById('themeToggle');
   if (themeBtn) themeBtn.addEventListener('click', () => Theme.toggle());
 
   showAdminButton();
   renderUserInfo();
 
-  // ─── Currency tabs ───
   document.querySelectorAll('.currency-tab').forEach((tab) => {
     tab.addEventListener('click', () => {
       const cur = tab.dataset.currency;
@@ -55,7 +48,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  // ─── Copy button ───
   const copyBtn = document.getElementById('copyAddressBtn');
   if (copyBtn) {
     copyBtn.addEventListener('click', () => {
@@ -66,10 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // ─── Load payment info ───
   await loadPaymentInfo();
-
-  // ─── Apply default currency ───
   applyCurrency();
 });
 
@@ -78,7 +67,6 @@ document.addEventListener('DOMContentLoaded', async () => {
    ═══════════════════════════════════════ */
 
 function showKycModal() {
-  // ساخت مودال به صورت داینامیک و اضافه کردن به body
   const modalHtml = `
     <div class="kyc-modal-overlay" id="kycModal" style="position:fixed;inset:0;background:rgba(15,23,42,0.6);backdrop-filter:blur(4px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;transition:opacity 0.3s ease;">
       <div class="kyc-modal" style="background:#FFFFFF;border-radius:24px;padding:32px 24px;max-width:400px;width:100%;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,0.1);transform:translateY(20px);transition:transform 0.3s ease;">
@@ -93,7 +81,7 @@ function showKycModal() {
         <p style="font-size:14px;color:#64748B;line-height:1.6;margin-bottom:24px;">
           To protect your account and comply with regulations, you must complete KYC verification before making deposits or trades.
         </p>
-        <a href="kyc.html" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:linear-gradient(135deg,#1E40AF,#7C3AED);color:white;font-size:15px;font-weight:700;border-radius:12px;text-decoration:none;transition:transform 0.2s;border:none;cursor:pointer;margin-bottom:12px;">
+        <a href="profile.html" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:linear-gradient(135deg,#1E40AF,#7C3AED);color:white;font-size:15px;font-weight:700;border-radius:12px;text-decoration:none;transition:transform 0.2s;border:none;cursor:pointer;margin-bottom:12px;">
           Verify Identity Now
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"/>
@@ -108,7 +96,6 @@ function showKycModal() {
   `;
   document.body.insertAdjacentHTML('beforeend', modalHtml);
 
-  // اجرای انیمیشن ورود
   setTimeout(() => {
     const overlay = document.getElementById('kycModal');
     if (overlay) {
@@ -160,7 +147,6 @@ async function loadPaymentInfo() {
    ═══════════════════════════════════════ */
 
 function applyCurrency() {
-  // Tabs
   document.querySelectorAll('.currency-tab').forEach((tab) => {
     tab.classList.toggle('active', tab.dataset.currency === currentCurrency);
   });
@@ -173,11 +159,9 @@ function applyCurrency() {
 }
 
 function applyUsdt() {
-  // ─── Card header ───
   setText('cardTitle', 'Deposit USDT');
   setText('cardSubtitle', 'Choose a network, then send USDT to the address below.');
 
-  // ─── Icon ───
   const icon = document.getElementById('cardIcon');
   if (icon) {
     icon.innerHTML = `
@@ -188,29 +172,23 @@ function applyUsdt() {
     `;
   }
 
-  // ─── Network block رو نشون بده ───
   const networkBlock = document.getElementById('networkBlock');
   if (networkBlock) networkBlock.style.display = 'block';
 
-  // ─── Network tabs رو رندر کن ───
   if (typeof renderNetworkTabs === 'function') {
     renderNetworkTabs('networkTabs', (id) => {
       applyNetwork(id);
     }, currentNetwork);
   }
 
-  // ─── شبکه فعلی رو اعمال کن ───
   applyNetwork(currentNetwork);
 
-  // ─── Address wrap ───
   const addressWrap = document.getElementById('addressValueWrap');
   if (addressWrap) addressWrap.classList.remove('hesab');
 
-  // ─── Visual block ───
   setText('visualLabel', 'Use Copy Button');
   setText('visualText', 'Tap the copy button to copy the address, then paste it in your wallet app.');
 
-  // ─── Info warning ───
   const infoText = document.getElementById('warningInfoText');
   if (infoText) {
     infoText.textContent = 'Deposits are processed within 30 minutes. After sending, place a SELL order on the Trade page.';
@@ -228,29 +206,23 @@ function applyNetwork(networkId) {
   const net = getNetwork(networkId);
   if (!net) return;
 
-  // ─── Info list ───
   setText('networkValue', net.fullName);
   setText('minValue', net.minDeposit);
-
-  // ─── Address label ───
   setText('addressLabel', `USDT Wallet Address (${net.label})`);
 
-  // ─── Wallet address: per-network → general → fallback ───
   const walletAddress =
-    paymentInfo?.[net.walletField] ||          // per-network (usdt_wallet_trc20)
-    paymentInfo?.usdt_wallet ||                // general USDT
-    paymentInfo?.wallet_address ||             // generic fallback
+    paymentInfo?.[net.walletField] ||
+    paymentInfo?.usdt_wallet ||
+    paymentInfo?.wallet_address ||
     '—';
 
   setText('addressValue', walletAddress);
 
-  // ─── Danger warning ───
   const dangerText = document.getElementById('warningDangerText');
   if (dangerText) {
     dangerText.innerHTML = `<strong>Important:</strong> ${net.warning}`;
   }
 
-  // ─── Danger currency span ───
   const dangerCur = document.getElementById('dangerCurrency');
   if (dangerCur) {
     dangerCur.textContent = `USDT (${net.label})`;
@@ -258,11 +230,9 @@ function applyNetwork(networkId) {
 }
 
 function applyAfn() {
-  // ─── Card header ───
   setText('cardTitle', 'Deposit AFN');
   setText('cardSubtitle', 'Send Afghan Afghani via Hesab Pay to the number below.');
 
-  // ─── Icon ───
   const icon = document.getElementById('cardIcon');
   if (icon) {
     icon.innerHTML = `
@@ -273,11 +243,9 @@ function applyAfn() {
     `;
   }
 
-  // ─── Network block مخفی ───
   const networkBlock = document.getElementById('networkBlock');
   if (networkBlock) networkBlock.style.display = 'none';
 
-  // ─── Address ───
   setText('addressLabel', 'Hesab Pay Number');
 
   const addressWrap = document.getElementById('addressValueWrap');
@@ -285,11 +253,9 @@ function applyAfn() {
 
   setText('addressValue', paymentInfo?.hesab_pay || '—');
 
-  // ─── Visual block ───
   setText('visualLabel', 'Use Copy Button');
   setText('visualText', 'Tap the copy button to copy the number, then paste it in your Hesab Pay app.');
 
-  // ─── Warnings ───
   const dangerText = document.getElementById('warningDangerText');
   if (dangerText) {
     const holder = paymentInfo?.hesab_pay_holder || 'ARYANA CURRENCY';

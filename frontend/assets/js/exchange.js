@@ -136,7 +136,6 @@ function updateRateUI(rate) {
     maximumFractionDigits: 2,
   });
 
-  // ─── Rate Badge (top of form) ───
   const badge = document.getElementById('rateBadge');
   if (badge) {
     const activeRate = currentSide === 'BUY' ? sellPrice : buyPrice;
@@ -150,7 +149,6 @@ function updateRateUI(rate) {
     }
   }
 
-  // ─── Live Rate Value ───
   const liveValue = document.getElementById('liveRateValue');
   if (liveValue) {
     liveValue.textContent = `${fmt(sellPrice)} AFN`;
@@ -160,7 +158,6 @@ function updateRateUI(rate) {
     }
   }
 
-  // ─── Live Rate Change ───
   if (previousRate) {
     const prev = Number(previousRate.sell_price_afn);
     const diff = sellPrice - prev;
@@ -600,7 +597,6 @@ function setupForm() {
    ═══════════════════════════════════════ */
 
 function showKycModal() {
-  // ساخت مودال به صورت داینامیک
   const modalHtml = `
     <div id="kycModal" style="position:fixed;inset:0;background:rgba(15,23,42,0.6);backdrop-filter:blur(4px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;transition:opacity 0.3s ease;">
       <div class="kyc-modal" style="background:#FFFFFF;border-radius:24px;padding:32px 24px;max-width:400px;width:100%;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,0.1);transform:translateY(20px);transition:transform 0.3s ease;">
@@ -615,7 +611,7 @@ function showKycModal() {
         <p style="font-size:14px;color:#64748B;line-height:1.6;margin-bottom:24px;">
           To protect your account and comply with regulations, you must complete KYC verification before making deposits or trades.
         </p>
-        <a href="kyc.html" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:linear-gradient(135deg,#1E40AF,#7C3AED);color:white;font-size:15px;font-weight:700;border-radius:12px;text-decoration:none;transition:transform 0.2s;border:none;cursor:pointer;margin-bottom:12px;">
+        <a href="profile.html" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:linear-gradient(135deg,#1E40AF,#7C3AED);color:white;font-size:15px;font-weight:700;border-radius:12px;text-decoration:none;transition:transform 0.2s;border:none;cursor:pointer;margin-bottom:12px;">
           Verify Identity Now
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"/>
@@ -628,12 +624,10 @@ function showKycModal() {
       </div>
     </div>
   `;
-  
-  // اگه مودال قبلاً ساخته نشده، اضافه کن
+
   if (!document.getElementById('kycModal')) {
     document.body.insertAdjacentHTML('beforeend', modalHtml);
-    
-    // انیمیشن ورود
+
     setTimeout(() => {
       const overlay = document.getElementById('kycModal');
       if (overlay) {
@@ -641,13 +635,11 @@ function showKycModal() {
         overlay.querySelector('.kyc-modal').style.transform = 'translateY(0)';
       }
     }, 10);
-    
-    // دکمه بستن
+
     document.getElementById('closeKycModalBtn').addEventListener('click', () => {
       closeKycModal();
     });
-    
-    // کلیک روی بک‌گراند
+
     document.getElementById('kycModal').addEventListener('click', (e) => {
       if (e.target.id === 'kycModal') {
         closeKycModal();
