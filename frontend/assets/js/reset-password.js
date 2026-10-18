@@ -1,103 +1,152 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Reset Password Logic
+   ARYANA CURRENCY — Reset Password v4
+   Single-Column · Mobile-First
    ═══════════════════════════════════════ */
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
   Theme.init();
 
-  const initialLang = I18N.detectInitialLang();
-  await I18N.load(initialLang);
-  I18N.apply();
-
-  const yearEl = document.getElementById('currentYear');
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-  // ─── گرفتن توکن از URL ───
+  // ─── Token from URL ───
   const params = new URLSearchParams(window.location.search);
   const token = params.get('token');
 
   const form = document.getElementById('resetForm');
   const submitBtn = document.getElementById('submitBtn');
   const errorBox = document.getElementById('errorBox');
+  const errorText = document.getElementById('errorText');
   const successBox = document.getElementById('successBox');
+  const successText = document.getElementById('successText');
 
-  // ─── اگه توکن نبود، خطا ───
+  if (!form) {
+    console.error('[Reset] Form #resetForm not found');
+    return;
+  }
+
+  /* ═══════════════════════════════════════
+     🛑 NO TOKEN → SHOW ERROR
+     ═══════════════════════════════════════ */
+
   if (!token) {
-    showError('لینک بازنشانی نامعتبر است. لطفاً دوباره درخواست دهید.');
+    showError('Invalid reset link. Please request a new one.');
     form.style.display = 'none';
     return;
   }
 
-  // ─── Show/Hide Password ───
-  attachPasswordToggle('password', 'passwordToggle');
-  attachPasswordToggle('passwordConfirm', 'passwordConfirmToggle');
+  /* ═══════════════════════════════════════
+     🔍 PASSWORD TOGGLES
+     ═══════════════════════════════════════ */
+
+  setupPasswordToggle('togglePassword', 'password');
+  setupPasswordToggle('togglePasswordConfirm', 'passwordConfirm');
+
+  function setupPasswordToggle(toggleId, inputId) {
+    const toggleBtn = document.getElementById(toggleId);
+    const input = document.getElementById(inputId);
+    if (!toggleBtn || !input) return;
+
+    toggleBtn.addEventListener('click', () => {
+      const isPassword = input.type === 'password';
+      input.type = isPassword ? 'text' : 'password';
+
+      toggleBtn.innerHTML = isPassword
+        ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+            <line x1="1" y1="1" x2="23" y2="23"/>
+          </svg>`
+        : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>`;
+    });
+  }
+
+  /* ═══════════════════════════════════════
+     📤 FORM SUBMIT
+     ═══════════════════════════════════════ */
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    errorBox.style.display = 'none';
-    successBox.style.display = 'none';
+    if (errorBox) errorBox.style.display = 'none';
+    if (successBox) successBox.style.display = 'none';
 
-    const password = form.password.value;
-    const passwordConfirm = form.passwordConfirm.value;
+    const password = document.getElementById('password')?.value || '';
+    const passwordConfirm = document.getElementById('passwordConfirm')?.value || '';
 
+    // ─── Validation ───
     if (!password || !passwordConfirm) {
-      showError('لطفاً هر دو فیلد را پر کنید.');
-      return;
+      return showError('Please fill in both password fields.');
     }
 
     if (password.length < 8) {
-      showError('رمز عبور باید حداقل ۸ کاراکتر باشد.');
-      return;
+      return showError('Password must be at least 8 characters.');
     }
 
     if (password !== passwordConfirm) {
-      showError('رمزهای عبور یکسان نیستند.');
-      return;
+      return showError('Passwords do not match.');
     }
 
+    // ─── Disable button ───
     submitBtn.disabled = true;
-    const originalText = submitBtn.innerHTML;
+    const origHTML = submitBtn.innerHTML;
     submitBtn.innerHTML = '<span class="spinner"></span>';
 
     try {
+      // ─── API Call ───
       await API.resetPassword(token, password);
 
-      showSuccess('رمز عبور با موفقیت تغییر کرد! در حال انتقال به صفحه ورود...');
+      // ─── Success ───
+      showSuccess('Password changed successfully! Redirecting to login...');
 
       setTimeout(() => {
         window.location.href = 'login.html';
       }, 1500);
 
     } catch (err) {
-      console.error('Reset password error:', err);
-      let msg = err.detail || 'خطا در بازنشانی رمز عبور.';
+      console.error('[Reset] Error:', err);
+
+      let msg = err?.detail || 'Failed to reset password.';
 
       if (msg.includes('نامعتبر')) {
-        msg = 'لینک بازنشانی نامعتبر است.';
+        msg = 'Invalid reset link. Please request a new one.';
       } else if (msg.includes('منقضی')) {
-        msg = 'لینک بازنشانی منقضی شده است. لطفاً دوباره درخواست دهید.';
+        msg = 'Reset link expired. Please request a new one.';
       } else if (msg.includes('استفاده شده')) {
-        msg = 'این لینک قبلاً استفاده شده است.';
-      } else if (err.status === 0) {
-        msg = 'اتصال به سرور برقرار نشد.';
+        msg = 'This link has already been used.';
+      } else if (err?.status === 0) {
+        msg = 'Cannot connect to server. Check your internet.';
       }
 
       showError(msg);
+
       submitBtn.disabled = false;
-      submitBtn.innerHTML = originalText;
+      submitBtn.innerHTML = origHTML;
     }
   });
 
+  /* ═══════════════════════════════════════
+     🛠️ HELPERS
+     ═══════════════════════════════════════ */
+
   function showError(message) {
-    errorBox.textContent = message;
-    errorBox.style.display = 'block';
-    errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (errorBox && errorText) {
+      errorText.textContent = message;
+      errorBox.style.display = 'flex';
+      errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else if (typeof Notify !== 'undefined') {
+      Notify.error(message);
+    } else {
+      alert(message);
+    }
   }
 
   function showSuccess(message) {
-    successBox.textContent = message;
-    successBox.style.display = 'block';
-    successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (successBox && successText) {
+      successText.textContent = message;
+      successBox.style.display = 'flex';
+      successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else if (typeof Notify !== 'undefined') {
+      Notify.success(message);
+    }
   }
 });

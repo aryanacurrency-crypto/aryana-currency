@@ -737,3 +737,91 @@
 [dir="rtl"] .auth-submit-btn:hover:not(:disabled) svg {
   transform: translateX(-3px) scaleX(-1);
 }
+
+/* ═══════════════════════════════════════
+   ✅ SUCCESS STATE (Forgot Password)
+   ═══════════════════════════════════════ */
+
+.auth-success-state {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.auth-success-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10B981, #059669);
+  color: white;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 12px 32px rgba(16, 185, 129, 0.3);
+  animation: auth-success-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes auth-success-pop {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.auth-success-icon svg {
+  width: 36px;
+  height: 36px;
+}
+
+.auth-success-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #0F172A;
+  margin-bottom: 12px;
+  letter-spacing: -0.4px;
+}
+
+.auth-success-text {
+  font-size: 14px;
+  color: #64748B;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.auth-success-text strong {
+  color: #1E40AF;
+  font-weight: 800;
+}
+
+.auth-success-hint {
+  font-size: 13px;
+  color: #94A3B8;
+  padding: 12px 16px;
+  background: #F8FAFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.auth-success-hint a {
+  color: #1E40AF;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.auth-success-hint a:hover {
+  text-decoration: underline;
+}
+
+/* ═══ Spinner ═══ */
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: auth-spin 0.6s linear infinite;
+}
+
+@keyframes auth-spin {
+  to { transform: rotate(360deg); }
+}

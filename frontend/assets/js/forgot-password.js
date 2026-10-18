@@ -1,86 +1,118 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Forgot Password Logic
+   ARYANA CURRENCY — Forgot Password v4
+   Single-Column · Mobile-First
    ═══════════════════════════════════════ */
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
   Theme.init();
-
-  const initialLang = I18N.detectInitialLang();
-  await I18N.load(initialLang);
-  I18N.apply();
-
-  const yearEl = document.getElementById('currentYear');
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   const form = document.getElementById('forgotForm');
   const submitBtn = document.getElementById('submitBtn');
   const errorBox = document.getElementById('errorBox');
+  const errorText = document.getElementById('errorText');
   const successState = document.getElementById('successState');
   const sentEmail = document.getElementById('sentEmail');
   const resendLink = document.getElementById('resendLink');
   const emailInput = document.getElementById('email');
 
-  // ─── فقط انگلیسی توی ایمیل ───
-  preventNonEnglish(emailInput);
+  if (!form) {
+    console.error('[Forgot] Form #forgotForm not found');
+    return;
+  }
+
+  /* ═══════════════════════════════════════
+     📤 FORM SUBMIT
+     ═══════════════════════════════════════ */
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    errorBox.style.display = 'none';
+    if (errorBox) errorBox.style.display = 'none';
 
-    const email = form.email.value.trim();
+    const email = (emailInput?.value || '').trim();
 
+    // ─── Validation ───
     if (!email) {
-      showError('لطفاً ایمیل خود را وارد کنید.');
-      return;
+      return showError('Please enter your email address.');
     }
 
     if (!isValidEmail(email)) {
-      showError('لطفاً یک ایمیل معتبر وارد کنید.');
-      return;
+      return showError('Please enter a valid email address.');
     }
 
+    // ─── Disable button ───
     submitBtn.disabled = true;
-    const originalText = submitBtn.innerHTML;
+    const origHTML = submitBtn.innerHTML;
     submitBtn.innerHTML = '<span class="spinner"></span>';
 
     try {
+      // ─── API Call ───
       await API.forgotPassword(email);
 
-      sentEmail.textContent = email;
-      form.style.display = 'none';
-      successState.style.display = 'block';
+      // ─── Show success state ───
+      if (sentEmail) sentEmail.textContent = email;
+      if (form) form.style.display = 'none';
+      if (successState) successState.style.display = 'block';
 
     } catch (err) {
-      console.error('Forgot password error:', err);
-      let msg = err.detail || 'خطا در ارسال لینک بازنشانی.';
+      console.error('[Forgot] Error:', err);
 
-      if (err.status === 0) {
-        msg = 'اتصال به سرور برقرار نشد.';
+      let msg = err?.detail || 'Failed to send reset link.';
+
+      if (err?.status === 0) {
+        msg = 'Cannot connect to server. Check your internet.';
       }
 
       showError(msg);
+
       submitBtn.disabled = false;
-      submitBtn.innerHTML = originalText;
+      submitBtn.innerHTML = origHTML;
     }
   });
 
-  // دکمه "try again"
+  /* ═══════════════════════════════════════
+     🔄 RESEND
+     ═══════════════════════════════════════ */
+
   if (resendLink) {
     resendLink.addEventListener('click', (e) => {
       e.preventDefault();
-      successState.style.display = 'none';
-      form.style.display = 'block';
+
+      if (successState) successState.style.display = 'none';
+      if (form) form.style.display = 'flex';
+      if (emailInput) {
+        emailInput.value = '';
+        emailInput.focus();
+      }
+
       submitBtn.disabled = false;
-      submitBtn.innerHTML = '<span>Send reset link</span>';
-      form.email.value = '';
-      form.email.focus();
+      submitBtn.innerHTML = `
+        <span>Send Reset Link</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      `;
     });
   }
 
+  /* ═══════════════════════════════════════
+     🛠️ HELPERS
+     ═══════════════════════════════════════ */
+
   function showError(message) {
-    errorBox.textContent = message;
-    errorBox.style.display = 'block';
-    errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (errorBox && errorText) {
+      errorText.textContent = message;
+      errorBox.style.display = 'flex';
+      errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else if (typeof Notify !== 'undefined') {
+      Notify.error(message);
+    } else {
+      alert(message);
+    }
+  }
+
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 });
