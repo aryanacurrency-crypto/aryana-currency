@@ -2,41 +2,45 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Terms of Service — Aryana Currency">
-  <meta name="theme-color" content="#0B0E11">
+  <meta name="theme-color" content="#FAFBFF">
 
   <title>Terms of Service | ARYANA CURRENCY</title>
 
-<script>
-  (function() {
-    try {
-      var saved = localStorage.getItem('aryana_theme');
-      var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      document.documentElement.classList.add(theme);
-      document.documentElement.setAttribute('data-theme', theme);
-    } catch (e) {}
-  })();
-</script>
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('aryana_theme') || 'light';
+        document.documentElement.classList.add(saved);
+        document.documentElement.setAttribute('data-theme', saved);
+        setTimeout(function () {
+          document.documentElement.classList.add('theme-ready');
+        }, 50);
+      } catch (e) {}
+    })();
+  </script>
 
+  <link rel="manifest" href="../manifest.json">
   <link rel="icon" type="image/png" href="../assets/images/logo.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/css/theme-v2.css">
   <link rel="stylesheet" href="../assets/css/ui-v2.css">
-  <link rel="stylesheet" href="../assets/css/content-v2.css">
+  <link rel="stylesheet" href="../assets/css/command-palette.css">
+  <link rel="stylesheet" href="../assets/css/dashboard-v2.css">
   <link rel="stylesheet" href="../assets/css/notifications.css">
   <link rel="stylesheet" href="../assets/css/footer.css">
+  <link rel="stylesheet" href="../assets/css/pwa.css">
+  <link rel="stylesheet" href="../assets/css/pages-v2.css">
 </head>
 <body>
 
-  <!-- Header -->
   <header class="app-header">
     <div class="container app-header-inner">
-
       <a href="../index.html" class="app-brand">
         <img src="../assets/images/logo.png" alt="ARYANA CURRENCY">
         <div class="app-brand-text">
@@ -46,470 +50,165 @@
       </a>
 
       <nav class="app-nav">
-        <a href="../index.html" class="app-nav-link"><span>Home</span></a>
-        <a href="about.html" class="app-nav-link"><span>About</span></a>
-        <a href="contact.html" class="app-nav-link"><span>Contact</span></a>
+        <a href="../index.html" class="app-nav-link">
+          <span>Home</span>
+        </a>
+        <a href="../pages/about.html" class="app-nav-link">
+          <span>About</span>
+        </a>
+        <a href="../pages/contact.html" class="app-nav-link">
+          <span>Contact</span>
+        </a>
+        <a href="../pages/terms.html" class="app-nav-link active">
+          <span>Terms</span>
+        </a>
       </nav>
 
       <div class="app-header-actions">
-        <a href="login.html" class="btn btn-ghost">Login</a>
-        <a href="register.html" class="btn btn-primary">Register</a>
-      </div>
+        <button class="cmd-trigger" data-cmd-trigger type="button" aria-label="Open command palette">
+          <span class="cmd-trigger-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <span>Search...</span>
+          </span>
+          <kbd class="cmd-kbd">⌘K</kbd>
+        </button>
 
+        <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+
+        <a href="../pages/login.html" class="btn btn-ghost" style="padding: 8px 16px; font-size: 13px;">Sign In</a>
+        <a href="../pages/register.html" class="btn btn-primary" style="padding: 8px 16px; font-size: 13px;">Sign Up</a>
+      </div>
     </div>
   </header>
 
-  <!-- Main -->
   <main>
+    <section class="page-hero">
+      <div class="container page-hero-content">
+        <div class="page-hero-badge">
+          <span class="page-hero-badge-dot"></span>
+          <span>Legal</span>
+        </div>
 
-    <!-- Breadcrumb -->
-    <div class="container">
-      <div class="breadcrumb">
-        <a href="../index.html">Home</a>
-        <span class="breadcrumb-sep">/</span>
-        <span>Legal</span>
-        <span class="breadcrumb-sep">/</span>
-        <span class="breadcrumb-current">Terms of Service</span>
+        <h1>
+          Terms of <span class="highlight">Service</span>
+        </h1>
+
+        <p>
+          Please read these terms carefully before using Aryana Currency.
+        </p>
       </div>
-    </div>
+    </section>
 
-    <!-- Document Hero -->
-    <div class="container">
-      <div class="doc-hero">
-        <div class="doc-hero-content">
-          <div class="doc-kicker">LEGAL · DOCUMENT</div>
+    <section class="page-content">
+      <div class="container page-content-narrow">
+        <div class="page-card">
 
-          <h1 class="doc-title">
-            Terms of<br>
-            <span class="gold">Service.</span>
-          </h1>
+          <div class="page-last-updated">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span>Last updated: October 2026</span>
+          </div>
 
-          <p class="doc-subtitle">
-            The rules that govern the use of Aryana Currency. By creating an account or using the service, users agree to be bound by these Terms.
+          <h2>1. Acceptance of Terms</h2>
+          <p>
+            By accessing or using Aryana Currency ("the Service"), you agree to be bound by these Terms of Service. If you do not agree, you must not use the Service.
           </p>
 
-          <div class="doc-meta">
-            <div class="doc-meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                <line x1="16" y1="2" x2="16" y2="6"/>
-                <line x1="8" y1="2" x2="8" y2="6"/>
-                <line x1="3" y1="10" x2="21" y2="10"/>
-              </svg>
-              <span>Effective: <strong>January 1, 2026</strong></span>
-            </div>
+          <h2>2. Eligibility</h2>
+          <p>
+            To use Aryana Currency, you must:
+          </p>
+          <ul>
+            <li>Be at least 18 years old</li>
+            <li>Have the legal capacity to enter into contracts</li>
+            <li>Not be barred from using the Service under the laws of Afghanistan or your jurisdiction</li>
+            <li>Complete our KYC verification process when required</li>
+          </ul>
 
-            <div class="doc-meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12 6 12 12 16 14"/>
-              </svg>
-              <span>Version <strong>2.0</strong></span>
-            </div>
+          <h2>3. Account Registration</h2>
+          <p>
+            You are responsible for maintaining the confidentiality of your account credentials. You agree to notify us immediately of any unauthorized use of your account.
+          </p>
 
-            <div class="doc-meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              </svg>
-              <span>Legally <strong>binding</strong></span>
-            </div>
-          </div>
+          <h2>4. Services Provided</h2>
+          <p>
+            Aryana Currency provides a platform for exchanging between Afghan Afghani (AFN) and Tether (USDT). We are not a bank, and we do not provide financial advice.
+          </p>
+
+          <h2>5. Fees</h2>
+          <p>
+            A platform fee of 1.5% applies to every exchange. Fees are clearly displayed before you confirm any transaction. We reserve the right to change fees with advance notice.
+          </p>
+
+          <h2>6. Prohibited Activities</h2>
+          <p>
+            You may not use Aryana Currency to:
+          </p>
+          <ul>
+            <li>Violate any applicable laws or regulations</li>
+            <li>Engage in money laundering or terrorist financing</li>
+            <li>Fraud or deceive other users</li>
+            <li>Attempt to gain unauthorized access to our systems</li>
+            <li>Use the Service for any illegal purpose</li>
+          </ul>
+
+          <h2>7. KYC and Anti-Money Laundering</h2>
+          <p>
+            We are required by law to verify the identity of our users. You agree to provide accurate information and documents as requested. Failure to complete KYC may result in account limitations.
+          </p>
+
+          <h2>8. Transactions</h2>
+          <p>
+            All transactions are final. Once you confirm a trade, you cannot cancel or reverse it. Please verify all details carefully before confirming.
+          </p>
+
+          <h2>9. Risks</h2>
+          <p>
+            Digital currency trading involves significant risk. Prices can be volatile. You are solely responsible for your trading decisions. See our <a href="risk.html">Risk Disclosure</a> for more information.
+          </p>
+
+          <h2>10. Limitation of Liability</h2>
+          <p>
+            Aryana Currency is provided "as is" without warranty. We are not liable for any losses arising from your use of the Service, except where prohibited by law.
+          </p>
+
+          <h2>11. Termination</h2>
+          <p>
+            We reserve the right to suspend or terminate your account at any time for violation of these Terms or for any other reason at our discretion.
+          </p>
+
+          <h2>12. Changes to Terms</h2>
+          <p>
+            We may update these Terms from time to time. Continued use of the Service after changes constitutes acceptance of the new Terms.
+          </p>
+
+          <h2>13. Contact</h2>
+          <p>
+            Questions about these Terms? Contact us at <a href="mailto:support@aryana.af">support@aryana.af</a> or through our <a href="contact.html">Contact page</a>.
+          </p>
+
         </div>
       </div>
-    </div>
-
-    <!-- Content Layout -->
-    <div class="container">
-      <div class="doc-layout">
-
-        <!-- TOC -->
-        <aside class="doc-toc">
-          <div class="doc-toc-title">Table of Contents</div>
-          <ul class="doc-toc-list">
-            <li><a href="#acceptance" class="toc-link active"><span class="toc-num">01</span> Acceptance</a></li>
-            <li><a href="#eligibility" class="toc-link"><span class="toc-num">02</span> Eligibility</a></li>
-            <li><a href="#account" class="toc-link"><span class="toc-num">03</span> Accounts</a></li>
-            <li><a href="#orders" class="toc-link"><span class="toc-num">04</span> Orders & Fees</a></li>
-            <li><a href="#prohibited" class="toc-link"><span class="toc-num">05</span> Prohibited Activities</a></li>
-            <li><a href="#kyc" class="toc-link"><span class="toc-num">06</span> KYC</a></li>
-            <li><a href="#termination" class="toc-link"><span class="toc-num">07</span> Termination</a></li>
-            <li><a href="#liability" class="toc-link"><span class="toc-num">08</span> Liability</a></li>
-            <li><a href="#law" class="toc-link"><span class="toc-num">09</span> Governing Law</a></li>
-            <li><a href="#changes" class="toc-link"><span class="toc-num">10</span> Changes</a></li>
-            <li><a href="#severability" class="toc-link"><span class="toc-num">11</span> Severability</a></li>
-          </ul>
-        </aside>
-
-        <!-- Doc Body -->
-        <article class="doc-body">
-
-          <!-- Section 1 -->
-          <section class="doc-section" id="acceptance">
-            <div class="doc-section-number">01</div>
-            <h2>Acceptance of Terms</h2>
-
-            <p>
-              By accessing or using Aryana Currency (the <strong>"Service"</strong>), users agree to be bound by these Terms of Service. If any part of these Terms is not acceptable, the Service must not be used.
-            </p>
-
-            <p>
-              These Terms apply to all visitors, users, and others who access or use the Service.
-            </p>
-
-            <div class="callout important">
-              <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                <line x1="12" y1="9" x2="12" y2="13"/>
-                <line x1="12" y1="17" x2="12.01" y2="17"/>
-              </svg>
-              <div class="callout-content">
-                <div class="callout-title">Legally Binding</div>
-                <div class="callout-text">
-                  These Terms constitute a <strong>legally binding agreement</strong> between the user and Aryana Currency. Please read them carefully before using the Service.
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- Section 2 -->
-          <section class="doc-section" id="eligibility">
-            <div class="doc-section-number">02</div>
-            <h2>Eligibility</h2>
-
-            <p>
-              To use the Service, users must:
-            </p>
-
-            <ul>
-              <li>Be at least <strong>18 years of age</strong>.</li>
-              <li>Have full legal capacity to enter into a binding agreement.</li>
-              <li>Not be located in a jurisdiction where digital currency exchange is prohibited by law.</li>
-              <li>Complete any required identity verification (KYC) as described in Section 06.</li>
-              <li>Not have been previously suspended or removed from the Service.</li>
-            </ul>
-
-            <p>
-              By using the Service, users represent and warrant that they meet all of the above requirements.
-            </p>
-          </section>
-
-          <!-- Section 3 -->
-          <section class="doc-section" id="account">
-            <div class="doc-section-number">03</div>
-            <h2>User Accounts</h2>
-
-            <p>
-              Each user is solely responsible for:
-            </p>
-
-            <ul>
-              <li><strong>Keeping passwords secure and confidential.</strong> Passwords should never be shared with anyone.</li>
-              <li><strong>All activity that occurs under the account</strong>, whether or not authorized by the user.</li>
-              <li><strong>Providing accurate and up-to-date information</strong> — including real names and contact details.</li>
-              <li><strong>Notifying support immediately</strong> of any unauthorized access or suspected security breach.</li>
-            </ul>
-
-            <p>
-              Aryana Currency reserves the right to refuse service, terminate accounts, or remove content at its sole discretion.
-            </p>
-
-            <div class="callout warning">
-              <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                <line x1="12" y1="9" x2="12" y2="13"/>
-                <line x1="12" y1="17" x2="12.01" y2="17"/>
-              </svg>
-              <div class="callout-content">
-                <div class="callout-title">One Account Per Person</div>
-                <div class="callout-text">
-                  Creating multiple accounts to circumvent limits, verification, or other restrictions is <strong>strictly prohibited</strong> and may result in permanent suspension.
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- Section 4 -->
-          <section class="doc-section" id="orders">
-            <div class="doc-section-number">04</div>
-            <h2>Orders & Fees</h2>
-
-            <p>
-              When an order is placed on the platform:
-            </p>
-
-            <ul>
-              <li>The applicable rate is <strong>locked at the time of order creation</strong> and will not change, even if market rates fluctuate.</li>
-              <li>A platform fee of <strong>1.5%</strong> is applied to every completed order.</li>
-              <li>The minimum order is <strong>10 USDT</strong>. There is no maximum limit.</li>
-              <li>All payments are <strong>manually verified</strong> before completion.</li>
-              <li>Orders may be delayed, rejected, or refunded if the payment cannot be verified.</li>
-            </ul>
-
-            <table class="doc-table">
-              <thead>
-                <tr>
-                  <th>Order Type</th>
-                  <th>User Sends</th>
-                  <th>User Receives</th>
-                  <th>Fee</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Buy USDT</td>
-                  <td>AFN via Hesab Pay</td>
-                  <td>USDT to wallet</td>
-                  <td>1.5%</td>
-                </tr>
-                <tr>
-                  <td>Sell USDT</td>
-                  <td>USDT via TRC20</td>
-                  <td>AFN to Hesab Pay</td>
-                  <td>1.5%</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div class="callout note">
-              <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="12" y1="16" x2="12" y2="12"/>
-                <line x1="12" y1="8" x2="12.01" y2="8"/>
-              </svg>
-              <div class="callout-content">
-                <div class="callout-title">Network Fees</div>
-                <div class="callout-text">
-                  Network (blockchain) fees for USDT transfers on TRC20 are <strong>not included</strong> in the platform fee. Users are responsible for any network fees charged by their wallet provider.
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- Section 5 -->
-          <section class="doc-section" id="prohibited">
-            <div class="doc-section-number">05</div>
-            <h2>Prohibited Activities</h2>
-
-            <p>
-              Users agree <strong>not</strong> to use the Service for any of the following:
-            </p>
-
-            <ul>
-              <li><strong>Money laundering</strong>, terrorism financing, or any illegal financial activity.</li>
-              <li><strong>Fraud</strong> — including fake payment references, chargeback abuse, or impersonation.</li>
-              <li><strong>Hacking or disruption</strong> — attempting to reverse-engineer, DDoS, or breach the platform.</li>
-              <li><strong>Identity theft</strong> — using a false identity or someone else's documents.</li>
-              <li><strong>Sanctions evasion</strong> — transacting on behalf of sanctioned individuals or entities.</li>
-              <li><strong>Multiple accounts</strong> — creating more than one account to circumvent limits.</li>
-            </ul>
-
-            <p>
-              Violation of any of these prohibitions will result in <strong>immediate account termination</strong> and may be reported to the relevant authorities.
-            </p>
-
-            <div class="callout important">
-              <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                <line x1="12" y1="9" x2="12" y2="13"/>
-                <line x1="12" y1="17" x2="12.01" y2="17"/>
-              </svg>
-              <div class="callout-content">
-                <div class="callout-title">Reporting to Authorities</div>
-                <div class="callout-text">
-                  Aryana Currency is legally obligated to report <strong>suspected criminal activity</strong> to the relevant authorities. This includes but is not limited to money laundering and fraud.
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- Section 6 -->
-          <section class="doc-section" id="kyc">
-            <div class="doc-section-number">06</div>
-            <h2>KYC & Identity Verification</h2>
-
-            <p>
-              In compliance with the operating license and applicable regulations, users may be required to complete <strong>Know Your Customer (KYC)</strong> verification. This involves submitting:
-            </p>
-
-            <ul>
-              <li>A clear photo of a government-issued ID (national ID or passport).</li>
-              <li>A selfie photo holding the ID.</li>
-            </ul>
-
-            <p>
-              By submitting these documents, users confirm that they are <strong>authentic and belong to them</strong>. Submitting fraudulent documents is a criminal offense and will be reported.
-            </p>
-          </section>
-
-          <!-- Section 7 -->
-          <section class="doc-section" id="termination">
-            <div class="doc-section-number">07</div>
-            <h2>Suspension & Termination</h2>
-
-            <p>
-              Aryana Currency reserves the right to suspend or terminate any account at any time, with or without notice, if:
-            </p>
-
-            <ul>
-              <li>The user violates any provision of these Terms.</li>
-              <li>A court order or regulatory authority requires it.</li>
-              <li>There are reasonable grounds to suspect fraudulent or illegal activity.</li>
-              <li>The account poses a risk to the platform, other users, or partners.</li>
-            </ul>
-
-            <p>
-              Users may also close their accounts at any time by contacting support. Upon closure, any remaining balance (after deducting applicable fees) will be returned within 30 days.
-            </p>
-          </section>
-
-          <!-- Section 8 -->
-          <section class="doc-section" id="liability">
-            <div class="doc-section-number">08</div>
-            <h2>Limitation of Liability</h2>
-
-            <p>
-              The Service is provided <strong>"as is" and "as available"</strong>. To the maximum extent permitted by applicable law, Aryana Currency and its directors, employees, and agents shall not be liable for:
-            </p>
-
-            <ul>
-              <li>Any indirect, incidental, or consequential damages.</li>
-              <li>Loss of profits, data, or business opportunities.</li>
-              <li>Losses resulting from unauthorized access to accounts (if credentials were not properly secured).</li>
-              <li>Losses due to network fees, blockchain congestion, or third-party service failures.</li>
-            </ul>
-
-            <p>
-              In no event shall total liability exceed the amount of fees paid to Aryana Currency in the 12 months preceding the claim.
-            </p>
-          </section>
-
-          <!-- Section 9 -->
-          <section class="doc-section" id="law">
-            <div class="doc-section-number">09</div>
-            <h2>Governing Law</h2>
-
-            <p>
-              These Terms shall be governed by and construed in accordance with the laws of the jurisdiction in which Aryana Currency is licensed to operate.
-            </p>
-
-            <p>
-              Any dispute arising from these Terms or the use of the Service shall be resolved through <strong>good-faith negotiation</strong> first, and if necessary, through binding arbitration.
-            </p>
-          </section>
-
-          <!-- Section 10 -->
-          <section class="doc-section" id="changes">
-            <div class="doc-section-number">10</div>
-            <h2>Changes to These Terms</h2>
-
-            <p>
-              These Terms may be updated from time to time. When material changes are made:
-            </p>
-
-            <ul>
-              <li>The "Effective date" at the top of this page will be updated.</li>
-              <li>The change will be announced prominently on the platform.</li>
-              <li>Registered users will be notified by email.</li>
-            </ul>
-
-            <p>
-              Continued use of the Service after such changes constitutes acceptance of the updated Terms.
-            </p>
-          </section>
-
-          <!-- Section 11 -->
-          <section class="doc-section" id="severability">
-            <div class="doc-section-number">11</div>
-            <h2>Severability</h2>
-
-            <p>
-              If any provision of these Terms is found to be unenforceable or invalid, that provision shall be limited or eliminated to the minimum extent necessary, and the remaining provisions shall remain in full force and effect.
-            </p>
-          </section>
-
-          <!-- Signature Block -->
-          <div class="signature-block">
-            <div class="signature-title">Official Document</div>
-
-            <div class="signature-grid">
-              <div class="signature-item">
-                <div class="signature-item-label">Issued By</div>
-                <div class="signature-item-value">ARYANA CURRENCY</div>
-              </div>
-              <div class="signature-item">
-                <div class="signature-item-label">Document Type</div>
-                <div class="signature-item-value">TERMS OF SERVICE</div>
-              </div>
-              <div class="signature-item">
-                <div class="signature-item-label">Version</div>
-                <div class="signature-item-value">2.0</div>
-              </div>
-              <div class="signature-item">
-                <div class="signature-item-label">Effective Date</div>
-                <div class="signature-item-value">JAN 01, 2026</div>
-              </div>
-            </div>
-
-            <div class="signature-stamp">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                <polyline points="9 12 11 14 15 10"/>
-              </svg>
-              <div>
-                <div class="signature-stamp-text">Binding</div>
-                <div class="signature-stamp-sub">ARYANA CURRENCY · LEGAL</div>
-              </div>
-            </div>
-          </div>
-
-        </article>
-
-      </div>
-    </div>
-
+    </section>
   </main>
 
-  <!-- Scripts -->
   <script src="../assets/js/config.js"></script>
   <script src="../assets/js/i18n.js"></script>
   <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/notifications.js"></script>
+  <script src="../assets/js/command-palette.js"></script>
   <script src="../assets/js/footer.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      Theme.init();
-      const lang = I18N.detectInitialLang();
-      await I18N.load(lang);
-      I18N.apply();
-
-      const tocLinks = document.querySelectorAll('.toc-link');
-      const sections = document.querySelectorAll('.doc-section');
-
-      if (tocLinks.length && sections.length) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              const id = entry.target.id;
-              tocLinks.forEach(link => {
-                link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
-              });
-            }
-          });
-        }, { rootMargin: '-100px 0px -60% 0px', threshold: 0 });
-
-        sections.forEach(section => observer.observe(section));
-      }
-
-      tocLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          const target = document.querySelector(link.getAttribute('href'));
-          if (target) {
-            const top = target.getBoundingClientRect().top + window.pageYOffset - 80;
-            window.scrollTo({ top, behavior: 'smooth' });
-          }
-        });
-      });
-    });
-  </script>
+  <script src="../assets/js/pwa.js"></script>
 </body>
 </html>

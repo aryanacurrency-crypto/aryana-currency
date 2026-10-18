@@ -2,41 +2,45 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Risk Disclosure — Aryana Currency">
-  <meta name="theme-color" content="#0B0E11">
+  <meta name="theme-color" content="#FAFBFF">
 
   <title>Risk Disclosure | ARYANA CURRENCY</title>
 
-<script>
-  (function() {
-    try {
-      var saved = localStorage.getItem('aryana_theme');
-      var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      document.documentElement.classList.add(theme);
-      document.documentElement.setAttribute('data-theme', theme);
-    } catch (e) {}
-  })();
-</script>
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('aryana_theme') || 'light';
+        document.documentElement.classList.add(saved);
+        document.documentElement.setAttribute('data-theme', saved);
+        setTimeout(function () {
+          document.documentElement.classList.add('theme-ready');
+        }, 50);
+      } catch (e) {}
+    })();
+  </script>
 
+  <link rel="manifest" href="../manifest.json">
   <link rel="icon" type="image/png" href="../assets/images/logo.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/css/theme-v2.css">
   <link rel="stylesheet" href="../assets/css/ui-v2.css">
-  <link rel="stylesheet" href="../assets/css/content-v2.css">
+  <link rel="stylesheet" href="../assets/css/command-palette.css">
+  <link rel="stylesheet" href="../assets/css/dashboard-v2.css">
   <link rel="stylesheet" href="../assets/css/notifications.css">
   <link rel="stylesheet" href="../assets/css/footer.css">
+  <link rel="stylesheet" href="../assets/css/pwa.css">
+  <link rel="stylesheet" href="../assets/css/pages-v2.css">
 </head>
 <body>
 
-  <!-- Header -->
   <header class="app-header">
     <div class="container app-header-inner">
-
       <a href="../index.html" class="app-brand">
         <img src="../assets/images/logo.png" alt="ARYANA CURRENCY">
         <div class="app-brand-text">
@@ -46,437 +50,207 @@
       </a>
 
       <nav class="app-nav">
-        <a href="../index.html" class="app-nav-link"><span>Home</span></a>
-        <a href="about.html" class="app-nav-link"><span>About</span></a>
-        <a href="contact.html" class="app-nav-link"><span>Contact</span></a>
+        <a href="../index.html" class="app-nav-link">
+          <span>Home</span>
+        </a>
+        <a href="../pages/about.html" class="app-nav-link">
+          <span>About</span>
+        </a>
+        <a href="../pages/contact.html" class="app-nav-link">
+          <span>Contact</span>
+        </a>
+        <a href="../pages/terms.html" class="app-nav-link">
+          <span>Terms</span>
+        </a>
       </nav>
 
       <div class="app-header-actions">
-        <a href="login.html" class="btn btn-ghost">Login</a>
-        <a href="register.html" class="btn btn-primary">Register</a>
-      </div>
+        <button class="cmd-trigger" data-cmd-trigger type="button" aria-label="Open command palette">
+          <span class="cmd-trigger-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <span>Search...</span>
+          </span>
+          <kbd class="cmd-kbd">⌘K</kbd>
+        </button>
 
+        <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+
+        <a href="../pages/login.html" class="btn btn-ghost" style="padding: 8px 16px; font-size: 13px;">Sign In</a>
+        <a href="../pages/register.html" class="btn btn-primary" style="padding: 8px 16px; font-size: 13px;">Sign Up</a>
+      </div>
     </div>
   </header>
 
-  <!-- Main -->
   <main>
+    <section class="page-hero">
+      <div class="container page-hero-content">
+        <div class="page-hero-badge">
+          <span class="page-hero-badge-dot"></span>
+          <span>Important</span>
+        </div>
 
-    <!-- Breadcrumb -->
-    <div class="container">
-      <div class="breadcrumb">
-        <a href="../index.html">Home</a>
-        <span class="breadcrumb-sep">/</span>
-        <span>Legal</span>
-        <span class="breadcrumb-sep">/</span>
-        <span class="breadcrumb-current">Risk Disclosure</span>
+        <h1>
+          Risk <span class="highlight">Disclosure</span>
+        </h1>
+
+        <p>
+          Please read this carefully before trading digital currencies.
+        </p>
       </div>
-    </div>
+    </section>
 
-    <!-- Document Hero -->
-    <div class="container">
-      <div class="doc-hero">
-        <div class="doc-hero-content">
-          <div class="doc-kicker" style="background:rgba(246,70,93,0.08); border-color:rgba(246,70,93,0.2); color:var(--red);">
-            LEGAL · RISK NOTICE
+    <section class="page-content">
+      <div class="container page-content-narrow">
+        <div class="page-card">
+
+          <div class="page-last-updated">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span>Last updated: October 2026</span>
           </div>
 
-          <h1 class="doc-title">
-            Risk<br>
-            <span class="gold">Disclosure.</span>
-          </h1>
-
-          <p class="doc-subtitle">
-            Important information you must understand before trading digital currency. Trading carries significant risk — please read carefully.
+          <h2>Understanding the Risks</h2>
+          <p>
+            Trading digital currencies (like Tether/USDT) involves significant risk. You should only trade with money you can afford to lose. Before using Aryana Currency, carefully consider the following risks.
           </p>
 
-          <div class="doc-meta">
-            <div class="doc-meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                <line x1="16" y1="2" x2="16" y2="6"/>
-                <line x1="8" y1="2" x2="8" y2="6"/>
-                <line x1="3" y1="10" x2="21" y2="10"/>
-              </svg>
-              <span>Effective: <strong>January 1, 2026</strong></span>
+          <div class="risk-grid">
+            <div class="risk-card">
+              <div class="risk-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+              </div>
+              <div>
+                <div class="risk-card-title">Price Volatility</div>
+                <div class="risk-card-text">
+                  Digital currency prices can fluctuate rapidly and unpredictably. The value of your holdings may go up or down significantly.
+                </div>
+              </div>
             </div>
 
-            <div class="doc-meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12 6 12 12 16 14"/>
-              </svg>
-              <span>Version <strong>2.0</strong></span>
+            <div class="risk-card">
+              <div class="risk-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                  <line x1="12" y1="9" x2="12" y2="13"/>
+                  <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+              </div>
+              <div>
+                <div class="risk-card-title">Regulatory Risk</div>
+                <div class="risk-card-text">
+                  Laws and regulations for digital currencies vary by country and can change. Regulatory changes may affect the availability of the Service.
+                </div>
+              </div>
             </div>
 
-            <div class="doc-meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                <line x1="12" y1="9" x2="12" y2="13"/>
-                <line x1="12" y1="17" x2="12.01" y2="17"/>
-              </svg>
-              <span>Read <strong>before trading</strong></span>
+            <div class="risk-card">
+              <div class="risk-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </div>
+              <div>
+                <div class="risk-card-title">Security Risk</div>
+                <div class="risk-card-text">
+                  Despite our best efforts, no system is 100% secure. Always protect your passwords and enable two-factor authentication.
+                </div>
+              </div>
+            </div>
+
+            <div class="risk-card">
+              <div class="risk-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </div>
+              <div>
+                <div class="risk-card-title">Transaction Delays</div>
+                <div class="risk-card-text">
+                  Blockchain transactions can occasionally take longer due to network congestion or verification processes.
+                </div>
+              </div>
+            </div>
+
+            <div class="risk-card">
+              <div class="risk-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+              </div>
+              <div>
+                <div class="risk-card-title">Counterparty Risk</div>
+                <div class="risk-card-text">
+                  In P2P trading, you trade directly with other users. Even with escrow, some risk of disputes exists.
+                </div>
+              </div>
+            </div>
+
+            <div class="risk-card">
+              <div class="risk-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="12" y1="8" x2="12" y2="12"/>
+                  <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+              </div>
+              <div>
+                <div class="risk-card-title">Human Error</div>
+                <div class="risk-card-text">
+                  Mistakes in entering wallet addresses or amounts can result in permanent loss of funds. Always verify details carefully.
+                </div>
+              </div>
             </div>
           </div>
+
+          <h2>Our Recommendations</h2>
+          <ul>
+            <li>Start with small amounts until you understand how the platform works</li>
+            <li>Enable two-factor authentication (2FA) on your account</li>
+            <li>Never share your password or login credentials</li>
+            <li>Always double-check wallet addresses before confirming transactions</li>
+            <li>Keep records of all your transactions</li>
+            <li>Report suspicious activity to our support team immediately</li>
+          </ul>
+
+          <h2>No Financial Advice</h2>
+          <p>
+            Aryana Currency does not provide financial, investment, legal, or tax advice. All trading decisions are your own. Consider consulting with a licensed financial advisor if you're unsure about your situation.
+          </p>
+
+          <h2>Acknowledgment</h2>
+          <p>
+            By using Aryana Currency, you acknowledge that you have read and understood these risks and accept full responsibility for your trading decisions.
+          </p>
+
         </div>
       </div>
-    </div>
-
-    <!-- Content Layout -->
-    <div class="container">
-      <div class="doc-layout">
-
-        <!-- TOC -->
-        <aside class="doc-toc">
-          <div class="doc-toc-title">Table of Contents</div>
-          <ul class="doc-toc-list">
-            <li><a href="#warning" class="toc-link active"><span class="toc-num">00</span> Important Warning</a></li>
-            <li><a href="#market" class="toc-link"><span class="toc-num">01</span> Market Risk</a></li>
-            <li><a href="#network" class="toc-link"><span class="toc-num">02</span> Network Risk</a></li>
-            <li><a href="#payment" class="toc-link"><span class="toc-num">03</span> Payment Risk</a></li>
-            <li><a href="#regulatory" class="toc-link"><span class="toc-num">04</span> Regulatory Risk</a></li>
-            <li><a href="#verification" class="toc-link"><span class="toc-num">05</span> Verification Risk</a></li>
-            <li><a href="#technical" class="toc-link"><span class="toc-num">06</span> Technical Risk</a></li>
-            <li><a href="#advice" class="toc-link"><span class="toc-num">07</span> No Investment Advice</a></li>
-            <li><a href="#best" class="toc-link"><span class="toc-num">08</span> Best Practices</a></li>
-            <li><a href="#acknowledgment" class="toc-link"><span class="toc-num">09</span> Acknowledgment</a></li>
-          </ul>
-        </aside>
-
-        <!-- Doc Body -->
-        <article class="doc-body">
-
-          <!-- Warning Box -->
-          <section class="doc-section" id="warning">
-            <div class="doc-section-number">00</div>
-            <h2>Important Warning</h2>
-
-            <div class="callout important" style="margin-top:0;">
-              <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                <line x1="12" y1="9" x2="12" y2="13"/>
-                <line x1="12" y1="17" x2="12.01" y2="17"/>
-              </svg>
-              <div class="callout-content">
-                <div class="callout-title">Please Read Carefully</div>
-                <div class="callout-text">
-                  <strong>Trading digital currencies involves significant risk.</strong> You should never trade with funds you cannot afford to lose. The value of digital currencies can go up or down dramatically, and you may lose some or all of your investment.
-                </div>
-              </div>
-            </div>
-
-            <p>
-              This Risk Disclosure explains the principal risks associated with using Aryana Currency. It does not cover every possible risk — you should conduct your own research and seek independent advice if necessary.
-            </p>
-          </section>
-
-          <!-- Section 1: Market Risk -->
-          <section class="doc-section" id="market">
-            <div class="doc-section-number">01</div>
-            <h2>Market Risk</h2>
-
-            <p>
-              The value of digital currencies such as <strong>Tether (USDT)</strong> and traditional currencies such as the <strong>Afghan Afghani (AFN)</strong> can fluctuate significantly within short periods of time.
-            </p>
-
-            <p>
-              You may gain or lose money as a result of these fluctuations. Historical performance is not indicative of future results, and no one can predict with certainty how exchange rates will move.
-            </p>
-
-            <div class="callout warning">
-              <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                <line x1="12" y1="9" x2="12" y2="13"/>
-                <line x1="12" y1="17" x2="12.01" y2="17"/>
-              </svg>
-              <div class="callout-content">
-                <div class="callout-title">Rate Lock Policy</div>
-                <div class="callout-text">
-                  When you place an order on Aryana Currency, <strong>the rate is locked at that moment</strong>. However, if the market rate moves significantly before our team verifies the payment, the order may be cancelled at our discretion to prevent arbitrage abuse.
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- Section 2: Network Risk -->
-          <section class="doc-section" id="network">
-            <div class="doc-section-number">02</div>
-            <h2>Network & Blockchain Risk</h2>
-
-            <p>
-              Cryptocurrency transfers occur on <strong>public blockchains</strong>, which are outside of our control. Risks include:
-            </p>
-
-            <ul>
-              <li><strong>Sending funds to the wrong address.</strong> These transactions are <em>irreversible</em> — no one can recover them.</li>
-              <li><strong>Choosing the wrong network.</strong> Sending TRC20 USDT to an ERC20 address, for example, will result in <em>permanent loss</em> of funds.</li>
-              <li><strong>Network congestion.</strong> High demand may lead to delays or higher transaction fees.</li>
-              <li><strong>Blockchain forks.</strong> In rare cases, a blockchain may split, affecting the validity of transactions.</li>
-              <li><strong>Smart contract vulnerabilities.</strong> If you use a third-party wallet or exchange, its security is your responsibility.</li>
-            </ul>
-
-            <div class="callout important">
-              <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                <line x1="12" y1="9" x2="12" y2="13"/>
-                <line x1="12" y1="17" x2="12.01" y2="17"/>
-              </svg>
-              <div class="callout-content">
-                <div class="callout-title">Double-Check Before Sending</div>
-                <div class="callout-text">
-                  <strong>Always double-check the wallet address and network</strong> before clicking "send". Blockchain transactions cannot be reversed. Aryana Currency is not responsible for funds sent to incorrect addresses.
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- Section 3: Payment Risk -->
-          <section class="doc-section" id="payment">
-            <div class="doc-section-number">03</div>
-            <h2>Payment Method Risk</h2>
-
-            <p>
-              AFN payments are made via <strong>Hesab Pay</strong>. You are solely responsible for:
-            </p>
-
-            <ul>
-              <li><strong>Ensuring the account details you provide are correct.</strong> Incorrect details may result in funds sent to the wrong person.</li>
-              <li><strong>Keeping your Hesab Pay account secure.</strong> If someone gains access to your account, they may initiate unauthorized transactions.</li>
-              <li><strong>Verifying the recipient before sending funds.</strong> Always confirm the account holder name matches "ARYANA CURRENCY" before sending.</li>
-              <li><strong>Keeping your transaction receipts.</strong> You will need them for reference and verification.</li>
-            </ul>
-          </section>
-
-          <!-- Section 4: Regulatory Risk -->
-          <section class="doc-section" id="regulatory">
-            <div class="doc-section-number">04</div>
-            <h2>Regulatory Risk</h2>
-
-            <p>
-              The legal status of digital currencies <strong>varies by country</strong> and may change at any time. It is <em>your responsibility</em> to understand and comply with the laws of your jurisdiction.
-            </p>
-
-            <p>
-              Aryana Currency operates under a specific license. If regulatory conditions change, we may be required to:
-            </p>
-
-            <ul>
-              <li>Suspend certain services temporarily or permanently.</li>
-              <li>Restrict access for users in specific jurisdictions.</li>
-              <li>Report certain transactions to regulatory authorities.</li>
-            </ul>
-
-            <p>
-              We will make reasonable efforts to notify users of such changes, but we cannot guarantee advance warning.
-            </p>
-          </section>
-
-          <!-- Section 5: Verification Risk -->
-          <section class="doc-section" id="verification">
-            <div class="doc-section-number">05</div>
-            <h2>Verification Risk</h2>
-
-            <p>
-              Every order on Aryana Currency is <strong>manually verified</strong> by our team. This step is intentional and required by law, but it introduces several risks:
-            </p>
-
-            <ul>
-              <li><strong>Delays.</strong> Verification may take up to 24 hours during peak periods.</li>
-              <li><strong>Rejection.</strong> If we cannot verify your payment reference, your order may be rejected.</li>
-              <li><strong>Refund delays.</strong> If an order is rejected, refunds may take additional time to process.</li>
-            </ul>
-
-            <p>
-              To minimize these risks, always <strong>double-check your transaction reference</strong> before submitting it.
-            </p>
-          </section>
-
-          <!-- Section 6: Technical Risk -->
-          <section class="doc-section" id="technical">
-            <div class="doc-section-number">06</div>
-            <h2>Technical Risk</h2>
-
-            <p>
-              Like any online platform, Aryana Currency may experience:
-            </p>
-
-            <ul>
-              <li><strong>Scheduled maintenance.</strong> We may temporarily suspend services for upgrades.</li>
-              <li><strong>Unexpected downtime.</strong> Technical failures may prevent access to your account.</li>
-              <li><strong>Bugs and errors.</strong> Despite rigorous testing, software bugs can occur.</li>
-              <li><strong>Cyber attacks.</strong> We take extensive precautions, but no platform is immune.</li>
-            </ul>
-
-            <p>
-              We work hard to maintain 99.9% uptime and respond quickly to any incidents, but we cannot guarantee uninterrupted service.
-            </p>
-          </section>
-
-          <!-- Section 7: No Investment Advice -->
-          <section class="doc-section" id="advice">
-            <div class="doc-section-number">07</div>
-            <h2>No Investment Advice</h2>
-
-            <p>
-              Nothing on this platform constitutes <strong>investment advice</strong>, financial advice, or trading advice.
-            </p>
-
-            <p>
-              All content, including rates, articles, and educational materials, is provided for informational purposes only. <em>All trading decisions are yours alone.</em>
-            </p>
-
-            <p>
-              We do not recommend buying, selling, or holding any particular asset. If you are unsure about a trading decision, please consult a licensed financial advisor.
-            </p>
-
-            <div class="callout note">
-              <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="12" y1="16" x2="12" y2="12"/>
-                <line x1="12" y1="8" x2="12.01" y2="8"/>
-              </svg>
-              <div class="callout-content">
-                <div class="callout-title">Your Responsibility</div>
-                <div class="callout-text">
-                  You are <strong>solely responsible</strong> for your trading decisions and their outcomes. Aryana Currency does not provide investment advice.
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- Section 8: Best Practices -->
-          <section class="doc-section" id="best">
-            <div class="doc-section-number">08</div>
-            <h2>Best Practices</h2>
-
-            <p>
-              To protect yourself while using Aryana Currency, we strongly recommend:
-            </p>
-
-            <ul>
-              <li><strong>Double-check wallet addresses</strong> before every send.</li>
-              <li><strong>Verify the network</strong> (TRC20 for USDT) before sending.</li>
-              <li><strong>Start with small amounts</strong> until you're comfortable with the platform.</li>
-              <li><strong>Keep your password and 2FA secure.</strong> Never share them with anyone.</li>
-              <li><strong>Beware of phishing.</strong> Always verify you're on the official website.</li>
-              <li><strong>Keep transaction receipts</strong> for reference.</li>
-              <li><strong>Contact support</strong> immediately if anything looks suspicious.</li>
-            </ul>
-          </section>
-
-          <!-- Section 9: Acknowledgment -->
-          <section class="doc-section" id="acknowledgment">
-            <div class="doc-section-number">09</div>
-            <h2>Acknowledgment</h2>
-
-            <p>
-              By using Aryana Currency, you acknowledge that:
-            </p>
-
-            <ul>
-              <li>You have <strong>read and understood</strong> this Risk Disclosure.</li>
-              <li>You <strong>accept full responsibility</strong> for your trading decisions.</li>
-              <li>You understand that <strong>you may lose money</strong>, potentially all of it.</li>
-              <li>You will <strong>not hold Aryana Currency liable</strong> for losses resulting from risks described here.</li>
-            </ul>
-
-            <div class="callout success">
-              <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-              </svg>
-              <div class="callout-content">
-                <div class="callout-title">Trade Responsibly</div>
-                <div class="callout-text">
-                  Trade only with funds you can afford to lose. If you have any doubts, please consult a financial advisor before using our services.
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- Signature Block -->
-          <div class="signature-block">
-            <div class="signature-title">Official Document</div>
-
-            <div class="signature-grid">
-              <div class="signature-item">
-                <div class="signature-item-label">Issued By</div>
-                <div class="signature-item-value">ARYANA CURRENCY</div>
-              </div>
-              <div class="signature-item">
-                <div class="signature-item-label">Document Type</div>
-                <div class="signature-item-value">RISK DISCLOSURE</div>
-              </div>
-              <div class="signature-item">
-                <div class="signature-item-label">Version</div>
-                <div class="signature-item-value">2.0</div>
-              </div>
-              <div class="signature-item">
-                <div class="signature-item-label">Effective Date</div>
-                <div class="signature-item-value">JAN 01, 2026</div>
-              </div>
-            </div>
-
-            <div class="signature-stamp">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                <polyline points="9 12 11 14 15 10"/>
-              </svg>
-              <div>
-                <div class="signature-stamp-text">Official</div>
-                <div class="signature-stamp-sub">ARYANA CURRENCY · LEGAL</div>
-              </div>
-            </div>
-          </div>
-
-        </article>
-
-      </div>
-    </div>
-
+    </section>
   </main>
 
-  <!-- Scripts -->
   <script src="../assets/js/config.js"></script>
   <script src="../assets/js/i18n.js"></script>
   <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/notifications.js"></script>
+  <script src="../assets/js/command-palette.js"></script>
   <script src="../assets/js/footer.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      Theme.init();
-      const lang = I18N.detectInitialLang();
-      await I18N.load(lang);
-      I18N.apply();
-
-      const tocLinks = document.querySelectorAll('.toc-link');
-      const sections = document.querySelectorAll('.doc-section');
-
-      if (tocLinks.length && sections.length) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              const id = entry.target.id;
-              tocLinks.forEach(link => {
-                link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
-              });
-            }
-          });
-        }, { rootMargin: '-100px 0px -60% 0px', threshold: 0 });
-
-        sections.forEach(section => observer.observe(section));
-      }
-
-      tocLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          const target = document.querySelector(link.getAttribute('href'));
-          if (target) {
-            const top = target.getBoundingClientRect().top + window.pageYOffset - 80;
-            window.scrollTo({ top, behavior: 'smooth' });
-          }
-        });
-      });
-    });
-  </script>
+  <script src="../assets/js/pwa.js"></script>
 </body>
 </html>
