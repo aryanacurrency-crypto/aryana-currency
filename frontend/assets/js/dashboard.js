@@ -697,19 +697,20 @@ window.Dashboard = {
    ═══════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', () => {
+  // پیدا کردن تمام لینک‌هایی که به deposit.html اشاره می‌کنند
   const depositLinks = document.querySelectorAll('a[href*="deposit.html"]');
   
   depositLinks.forEach(link => {
     link.addEventListener('click', async (e) => {
       e.preventDefault(); // همیشه اول جلوگیری می‌کنیم
 
-      // از تابع قدرتمند auth.js استفاده می‌کنیم که خودش با سرور چک می‌کنه
+      // استفاده از تابع قدرتمند auth.js که فیلد is_verified رو چک می‌کنه
       const isVerified = await Auth.checkKycVerified();
 
       if (isVerified) {
-        window.location.href = link.href; // اگه تایید شد، برو به دیپازیت
+        window.location.href = link.href; // اگه تایید شده بود، برو به دیپازیت
       } else {
-        showKycWarningModal(); // اگه تایید نشد، مودال رو نشون بده
+        showKycWarningModal(); // اگه تایید نشده بود، مودال رو نشون بده
       }
     });
   });
