@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════
-   ARYANA CURRENCY — Contact v3
-   Dynamic from Admin Settings
+   ARYANA CURRENCY — Contact v4
+   Dynamic from Admin Settings · Real fields
    ═══════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -10,14 +10,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   const submitBtn = document.getElementById('submitBtn');
 
   /* ═══════════════════════════════════════
-     📥 LOAD CONTACT INFO FROM API
+     📥 LOAD CONTACT INFO
      ═══════════════════════════════════════ */
 
   async function loadContactInfo() {
     try {
       const info = await API.getContactInfo();
 
-      console.log('[Contact] Loaded from API:', info);
+      console.log('[Contact] Loaded:', info);
 
       // ═══ Email ═══
       if (info.email) {
@@ -29,28 +29,50 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       }
 
-      // ═══ Phone ═══
+      // ═══ Telegram Channel (کارت اول - Live Chat) ═══
+      if (info.telegram_channel) {
+        const tgLink = document.getElementById('contactTelegram');
+        if (tgLink) {
+          tgLink.href = info.telegram_channel;
+          // اگه می‌خوای متن هم عوض بشه:
+          // const span = tgLink.querySelector('span');
+          // if (span) span.textContent = 'Join Channel';
+        }
+      }
+
+      // ═══ Telegram Support (کارت دوم) ═══
+      if (info.telegram_support) {
+        const tgSupportLink = document.getElementById('contactTelegramSupport');
+        if (tgSupportLink) {
+          const username = info.telegram_support.replace('@', '');
+          tgSupportLink.href = `https://t.me/${username}`;
+          const span = tgSupportLink.querySelector('span');
+          if (span) span.textContent = info.telegram_support;
+        }
+      }
+
+      // ═══ Address (کارت چهارم - اگه داری) ═══
+      if (info.address) {
+        const addrEl = document.getElementById('contactAddress');
+        if (addrEl) addrEl.textContent = info.address;
+      }
+
+      // ═══ Phone (اگه API داشت) ═══
       if (info.phone) {
         const phoneLink = document.getElementById('contactPhone');
         if (phoneLink) {
           const span = phoneLink.querySelector('span');
           if (span) span.textContent = info.phone;
           phoneLink.href = `tel:${info.phone.replace(/\s/g, '')}`;
+          phoneLink.style.display = '';
         }
+      } else {
+        // اگه phone نبود، کارتش رو مخفی کن
+        const phoneCard = document.getElementById('contactPhoneCard');
+        if (phoneCard) phoneCard.style.display = 'none';
       }
 
-      // ═══ Telegram ═══
-      if (info.telegram) {
-        const tgLink = document.getElementById('contactTelegram');
-        if (tgLink) {
-          const url = info.telegram.startsWith('http')
-            ? info.telegram
-            : `https://t.me/${info.telegram.replace('@', '')}`;
-          tgLink.href = url;
-        }
-      }
-
-      // ═══ WhatsApp ═══
+      // ═══ WhatsApp (اگه API داشت) ═══
       if (info.whatsapp) {
         const waLink = document.getElementById('contactWhatsapp');
         if (waLink) {
@@ -61,37 +83,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       }
 
-      // ═══ Address ═══
-      if (info.address) {
-        const addrEl = document.getElementById('contactAddress');
-        if (addrEl) addrEl.textContent = info.address;
-      }
-
-      // ═══ Working Hours ═══
-      if (info.working_hours) {
-        const hoursEl = document.getElementById('contactHours');
-        if (hoursEl) hoursEl.textContent = info.working_hours;
-      }
-
-      // ═══ Social Links ═══
-      if (info.facebook) {
-        const fbLink = document.getElementById('contactFacebook');
-        if (fbLink) fbLink.href = info.facebook;
-      }
-
-      if (info.instagram) {
-        const igLink = document.getElementById('contactInstagram');
-        if (igLink) igLink.href = info.instagram;
-      }
-
-      if (info.twitter) {
-        const twLink = document.getElementById('contactTwitter');
-        if (twLink) twLink.href = info.twitter;
-      }
-
     } catch (err) {
-      console.warn('[Contact] Failed to load info from API:', err);
-      // fallback به مقادیر پیش‌فرض HTML
+      console.warn('[Contact] Load failed:', err);
     }
   }
 
@@ -129,16 +122,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       submitBtn.innerHTML = '<span class="spinner"></span>';
 
       try {
-        // ─── API: Send message ───
-        // اگه endpoint داری:
+        // ─── API Send (اگه endpoint داری) ───
         // await API.request('/contact/send', {
         //   method: 'POST',
         //   body: JSON.stringify({ name, email, subject, message }),
         //   skipAuth: true,
         // });
 
-        // ─── فعلاً شبیه‌سازی ───
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await new Promise((r) => setTimeout(r, 1000));
 
         if (typeof Notify !== 'undefined') {
           Notify.success('Message sent! We will reply within a few hours.');
@@ -148,17 +139,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       } catch (err) {
         console.error('[Contact] Send failed:', err);
-
-        let msg = err?.detail || 'Failed to send. Please try again.';
-
-        if (err?.status === 0) {
-          msg = 'Cannot connect to server. Check your internet.';
-        }
-
         if (typeof Notify !== 'undefined') {
-          Notify.error(msg);
+          Notify.error('Failed to send. Please try again.');
         }
-
       } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = origHTML;
